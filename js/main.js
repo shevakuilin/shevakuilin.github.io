@@ -13,8 +13,8 @@ $(document).ready(function() {
             $('.panel-cover').animate({ 'max-width': '465px', 'width': '26%' }, 400, swing = 'swing', function() {});
         }
     });
-
-    if (window.location.hash && window.location.hash == "#blog") {
+    i
+    if (window.location.hash && window.location.hash == "home") {
         $('.panel-cover').addClass('panel-cover--collapsed');
     }
 
