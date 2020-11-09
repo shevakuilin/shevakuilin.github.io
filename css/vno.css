@@ -5643,7 +5643,7 @@
   margin: 0 -20px;
   padding: 15px 20px;
   border-style: solid;
-  border-color: #ddd;
+  border-color: #fff;
   border-width: 1px 0;
   overflow: auto;
   color: #ccc;
@@ -5659,7 +5659,7 @@
   font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
 }
 .article-entry code {
-  background: #eee;
+  background: #1f1e1e;
   text-shadow: 0 1px #fff;
   padding: 0 0.3em;
 }
@@ -5700,7 +5700,7 @@
 .article-entry .gist {
   margin: 0 -20px;
   border-style: solid;
-  border-color: #ddd;
+  border-color: #fff;
   border-width: 1px 0;
   background: #2d2d2d;
   padding: 15px 20px 15px 0;
