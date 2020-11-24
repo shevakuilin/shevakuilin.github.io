@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>如何在 CentOS 7 上搭建一个 Ghost 博客 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="Ghost 是一套基于 Node.js 构建的开原博客平台（Open source blogging platform），目标是取代臃肿的 Wordpress，界面简洁，专注写作，支持在线预览和在线写作。">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="如何在 CentOS 7 上搭建一个 Ghost 博客 | 跃迁引擎">
+    <meta name="twitter:description" content="Ghost 是一套基于 Node.js 构建的开原博客平台（Open source blogging platform），目标是取代臃肿的 Wordpress，界面简洁，专注写作，支持在线预览和在线写作。">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="如何在 CentOS 7 上搭建一个 Ghost 博客 | 跃迁引擎">
+    <meta property="og:description" content="Ghost 是一套基于 Node.js 构建的开原博客平台（Open source blogging platform），目标是取代臃肿的 Wordpress，界面简洁，专注写作，支持在线预览和在线写作。">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/2019/09/03/build-ghost-on-centos7/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">文章列表</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-09-03T06:48:26.000Z" class="post-list__meta--date date">2019-09-03</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Ghost%E5%8D%9A%E5%AE%A2%EF%BC%8CCentOS7/" rel="tag">Ghost博客，CentOS7</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">如何在 CentOS 7 上搭建一个 Ghost 博客</h1>
+  </header>
+
+  <section class="post">
+    <p>Ghost 是一套基于 Node.js 构建的开原博客平台（Open source blogging platform），目标是取代臃肿的 Wordpress，界面简洁，专注写作，支持在线预览和在线写作。<a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>此前我的个人博客采用 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">Hexo</a> + <a target="_blank" rel="noopener" href="https://pages.github.com/">Github Pages</a> 的方案，原因很简单：免费，静态博客部署方便、以及我喜欢的极简风格。Hexo 是用 <a target="_blank" rel="noopener" href="https://nodejs.org/en">Node.js</a> 编写的，页面生成及渲染速度都相当快，支持 Markdown、一键部署以及丰富的插件系统，使用体验一直都很不错，在相当长的一段时间里，它都是我认为最好的博客框架。</p>
+<p>最初的邂逅总是美好，直到经历了几次设备更替，每次更换新电脑，或者从公司到家里的环境切换，都需要对本地的 Hexo 进行繁琐的迁移同步，三番两次下来，渐渐令我对 Hexo 失去耐心，我意识到，是时候去寻找一个代替品了。</p>
+<p>同样身为静态博客框架的 <a target="_blank" rel="noopener" href="https://jekyllcn.com/">Jekyll</a> 是我想到的第一个方案，它虽然可以解决 Hexo 上那糟糕的的多设备同步问题，但缺点同样明显：</p>
+<ul>
+<li>Github 对 Jekyll 的插件有很多限制</li>
+<li>Jekyll 本身是由 Ruby 编写的，渲染速度上完全不及 Hexo</li>
+<li>与 Hexo 比起来，两者的关系更像互补，而不是代替</li>
+</ul>
+<p>就在纠结当中，无意间逛到了这个 <a target="_blank" rel="noopener" href="https://halfrost.com/">博客</a>， 由于长期以来都只用过静态博客框架，突然想趁着这次机会从头搭一个动态博客，折腾一下，于是便有了这篇文章。</p>
+<p>在 <a target="_blank" rel="noopener" href="https://wordpress.org/">WordPress</a> 和 <a target="_blank" rel="noopener" href="https://ghost.org/">Ghost</a> 之间略微挣扎了一会，决定用 Ghost 开始我新的博客搭建之旅。</p>
+<h2 id="Ghost-简介"><a href="#Ghost-简介" class="headerlink" title="Ghost 简介"></a>Ghost 简介</h2><p><img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/11b8145be285a17777ee4d809bfd4d09_XL.jpg" alt="img"></p>
+<p>Ghost 是一套基于 Node.js 构建的开源博客平台（Open source blogging platform），具有易用的书写界面和体验，博客内容默认采用 Markdown 语法书写，不过原生的不支持 Markdown 的表格和 <a target="_blank" rel="noopener" href="http://www.baidu.com/link?url=K_4JBAR3uS6xnec99adJX0IzXiUT0ANv52nbth0WUNaf3Z52ob2qSLRPX0KjGNEBBBXE5d8hEvOhKdgBR77EDa">LaTeX</a>，如果需要使用，需要在服务器端安装插件。</p>
+<p>Ghost 目标是取代臃肿的 Wordpress，界面简洁，专注写作，支持在线预览和在线写作。最大的优势就是它是从头重新写起的 (Ghost 最初的团队都来自 Wordpress)。原来的 Wordpress 无论是代码架构、具体实现、设计、决策过程到开源协作模式都已经变得过时而臃肿，加上大量第三方插件对特定实现的依赖，任何大改动都牵一发而动全身，开发效率变得极低。</p>
+<h5 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h5><p>技术上，采用 Node.js，并发能力远超使用 <a target="_blank" rel="noopener" href="http://php.net/">PHP</a> 的 Wordpress，独立测试表明，Ghost 比 WordPress 快了 <strong>1,900％</strong>。什么意思呢？就是说，在 WordPress 响应1个请求所花费的时间内，Ghost 已经响应了其中的19个请求。博客的速度会影响一切，从搜索引擎排名到移动用户互动。</p>
+<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/ghost-speed.png" width="800" height ="266" />
+
+<p>易用性上，没有 Wordpress 那么臃肿，可以专注于写作，完美支持 MarkDown，整合了评论系统，官方和开源社区都提供了很多精致的主题皮肤。</p>
+<p>使用上，可随时随地编辑，简洁便利的可视化后台比 Hexo, Jekyll 这类静态博客要书写方便，无需担心考虑多设备同步的问题。</p>
+<h5 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h5><p>需要配套支持 Node 环境的虚拟机，一般免费的很少支持，有一定的开销。</p>
+<p>Ghost 后台提供的功能过于基础，不过基本满足日常写作。</p>
+<h5 id="亮点"><a href="#亮点" class="headerlink" title="亮点"></a>亮点</h5><ul>
+<li>采用 Mysql 作为数据库， 通用快速上手，同样支持其他数据库比如 <a target="_blank" rel="noopener" href="https://mariadb.org/">MariaDB</a>， Sqlite。</li>
+<li>支持主流的 <a target="_blank" rel="noopener" href="https://www.apache.org/">Apache</a>、<a target="_blank" rel="noopener" href="https://www.nginx.com/">Nginx</a> 作为反向代理，配置多个 Ghost 博客， 同时也能增加了网站的负载。</li>
+<li>支持多种环境 Ubuntu（官方推荐），Docker，CentOS等。</li>
+<li>支持第三方代码高亮，如 <a target="_blank" rel="noopener" href="http://highlightjs.org/">highlight.js</a>， <a target="_blank" rel="noopener" href="http://prismjs.com/">Prism.js</a> 和 <a target="_blank" rel="noopener" href="https://craig.is/making/rainbows">Rainbow</a>。</li>
+<li>整合 <a target="_blank" rel="noopener" href="https://disqus.com/">Disqus</a> 评论系统, 建立属于自己的 Discuss 圈。</li>
+<li>采用 <a target="_blank" rel="noopener" href="http://fontawesome.io/icons/">Font Awesome</a> 作为社交按钮，也可以自定义图标。</li>
+<li>国外优秀免费 <a target="_blank" rel="noopener" href="http://themeforest.net/category/blogging/ghost-themes">Ghost 主题</a> 资源分享。</li>
+</ul>
+<h2 id="搭建方式"><a href="#搭建方式" class="headerlink" title="搭建方式"></a>搭建方式</h2><p>Ghost 主要分为 <strong>手动搭建</strong> 和 <strong>自动搭建</strong>（仅支持 Ghost 版本在 1.0 以后）两种方式：</p>
+<ul>
+<li>手动搭建通常采取 zip 解压安装的方式，手动安装 Ghost，后续的 Ghost 状态管理，升级等都需要自己处理。</li>
+<li>自动搭建通过 Ghost 1.0 版本后提供的工具 <a target="_blank" rel="noopener" href="https://ghost.org/docs/api/v2/ghost-cli/">Ghost-CLI</a> 来完成，非常方便管理，推荐使用，本文的教程也是以自动搭建的方式进行。</li>
+</ul>
+<h2 id="准备清单"><a href="#准备清单" class="headerlink" title="准备清单"></a>准备清单</h2><ul>
+<li>一台服务器（本文使用阿里云ECS，服务器系统 CentOS 7.6 64位）</li>
+<li>一个可用的域名（前期可使用服务器 ip 地址代替）</li>
+</ul>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><ul>
+<li>Node v10.16.3 （注意 Ghost 版本要求的对应 Node 版本号）</li>
+<li>Nginx 1.16.1</li>
+<li>Mysql （我实际安装的是 MariaDB，它是 Mysql 的开源分支，因为 Mysql 被收购了，可能有潜在的收费风险，所以推荐使用 MariaDB 了，完全兼容 Mysql）</li>
+<li>Ghost-CLI 1.11.0</li>
+<li>Ghost 2.30.2</li>
+</ul>
+<h2 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h2><h3 id="1-安装-Node-环境"><a href="#1-安装-Node-环境" class="headerlink" title="1. 安装 Node 环境"></a>1. 安装 Node 环境</h3><p>Node.js 有两种安装方式，一种是直接部署，另一种是编译部署。</p>
+<p>前者安装快，干净简洁，适合新手，缺点是全局安装插件需要手动创建关联；后者全局安装 Node.js 模块，无需手动创建关联，缺点是安装慢，编译过程长达30分钟以上，需手动安装 gcc 等其他工具，部署完的 Node.js 也分别放在了好几个文件夹里，不适合新手。</p>
+<p>这里我们使用直接部署安装：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl -sL http<span class="variable">s:</span>//rpm.nodesource.<span class="keyword">com</span>/setup_10.<span class="keyword">x</span> | bash -</span><br><span class="line"></span><br><span class="line">$ yum install -<span class="keyword">y</span> nodejs</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，输入 node -v 后回车，如果显示 v10.16.3 则表示 Node.js 安装成功。</p>
+<h3 id="2-安装-Nginx"><a href="#2-安装-Nginx" class="headerlink" title="2. 安装 Nginx"></a>2. 安装 Nginx</h3><p>2.1 首先在 <code>/etc/yum.repos.d/</code> 目录下创建一个源配置文件 <code>nginx.repo</code>：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">vim</span> /etc/yum.repos.d/nginx.repo</span><br></pre></td></tr></table></figure>
+
+<p>2.2 写入以下内容：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[nginx]</span><br><span class="line">name=nginx repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/$releasever/$basearch/</span><br><span class="line">gpgcheck=<span class="number">0</span></span><br><span class="line">enabled=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>完成后 <code>:wq</code> 保存退出。</p>
+<p>2.3 安装 Nginx：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install nginx -<span class="keyword">y</span></span><br></pre></td></tr></table></figure>
+
+<p>2.4 设置 Nginx 服务器开机启动：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl enable nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>2.5 启动 Nginx 并查看 Nginx 服务状态：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl start nginx.service</span><br><span class="line"></span><br><span class="line">$ systemctl status nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>到此 Nginx 就安装完成了，到浏览器地址栏输入你的云服务器或 VPS 的 IP 后回车，就能看到 “Welcome to Nginx!” 字样了。</p>
+<h3 id="3-安装-MySQL-MariaDB"><a href="#3-安装-MySQL-MariaDB" class="headerlink" title="3. 安装 MySQL (MariaDB)"></a>3. 安装 MySQL (MariaDB)</h3><p>Ghost 默认使用的是 <code>Sqlite3</code> 数据库，如果内容多的话，推荐改用 MySQL 数据库。如果不需要则跳过此步。</p>
+<blockquote>
+<p>从 CentOS 7 开始，CentOS 使用 MariaDB 代替了 MySQL 数据库，MariaDB 系 MySQL 的一个分支，使用方法和 MySQL 基本一致，主要由开源社区维护，采用 GPL 授权许可。开发此分支的主要原因之一：Orcale 公司收购了 MySQL，所以 MySQL 有闭源的可能，因此社区采用了开源的 MariaDB 来规避此风险。</p>
+</blockquote>
+<p>3.1 安装：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yum install mariadb mariadb-server #询问是否要安装，输入Y即可自动安装,直到安装完成</span><br><span class="line"></span><br><span class="line">$ systemctl enable mariadb.service #设置开机启动</span><br></pre></td></tr></table></figure>
+
+<p>常用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start&#x2F;stop&#x2F;restart mariadb.service #启动&#x2F;停止&#x2F;重启 MariaDB</span><br></pre></td></tr></table></figure>
+
+<p>3.2 修改 MySQL 密码：</p>
+<p>直接输入 <code>mysql</code> 进入 MariaDB，然后输入：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ set password for &#x27;root&#x27;@&#x27;localhost&#x27;=password(&#x27;&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>这一行是设置本地密码，密码为空，本地就不需要每次都输密码了。</p>
+<p>3.3 MySQL 授权远程连接（navicat等）：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grant all on *.* to root identified by &#x27;root&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>3.4 创建 ghost 数据库，用来存放博客的数据：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ create database ghost;</span><br></pre></td></tr></table></figure>
+
+<p>3.5 新建用户：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grant all privileges on ghost.* to &#x27;ghost&#x27;@&#x27;%&#x27; identified by &#x27;123456&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>这里的意思是，新建一个用户 ghost，密码为 123456，用户名及密码自行更改。</p>
+<p>3.6 重新读取权限表中的数据到内存，不用重启 MySQL 就可以让权限生效：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flush privileges;</span><br></pre></td></tr></table></figure>
+
+<p>到此数据库准备完成，输入 <code>exit</code> 退出MariaDB。</p>
+<p>3.7 为避免数据库里的中文出现乱码，还需配置 MySQL 字符集编码：</p>
+<p>通过 vim 指令打开 <code>my.cnf</code> 文件：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">vim</span> /etc/my.<span class="keyword">cnf</span></span><br></pre></td></tr></table></figure>
+
+<p>按 <code>i</code> 键进入编辑模式，在原有的基础上插入以下内容：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-<span class="keyword">set</span>=utf8  </span><br><span class="line">[mysql]</span><br><span class="line">default-character-<span class="keyword">set</span>=utf8  </span><br><span class="line">[mysqld]</span><br><span class="line">character-<span class="keyword">set</span>-server=utf8  </span><br><span class="line">collation-server=utf8_general_ci</span><br></pre></td></tr></table></figure>
+
+<p>输入完成后按esc键，再输入:wq保存退出。</p>
+<p>3.8 为了防止之后 Ghost 启动时无法访问我们的数据库，还需要在上面的基础上再添加一些内容来保证访问：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-<span class="keyword">set</span>=utf8</span><br><span class="line">[mysql]</span><br><span class="line">default-character-<span class="keyword">set</span>=utf8</span><br><span class="line">[mysqld]</span><br><span class="line">skip-grant-tables # 就是它</span><br><span class="line">character-<span class="keyword">set</span>-server=utf8</span><br><span class="line">collation-server=utf8_general_ci</span><br><span class="line">datadir=/var/lib/mysql</span><br></pre></td></tr></table></figure>
+
+<p>:wq 保存后，重启数据库：<code>systemctl restart mariadb.service</code></p>
+<h3 id="4-安装-Ghost"><a href="#4-安装-Ghost" class="headerlink" title="4.安装 Ghost"></a>4.安装 Ghost</h3><h4 id="4-1-检查安装环境"><a href="#4-1-检查安装环境" class="headerlink" title="4.1 检查安装环境"></a>4.1 检查安装环境</h4><p>4.1.1 检查 Node.js：<br>查看安装的 Node.js 版本号：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">v10.<span class="number">16.3</span></span><br></pre></td></tr></table></figure>
+
+<p>查看 Node.js 安装路径：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo which node</span><br><span class="line">/bin/node</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：Node.js 需要安装在系统路径，比如 <code>/usr/bin/node</code> 或者 <code>/usr/local/bin/node</code> 等。</p>
+<p>4.1.2 检查 Nginx</p>
+<p>检查 nginx 版本：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -v</span><br><span class="line">nginx <span class="keyword">version</span>: nginx/<span class="number">1.16</span>.<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>： 如果需要配置 SSL 使用 https，则 nginx 版本需要大于等于 1.9.5。</p>
+<p>检查 nginx 服务是否正在运行：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl <span class="keyword">is</span>-active nginx</span><br><span class="line">active</span><br></pre></td></tr></table></figure>
+
+<p>4.1.3 检查 MySQL</p>
+<p>查看 MySQL 版本：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mysql --<span class="keyword">version</span></span><br><span class="line">mysql  Ver <span class="number">15.1</span> Distrib <span class="number">5.5</span>.<span class="number">60</span>-MariaDB, <span class="keyword">for</span> Linux (x86_64) using readline <span class="number">5.1</span></span><br></pre></td></tr></table></figure>
+
+<p>检查 MySQL 服务是否正在运行：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl <span class="keyword">is</span>-active mariadb.service</span><br><span class="line">active</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-2-开始安装"><a href="#4-2-开始安装" class="headerlink" title="4.2 开始安装"></a>4.2 开始安装</h4><p>4.2.1 安装 Ghost-CLI<br>Ghost-CLI 可以方便对未来的 Ghost 状态管理，升级。装上 Ghost-CLI 以后，之后的版本升级只需要 ghost update 一下就可以了。</p>
+<p>使用 npm 全局安装 ghost-cli ：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm i -g ghost-cli</span><br></pre></td></tr></table></figure>
+
+<p>查看安装的 ghost-cli 版本：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ghost <span class="keyword">version</span></span><br><span class="line">Ghost-CLI <span class="keyword">version</span>: <span class="number">1.11</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>4.2.2 创建新用户<br><strong>注意</strong>： 如果已有拥有 sudo 权限的非 root 用户，跳过此步骤。</p>
+<blockquote>
+<p>由于 Ghost-CLI 不允许在 root 用户下使用，会提示 <code>You can&#39;t run commands as the &#39;root&#39; user.</code>，所以需要创建一个新用户。</p>
+</blockquote>
+<p>新建一个用户：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ adduser <span class="symbol">&lt;user&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：`` 为新建用户的用户名。注意这个名字不能为 ghost，因为 Ghost 会创建一个叫 ghost 的用户。Ghost-CLI 会创建一个用户名为 ghost 的系统用户和用户组来自动运行 Ghost。</p>
+<p>设置用户密码：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd <span class="symbol">&lt;user&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>输入两遍用户密码。</p>
+<p>赋予 /etc/sudoers 文件写权限：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod -v <span class="keyword">u</span>+<span class="keyword">w</span> /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<p>编辑文件：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">vim</span> /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<p>找到这个位置：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">## Allow root <span class="keyword">to</span> run any commands anywhere</span><br><span class="line">root    ALL=(ALL)       ALL</span><br></pre></td></tr></table></figure>
+
+<p>在下面添加：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 该用户在使用 sudo 命令时不需要输入密码</span><br><span class="line"><span class="symbol">&lt;user&gt;</span>    ALL=(ALL)       NOPASSWD:ALL</span><br><span class="line"># <span class="built_in">or</span> 该用户在使用 sudo 命令时需要输入密码</span><br><span class="line"><span class="symbol">&lt;user&gt;</span>    ALL=(ALL)       ALL</span><br></pre></td></tr></table></figure>
+
+<p>保存退出，并恢复 /etc/sudoers 文件权限：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod -v <span class="keyword">u</span>-<span class="keyword">w</span> /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<p>4.2.3 配置 Ghost<br>登录刚才创建好的用户，或已创建的<code>非 root 且拥有 sudo 权限的用户名不为 ghost </code>的用户</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ su - <span class="symbol">&lt;user&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>创建网站目录并设置权限:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo <span class="built_in">mkdir</span> -<span class="keyword">p</span> /var/www/ghost</span><br><span class="line">$ sudo chown <span class="symbol">&lt;user&gt;</span>:<span class="symbol">&lt;user&gt;</span> /var/www/ghost</span><br><span class="line">$ sudo chmod <span class="number">775</span> /var/www/ghost</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;user&gt;</code> 为刚才登陆的用户</p>
+<p>进入到网站目录：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">cd</span> /var/www/ghost</span><br></pre></td></tr></table></figure>
+
+<p>4.2.4 安装 Ghost<br>官方文档推荐使用 Ubuntu，在安装过程中Ghost-CLI会对当前 OS 类型进行检查，为了避免报错，CentOS 需要加上 <code>--no-stack</code></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ ghost install --<span class="keyword">no</span>-stack</span><br><span class="line">✔ Checking <span class="built_in">system</span> Node.js <span class="keyword">version</span></span><br><span class="line">✔ Checking logged in user</span><br><span class="line">✔ Checking current folder permissions</span><br><span class="line">ℹ Checking operating <span class="built_in">system</span> compatibility [skipped]</span><br><span class="line">Local MySQL install not found. You can ignore this <span class="keyword">if</span> you are using <span class="keyword">a</span> remote MySQL host.</span><br><span class="line">Alternatively you could:</span><br><span class="line"><span class="keyword">a</span>) install MySQL locally</span><br><span class="line"><span class="keyword">b</span>) run `ghost install --db=sqlite3` <span class="keyword">to</span> use sqlite</span><br><span class="line"><span class="keyword">c</span>) run `ghost install local` <span class="keyword">to</span> <span class="built_in">get</span> <span class="keyword">a</span> development install using sqlite3.</span><br><span class="line">? Continue anyway?</span><br></pre></td></tr></table></figure>
+
+<p>因为安装的是 MariaDB，所以直接输入 <code>y</code> 跳过，等待下载完成。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">✔ Checking <span class="built_in">system</span> Node.js <span class="keyword">version</span></span><br><span class="line">✔ Checking logged in user</span><br><span class="line">✔ Checking current folder permissions</span><br><span class="line">ℹ Checking operating <span class="built_in">system</span> compatibility [skipped]</span><br><span class="line">Local MySQL install not found. You can ignore this <span class="keyword">if</span> you are using <span class="keyword">a</span> remote MySQL host.</span><br><span class="line">Alternatively you could:</span><br><span class="line"><span class="keyword">a</span>) install MySQL locally</span><br><span class="line"><span class="keyword">b</span>) run `ghost install --db=sqlite3` <span class="keyword">to</span> use sqlite</span><br><span class="line"><span class="keyword">c</span>) run `ghost install local` <span class="keyword">to</span> <span class="built_in">get</span> <span class="keyword">a</span> development install using sqlite3.</span><br><span class="line">? Continue anyway? Yes</span><br><span class="line">MySQL check skipped</span><br><span class="line">ℹ Checking <span class="keyword">for</span> <span class="keyword">a</span> MySQL installation [skipped]</span><br><span class="line">✔ Checking memory availability</span><br><span class="line">✔ Checking <span class="keyword">for</span> latest Ghost <span class="keyword">version</span></span><br><span class="line">✔ Setting <span class="keyword">up</span> install directory</span><br><span class="line">✔ Downloading <span class="built_in">and</span> installing Ghost v2.<span class="number">30.2</span></span><br><span class="line">✔ Finishing install process</span><br><span class="line">? Enter your blog URL: (http://localhos<span class="variable">t:2368</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输入自己网站完整访问路径 <a href="https://shevakuilin.com/">https://shevakuilin.com</a> 或 ip 地址（记得加上 http）。<br>回车：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">? Enter your blog URL: [http<span class="variable">s:</span>//shevakuilin.<span class="keyword">com</span>](http<span class="variable">s:</span>//shevakuilin.<span class="keyword">com</span>)</span><br><span class="line">? Enter your MySQL <span class="built_in">hostname</span>: (localhost)</span><br></pre></td></tr></table></figure>
+
+<p>输入 MySQL 的登陆地址，本机登陆就是 localhost 直接回车即可（如果是远程数据库，输入数据库服务器的 ip 地址，不要带上 http）：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">? Enter your MySQL <span class="built_in">hostname</span>: localhost</span><br><span class="line">? Enter your MySQL username:</span><br></pre></td></tr></table></figure>
+
+<p>输入 root：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">? Enter your MySQL username: root</span><br><span class="line">? Enter your MySQL password: [<span class="built_in">input</span> <span class="keyword">is</span> hidden]</span><br><span class="line">输入 MySQL 的 root 用户密码：</span><br><span class="line">按照我们之前设置的数据库密码，本地数据库密码为空，远程为 root</span><br><span class="line">```<span class="keyword">vim</span></span><br><span class="line">? Enter your MySQL password: [hidden]</span><br><span class="line">? Enter your Ghost database name:</span><br></pre></td></tr></table></figure>
+
+<p>输入要创建的数据库的名称，回车会直接使用默认名称：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">✔ Configuring Ghost</span><br><span class="line">✔ Setting <span class="keyword">up</span> instance</span><br><span class="line">Running sudo <span class="keyword">command</span>: chown -R ghos<span class="variable">t:ghost</span> /var/www/ghost/content</span><br><span class="line">✔ Setting <span class="keyword">up</span> <span class="string">&quot;ghost&quot;</span> <span class="built_in">system</span> user</span><br><span class="line">? Do you wish <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">up</span> <span class="string">&quot;ghost&quot;</span> mysql user? (Y/n)</span><br></pre></td></tr></table></figure>
+
+<p>回车确认自动创建 MySQL 用户：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">? Do you wish <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">up</span> <span class="string">&quot;ghost&quot;</span> mysql user? Yes</span><br><span class="line">✔ Setting <span class="keyword">up</span> <span class="string">&quot;ghost&quot;</span> mysql user</span><br><span class="line">? Do you wish <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">up</span> Nginx? (Y/n)</span><br></pre></td></tr></table></figure>
+
+<p>直接回车确定自动设置 Nginx：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">? Do you wish <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">up</span> Nginx? Yes</span><br><span class="line">Nginx <span class="keyword">is</span> not installed. Skipping Nginx setup.</span><br><span class="line">ℹ Setting <span class="keyword">up</span> Nginx [skipped]</span><br><span class="line">Task ssl depends <span class="keyword">on</span> the <span class="string">&#x27;nginx&#x27;</span> stage, which was skipped.</span><br><span class="line">ℹ Setting <span class="keyword">up</span> SSL [skipped]</span><br><span class="line">? Do you wish <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">up</span> Systemd? (Y/n)</span><br></pre></td></tr></table></figure>
+
+<p>此时 Ghost-CLI 还无法识别 CentOS 上已安装的 Nginx，稍后手动设置</p>
+<p>直接回车确实自动设置系统服务（一定不要选择 No）：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? Do you wish <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">up</span> Systemd? Yes</span><br></pre></td></tr></table></figure>
+
+<p>之后会看到配置和初始化完成的提示，然后输入密码：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">✔ Configuring Ghost</span><br><span class="line">✔ Setting <span class="keyword">up</span> instance</span><br><span class="line">? Sudo Password [<span class="built_in">input</span> <span class="keyword">is</span> hidden]</span><br></pre></td></tr></table></figure>
+
+<p>由于版本差异，你也可能看到这样的提示：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">? Do you wish <span class="keyword">to</span> <span class="keyword">set</span> <span class="keyword">up</span> Systemd? Yes</span><br><span class="line">✔ Creating systemd service <span class="keyword">file</span> at /var/www/ghost/<span class="built_in">system</span>/<span class="keyword">files</span>/ghost_shevakuilin-<span class="keyword">com</span>.service</span><br><span class="line">Running sudo <span class="keyword">command</span>: <span class="keyword">ln</span> -<span class="keyword">sf</span> /var/www/ghost/<span class="built_in">system</span>/<span class="keyword">files</span>/ghost_shevakuilin-<span class="keyword">com</span>.service /lib/systemd/<span class="built_in">system</span>/ghost_shevakuilin-<span class="keyword">com</span>.service</span><br><span class="line">Running sudo <span class="keyword">command</span>: systemctl daemon-reload</span><br><span class="line">✔ Setting <span class="keyword">up</span> Systemd</span><br><span class="line">Running sudo <span class="keyword">command</span>: /var/www/ghost/current/node_modules/.bin/knex-migrator-migrate --init --mgpath /var/www/ghost/current</span><br><span class="line">✔ Running database migrations</span><br><span class="line">? Do you want <span class="keyword">to</span> start Ghost? (Y/n)</span><br></pre></td></tr></table></figure>
+
+<p>现在启动是不会成功的，还需要设置 Nginx 的反向代理。</p>
+<p>4.2.5 设置 nginx<br>新建配置文件：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo <span class="keyword">vim</span> /etc/nginx/<span class="keyword">conf</span>.d/ghost.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+
+<p>将以下内容输入到 <code>ghost.conf</code> 中，将 <code>server_name</code> 后面的 <code>example.com</code> 改为你的 IP 或者域名：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">server &#123;  </span><br><span class="line">     listen 80;</span><br><span class="line">     server_name example.com;</span><br><span class="line">     </span><br><span class="line">     access_log /var/log/nginx/ghost.log;</span><br><span class="line">     error_log /var/log/nginx/ghost_error.log;</span><br><span class="line">     </span><br><span class="line">     proxy_buffers 16 64k;</span><br><span class="line">     proxy_buffer_size 128k;</span><br><span class="line"></span><br><span class="line">     location / &#123;</span><br><span class="line">         proxy_pass http://127.0.0.1:2368;</span><br><span class="line">         proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;</span><br><span class="line">         proxy_redirect off;</span><br><span class="line">         proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">         proxy_set_header Host $http_host;</span><br><span class="line">         proxy_set_header X-NginX-Proxy true;</span><br><span class="line">         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">         proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输入完成后保存退出，重启 nginx 服务：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+<p>4.2.6 设置 Ghost 生产模式配置文件<br>编辑生产模式配置文件：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">vim</span> /var/www/ghost/config.production.json</span><br></pre></td></tr></table></figure>
+
+<p>复制一下内容，将原内容覆盖掉：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     <span class="string">&quot;url&quot;</span>: <span class="string">&quot;http://xx.xx.xx.xx&quot;</span>,</span><br><span class="line">     <span class="string">&quot;server&quot;</span>: &#123;</span><br><span class="line">         <span class="string">&quot;port&quot;</span>: <span class="number">2368</span></span><br><span class="line">     &#125;,</span><br><span class="line">     <span class="string">&quot;database&quot;</span>: &#123;</span><br><span class="line">         <span class="string">&quot;client&quot;</span>: <span class="string">&quot;mysql&quot;</span>,</span><br><span class="line">         <span class="string">&quot;connection&quot;</span>: &#123;</span><br><span class="line">             <span class="string">&quot;host&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">             <span class="string">&quot;user&quot;</span>: <span class="string">&quot;ghost数据库用户名&quot;</span>,</span><br><span class="line">             <span class="string">&quot;password&quot;</span>: <span class="string">&quot;ghost数据库密码&quot;</span>,</span><br><span class="line">             <span class="string">&quot;database&quot;</span>: <span class="string">&quot;ghost数据库名&quot;</span>,</span><br><span class="line">             <span class="string">&quot;charset&quot;</span>:<span class="string">&quot;utf8&quot;</span></span><br><span class="line">         &#125;</span><br><span class="line">     &#125;,</span><br><span class="line">     <span class="string">&quot;paths&quot;</span>: &#123;</span><br><span class="line">         <span class="string">&quot;contentPath&quot;</span>: <span class="string">&quot;content/&quot;</span></span><br><span class="line">     &#125;,</span><br><span class="line">     <span class="string">&quot;logging&quot;</span>: &#123;</span><br><span class="line">         <span class="string">&quot;level&quot;</span>: <span class="string">&quot;info&quot;</span>,</span><br><span class="line">         <span class="string">&quot;rotation&quot;</span>: &#123;</span><br><span class="line">             <span class="string">&quot;enabled&quot;</span>: true</span><br><span class="line">         &#125;,</span><br><span class="line">         <span class="string">&quot;transports&quot;</span>: [<span class="string">&quot;file&quot;</span>, <span class="string">&quot;stdout&quot;</span>]</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存后退出。</p>
+<h2 id="六、测试"><a href="#六、测试" class="headerlink" title="六、测试"></a>六、测试</h2><p>启动当前网站服务：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl start ghost_shevakuilin-<span class="keyword">com</span></span><br></pre></td></tr></table></figure>
+
+<p>查看服务状态：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl status ghost_shevakuilin-<span class="keyword">com</span></span><br></pre></td></tr></table></figure>
+
+<p>使用绑定的域名尝试访问自己的网站，访问 <code>http:///ghost</code> 注册管理员账号。</p>
+<p>可正常访问，则将该服务设置为开机启动：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl enable ghost_shevakuilin-<span class="keyword">com</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="七、其他"><a href="#七、其他" class="headerlink" title="七、其他"></a>七、其他</h2><p>在启动 Ghost 之后，如果你关闭终端窗口或者从 SSH 断开连接时，Ghost 就停止了。为了防止 Ghost 停止工作，我们需要使用 <a target="_blank" rel="noopener" href="https://github.com/Unitech/pm2">PM2</a> 让 Ghost 保持运行：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">cd</span> /var/www/ghost </span><br><span class="line">$ npm install pm2 -g # 安装PM2 </span><br><span class="line">$ NODE_ENV=production </span><br><span class="line">$ pm2 start <span class="built_in">index</span>.js --name <span class="string">&quot;ghost&quot;</span> </span><br><span class="line">$ pm2 startup centos pm2 save</span><br></pre></td></tr></table></figure>
+
+<p>如果提示找不到 <code>index.js</code>，cd 到 <code>/var/www/ghost/current</code> 目录下继续执行命令即可。</p>
+<p>如果 npm 安装依赖的时候无法安装，需要把镜像换成淘宝的，再试试：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry= http<span class="variable">s:</span>//registry.npm.taobao.org</span><br><span class="line">$ cnpm install pm2 -g </span><br><span class="line">$ NODE_ENV=production pm2 start <span class="built_in">index</span>.js --name <span class="string">&quot;ghost&quot;</span> </span><br><span class="line">$ pm2 startup centos </span><br><span class="line">$ pm2 save</span><br><span class="line">pm2 start/<span class="keyword">stop</span>/restart/status ghost # 启动/停止/重启/查看状态</span><br></pre></td></tr></table></figure>
+
+<p>至此，Ghost 就全部搭建完毕，打开你的浏览器，在浏览器中输入 域名地址/ghost/，开始初始化用户名，密码，就可以开始愉快的Ghost之旅了。</p>
+<p>以后每次升级，只需要在 Ghost 安装目录下执行 <code>ghost update [version]</code> 即可。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>为了搭建 Ghost 一路踩了很多坑，足足花了两三天的时间，不过在搭建完成进入网站的那一刹那，什么都值了，即便是默认的主题皮肤也帅爆了啊。</p>
+<p>搭建过程到这里就基本结束了，还有很多细节需要打磨，更多内容请参阅这篇 <a href="https://shevakuilin.com/ghost-guide/">Ghost 博客完善指南</a> 。</p>
+<p>参考链接：<br><a target="_blank" rel="noopener" href="https://halfrost.com/ghost_build/">Ghost 博客搭建日记</a><br><a target="_blank" rel="noopener" href="https://halfrost.com/ghost_update/">Ghost 博客升级指南</a><br><a target="_blank" rel="noopener" href="https://myfirstwon.com/ghost-install/">Ghost 博客系统搭建</a><br><a target="_blank" rel="noopener" href="https://art3mis.info/chao-xiang-xi-centos-7da-jian-ghost-2-6-2bo-ke-jiao-cheng/">CentOS 7下搭建Ghost 2.6.2博客的超详细教程</a><br>[WordPress vs. Ghost – Which One is Better? <a target="_blank" rel="noopener" href="https://wphive.com/reviews/wordpress-vs-ghost-which-one-is-better/">2019]</a><br><a target="_blank" rel="noopener" href="https://ghost.org/docs/api/v2/ghost-cli/">Ghost CLI</a><br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000010158007">基于阿里云ECS的Centos7搭建Ghost</a><br><a target="_blank" rel="noopener" href="http://blog.6le6le.com/?p=140">Centos7.0搭建lamp环境</a><br><a target="_blank" rel="noopener" href="https://ghost.org/docs/install/ubuntu/#create-a-directory">Install Ghost</a></p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/2019/09/17/lc167-twosumii/" title="两数之和 - 输入有序数组">两数之和 - 输入有序数组</a></h2>
+                <p class="excerpt">
+                
+                利用「双指针对撞」、「二分查找」来解决有序数组的搜索问题，难度简单。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-09-17T05:23:02.000Z" class="post-list__meta--date date">2019-09-17</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" rel="tag">二分查找</a>, <a class="-none-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88%E5%AF%B9%E6%92%9E/" rel="tag">双指针对撞</a>
+</span><a class="btn-border-small" href="/2019/09/17/lc167-twosumii/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018/12/29/2018-year-end-summary/" title="2018 年终总结">2018 年终总结</a></h2>
+                <p class="excerpt">
+                
+                2018 年终总结，记录在今年的最后一天工作日。本来只想发个沸点，但是写着写着发现字数太多了… ⇎_⇎
+总感觉是，碌碌无为。
+
+
+关于工作：
+年中的时候，送走了合作一年多的老搭档，一个月后迎来了一位新搭档，嗯，三个月后又送走了她。
+年初开发沸点的时候，遇到性能瓶颈，开发周期也非常紧张，做了个冒险的决
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-12-29T09:41:30.000Z" class="post-list__meta--date date">2018-12-29</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" rel="tag">年终总结</a>
+</span><a class="btn-border-small" href="/2018/12/29/2018-year-end-summary/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
