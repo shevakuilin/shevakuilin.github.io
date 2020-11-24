@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>dispatch_once 为什么可以保证只执行一次？ | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="想尝试写一个面试回答的系列，这是第一篇。">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="dispatch_once 为什么可以保证只执行一次？ | 跃迁引擎">
+    <meta name="twitter:description" content="想尝试写一个面试回答的系列，这是第一篇。">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="dispatch_once 为什么可以保证只执行一次？ | 跃迁引擎">
+    <meta property="og:description" content="想尝试写一个面试回答的系列，这是第一篇。">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/interview-dispatch-once/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2020-05-08T06:12:02.000Z" class="post-list__meta--date date">2020-05-08</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/GCD-dispatch-once-%E9%9D%A2%E8%AF%95/" rel="tag">GCD, dispatch_once, 面试</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">dispatch_once 为什么可以保证只执行一次？</h1>
+  </header>
+
+  <section class="post">
+    <p>想尝试写一个面试回答的系列，这是第一篇。<a id="more"></a></p>
+<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/72908383_p0_master1200.jpg">
+
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>GCD 中的 dispatch_once 在面试中是一个比较高频的出现的考察点，这篇文章以面试的角度来回答，为什么 dispatch_once 可以保证只执行一次。</p>
+<p>这是一道面试真题，面试官提出了一个问题:</p>
+<p><code>dispatch_once</code> 为什么可以保证只执行一次？</p>
+<ol>
+<li><code>dispatch_once_f</code> 实现原理是什么样的？</li>
+<li><code>dispatch_once</code> 中的原子性操作是怎样的？</li>
+<li><code>vval</code> 代表什么？ <code>DISPATCH_ONCE_DONE</code> 又表示什么？</li>
+<li>和 <code>@synchronized</code> 的优劣分析？</li>
+</ol>
+<p>我们以 Q &amp; A 问答的形式来回答面试官的这个问题。</p>
+<h2 id="为什么可以保证只执行一次"><a href="#为什么可以保证只执行一次" class="headerlink" title="为什么可以保证只执行一次"></a>为什么可以保证只执行一次</h2><p>Q: <code>dispatch_once</code>  为什么可以保证只执行一次？</p>
+<p>A: <code>dispatch_once</code>  封装并执行了 <code>dispatch_once_f</code> 函数，其内部使用原子性操作进行标记，以此来配合信号量来决定是否唤醒其他等待的线程，而信号量则用来确保同一时间只有一个线程可以执行回调。</p>
+<h2 id="dispatch-once-f-实现原理是什么样的？"><a href="#dispatch-once-f-实现原理是什么样的？" class="headerlink" title="dispatch_once_f 实现原理是什么样的？"></a>dispatch_once_f 实现原理是什么样的？</h2><p>为了便于理解，先放上 <code>dispatch_once_f</code> 的源码</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Block 数据结构</span></span><br><span class="line"><span class="keyword">struct</span> Block_layout &#123;</span><br><span class="line">    <span class="comment">// 指向表明该block类型的类</span></span><br><span class="line">    <span class="keyword">void</span> *isa;</span><br><span class="line">    <span class="comment">// 按bit位表示一些 block 的附加信息，比如判断 block 类型、判断 block 引用计数、判断 block 是否需要执行辅助函数等</span></span><br><span class="line">    <span class="keyword">int</span> flags;</span><br><span class="line">    <span class="comment">// 保留变量</span></span><br><span class="line">    <span class="keyword">int</span> reserved;</span><br><span class="line">    <span class="comment">// 函数指针，指向具体的 block 实现的函数调用地址</span></span><br><span class="line">    <span class="keyword">void</span> (*invoke)(<span class="keyword">void</span> *, ...);</span><br><span class="line">    <span class="keyword">struct</span> Block_descriptor *descriptor;</span><br><span class="line">    <span class="comment">/* Imported variables. */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 宏定义</span></span><br><span class="line"><span class="comment">// 触发 block 的实现</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _dispatch_Block_invoke(bb) \</span></span><br><span class="line">        ((dispatch_function_t)((<span class="keyword">struct</span> Block_layout *)bb)-&gt;invoke)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 入口方法</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">dispatch_once</span>(<span class="built_in">dispatch_once_t</span> *val, dispatch_block_t block) &#123;</span><br><span class="line">    dispatch_once_f(val, block, _dispatch_Block_invoke(block));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DISPATCH_ONCE_DONE ((struct _dispatch_once_waiter_s *)~0l)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> _dispatch_once_waiter_s &#123;</span><br><span class="line">    <span class="comment">//链表下一个节点</span></span><br><span class="line">    <span class="keyword">volatile</span> <span class="keyword">struct</span> _dispatch_once_waiter_s *<span class="keyword">volatile</span> dow_next;</span><br><span class="line">    <span class="comment">// 信号量</span></span><br><span class="line">    _dispatch_thread_semaphore_t dow_sema;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> dispatch_once_f(<span class="built_in">dispatch_once_t</span> *val, <span class="keyword">void</span> *ctxt, dispatch_function_t func) &#123;</span><br><span class="line">  	<span class="comment">// volatileg 关键字编辑的变量 vval</span></span><br><span class="line">    <span class="comment">// 告诉编译器此指针指向的值随时可能被其他线程改变</span></span><br><span class="line">    <span class="comment">// 从而使得编译器不对此指针进行代码编译优化</span></span><br><span class="line">    <span class="keyword">struct</span> _dispatch_once_waiter_s * <span class="keyword">volatile</span> *vval =</span><br><span class="line">            (<span class="keyword">struct</span> _dispatch_once_waiter_s**)val;</span><br><span class="line">    <span class="keyword">struct</span> _dispatch_once_waiter_s dow = &#123; <span class="literal">NULL</span>, <span class="number">0</span> &#125;;</span><br><span class="line">    <span class="keyword">struct</span> _dispatch_once_waiter_s *tail, *tmp;</span><br><span class="line">  	<span class="comment">// 声明信号变量</span></span><br><span class="line">    _dispatch_thread_semaphore_t sema;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (dispatch_atomic_cmpxchg(vval, <span class="literal">NULL</span>, &amp;dow, acquire)) &#123;</span><br><span class="line">        _dispatch_client_callout(ctxt, func);</span><br><span class="line"></span><br><span class="line">        dispatch_atomic_maximally_synchronizing_barrier();</span><br><span class="line">        <span class="comment">// above assumed to contain release barrier</span></span><br><span class="line">        tmp = dispatch_atomic_xchg(vval, DISPATCH_ONCE_DONE, relaxed);</span><br><span class="line">        tail = &amp;dow;</span><br><span class="line">        <span class="keyword">while</span> (tail != tmp) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!tmp-&gt;dow_next) &#123;</span><br><span class="line">                dispatch_hardware_pause();</span><br><span class="line">            &#125;</span><br><span class="line">            sema = tmp-&gt;dow_sema;</span><br><span class="line">            tmp = (<span class="keyword">struct</span> _dispatch_once_waiter_s*)tmp-&gt;dow_next;</span><br><span class="line">            _dispatch_thread_semaphore_signal(sema);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        dow.dow_sema = _dispatch_get_thread_semaphore();</span><br><span class="line">        tmp = *vval;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            <span class="keyword">if</span> (tmp == DISPATCH_ONCE_DONE) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (dispatch_atomic_cmpxchgvw(vval, tmp, &amp;dow, &amp;tmp, release)) &#123;</span><br><span class="line">                dow.dow_next = tmp;</span><br><span class="line">                _dispatch_thread_semaphore_wait(dow.dow_sema);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        _dispatch_put_thread_semaphore(dow.dow_sema);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Q: <code>dispatch_once_f</code> 实现原理是什么样的？</p>
+<p>A: 其内部定义了多个 <code>_dispatch_once_waiter_s </code> 结构体和一个 <code>_dispatch_thread_semaphore_t </code>  信号量，通过原子性操作 <code>dispatch_atomic_cmpxchg </code>  来判断标记值 <code>vval</code>  是否为 NULL (首次调用 <code>dispatch_once</code> 时，因为外部传入的 <code>dispatch_once_t</code> 变量值为 nil，所以 <code>vval</code> 会为NULL) ，如果为 NULL，则调用 <code>_dispatch_client_callout</code> 来执行回调，然后在回调执行完成之后，将 <code>vval</code> 的值更新成 <code>DISPATCH_ONCE_DONE</code> (表示任务已完成)，最后，对链表的节点进行遍历，并调用 <code>_dispatch_thread_semaphore_signal</code> 来唤醒等待中的信号量。</p>
+<p>因为<code>dispatch_atomic_cmpxchg</code>是原子性操作，所以只有一个线程进入到该逻辑分支中，其他线程会进入另一个分支。</p>
+<p>如果不为 NULL 或其他线程同时也调用 <code>dispatch_once</code> 时，会判断回调是否 <strong>已标记完成</strong> ，如果已完成则跳出循环；否则就是更新链表并调用 <code>_dispatch_thread_semaphore_wait</code> 阻塞线程，等待回调被标记完成后，再唤醒当前等待的线程。</p>
+<h2 id="dispatch-once-中的原子性操作是怎样的？"><a href="#dispatch-once-中的原子性操作是怎样的？" class="headerlink" title="dispatch_once 中的原子性操作是怎样的？"></a>dispatch_once 中的原子性操作是怎样的？</h2><p>Q: <code>dispatch_once</code> 中的原子性操作是怎样的?</p>
+<p>A: 原子性操作是 <code>dispatch_atomic_cmpxchg(vval, NULL, &amp;dow, acquire)</code> ，会将 <code>$dow</code> 赋值给 <code>vval</code> ，如果 <code>vval</code> 的初始值为NULL，返回 <code>YES</code> ,否则返回 <code>NO</code> 。以及<code>dispatch_atomic_xchg(vval, DISPATCH_ONCE_DONE)</code> 将 <code>vval</code> 修改为指定状态 <code>DISPATCH_ONCE_DONE</code>。</p>
+<h2 id="vval-代表什么？-DISPATCH-ONCE-DONE-又表示什么？"><a href="#vval-代表什么？-DISPATCH-ONCE-DONE-又表示什么？" class="headerlink" title="vval 代表什么？ DISPATCH_ONCE_DONE 又表示什么？"></a>vval 代表什么？ DISPATCH_ONCE_DONE 又表示什么？</h2><p>Q: <code>vval</code> 代表什么？ <code>DISPATCH_ONCE_DONE</code> 又表示什么？</p>
+<p>A: <code>vval</code> 可以理解为标记值， <code>DISPATCH_ONCE_DONE</code> 用来标记回调是否已完成，以此来决定是否要唤起信号量来解除线程的阻塞。</p>
+<h2 id="和-synchronized-的优劣分析？"><a href="#和-synchronized-的优劣分析？" class="headerlink" title="和 @synchronized 的优劣分析？"></a>和 @synchronized 的优劣分析？</h2><p>Q: 和 <code>@synchronized</code> 的优劣分析？</p>
+<p>A: 相比之下 <code>dispatch_once</code> 的性能更高，速度更快，并且针对处理器进行了优化。两者分别利用来不同的方式来保证线程安全， <code>@synchronized</code> 采用的是递归互斥锁的方式来保证线程安全，而 <code>dispatch_once</code> 是使用原子操作来代替锁，使用信号量来保证线程同步。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/git-conflict/" title="Git 是如何发现代码冲突的">Git 是如何发现代码冲突的</a></h2>
+                <p class="excerpt">
+                
+                从 Git 原理上解析， Git 是如何在代码合并时发现冲突的。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2020-11-24T07:02:44.000Z" class="post-list__meta--date date">2020-11-24</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Git%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90-Myers%E7%AE%97%E6%B3%95/" rel="tag">Git原理分析, Myers算法</a>
+</span><a class="btn-border-small" href="/git-conflict/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/use-navicat-premium-for-mac/" title="Navicat Premium For Mac 备份与恢复数据库">Navicat Premium For Mac 备份与恢复数据库</a></h2>
+                <p class="excerpt">
+                
+                在 macOS 系统上使用 Navicat Premium 对服务器上的数据库进行本地备份，以及数据库丢失后的恢复。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2020-01-10T06:59:03.000Z" class="post-list__meta--date date">2020-01-10</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/NavicatPremium-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD-MySQL-MariaDB/" rel="tag">NavicatPremium, 数据库备份, MySQL, MariaDB</a>
+</span><a class="btn-border-small" href="/use-navicat-premium-for-mac/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>

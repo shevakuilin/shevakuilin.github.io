@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>Fastlane 全自动化测试分发的搭建，一键打包上传至 Pgyer/Bugly | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="项目每次进入上线前期的测试阶段，都要反复地利用 Xcode 打包，上传测试发布平台，再分发给测试人员，无论从哪个角度看，这都是一个毫无技术含量并且及其耗时的事情，那么能不能通过自动化部署来解放这部分的时间消耗呢？">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Fastlane 全自动化测试分发的搭建，一键打包上传至 Pgyer/Bugly | 跃迁引擎">
+    <meta name="twitter:description" content="项目每次进入上线前期的测试阶段，都要反复地利用 Xcode 打包，上传测试发布平台，再分发给测试人员，无论从哪个角度看，这都是一个毫无技术含量并且及其耗时的事情，那么能不能通过自动化部署来解放这部分的时间消耗呢？">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Fastlane 全自动化测试分发的搭建，一键打包上传至 Pgyer/Bugly | 跃迁引擎">
+    <meta property="og:description" content="项目每次进入上线前期的测试阶段，都要反复地利用 Xcode 打包，上传测试发布平台，再分发给测试人员，无论从哪个角度看，这都是一个毫无技术含量并且及其耗时的事情，那么能不能通过自动化部署来解放这部分的时间消耗呢？">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/fastlane-build/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-08-17T06:14:48.000Z" class="post-list__meta--date date">2018-08-17</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Fastlane-%E8%87%AA%E5%8A%A8%E5%8C%96%E5%88%86%E5%8F%91/" rel="tag">Fastlane, 自动化分发</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">Fastlane 全自动化测试分发的搭建，一键打包上传至 Pgyer/Bugly</h1>
+  </header>
+
+  <section class="post">
+    <p>项目每次进入上线前期的测试阶段，都要反复地利用 Xcode 打包，上传测试发布平台，再分发给测试人员，无论从哪个角度看，这都是一个毫无技术含量并且及其耗时的事情，那么能不能通过自动化部署来解放这部分的时间消耗呢？<a id="more"></a></p>
+<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/73718366_p0_master1200.jpg">
+
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>无论如何，测试打包对于 iOS 开发者而言都是件繁琐枯燥的事情，项目规模小还好，几分钟不过是去喝杯咖啡的时间。但是对于稍微大一点的项目而言，少则十几分钟，多则半小时，在这么长的时间里，你得一直等待Xcode完成 Archive 任务，在此期间还需要你点击几个选项，既费时，又费心。尤其是遇到个别 UI 测试上的小问题，一个像素的调整、一处文案的修改，反复的执行打包操作，脾气再好的工程师都会感到一阵抓狂。</p>
+<p>自从去年第一次使用过 Fastlane 之后，打包这项繁琐的工作，就再也不是一项负担。我只需要在 iTerm 里敲一行命令，就完成了从打包到测试平台发布整套流程，比手动发布时间更快，并且这个过程不会影响你当前的任何操作，你仍然可以继续使用 Xcode，或者做任何你想做的事。</p>
+<p>本文以目前主流的两大分发平台 <a href="%5Bhttps://www.pgyer.com%5D(https://www.pgyer.com/)">Pgyer ( 蒲公英 )</a> 和 <a href="%5Bhttps://bugly.qq.com%5D(https://bugly.qq.com/)">Bugly ( 腾讯 Bugly )</a> 为例，从头搭建一个全自动化分发环境，以及 Fastlane 脚本的示范编写。</p>
+<p><strong>本文以下内容的运行环境（2019-12-19 更新）：</strong></p>
+<ul>
+<li><p>Xcode: 11.1</p>
+</li>
+<li><p>macOS: Catalina 10.15.1    </p>
+</li>
+<li><p>Fastlane: 2.137.0</p>
+</li>
+<li><p>Ruby: 2.6.3</p>
+</li>
+</ul>
+<p><strong>需要注意，如果你是第一次使用 Fastlane ，macOS 的系统版本最好保持在 10.15 以上，因为低版本系统所自带的 Ruby 版本过低，在安装过程中会出现问题，如果你不想升级 macOS 版本，必须使 Ruby 保持在 2.4.0 以上</strong></p>
+<h2 id="Fastlane"><a href="#Fastlane" class="headerlink" title="Fastlane"></a><a target="_blank" rel="noopener" href="https://fastlane.tools/">Fastlane</a></h2><img src="https://github.com/fastlane/fastlane/raw/master/fastlane/assets/fastlane_text.png">
+
+<p>Fastlane 是 Google 的大神 <a target="_blank" rel="noopener" href="https://github.com/KrauseFx">Felix Krause</a> 基于 Ruby 写的一套自动化工具集，能够帮助iOS 和 Android 开发者实现自动化部署，持续集成等工作。Fastlane 的组件包括：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>deliver</td>
+<td>自动上传截图，APP 的元数据，二进制( ipa )文件到 iTunes Connect</td>
+</tr>
+<tr>
+<td>snapshot</td>
+<td>自动截图（基于 Xcode 的 UI test）</td>
+</tr>
+<tr>
+<td>frameit</td>
+<td>可以把截图自动加上边框</td>
+</tr>
+<tr>
+<td>pem</td>
+<td>自动生成、更新推送配置文件</td>
+</tr>
+<tr>
+<td>sigh</td>
+<td>用来创建、更新、下载、修复 Provisioning Profile 的工具</td>
+</tr>
+<tr>
+<td>produce</td>
+<td>自动在 iTunes Connect 或 Apple Developer Center 中建立你的产品</td>
+</tr>
+<tr>
+<td>cert</td>
+<td>自动创建管理 iOS 代码签名证书</td>
+</tr>
+<tr>
+<td>pilot</td>
+<td>管理 TestFlight 的测试用户，上传二进制文件</td>
+</tr>
+<tr>
+<td>boarding</td>
+<td>建立一个添加测试用户界面，发给测试者，可自行添加邮件地址，并同步到 iTunes Connect</td>
+</tr>
+<tr>
+<td>gym</td>
+<td>自动化编译打包工具</td>
+</tr>
+<tr>
+<td>match</td>
+<td>证书和配置文件管理工具</td>
+</tr>
+<tr>
+<td>scan</td>
+<td>自动运行测试工具，并生成 HTML 报告</td>
+</tr>
+</tbody></table>
+<h2 id="安装-amp-初始化"><a href="#安装-amp-初始化" class="headerlink" title="安装 &amp; 初始化"></a>安装 &amp; 初始化</h2><p>由于 Fastlane 对 Ruby 的环境有版本要求，如果本机的 Ruby 版本在 <code>2.4.0</code> 以下，建议升级更新 Ruby。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查看本机 Ruby 版本</span><br><span class="line">$ <span class="keyword">ruby</span> --v</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="更新-Ruby"><a href="#更新-Ruby" class="headerlink" title="更新 Ruby"></a>更新 Ruby</h3><p>你可以使用 <a target="_blank" rel="noopener" href="https://rvm.io/">RVM</a> 或者 <a target="_blank" rel="noopener" href="https://brew.sh/">Homebrew</a> 来进行 Ruby 的升级更新。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># RVM</span><br><span class="line"></span><br><span class="line"># 安装 RVM</span><br><span class="line">$ RVMcurl -L <span class="built_in">get</span>.rvm.io | bash -s stable</span><br><span class="line"></span><br><span class="line"># 查看当前所有可安装的 Ruby 版本</span><br><span class="line">$ rvm <span class="keyword">list</span> known</span><br><span class="line"></span><br><span class="line"># 选择其中一个版本进行安装</span><br><span class="line">$ rvm install <span class="keyword">ruby</span>-版本号</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Homebrew</span><br><span class="line"></span><br><span class="line"># 安装 Homebrew (如果下面的安装链接失效，可以直接访问官网查看 http<span class="variable">s:</span>//brew.<span class="keyword">sh</span>/)</span><br><span class="line">$ /usr/bin/<span class="keyword">ruby</span> -<span class="keyword">e</span> <span class="string">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span></span><br><span class="line"></span><br><span class="line"># 升级 Ruby 的最新版本</span><br><span class="line">$ brew upgrade <span class="keyword">ruby</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装-Fastlane"><a href="#安装-Fastlane" class="headerlink" title="安装 Fastlane"></a>安装 Fastlane</h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 使用 gem 进行安装</span><br><span class="line">$ sudo gem install -n /usr/local/bin fastlane</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-Fastlane"><a href="#初始化-Fastlane" class="headerlink" title="初始化 Fastlane"></a>初始化 Fastlane</h3><p>cd 到项目目录，执行初始化命令：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ fastlane init</span><br></pre></td></tr></table></figure>
+
+<p>首先会询问你使用 Fastlane 的目的，这里我们由于只需要搭建自动分发，所以，选择 <code>4</code>：</p>
+<p><img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/3AF94A17-BCF1-453D-8228-E4FE9062EB70.png"></p>
+<p>然后根据提示进行操作即可：</p>
+<p><img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/D2D8F13A-2417-44C8-B4DD-6872F32310EA.png"></p>
+<p>初始化完成后提示如下：</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/FF17F5D2-2750-4A32-8D14-A5D1E9CAA323.png" width="800" height ="768" />
+
+<p>安装完成后，你的工程目录下会出现一个名为 <code>fastlane</code> 的文件夹，一个名为 <code>Gemfile</code> 和 <code>Gemfile.lock</code> 的文件。进入 <code>fastlane</code> 文件夹，打开 <code>Appfile</code>，填入你的 <code>应用标识名</code> 和 <code>开发者账号名</code></p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/FF17F5D2-2750-4A32-8D14-A5D1E9CAA323.png" width="800" height ="472" />
+
+<h2 id="Fastfile-脚本的编写"><a href="#Fastfile-脚本的编写" class="headerlink" title="Fastfile 脚本的编写"></a>Fastfile 脚本的编写</h2><p>初始化完成后，Fastlane 就可以投入使用了。Fastlane 整个自动化的核心就是 fastfile 这个脚本执行文件和控制自动化链条的 Action，所以，如果想要完成自动化测试发布，就需要对这个文件进行自定义编写，并处理其相应的 Action。</p>
+<p>我们先将自动化测试发布的步骤，按照一个个 Action 进行独立拆分，最后在合并成为完整的一键自动化流程。</p>
+<p>我们想要达到的效果是，在终端执行一行 lane 指令后，可以自由选择是否对上传到 Pgyer / Bugly 的测试包展示内容进行自定义修改，如果需要，则允许使用者在终端中输入自定义内容并保存到最终的上传参数中，不需要则直接自动执行打包 + 上传的操作，每次打包完成后，对应 Target 的 Build 版本号自动加一，上传完成后，自动打开浏览器并进入对应平台的测试包分发页面。</p>
+<p>基于这些诉求，我们拆分后的步骤大致如下：</p>
+<ul>
+<li><p>lane 指令的配置</p>
+</li>
+<li><p>gym Action 的自动打包脚本编写</p>
+</li>
+<li><p>increment_build_number 累加 Build 版本号</p>
+</li>
+<li><p>自动上传 ipa 到 Pgyer / Bugly 的脚本编写</p>
+</li>
+<li><p>手动设置参数任务的编写，用于自定义 Pgyer / Bugly 上传参数</p>
+</li>
+<li><p>浏览器页面打开脚本编写</p>
+</li>
+<li><p>合并编写好的脚本到统一的lane指令</p>
+</li>
+</ul>
+<h4 id="lane指令的配置"><a href="#lane指令的配置" class="headerlink" title="lane指令的配置"></a>lane指令的配置</h4><p>打开 Fastlane 文件夹下的 fastfile，注意，一定不能直接使用文本编辑器打开，会引起自动引号等报错，这里推荐使用 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/">Visual Studio Code</a> 选择 Ruby 文本样式来打开编写。</p>
+<p>lane指令的配置非常简单，直接用以下内容覆盖 fastfile 默认的模板：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置平台参数</span></span><br><span class="line">default_platform(<span class="symbol">:ios</span>)</span><br><span class="line">platform <span class="symbol">:ios</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># lane执行指令，使用时直接在终端输入fastlane ad，这里的 ad 可以换成你喜欢的任何名字</span></span><br><span class="line">lane <span class="symbol">:ad</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="自动化打包"><a href="#自动化打包" class="headerlink" title="自动化打包"></a>自动化打包</h4><p>我们使用 Fastlane 提供的 gym, 这个专门的打包 Action 来对脚本进行编写：</p>
+<p>在上一步设置好的lane指令作用域内（也就是lane :ad do - end 中间这部分区域），输入如下内容：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定scheme, 可通过Xcode-&gt;Product-&gt;Scheme-&gt;ManageSchemes查看</span></span><br><span class="line">scheme = <span class="string">&quot;Your project scheme&quot;</span></span><br><span class="line"><span class="comment"># 当前时间字符串，用于输出文件夹的后缀，遵循 Xcode 的输出规则</span></span><br><span class="line">currentTime = Time.new.strftime(<span class="string">&quot;%Y-%m-%d %H-%M-%S&quot;</span>)</span><br><span class="line"><span class="comment"># 指定输出文件夹路径, 将ipa_name换成你想要的ipa名称</span></span><br><span class="line">output_path = <span class="string">&quot;../ipa_name <span class="subst">#&#123;currentTime&#125;</span>&quot;</span></span><br><span class="line"><span class="comment"># 指定输出ipa名称</span></span><br><span class="line">ipa_name = <span class="string">&quot;Your ipa name&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自动打ad_hoc测试包</span></span><br><span class="line">gym(</span><br><span class="line">  <span class="comment"># 指定 workspace, 这个参数很重要，否则你还需要手动选择一次打包对象</span></span><br><span class="line">  <span class="symbol">workspace:</span><span class="string">&quot;xxxx.xcworkspace&quot;</span>,</span><br><span class="line">  <span class="comment"># 指定scheme</span></span><br><span class="line">  <span class="symbol">scheme:</span><span class="string">&quot;<span class="subst">#&#123;scheme&#125;</span>&quot;</span>,</span><br><span class="line">  <span class="comment"># 打包后的 ipa 名称</span></span><br><span class="line">  <span class="symbol">output_name:</span><span class="string">&quot;<span class="subst">#&#123;ipa_name&#125;</span>&quot;</span>,</span><br><span class="line">  <span class="comment"># 是否在运行时自动清理上一次的执行</span></span><br><span class="line">  <span class="symbol">clean:</span><span class="literal">true</span>,</span><br><span class="line">  <span class="comment"># 指定要打包的配置名</span></span><br><span class="line">  <span class="symbol">configuration:</span><span class="string">&quot;Release&quot;</span>,</span><br><span class="line">  <span class="comment"># 指定打包所使用的输出方式，目前支持 app-store, package, ad-hoc, enterprise, development, 和 developer-id，即 xcodebuild 的 method 参数</span></span><br><span class="line">  <span class="symbol">export_method:</span><span class="string">&quot;ad-hoc&quot;</span>,</span><br><span class="line">  <span class="comment"># 最后输出的文件夹路径</span></span><br><span class="line">  <span class="symbol">output_directory:</span><span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>写好之后，你的 <code>fastfile</code> 应该是这个样子:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">default_platform(<span class="symbol">:ios</span>)</span><br><span class="line">platform <span class="symbol">:ios</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一键打包上传到 Pgyer/Bugly</span></span><br><span class="line">lane <span class="symbol">:ad</span> <span class="keyword">do</span></span><br><span class="line">  scheme = <span class="string">&quot;Your project scheme&quot;</span></span><br><span class="line">  currentTime = Time.new.strftime(<span class="string">&quot;%Y-%m-%d %H-%M-%S&quot;</span>)</span><br><span class="line">  output_path = <span class="string">&quot;../ipa_name <span class="subst">#&#123;currentTime&#125;</span>&quot;</span></span><br><span class="line">  ipa_name = <span class="string">&quot;Your ipa name&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 自动打ad_hoc测试包</span></span><br><span class="line">  gym(</span><br><span class="line">    <span class="symbol">workspace:</span><span class="string">&quot;xxxx.xcworkspace&quot;</span>,</span><br><span class="line">    <span class="symbol">scheme:</span><span class="string">&quot;<span class="subst">#&#123;scheme&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">output_name:</span><span class="string">&quot;<span class="subst">#&#123;ipa_name&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">clean:</span><span class="literal">true</span>,</span><br><span class="line">    <span class="symbol">configuration:</span><span class="string">&quot;Release&quot;</span>,</span><br><span class="line">    <span class="symbol">export_method:</span><span class="string">&quot;ad-hoc&quot;</span>,</span><br><span class="line">    <span class="symbol">output_directory:</span><span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>&quot;</span>,</span><br><span class="line">  )</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>到这里，一个基本的 gym Action 自动打包脚本就编写完毕了。但是仅仅依靠上面这些内容还不足以完成我们想要的打包全自动化流程，现在，我们在执行 <code>fastlane ad</code> 打包之前，还需要手动对每个 Target 中的 Build 版本号进行更改，这非常麻烦，而且如果在某次打包之前忘记了更改，还得打断任务重新执行。</p>
+<p>不过不用担心，Fastlane 早已替我们考虑周到。我们只需要在 gym Action 执行之前，也就是在它的前一行加上一行代码即可：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">default_platform(<span class="symbol">:ios</span>)</span><br><span class="line">platform <span class="symbol">:ios</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一键打包上传到 Pgyer/Bugly</span></span><br><span class="line">lane <span class="symbol">:ad</span> <span class="keyword">do</span></span><br><span class="line">  scheme = <span class="string">&quot;Your project scheme&quot;</span></span><br><span class="line">  currentTime = Time.new.strftime(<span class="string">&quot;%Y-%m-%d %H-%M-%S&quot;</span>)</span><br><span class="line">  output_path = <span class="string">&quot;../ipa_name <span class="subst">#&#123;currentTime&#125;</span>&quot;</span></span><br><span class="line">  ipa_name = <span class="string">&quot;Your ipa name&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Build 自动增加, 会自动的再当前 build version 的基础上 +1, 需要对工程进行额外配置，下文会说明</span></span><br><span class="line">  increment_build_number</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 自动打 ad_hoc 测试包</span></span><br><span class="line">  gym(</span><br><span class="line">    <span class="symbol">workspace:</span><span class="string">&quot;xxxx.xcworkspace&quot;</span>,</span><br><span class="line">    <span class="symbol">scheme:</span><span class="string">&quot;<span class="subst">#&#123;scheme&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">output_name:</span><span class="string">&quot;<span class="subst">#&#123;ipa_name&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">clean:</span><span class="literal">true</span>,</span><br><span class="line">    <span class="symbol">configuration:</span><span class="string">&quot;Release&quot;</span>,</span><br><span class="line">    <span class="symbol">export_method:</span><span class="string">&quot;ad-hoc&quot;</span>,</span><br><span class="line">    <span class="symbol">output_directory:</span><span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>&quot;</span>,</span><br><span class="line">  )</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Xcode-工程配置"><a href="#Xcode-工程配置" class="headerlink" title="Xcode 工程配置"></a>Xcode 工程配置</h4><p><a target="_blank" rel="noopener" href="https://docs.fastlane.tools/actions/increment_build_number/">increment_build_number</a> 是 Fastlane 自带的脚本命令，作用是在当前 build version 的基础上自动 +1，省去了每次打测试包都要手动修改 Build 的工作。</p>
+<p>其原理是代替我们调用了 Xcode 自带的自动增加版本号的命令行工具 <code>agvtool</code>。有对 <code>agvtool</code> 感兴趣的可以了解一下<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004678950">具体如何使用</a>。</p>
+<p>在 fastfile 脚本文件中添加了 increment_build_number 之后，还需要对 Xcode 进行额外的工程配置：</p>
+<p>注意：如果有多个 Target，需要对每个Target 都进行下面的设置</p>
+<h3 id="设置-Current-Project-Version-amp-Versioning-System"><a href="#设置-Current-Project-Version-amp-Versioning-System" class="headerlink" title="设置 Current Project Version &amp; Versioning System"></a>设置 Current Project Version &amp; Versioning System</h3><ul>
+<li><p>TARGETS -&gt; Build Settings</p>
+</li>
+<li><p>Current Project Version 填写当前版本号，最好从1开始</p>
+</li>
+<li><p>Versioning System 选择 Apple Generic ( Xcode 11 以上版本忽略 )</p>
+</li>
+</ul>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/ABD24EC4-D621-4EFC-B7A6-DC3949ABFB11.png" width="800" height ="211" />
+
+<h3 id="设置-Bundle-version-amp-Bundle-versions-string-short"><a href="#设置-Bundle-version-amp-Bundle-versions-string-short" class="headerlink" title="设置 Bundle version &amp; Bundle versions string, short"></a>设置 Bundle version &amp; Bundle versions string, short</h3><ul>
+<li><p>TARGETS -&gt; Info</p>
+</li>
+<li><p>Bundle version 和 第1步设置的 Current Project Version 保持一致即可，可以直接使用 <code>$(CURRENT_PROJECT_VERSION)</code></p>
+</li>
+<li><p>Bundle versions string, short 是当前应用的 Version 版本号，如果需要自增 Version 再设置 <code>$(MARKETING_VERSION)</code>，其对应的脚本参数是 <a target="_blank" rel="noopener" href="https://docs.fastlane.tools/actions/increment_version_number/">increment_version_number</a>，仅自增 Build 无需设置</p>
+</li>
+</ul>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/8DE8A5BF-92CC-422A-B9F9-112AF2005FBF.png" width="800" height ="353" />
+
+
+
+<h2 id="将-ipa-包自动上传至-Pgyer-Bugly"><a href="#将-ipa-包自动上传至-Pgyer-Bugly" class="headerlink" title="将 ipa 包自动上传至 Pgyer/Bugly"></a>将 ipa 包自动上传至 Pgyer/Bugly</h2><p>由于 Pgyer 和 Bugly 采用的是两套不同的上传策略，所以我们需要分开编写两套上传脚本</p>
+<h3 id="Pgyer"><a href="#Pgyer" class="headerlink" title="Pgyer"></a>Pgyer</h3><p>安装蒲公英的 Fastlane 插件</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ fastlane add_plugin pgyer</span><br></pre></td></tr></table></figure>
+
+<p>期间会询问一次，选择 <code>y</code> 即可，出现下面提示表示安装成功</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/136DA6C3-A3DF-4549-B545-43567B15318C.png" width="800" height ="196" />
+
+<p>安装成功后，在 gym 下面加入蒲公英插件的配置信息：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 上传到蒲公英</span></span><br><span class="line">  pgyer(</span><br><span class="line">    <span class="comment"># 蒲公英 API Key</span></span><br><span class="line">    <span class="symbol">api_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 蒲公英 User Key</span></span><br><span class="line">    <span class="symbol">user_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 更新描述 (可选)</span></span><br><span class="line">    <span class="symbol">update_description:</span> <span class="string">&quot;xxx&quot;</span></span><br><span class="line">  )</span><br></pre></td></tr></table></figure>
+
+<p><code>api_key</code> 和 <code>user_key</code>，在自己账号下的 <code>应用管理</code> - <code>App概述</code> - <code>API</code> 中可以找到，替换到对应的位置即可。蒲公英插件不支持修改测试包名，仅支持更新描述的修改。</p>
+<p>此时，你的 fastfile 应该是这样：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">default_platform(<span class="symbol">:ios</span>)</span><br><span class="line">platform <span class="symbol">:ios</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一键打包上传到 Pgyer</span></span><br><span class="line">lane <span class="symbol">:ad</span> <span class="keyword">do</span></span><br><span class="line">  scheme = <span class="string">&quot;Your project scheme&quot;</span></span><br><span class="line">  currentTime = Time.new.strftime(<span class="string">&quot;%Y-%m-%d %H-%M-%S&quot;</span>)</span><br><span class="line">  output_path = <span class="string">&quot;../ipa_name <span class="subst">#&#123;currentTime&#125;</span>&quot;</span></span><br><span class="line">  ipa_name = <span class="string">&quot;Your ipa name&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Build 自动增加, 会自动的再当前 build version 的基础上 +1, 需要对工程进行额外配置，下文会说明</span></span><br><span class="line">  increment_build_number</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 自动打 ad_hoc 测试包</span></span><br><span class="line">  gym(</span><br><span class="line">    <span class="symbol">workspace:</span><span class="string">&quot;xxxx.xcworkspace&quot;</span>,</span><br><span class="line">    <span class="symbol">scheme:</span><span class="string">&quot;<span class="subst">#&#123;scheme&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">output_name:</span><span class="string">&quot;<span class="subst">#&#123;ipa_name&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">clean:</span><span class="literal">true</span>,</span><br><span class="line">    <span class="symbol">configuration:</span><span class="string">&quot;Release&quot;</span>,</span><br><span class="line">    <span class="symbol">export_method:</span><span class="string">&quot;ad-hoc&quot;</span>,</span><br><span class="line">    <span class="symbol">output_directory:</span><span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>&quot;</span>,</span><br><span class="line">  )</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 上传到蒲公英</span></span><br><span class="line">  pgyer(</span><br><span class="line">    <span class="comment"># 蒲公英 API Key</span></span><br><span class="line">    <span class="symbol">api_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 蒲公英 User Key</span></span><br><span class="line">    <span class="symbol">user_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 更新描述 (可选)</span></span><br><span class="line">    <span class="symbol">update_description:</span> <span class="string">&quot;xxx&quot;</span></span><br><span class="line">  )</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Bugly"><a href="#Bugly" class="headerlink" title="Bugly"></a>Bugly</h3><p>Bugly 官方为我们提供了两个 Fastlane 的扩展插件：上传文件和更新文件，由于目前腾讯已经关闭了 Bugly 官网的文档入口，可以直接查看他们的 Github repo 的<a target="_blank" rel="noopener" href="https://github.com/BuglyDevTeam/Bugly-FastlanePlugin">使用文档</a></p>
+<p>首先点击下载插件，下载完成后，本地会多出两个 ruby 文件，更新文件插件<code>update_app_to_bugly</code> 和 上传文件插件<code>upload_app_to_bugly</code>。然后将下载好的上传文件插件的文件名 <code>upload_app_to_bugly</code> 复制下来，在下一步中会用到。</p>
+<p>这时，就需要我们开始编写 upload_app_to_bugly Action 了。</p>
+<p>首先，自定义一个 Action，在 cd 到工程根目录（有 fastlane 文件夹的那个）终端中执行如下命令</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ fastlane new_action</span><br></pre></td></tr></table></figure>
+
+<p>输入完之后，Fastlane 会让你输入自定义的 Action 名字，直接粘贴刚才复制好的名字即可。</p>
+<p>随后，Fastlane 就会在 fastelane 文件目录下创建一个名为 actions 的文件夹，而文件夹下也会默认有一个名为 <code>upload_app_to_bugly.rb</code> 的 ruby 文件。然后我们把刚才下载好的同名文件直接进行替换就可以了。</p>
+<p>upload_app_to_bugly Action 创建成功后，我们需要回到 fastfile 里面对其 Action 内容进行编写，因为 fastfile 的 Action 执行优先级是自上而下的，所以我们需要将 upload_app_to_bugly Action 的内容写在 gym Action 下面：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定输出 ipa 文件路径 </span></span><br><span class="line">ipa_path = <span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>/<span class="subst">#&#123;ipa_name&#125;</span>.ipa&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#上传 Bugly</span></span><br><span class="line">upload_app_to_bugly(</span><br><span class="line">  <span class="comment"># ipa 的文件绝对路径</span></span><br><span class="line">  <span class="symbol">file_path:</span><span class="string">&quot;<span class="subst">#&#123;ipa_path&#125;</span>&quot;</span>,</span><br><span class="line">  <span class="comment"># 应用编号, 用于识别产品的唯一 ID</span></span><br><span class="line">  <span class="symbol">app_key:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">  <span class="comment"># 用于识别 API 调用者身份, 创建应用时自动获得</span></span><br><span class="line">  <span class="symbol">app_id:</span><span class="string">&quot;xxxx&quot;</span>,</span><br><span class="line">  <span class="comment"># 应用平台标识, 用于区分产品平台 android:1 iOS:2</span></span><br><span class="line">  <span class="symbol">pid:</span><span class="string">&quot;2&quot;</span>,</span><br><span class="line">  <span class="comment"># 版本名称, 如有中文必须 UTF-8 格式</span></span><br><span class="line">  <span class="symbol">title:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">  <span class="comment"># 版本介绍, 如有中文必须 UTF-8 格式</span></span><br><span class="line">  <span class="symbol">desc:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">  <span class="comment"># 公开范围（1:所有人, 2:密码, 4:管理员, 5:QQ群, 6:白名单, 默认所有人）</span></span><br><span class="line">  <span class="symbol">secret:</span><span class="string">&quot;1&quot;</span>,</span><br><span class="line">  <span class="comment"># 如果公开范围是&quot;QQ 群&quot;填写 QQ 群号, 如果是&quot;白名单&quot;填写QQ号码, 并使用; 切分开, 5000个以内. 其他场景无需设置</span></span><br><span class="line">  <span class="symbol">users:</span><span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="comment"># 如果公开范围是&quot;密码&quot;需设置</span></span><br><span class="line">  <span class="symbol">password:</span><span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="comment"># 下载上限（大于0, 默认1000）</span></span><br><span class="line">  <span class="symbol">download_limit:</span><span class="number">999</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这里只列举了必填参数和部分可选参数，腾讯在去年将插件的API文档入口也一并从 Bugly 移除了，如果你想了解更多相关参数的含义，可以在我前搭档写的<a target="_blank" rel="noopener" href="https://juejin.im/post/58c237cd44d9040068e80be1">这篇文章</a>里找到其文档的网页快照。</p>
+<p>此时你的 fastfile 应该是这个样子：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">default_platform(<span class="symbol">:ios</span>)</span><br><span class="line">platform <span class="symbol">:ios</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一键打包上传到 Bugly</span></span><br><span class="line">lane <span class="symbol">:ad</span> <span class="keyword">do</span></span><br><span class="line">  scheme = <span class="string">&quot;Your project scheme&quot;</span></span><br><span class="line">  currentTime = Time.new.strftime(<span class="string">&quot;%Y-%m-%d %H-%M-%S&quot;</span>)</span><br><span class="line">  output_path = <span class="string">&quot;../ipa_name <span class="subst">#&#123;currentTime&#125;</span>&quot;</span></span><br><span class="line">  ipa_name = <span class="string">&quot;Your ipa name&quot;</span></span><br><span class="line">  ipa_path = <span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>/<span class="subst">#&#123;ipa_name&#125;</span>.ipa&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Build 自动增加</span></span><br><span class="line">  increment_build_number</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 自动打 ad_hoc 测试包</span></span><br><span class="line">  gym(</span><br><span class="line">    <span class="symbol">workspace:</span><span class="string">&quot;xxxx.xcworkspace&quot;</span>,</span><br><span class="line">    <span class="symbol">scheme:</span><span class="string">&quot;<span class="subst">#&#123;scheme&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">output_name:</span><span class="string">&quot;<span class="subst">#&#123;ipa_name&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">clean:</span><span class="literal">true</span>,</span><br><span class="line">    <span class="symbol">configuration:</span><span class="string">&quot;Release&quot;</span>,</span><br><span class="line">    <span class="symbol">export_method:</span><span class="string">&quot;ad-hoc&quot;</span>,</span><br><span class="line">    <span class="symbol">output_directory:</span><span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>&quot;</span>,</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 上传 Bugly</span></span><br><span class="line">  upload_app_to_bugly(</span><br><span class="line">    <span class="symbol">file_path:</span><span class="string">&quot;<span class="subst">#&#123;ipa_path&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">app_key:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">app_id:</span><span class="string">&quot;xxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">pid:</span><span class="string">&quot;2&quot;</span>,</span><br><span class="line">    <span class="symbol">title:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">desc:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">secret:</span><span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="symbol">users:</span><span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="symbol">password:</span><span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="symbol">download_limit:</span><span class="number">999</span></span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="通过控制脚本管理上传参数"><a href="#通过控制脚本管理上传参数" class="headerlink" title="通过控制脚本管理上传参数"></a>通过控制脚本管理上传参数</h3><p>每次发布测试包后，都需要在 Pgyer/Bugly 测试分发平台上手动修改，测试包名称和本次更新内容，也就是上一步中，<code>pgyer</code> Action 中的 update_description 参数 和 <code>upload_app_to_bugly</code> Action 中的 title、desc 参数。</p>
+<p>如果你完全没有修改的需求，这个 fastfile 实际就可以直接投入使用了。但是我们为了更好的把控测试分发和规范流程，还是需要在每次测试包更新后，对所更新的内容进行一个简要的说明。</p>
+<p>下面我们就开始第4个步骤，对手动设置参数任务的编写，在 gym Action 之前，添加 Ruby 代码：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置测试包默认title</span></span><br><span class="line">version_title = <span class="string">&quot;xxx&quot;</span></span><br><span class="line"><span class="comment"># 设置测试包默认desc</span></span><br><span class="line">version_desc = <span class="string">&quot;xxxxxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment"># 选择是否手动设置测试包的标题和描述</span></span><br><span class="line">  puts <span class="string">&quot;Do you want to manually set the title of the test package &amp; description? (y/n)&quot;</span> </span><br><span class="line">  res = STDIN.gets.chomp</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> res != <span class="string">&quot;n&quot;</span></span><br><span class="line">      <span class="comment"># 用于 Bugly 显示的测试包标题 (仅使用蒲公英的话，设置标题的部分可以屏蔽掉)</span></span><br><span class="line">      print Input <span class="symbol">title:</span>  <span class="string">&quot;</span></span><br><span class="line"><span class="string">      version_title = STDIN.gets.chomp</span></span><br><span class="line"><span class="string">      puts &quot;</span>---Title set successfully!---<span class="string">&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      # 用于  Pgyer/Bugly 显示的测试包更新描述</span></span><br><span class="line"><span class="string">      print &quot;</span>Input <span class="symbol">description:</span>  <span class="string">&quot;</span></span><br><span class="line"><span class="string">      version_desc = STDIN.gets.chomp</span></span><br><span class="line"><span class="string">      puts &quot;</span>---Description set successfully!---<span class="string">&quot;</span></span><br><span class="line"><span class="string">  end</span></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码是一段选择任务，会在自动打包执行之前进行一次询问，是否需要手动设置测试包的标题和描述，如果选择 <code>y</code>，则会要求使用者输入测试包的标题和更新描述，如果选择 <code>n</code> 则自动跳过这一步，直接开始打包。</p>
+<p>这就避免了在分发新的测试包的时候，还需要修改 <code>update_description</code>Action  或 <code>upload_app_to_bugly</code> Action 脚本参数 或者 打开平台网页 -&gt; 点击内测分发 -&gt; 选择上传的测试包 -&gt; 点击修改，这样繁琐的步骤。</p>
+<p>最后，你的 fastfile 应该是这个样子:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">default_platform(<span class="symbol">:ios</span>)</span><br><span class="line">platform <span class="symbol">:ios</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一键打包上传到 Pgyer/Bugly</span></span><br><span class="line">lane <span class="symbol">:ad</span> <span class="keyword">do</span></span><br><span class="line">  scheme = <span class="string">&quot;Your project scheme&quot;</span></span><br><span class="line">  currentTime = Time.new.strftime(<span class="string">&quot;%Y-%m-%d %H-%M-%S&quot;</span>)</span><br><span class="line">  output_path = <span class="string">&quot;../ipa_name <span class="subst">#&#123;currentTime&#125;</span>&quot;</span></span><br><span class="line">  ipa_name = <span class="string">&quot;Your ipa name&quot;</span></span><br><span class="line">  ipa_path = <span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>/<span class="subst">#&#123;ipa_name&#125;</span>.ipa&quot;</span></span><br><span class="line">  version_title = <span class="string">&quot;xxx&quot;</span></span><br><span class="line">  version_desc = <span class="string">&quot;xxxxxx&quot;</span></span><br><span class="line">	</span><br><span class="line">  <span class="keyword">begin</span></span><br><span class="line">    <span class="comment"># 选择是否手动设置测试包的标题和描述</span></span><br><span class="line">    puts <span class="string">&quot;Do you want to manually set the title of the test package &amp; description? (y/n)&quot;</span> </span><br><span class="line">    res = STDIN.gets.chomp</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> res != <span class="string">&quot;n&quot;</span></span><br><span class="line">	<span class="comment"># 用于 Bugly 显示的测试包标题</span></span><br><span class="line">	print <span class="string">&quot;Input title:  &quot;</span></span><br><span class="line">	version_title = STDIN.gets.chomp</span><br><span class="line">	puts <span class="string">&quot;---Title set successfully!---&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 用于 Pgyer/Bugly 显示的测试包更新描述</span></span><br><span class="line">	print <span class="string">&quot;Input description:  &quot;</span></span><br><span class="line">	version_desc = STDIN.gets.chomp</span><br><span class="line">	puts <span class="string">&quot;---Description set successfully!---&quot;</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">end</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment">#build自动增加</span></span><br><span class="line">  increment_build_number</span><br><span class="line">	</span><br><span class="line">  <span class="comment">#自动打 ad_hoc 测试包</span></span><br><span class="line">  gym(</span><br><span class="line">    <span class="symbol">workspace:</span><span class="string">&quot;xxxx.xcworkspace&quot;</span>,</span><br><span class="line">    <span class="symbol">scheme:</span><span class="string">&quot;<span class="subst">#&#123;scheme&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">output_name:</span><span class="string">&quot;<span class="subst">#&#123;ipa_name&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">clean:</span><span class="literal">true</span>,</span><br><span class="line">    <span class="symbol">configuration:</span><span class="string">&quot;Release&quot;</span>,</span><br><span class="line">    <span class="symbol">export_method:</span><span class="string">&quot;ad-hoc&quot;</span>,</span><br><span class="line">    <span class="symbol">output_directory:</span><span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>&quot;</span>,</span><br><span class="line">  )</span><br><span class="line">	</span><br><span class="line">  <span class="comment"># 上传到蒲公英 (两种上传平台二选一)</span></span><br><span class="line">  pgyer(</span><br><span class="line">    <span class="comment"># 蒲公英 API Key</span></span><br><span class="line">    <span class="symbol">api_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 蒲公英 User Key</span></span><br><span class="line">    <span class="symbol">user_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 更新描述 (可选)</span></span><br><span class="line">    <span class="symbol">update_description:</span> <span class="string">&quot;<span class="subst">#&#123;version_desc&#125;</span>&quot;</span></span><br><span class="line">  )</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 上传Bugly (两种上传平台二选一)</span></span><br><span class="line">  upload_app_to_bugly(</span><br><span class="line">    <span class="symbol">file_path:</span><span class="string">&quot;<span class="subst">#&#123;ipa_path&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">app_key:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">app_id:</span><span class="string">&quot;xxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">pid:</span><span class="string">&quot;2&quot;</span>,</span><br><span class="line">    <span class="symbol">title:</span><span class="string">&quot;<span class="subst">#&#123;version_title&#125;</span>&quot;</span>,<span class="string">&quot;,</span></span><br><span class="line"><span class="string">    desc:&quot;</span>&#123;version_desc&#125;<span class="string">&quot;,</span></span><br><span class="line"><span class="string">    secret:&quot;</span><span class="number">1</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    users:&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    password:&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    download_limit:999</span></span><br><span class="line"><span class="string">  )</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">end</span></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="完善脚本"><a href="#完善脚本" class="headerlink" title="完善脚本"></a>完善脚本</h3><p>最后一步，我们需要将这个 “裸奔” 的脚本进行一些必要的点缀，在关键步骤上做一些处理：</p>
+<h4 id="添加输出-log"><a href="#添加输出-log" class="headerlink" title="添加输出 log"></a>添加输出 log</h4><p>我们在一些关键步骤上，比如更新 build_number 之后、打包完成开始上传到 Pgyer/Bugly 的执行节点上，加上一些提示性的 log, 对查看打包上传进度是很有帮助的:</p>
+<p>你可以选择使用 puts 进行打印，它会在打印后自动切换光标到下一行，如：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puts <span class="string">&quot;---Build number updated successfully !---&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以使用 print 进行打印，它在打印后会将光标停留在当前这行，如：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print <span class="string">&quot;Input title:  &quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="让关键-log-以颜色进行区分"><a href="#让关键-log-以颜色进行区分" class="headerlink" title="让关键 log 以颜色进行区分"></a>让关键 log 以颜色进行区分</h4><p>如果不进行颜色区分，脚本在执行中密密麻麻的 log 全部都是同一个颜色，让人眼花缭乱，那么我们添加的输出 log 就是白费功夫了，所以我们需要对关键 log 加以颜色进行渲染，如：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置文本颜色</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">colorize</span><span class="params">(text, color_code)</span></span></span><br><span class="line">  <span class="string">&quot;\e[<span class="subst">#&#123;color_code&#125;</span>m<span class="subst">#&#123;text&#125;</span>\e[0m&quot;</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绿色</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">green</span><span class="params">(text)</span></span>; colorize(text, <span class="number">32</span>); <span class="keyword">end</span></span><br><span class="line"><span class="comment"># 深紫色</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">magenta</span><span class="params">(text)</span></span>; colorize(text, <span class="number">35</span>); <span class="keyword">end</span></span><br><span class="line"><span class="comment"># 青蓝色</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cyan</span><span class="params">(text)</span></span>; colorize(text, <span class="number">36</span>); <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+<p>这些都是 Ruby 当中常用的颜色值设置方法，更多颜色的设置方法可以参考 <a target="_blank" rel="noopener" href="https://blog.csdn.net/dazhi_100/article/details/39528527">这里</a></p>
+<p>使用方法，以上面的 log 为例：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puts <span class="string">&quot;&quot;</span>+ green(<span class="string">&quot;---Build number updated successfully !---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>最终这行 log 在终端中就会以绿色的文本进行显示了。</p>
+<p>通过这些简单的点缀，我们来最后完善一下这个自动化打包发布脚本：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">default_platform(<span class="symbol">:ios</span>)</span><br><span class="line">platform <span class="symbol">:ios</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一键打包上传到 Pgyer/Bugly</span></span><br><span class="line">lane <span class="symbol">:ad</span> <span class="keyword">do</span></span><br><span class="line">  scheme = <span class="string">&quot;Your project scheme&quot;</span></span><br><span class="line">  currentTime = Time.new.strftime(<span class="string">&quot;%Y-%m-%d %H-%M-%S&quot;</span>)</span><br><span class="line">  output_path = <span class="string">&quot;../ipa_name <span class="subst">#&#123;currentTime&#125;</span>&quot;</span></span><br><span class="line">  ipa_name = <span class="string">&quot;Your ipa name&quot;</span></span><br><span class="line">  ipa_path = <span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>/<span class="subst">#&#123;ipa_name&#125;</span>.ipa&quot;</span></span><br><span class="line">  version_title = <span class="string">&quot;xxx&quot;</span></span><br><span class="line">  version_desc = <span class="string">&quot;xxxxxx&quot;</span></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">colorize</span><span class="params">(text, color_code)</span></span></span><br><span class="line">    <span class="string">&quot;\e[<span class="subst">#&#123;color_code&#125;</span>m<span class="subst">#&#123;text&#125;</span>\e[0m&quot;</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">green</span><span class="params">(text)</span></span>; colorize(text, <span class="number">32</span>); <span class="keyword">end</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">magenta</span><span class="params">(text)</span></span>; colorize(text, <span class="number">35</span>); <span class="keyword">end</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">cyan</span><span class="params">(text)</span></span>; colorize(text, <span class="number">36</span>); <span class="keyword">end</span></span><br><span class="line">	</span><br><span class="line">  <span class="keyword">begin</span></span><br><span class="line">    <span class="comment"># 选择是否手动设置测试包的标题和描述</span></span><br><span class="line">    puts <span class="string">&quot;&quot;</span>+ magenta(<span class="string">&quot;Do you want to manually set the title of the test package &amp; description? (y/n)&quot;</span>) +<span class="string">&quot;&quot;</span> </span><br><span class="line">    res = STDIN.gets.chomp</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> res != <span class="string">&quot;n&quot;</span></span><br><span class="line">	<span class="comment"># 用于 Bugly 显示的测试包标题</span></span><br><span class="line">	print <span class="string">&quot;&quot;</span>+ magenta(<span class="string">&quot;Input title:  &quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">	version_title = STDIN.gets.chomp</span><br><span class="line">	puts <span class="string">&quot;&quot;</span>+ green(<span class="string">&quot;---Title set successfully!---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 用于 Pgyer/Bugly 显示的测试包更新描述</span></span><br><span class="line">	print <span class="string">&quot;&quot;</span>+ magenta(<span class="string">&quot;Input description:  &quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">	version_desc = STDIN.gets.chomp</span><br><span class="line">	puts <span class="string">&quot;&quot;</span>+ green(<span class="string">&quot;---Description set successfully!---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment"># Build 自动增加</span></span><br><span class="line">  increment_build_number</span><br><span class="line">  puts <span class="string">&quot;&quot;</span>+ green(<span class="string">&quot;---Build number updated successfully !---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment"># 自动打 ad_hoc 测试包</span></span><br><span class="line">  gym(</span><br><span class="line">    <span class="symbol">workspace:</span><span class="string">&quot;xxxx.xcworkspace&quot;</span>,</span><br><span class="line">    <span class="symbol">scheme:</span><span class="string">&quot;<span class="subst">#&#123;scheme&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">output_name:</span><span class="string">&quot;<span class="subst">#&#123;ipa_name&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">clean:</span><span class="literal">true</span>,</span><br><span class="line">    <span class="symbol">configuration:</span><span class="string">&quot;Release&quot;</span>,</span><br><span class="line">    <span class="symbol">export_method:</span><span class="string">&quot;ad-hoc&quot;</span>,</span><br><span class="line">    <span class="symbol">output_directory:</span><span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>&quot;</span>,</span><br><span class="line">  )</span><br><span class="line">	</span><br><span class="line">  <span class="comment"># 上传到蒲公英 (两种上传平台二选一)</span></span><br><span class="line">  puts <span class="string">&quot;&quot;</span>+ cyan(<span class="string">&quot;---Start uploading ipa to Pgyer---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">  pgyer(</span><br><span class="line">    <span class="comment"># 蒲公英 API Key</span></span><br><span class="line">    <span class="symbol">api_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 蒲公英 User Key</span></span><br><span class="line">    <span class="symbol">user_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 更新描述 (可选)</span></span><br><span class="line">    <span class="symbol">update_description:</span> <span class="string">&quot;<span class="subst">#&#123;version_desc&#125;</span>&quot;</span></span><br><span class="line">  )</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 上传Bugly (两种上传平台二选一)</span></span><br><span class="line">  puts <span class="string">&quot;&quot;</span>+ cyan(<span class="string">&quot;---Start uploading ipa to Bugly---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">  upload_app_to_bugly(</span><br><span class="line">    <span class="symbol">file_path:</span><span class="string">&quot;<span class="subst">#&#123;ipa_path&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">app_key:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">app_id:</span><span class="string">&quot;xxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">pid:</span><span class="string">&quot;2&quot;</span>,</span><br><span class="line">    <span class="symbol">title:</span><span class="string">&quot;<span class="subst">#&#123;version_title&#125;</span>&quot;</span>,<span class="string">&quot;,</span></span><br><span class="line"><span class="string">    desc:&quot;</span>&#123;version_desc&#125;<span class="string">&quot;,</span></span><br><span class="line"><span class="string">    secret:&quot;</span><span class="number">1</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    users:&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    password:&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    download_limit:999</span></span><br><span class="line"><span class="string"> )</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">end</span></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="完成后打开浏览器"><a href="#完成后打开浏览器" class="headerlink" title="完成后打开浏览器"></a>完成后打开浏览器</h3><p>我们需要在上传完成后，自动打开蒲公英 / Bugly下载页，只需要在脚本的最后插入下面的脚本内容，即可自动打开默认浏览器，并跳转到对应平台的下载页</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开蒲公英 / Bugly下载页</span></span><br><span class="line">puts <span class="string">&quot;&quot;</span>+ cyan(<span class="string">&quot;--- Open Pgyer/Bugly download page ---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">system(<span class="string">&quot;open&quot;</span>, <span class="string">&quot;xxxx&quot;</span>) <span class="comment"># xxxx 为下载页 url</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="最终的脚本内容"><a href="#最终的脚本内容" class="headerlink" title="最终的脚本内容"></a>最终的脚本内容</h3><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">default_platform(<span class="symbol">:ios</span>)</span><br><span class="line">platform <span class="symbol">:ios</span> <span class="keyword">do</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一键打包上传到 Pgyer/Bugly</span></span><br><span class="line">lane <span class="symbol">:ad</span> <span class="keyword">do</span></span><br><span class="line">  scheme = <span class="string">&quot;Your project scheme&quot;</span></span><br><span class="line">  currentTime = Time.new.strftime(<span class="string">&quot;%Y-%m-%d %H-%M-%S&quot;</span>)</span><br><span class="line">  output_path = <span class="string">&quot;../ipa_name <span class="subst">#&#123;currentTime&#125;</span>&quot;</span></span><br><span class="line">  ipa_name = <span class="string">&quot;Your ipa name&quot;</span></span><br><span class="line">  ipa_path = <span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>/<span class="subst">#&#123;ipa_name&#125;</span>.ipa&quot;</span></span><br><span class="line">  version_title = <span class="string">&quot;xxx&quot;</span></span><br><span class="line">  version_desc = <span class="string">&quot;xxxxxx&quot;</span></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">colorize</span><span class="params">(text, color_code)</span></span></span><br><span class="line">    <span class="string">&quot;\e[<span class="subst">#&#123;color_code&#125;</span>m<span class="subst">#&#123;text&#125;</span>\e[0m&quot;</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">green</span><span class="params">(text)</span></span>; colorize(text, <span class="number">32</span>); <span class="keyword">end</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">magenta</span><span class="params">(text)</span></span>; colorize(text, <span class="number">35</span>); <span class="keyword">end</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">cyan</span><span class="params">(text)</span></span>; colorize(text, <span class="number">36</span>); <span class="keyword">end</span></span><br><span class="line">	</span><br><span class="line">  <span class="keyword">begin</span></span><br><span class="line">    <span class="comment"># 选择是否手动设置测试包的标题和描述</span></span><br><span class="line">    puts <span class="string">&quot;&quot;</span>+ magenta(<span class="string">&quot;Do you want to manually set the title of the test package &amp; description? (y/n)&quot;</span>) +<span class="string">&quot;&quot;</span> </span><br><span class="line">    res = STDIN.gets.chomp</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> res != <span class="string">&quot;n&quot;</span></span><br><span class="line">	<span class="comment"># 用于 Bugly 显示的测试包标题</span></span><br><span class="line">	print <span class="string">&quot;&quot;</span>+ magenta(<span class="string">&quot;Input title:  &quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">	version_title = STDIN.gets.chomp</span><br><span class="line">	puts <span class="string">&quot;&quot;</span>+ green(<span class="string">&quot;---Title set successfully!---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 用于 Pgyer/Bugly 显示的测试包更新描述</span></span><br><span class="line">	print <span class="string">&quot;&quot;</span>+ magenta(<span class="string">&quot;Input description:  &quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">	version_desc = STDIN.gets.chomp</span><br><span class="line">	puts <span class="string">&quot;&quot;</span>+ green(<span class="string">&quot;---Description set successfully!---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment"># Build 自动增加</span></span><br><span class="line">  increment_build_number</span><br><span class="line">  puts <span class="string">&quot;&quot;</span>+ green(<span class="string">&quot;---Build number updated successfully !---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">	</span><br><span class="line">  <span class="comment"># 自动打 ad_hoc 测试包</span></span><br><span class="line">  gym(</span><br><span class="line">    <span class="symbol">workspace:</span><span class="string">&quot;xxxx.xcworkspace&quot;</span>,</span><br><span class="line">    <span class="symbol">scheme:</span><span class="string">&quot;<span class="subst">#&#123;scheme&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">output_name:</span><span class="string">&quot;<span class="subst">#&#123;ipa_name&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">clean:</span><span class="literal">true</span>,</span><br><span class="line">    <span class="symbol">configuration:</span><span class="string">&quot;Release&quot;</span>,</span><br><span class="line">    <span class="symbol">export_method:</span><span class="string">&quot;ad-hoc&quot;</span>,</span><br><span class="line">    <span class="symbol">output_directory:</span><span class="string">&quot;<span class="subst">#&#123;output_path&#125;</span>&quot;</span>,</span><br><span class="line">  )</span><br><span class="line">	</span><br><span class="line">  <span class="comment"># 上传到蒲公英 (两种上传平台二选一)</span></span><br><span class="line">  puts <span class="string">&quot;&quot;</span>+ cyan(<span class="string">&quot;---Start uploading ipa to Pgyer---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">  pgyer(</span><br><span class="line">    <span class="comment"># 蒲公英 API Key</span></span><br><span class="line">    <span class="symbol">api_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 蒲公英 User Key</span></span><br><span class="line">    <span class="symbol">user_key:</span> <span class="string">&quot;xxx&quot;</span>, </span><br><span class="line">    <span class="comment"># 更新描述 (可选)</span></span><br><span class="line">    <span class="symbol">update_description:</span> <span class="string">&quot;<span class="subst">#&#123;version_desc&#125;</span>&quot;</span></span><br><span class="line">  )</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 上传Bugly (两种上传平台二选一)</span></span><br><span class="line">  puts <span class="string">&quot;&quot;</span>+ cyan(<span class="string">&quot;---Start uploading ipa to Bugly---&quot;</span>) +<span class="string">&quot;&quot;</span></span><br><span class="line">  upload_app_to_bugly(</span><br><span class="line">    <span class="symbol">file_path:</span><span class="string">&quot;<span class="subst">#&#123;ipa_path&#125;</span>&quot;</span>,</span><br><span class="line">    <span class="symbol">app_key:</span><span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">app_id:</span><span class="string">&quot;xxxx&quot;</span>,</span><br><span class="line">    <span class="symbol">pid:</span><span class="string">&quot;2&quot;</span>,</span><br><span class="line">    <span class="symbol">title:</span><span class="string">&quot;<span class="subst">#&#123;version_title&#125;</span>&quot;</span>,<span class="string">&quot;,</span></span><br><span class="line"><span class="string">    desc:&quot;</span>&#123;version_desc&#125;<span class="string">&quot;,</span></span><br><span class="line"><span class="string">    secret:&quot;</span><span class="number">1</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    users:&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    password:&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">    download_limit:999</span></span><br><span class="line"><span class="string">  )</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  puts &quot;</span><span class="string">&quot;+ green(&quot;</span>---ipa to upload successfully !---<span class="string">&quot;) +&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  # 打开蒲公英 / Bugly下载页</span></span><br><span class="line"><span class="string">  puts &quot;</span><span class="string">&quot;+ cyan(&quot;</span>--- Open Pgyer/Bugly download page ---<span class="string">&quot;) +&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">  system(&quot;</span>open<span class="string">&quot;, &quot;</span>xxxx<span class="string">&quot;) # xxxx 为下载页 url</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">end</span></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，这个 fastfile 才算正式宣告完成了，让我们来看看使用效果。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>首先在终端中 cd 到你项目目录，也就是有 fastlane 文件的那一层，执行：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ fastlane ad</span><br></pre></td></tr></table></figure>
+
+<p>当 Fastlane 的小火箭开始出现，就表明 lane 指令开始执行了，以上传到 Pgyer 为例：</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/C52214C1-456D-4E2F-99A6-6A55F361CD53.png" width="800" height ="262" />
+
+<p>首先会询问是否需要修改更新描述，这里示范输入 “Fastlane测试”</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/6F59FF71-C44D-4AD4-9B42-B93D3B507842.png">
+
+<p>输入完成后回车，继续执行，递增 Build 版本号</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/B3F80164-8013-42A7-A066-D74BF005915D.png" width="800" height ="326" />
+
+<p>随后开始执行 gym 配置命令，打包开始</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/16C6B833-23C7-45C7-B5C6-219A398653B7.png" width="800" height ="445" />
+
+<p>Archive 完成时，会显示当前打包的类型</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/46C301F9-B4FC-4465-AF59-EB75A6231CA8.png">
+
+<p>打包完成后，导出 ipa、dSYM 等文件到指定输出路径，随后开始上传到 Pgyer</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/B99226DE-8397-43AD-AC10-7B1ACBE99BE4.png" width="800" height ="128" />
+
+<p>上传完成后，会自动打开默认浏览器并跳转到下载页面，并显示当前耗时</p>
+<img src="https://github.com/shevakuilin/GhostImageFastlane/raw/master/5F4FAF21-1515-461D-973F-0CEC46F7FBA7.png">
+
+<p>进入测试分发的下载页面，你就可以看到已经上传好的测试包了，直接复制链接地址或者 QRCode 给测试人员就可以了。</p>
+<p>打包完成后的输出文件会在你指定的输出路径出现，这个文件在上传成功后直接删除就可以了。</p>
+<p>当然最后的分发以及删除操作你也可以写在脚本中一起帮你执行。</p>
+<p>至此，Fastlane + 指定平台的全自动化部署测试发布就全部搭建完毕了。同理，上传至 AppStore 一样可以使用 Fastlane 完成自动化部署，有了上面这些经验，就可以很轻松的配置完成了，亲手去尝试和体验 Fastlane 的便捷吧。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>除了 gym ，也可以直接通过 shell 脚本来执行 Fastlane，想了解更多使用上的配置，可以参考 <a target="_blank" rel="noopener" href="https://docs.fastlane.tools/">官方文档</a></p>
+<p>希望 Fastlane 能够帮助更多的工程师解放双手和时间。</p>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a target="_blank" rel="noopener" href="https://docs.fastlane.tools/">fastlane docs</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5a7d51986fb9a063435ece35">和重复劳动说再见-使用fastlane进行iOS打包</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.pgyer.com/doc/view/fastlane">使用 Fastlane 上传 App 到蒲公英</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.devzeng.com/blog/ios-fastlane-in-action.html">iOS中fastlane的使用</a></p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-componentization-01/" title="iOS 组件化之路（一）CocoaPods私有库的创建">iOS 组件化之路（一）CocoaPods私有库的创建</a></h2>
+                <p class="excerpt">
+                
+                本文将介绍创建一个 CocoaPods 私有库的基本流程。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-08-20T06:21:28.000Z" class="post-list__meta--date date">2018-08-20</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96-CocoaPods-%E7%A7%81%E6%9C%89%E5%BA%93/" rel="tag">组件化, CocoaPods, 私有库</a>
+</span><a class="btn-border-small" href="/ios-componentization-01/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/2017-shanghai-gdd/" title="2017上海 Google Developer Days 之旅">2017上海 Google Developer Days 之旅</a></h2>
+                <p class="excerpt">
+                
+                受邀参加在上海举办的2017 Google Developer Days，记录下了一些参会见闻和感想。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-07-08T05:54:08.000Z" class="post-list__meta--date date">2018-07-08</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Google-Developer-Days/" rel="tag">Google Developer Days</a>
+</span><a class="btn-border-small" href="/2017-shanghai-gdd/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
