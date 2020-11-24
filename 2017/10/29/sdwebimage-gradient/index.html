@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>SDWebImage框架下的图片渐变加载效果 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="众所周知，在SDWebImage框架下想要对图片在下载和下载过程中的状态进行处理，需要使用SDWebImageOptions，我们首先看一下SDWebImage中有哪些可选项
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SDWebImage框架下的图片渐变加载效果 | 跃迁引擎">
+    <meta name="twitter:description" content="众所周知，在SDWebImage框架下想要对图片在下载和下载过程中的状态进行处理，需要使用SDWebImageOptions，我们首先看一下SDWebImage中有哪些可选项
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SDWebImage框架下的图片渐变加载效果 | 跃迁引擎">
+    <meta property="og:description" content="众所周知，在SDWebImage框架下想要对图片在下载和下载过程中的状态进行处理，需要使用SDWebImageOptions，我们首先看一下SDWebImage中有哪些可选项
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/2017/10/29/sdwebimage-gradient/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">文章列表</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2017-10-29T10:27:01.000Z" class="post-list__meta--date date">2017-10-29</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/SDWebImage-%E7%AC%AC%E4%B8%89%E6%96%B9%E6%BA%90%E7%A0%81%E6%89%A9%E5%B1%95/" rel="tag">SDWebImage, 第三方源码扩展</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">SDWebImage框架下的图片渐变加载效果</h1>
+  </header>
+
+  <section class="post">
+    <p>众所周知，在SDWebImage框架下想要对图片在下载和下载过程中的状态进行处理，需要使用<code>SDWebImageOptions</code>，我们首先看一下SDWebImage中有哪些可选项</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_OPTIONS</span>(<span class="built_in">NSUInteger</span>, SDWebImageOptions) &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * By default, when a URL fail to be downloaded, the URL is blacklisted so the library won&#x27;t keep trying.</span></span><br><span class="line"><span class="comment">     * This flag disable this blacklisting.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageRetryFailed = <span class="number">1</span> &lt;&lt; <span class="number">0</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * By default, image downloads are started during UI interactions, this flags disable this feature,</span></span><br><span class="line"><span class="comment">     * leading to delayed download on UIScrollView deceleration for instance.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageLowPriority = <span class="number">1</span> &lt;&lt; <span class="number">1</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * This flag disables on-disk caching</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageCacheMemoryOnly = <span class="number">1</span> &lt;&lt; <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * This flag enables progressive download, the image is displayed progressively during download as a browser would do.</span></span><br><span class="line"><span class="comment">     * By default, the image is only displayed once completely downloaded.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageProgressiveDownload = <span class="number">1</span> &lt;&lt; <span class="number">3</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Even if the image is cached, respect the HTTP response cache control, and refresh the image from remote location if needed.</span></span><br><span class="line"><span class="comment">     * The disk caching will be handled by NSURLCache instead of SDWebImage leading to slight performance degradation.</span></span><br><span class="line"><span class="comment">     * This option helps deal with images changing behind the same request URL, e.g. Facebook graph api profile pics.</span></span><br><span class="line"><span class="comment">     * If a cached image is refreshed, the completion block is called once with the cached image and again with the final image.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * Use this flag only if you can&#x27;t make your URLs static with embedded cache busting parameter.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageRefreshCached = <span class="number">1</span> &lt;&lt; <span class="number">4</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * In iOS 4+, continue the download of the image if the app goes to background. This is achieved by asking the system for</span></span><br><span class="line"><span class="comment">     * extra time in background to let the request finish. If the background task expires the operation will be cancelled.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageContinueInBackground = <span class="number">1</span> &lt;&lt; <span class="number">5</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Handles cookies stored in NSHTTPCookieStore by setting</span></span><br><span class="line"><span class="comment">     * NSMutableURLRequest.HTTPShouldHandleCookies = YES;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageHandleCookies = <span class="number">1</span> &lt;&lt; <span class="number">6</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Enable to allow untrusted SSL certificates.</span></span><br><span class="line"><span class="comment">     * Useful for testing purposes. Use with caution in production.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageAllowInvalidSSLCertificates = <span class="number">1</span> &lt;&lt; <span class="number">7</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * By default, images are loaded in the order in which they were queued. This flag moves them to</span></span><br><span class="line"><span class="comment">     * the front of the queue.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageHighPriority = <span class="number">1</span> &lt;&lt; <span class="number">8</span>,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * By default, placeholder images are loaded while the image is loading. This flag will delay the loading</span></span><br><span class="line"><span class="comment">     * of the placeholder image until after the image has finished loading.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageDelayPlaceholder = <span class="number">1</span> &lt;&lt; <span class="number">9</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * We usually don&#x27;t call transformDownloadedImage delegate method on animated images,</span></span><br><span class="line"><span class="comment">     * as most transformation code would mangle it.</span></span><br><span class="line"><span class="comment">     * Use this flag to transform them anyway.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageTransformAnimatedImage = <span class="number">1</span> &lt;&lt; <span class="number">10</span>,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * By default, image is added to the imageView after download. But in some cases, we want to</span></span><br><span class="line"><span class="comment">     * have the hand before setting the image (apply a filter or add it with cross-fade animation for instance)</span></span><br><span class="line"><span class="comment">     * Use this flag if you want to manually set the image in the completion when success</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SDWebImageAvoidAutoSetImage = <span class="number">1</span> &lt;&lt; <span class="number">11</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，最接近我们所需要的「渐变」效果的，就是这个<code>SDWebImageProgressiveDownload</code>，这确实是一个逐步显示图片的过程，但是这个类型所完成的效果，仅仅是一个从上到下逐渐显示的效果，离我们需要的「渐变」效果相差甚远。所以说的直白一些，SDWebImage这个框架目前是不支持大多数主流成熟框架均支持的图片加载「渐变」效果的。</p>
+<h3 id="这样一来，要想实现「渐变」效果，我们似乎只剩下两条路可以走："><a href="#这样一来，要想实现「渐变」效果，我们似乎只剩下两条路可以走：" class="headerlink" title="这样一来，要想实现「渐变」效果，我们似乎只剩下两条路可以走："></a>这样一来，要想实现「渐变」效果，我们似乎只剩下两条路可以走：</h3><p>1.替换库，如YYImage等</p>
+<ul>
+<li>优点：框架自带支持，无需使用者自己处理，方便快捷省事</li>
+<li>缺点：显然，在开发过程中，突然替换基础库的成本是很高的，尤其是在DeadLine为期不远的时候。如果团队中有人不熟悉新库，那么还会额外衍生学习时间成本，这对快速迭代来说，是很难接受的一件事</li>
+</ul>
+<p>2.对SDWebImage进行修改，手动完成对「渐变」效果的支持</p>
+<ul>
+<li>优点：节省了更换其他库的时间成本，降低了替换库所造成的风险和回归测试的成本</li>
+<li>缺点：可能需要对源代码进行修改，如果是使用CocoaPods集成的，那就很麻烦了</li>
+</ul>
+<h4 id="这么对比一看，似乎每一条路的成本都不低，难道真的只剩下这两条路可以走了吗？"><a href="#这么对比一看，似乎每一条路的成本都不低，难道真的只剩下这两条路可以走了吗？" class="headerlink" title="这么对比一看，似乎每一条路的成本都不低，难道真的只剩下这两条路可以走了吗？"></a>这么对比一看，似乎每一条路的成本都不低，难道真的只剩下这两条路可以走了吗？</h4><p>答案是： NO</p>
+<p>我看到大多数文章对于SDWebImage实现渐变效果的处理方式都是修改源码，这个做法实在是太Low了👎，<code>任何需要修改成熟开源框架源码才能完成的事情，都是最烂的思路和做法</code>。SDWebImage既然能够成为适用范围最广，最主流的网络图片框架之一，其对各种情况和需求的支持力度必然不可能如此局限。即使它不直接支持，那么我们为何不换个思路和做法呢？SDWebImage提供的方法如此丰富，何必要局限于一种，下面我们就来看看如何在不修改SDWebImage源码的情况下，来达到图片加载的「渐变」效果，Let’s go!</p>
+<p>首先，我们不妨可以先思考一下什么是「渐变」效果：无非就是<code>随着图片的加载逐渐由模糊到清晰的显示出来</code>，这种效果完全可以通过一个简单的<code>CATransition</code>动画来完成，唯一的“难点”不过是这个动画是add和remove的时机而已，大多数此类解决方案都是直接把这个简单的动画效果嵌入SDWebImage源码中，这个做法不仅Low，而且对SDWebImage源码也带来了伤害，最重要的是，如果你继续用这个库，难道每次SDWebImage升级你都要再修改一遍源码吗，exm???</p>
+<p>所以，通过修改SDWebImage源码来嵌入这种动画的开发者，几乎可以肯定，全都是对<code>CAAnimation</code>基础完全不熟悉的人。只要是对<code>CAAnimation</code>熟悉的开发者都会知道，<code>CAAnimationDelegate</code>协议中提供了一个<code>animationDidStop(_ anim: CAAnimation, finished flag: Bool)</code>方法，该方法可以根据Animation的key对所有基于<code>CAAnimation</code>的动画进行监听操作。这么一来，我们接下来要做什么，你是不是就很明白了呢。</p>
+<p>我们可以来看一下SDWebImage提供的加载网络图片的方法中，是有当图片完成后的回调方法的，如:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Set the imageView `image` with an `url`, placeholder and custom options.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The download is asynchronous and cached.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param url            The url for the image.</span></span><br><span class="line"><span class="comment"> * @param placeholder    The image to be set initially, until the image request finishes.</span></span><br><span class="line"><span class="comment"> * @param options        The options to use when downloading the image. @see SDWebImageOptions for the possible values.</span></span><br><span class="line"><span class="comment"> * @param completedBlock A block called when operation has been completed. This block has no return value</span></span><br><span class="line"><span class="comment"> *                       and takes the requested UIImage as first parameter. In case of error the image parameter</span></span><br><span class="line"><span class="comment"> *                       is nil and the second parameter may contain an NSError. The third parameter is a Boolean</span></span><br><span class="line"><span class="comment"> *                       indicating if the image was retrieved from the local cache or from the network.</span></span><br><span class="line"><span class="comment"> *                       The fourth parameter is the original image url.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="built_in">NSURL</span> *)url placeholderImage:(<span class="built_in">UIImage</span> *)placeholder options:(SDWebImageOptions)options completed:(SDWebImageCompletionBlock)completedBlock;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在<code>SDWebImageCompletionBlock</code>这个Block块中来实现我们的<code>CATransition</code>动画</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*  @param options: 选择.lowPriority(oc中是SDWebImageLowPriority)，是为了禁止在UI交互过程中启动图像下载，保证列表流畅性。例如，导致UIScrollView减速的下载延迟</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">imageView.sd_setImage(with: theUrl <span class="keyword">as</span> <span class="type">URL</span>, placeholderImage: <span class="type">UIImage</span>(named: <span class="string">&quot;newVote_ placeholder&quot;</span>), options: .lowPriority, completed: &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] (image, error, cacheType, url) <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">guard</span> <span class="keyword">let</span> strongSelf = <span class="keyword">self</span> <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">   <span class="keyword">if</span> cacheType == .<span class="keyword">none</span> &#123; <span class="comment">// 只有当缓存中没有图片，也就是首次加载时才实现CATransition动画</span></span><br><span class="line">      <span class="keyword">let</span> transition:<span class="type">CATransition</span> = <span class="type">CATransition</span>()</span><br><span class="line">      transition.type = kCATransitionFade <span class="comment">// 褪色效果，渐进效果的基础</span></span><br><span class="line">      transition.duration = <span class="number">0.85</span></span><br><span class="line">      transition.timingFunction = <span class="type">CAMediaTimingFunction</span>(name:kCAMediaTimingFunctionEaseInEaseOut) <span class="comment">// 先慢后快再慢 </span></span><br><span class="line">      strongSelf.layer.add(transition, forKey: <span class="string">&quot;newVoteTimeline&quot;</span>) <span class="comment">// 在layer中加入动画，并约定好该动画的key</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>我们来解释一下上面这段代码究竟做了什么:</p>
+<p><code>options</code>: 选择<code>.lowPriority</code>(oc中是<code>SDWebImageLowPriority</code>)，是为了禁止在UI交互过程中启动图像下载，保证列表流畅性。例如，导致UIScrollView减速的下载延迟</p>
+<p>判断<code>cacheType == .none</code>: 只有当缓存中没有图片，也就是首次加载时才实现CATransition动画，因为SDWebImage会根据url从缓存中查找是否存在相同的图片，只有当缓存中不存在该图片时才会启动下载，同理，我们的「渐变」效果也是只有当启动下载是才会发生，否则，在列表中复用时会持续显示「渐变」效果，无论是否已经下载完成</p>
+<p>然后，我们遵循<code>CAAnimationDelegate</code>协议，并实现<code>animationDidStop(_ anim: CAAnimation, finished flag: Bool)</code>方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: 监听渐变动画是否已完成</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">animationDidStop</span><span class="params">(<span class="number">_</span> anim: CAAnimation, finished flag: Bool)</span></span> &#123;</span><br><span class="line">   <span class="keyword">if</span> flag &#123;</span><br><span class="line">      <span class="keyword">self</span>.layer.removeAnimation(forKey: <span class="string">&quot;newVoteTimeline&quot;</span>) <span class="comment">// 当newVoteTimeline动画已经完成，将其从layer中移除，避免复用中的产生反复「渐变」效果</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上就完成了针对SDWebImage框架的「渐变」效果修改，几行代码即可搞定，完全不需要对SDWebImage进行内部修改，有时候换一种思路思考问题，世界会豁然开朗。</p>
+<p>上面的代码只是为了演示，最好还是将其进行封装：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UIImageView+IETransition.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UIImageView</span> (<span class="title">IETransition</span>)&lt;<span class="title">CAAnimationDelegate</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 渐变动画加载 URL 图片</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param imageURL					图片 URL</span></span><br><span class="line"><span class="comment"> * @param placeholderImage	占位图</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">- (<span class="keyword">void</span>)ie_transitionFadeLoadImage:(<span class="built_in">NSURL</span> *)imageURL placeholderImage:(<span class="built_in">UIImage</span> * _Nullable)placeholderImage;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  UIImageView+IETransition.m</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="meta-string">&quot;UIImageView+IETransition.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ANIMATIONKEY_TRANSITION_FADE = <span class="string">@&quot;IETransitionFade&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIImageView</span> (<span class="title">IETransition</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> mark - 渐变动画加载 URL 图片</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)ie_transitionFadeLoadImage:(<span class="built_in">NSURL</span> *)imageURL placeholderImage:(<span class="built_in">UIImage</span> * _Nullable)placeholderImage &#123;</span><br><span class="line"><span class="comment">// - Note: 如果需要纯色占位图，可以将下面注释打开替换成具体颜色</span></span><br><span class="line"><span class="comment">//    if (!placeholderImage) &#123;</span></span><br><span class="line"><span class="comment">//        self.backgroundColor = MainDefaultImageBgColor;</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line">    @weakify(<span class="keyword">self</span>)</span><br><span class="line">    [<span class="keyword">self</span> sd_setImageWithURL:imageURL placeholderImage:placeholderImage options:SDWebImageLowPriority completed:^(<span class="built_in">UIImage</span> * _Nullable image, <span class="built_in">NSError</span> * _Nullable error, SDImageCacheType cacheType, <span class="built_in">NSURL</span> * _Nullable imageURL) &#123;</span><br><span class="line">        @strongify(<span class="keyword">self</span>)</span><br><span class="line">        <span class="keyword">if</span> (image &amp;&amp; cacheType == SDImageCacheTypeNone) &#123; <span class="comment">// 只有当缓存中没有图片，也就是首次加载时才实现CATransition动画</span></span><br><span class="line">            <span class="built_in">CATransition</span> *transition = [<span class="built_in">CATransition</span> animation];</span><br><span class="line">            transition.delegate = <span class="keyword">self</span>;</span><br><span class="line">            transition.type = kCATransitionFade; <span class="comment">// 褪色效果，渐进效果的基础</span></span><br><span class="line">            transition.duration = <span class="number">0.85</span>f;</span><br><span class="line">            transition.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseInEaseOut]; <span class="comment">// 先慢后快再慢</span></span><br><span class="line">            [<span class="keyword">self</span>.layer addAnimation:transition forKey:ANIMATIONKEY_TRANSITION_FADE];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> mark - CAAnimationDelegate</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)animationDidStop:(<span class="built_in">CAAnimation</span> *)anim finished:(<span class="built_in">BOOL</span>)flag &#123;</span><br><span class="line">    <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">        [<span class="keyword">self</span>.layer removeAnimationForKey:ANIMATIONKEY_TRANSITION_FADE];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018/07/08/2017-shanghai-gdd/" title="2017上海 Google Developer Days 之旅">2017上海 Google Developer Days 之旅</a></h2>
+                <p class="excerpt">
+                
+                受邀参加在上海举办的2017 Google Developer Days，记录下了一些参会见闻和感想。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-07-08T05:54:08.000Z" class="post-list__meta--date date">2018-07-08</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Google-Developer-Days/" rel="tag">Google Developer Days</a>
+</span><a class="btn-border-small" href="/2018/07/08/2017-shanghai-gdd/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/2016/08/22/autolayout-multiplier/" title="AutoLayout控件等比间距的百分比布局">AutoLayout控件等比间距的百分比布局</a></h2>
+                <p class="excerpt">
+                
+                多控件水平、垂直分布要求相同间距时，使用multiplier来进行布局，即百分比布局是最佳选择。
+在看本文前可以了解一下iOS NSLayoutConstraint 其中就提到过multiplier, 本文中的百分比布局都是基于 multiplier 实现的，下面来一一查看其实现。
+
+我们需要实现的
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2016-08-22T06:08:36.000Z" class="post-list__meta--date date">2016-08-22</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/NSLayoutConstraint-%E7%AD%89%E6%AF%94%E9%97%B4%E8%B7%9D%E5%B8%83%E5%B1%80/" rel="tag">NSLayoutConstraint, 等比间距布局</a>
+</span><a class="btn-border-small" href="/2016/08/22/autolayout-multiplier/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
