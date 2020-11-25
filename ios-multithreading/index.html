@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>iOS多线程总结（GCD、NSOperation、NSTread） | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iOS多线程总结（GCD、NSOperation、NSTread） | 跃迁引擎">
+    <meta name="twitter:description" content="对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="iOS多线程总结（GCD、NSOperation、NSTread） | 跃迁引擎">
+    <meta property="og:description" content="对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-multithreading/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-11-25T09:08:56.000Z" class="post-list__meta--date date">2019-11-25</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-GCD-NSOperation-NSTread/" rel="tag">多线程, GCD, NSOperation, NSTread</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">iOS多线程总结（GCD、NSOperation、NSTread）</h1>
+  </header>
+
+  <section class="post">
+    <p>对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。<a id="more"></a></p>
+<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/64992682_p0_master1200.jpg">
+
+<h1 id="GCD替我们做了哪些工作-为什么要使用GCD"><a href="#GCD替我们做了哪些工作-为什么要使用GCD" class="headerlink" title="GCD替我们做了哪些工作(为什么要使用GCD)"></a>GCD替我们做了哪些工作(为什么要使用GCD)</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><blockquote>
+<p>它是一个在<code>线程池模式</code>的基础上执行的并发任务。线程池的限制上线是<code>64</code>个</p>
+</blockquote>
+<h2 id="为什么要用-GCD"><a href="#为什么要用-GCD" class="headerlink" title="为什么要用 GCD"></a>为什么要用 GCD</h2><ul>
+<li>GCD可用于<code>多核</code>的<code>并行运算</code></li>
+<li>GCD会<code>自动利用</code>更多的CPU内核(比如双核、四核)</li>
+<li>GCD会<code>自动管理</code>线程的<code>生命周期</code>（<code>创建</code>线程、<code>调度</code>任务、<code>销毁</code>线程）</li>
+<li>工程师只需要告诉GCD想要执行什么任务，<code>不需要</code>编写任何<code>线程管理</code>代码</li>
+</ul>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><blockquote>
+<p><strong><code>任务</code>**和</strong><code>队列</code>**</p>
+</blockquote>
+<ul>
+<li><p><strong>任务</strong>执行任务有两种方式：<code>同步执行</code>（sync）和<code>异步执行</code>（async）主要区别：是否<code>等待</code>队列的任务执行结束，以及是否具备<code>开启新线程</code>的能力。</p>
+</li>
+<li><ul>
+<li><ul>
+<li>同步执行：等待/只能在<code>当前线程</code>中执行任务，<code>不具备</code>开启新线程的能力</li>
+<li>异步执行：不等待/可以在<code>新的线程</code>中执行任务，<code>具备</code>开启新线程的能力</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>队列</strong>这里的队列指<code>执行任务</code>的<code>等待队列</code>，即用来<code>存放任务</code>的队列采用<code>FIFO(先进先出)</code>的原则有两种队列：<code>串行队列</code>和<code>并发队列</code></p>
+</li>
+<li><ul>
+<li><ul>
+<li>串行队列：只开启<code>一个线程</code>，一个任务执行完毕后，再执行下一个任务 <code>SERIAL</code></li>
+<li>并发队列：可以开启<code>多个线程</code>，并且同时执行任务 <code>CONCURRENT</code>并发队列的<code>并发功能</code>只有在异步（dispatch_async）函数下才有效</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>使用步骤</strong>使用步骤其实很简单，只有两步1.<code>创建一个队列</code>（串行队列或并发队列）2.<code>将任务追加到任务的等待队列中</code>，然后系统就会根据任务类型执行任务（同步执行或异步执行）</p>
+</li>
+<li><ul>
+<li><code>队列</code>的创建方法/获取方法可以使用<code>dispatch_queue_create</code>来创建队列，需要传入两个参数</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>第一个参数：队列的<code>唯一标识符</code></li>
+<li>第二个参数：<code>识别</code>是串行队列还是并发队列</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><ul>
+<li>串行队列：<code>主队列</code>（Main Dispatch Queue）<code>主线程执行</code></li>
+<li>并发队列：GCD<code>默认提供</code>了<code>全局并发队列</code>（Global Dispatch Queue）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><ul>
+<li>需要传入两个参数：1.表示<code>队列优先级</code>，一般默认 2.没什么用，一般用0</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><code>任务</code>的创建方法</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>同步执行任务</code>的创建方法：dispatch_sync</li>
+<li><code>异步执行任务</code>创建方法：dispatch_async</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li>队列&amp;任务<code>组合方式</code>1.同步执行 + 并发队列2.异步执行 + 并发队列3.同步执行 + 串行队列4.异步执行 + 串行队列5.同步执行 + 主队列6.异步执行 + 主队列</li>
+</ul>
+</li>
+<li><p><strong>GCD 线程间的**</strong><code>通信</code>**其他线程中先执行任务，执行完了之后回到主线程执行主线程的相应操作</p>
+</li>
+<li><p><strong>GCD 的**</strong><code>其他方法</code>**</p>
+</li>
+<li><ul>
+<li><strong><code>栅栏</code>**</strong>方法**：dispatch_barrier_async <code>并发队列</code>在执行完栅栏前面的操作之后，才执行栅栏操作，最后再执行栅栏后边的操作</li>
+<li>**<code>延时执行</code>**方法：dispatch_after <code>主队列</code>时间不精确</li>
+<li>**<code>一次性代码</code>**（只执行一次）：dispatch_once保证线程安全且只执行一次</li>
+<li>**<code>快速迭代</code>**：dispatch_apply指定的次数for循环的做法是每次取出一个元素，逐个遍历。dispatch_apply可以<code>同时遍历多个元素</code></li>
+<li>**<code>队列组</code>**：dispatch_group <code>全局并发队列</code>notify返回指定线程执行任务，一般是主线程</li>
+<li>**<code>信号量</code>**：dispatch_semaphore持有计数的信号，计数为0时等待，计数为1或大于1时，计数减1并执行</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>保持线程同步，将异步执行任务转换为同步执行任务</li>
+<li>保证线程安全，为<code>线程加锁</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="gcd在后台执行一个任务，小任务定时器，实现步骤："><a href="#gcd在后台执行一个任务，小任务定时器，实现步骤：" class="headerlink" title="gcd在后台执行一个任务，小任务定时器，实现步骤："></a>gcd在后台执行一个任务，小任务定时器，实现步骤：</h2><ul>
+<li><code>获取全局并发队列</code>dispatch_get_global_queue</li>
+<li>将获取到的全局并发队列作为参数，<code>创建队列</code>dispatch_source_create</li>
+<li><code>设置定时器</code>dispatch_source_set_timer</li>
+<li><code>设置响应分派源事件</code>的block，在分派源指定的队列上运行dispatch_source_set_event_handler</li>
+<li><code>开始执行</code>派发源dispatch_resume</li>
+</ul>
+<h2 id="实现一个GCD的线程池"><a href="#实现一个GCD的线程池" class="headerlink" title="实现一个GCD的线程池"></a>实现一个GCD的线程池</h2><p>一个简单线程池至少包含下列<code>组成部分</code>:</p>
+<ul>
+<li><p><code>线程池管理器</code>（ThreadPoolManager）:用于<code>创建并管理</code>线程池线程池管理器至少有下列功能</p>
+</li>
+<li><ul>
+<li><code>创建</code>线程池</li>
+<li><code>销毁</code>线程池</li>
+<li><code>添加</code>新任务</li>
+</ul>
+</li>
+<li><p><code>工作线程</code>（WorkThread）: 线程池中线程一个可以<code>循环执行</code>任务的线程，在<code>没有任务时将等待</code></p>
+</li>
+<li><p><code>任务接口</code>（Task）:每个任务必须实现的接口，以供工作线程<code>调度任务</code>的执行规定了任务的<code>入口</code>，任务<code>执行完</code>后的收尾工作，任务的<code>执行状态</code>等</p>
+</li>
+<li><p><code>任务队列</code>:用于<code>存放没有处理</code>的任务。提供一种<code>缓冲机制</code>优化：</p>
+</li>
+<li><ul>
+<li>动态增加工作线程</li>
+<li>优化工作线程数目</li>
+</ul>
+</li>
+</ul>
+<h1 id="NSOpration-和-NSOperationQueue"><a href="#NSOpration-和-NSOperationQueue" class="headerlink" title="NSOpration 和 NSOperationQueue"></a>NSOpration 和 <strong>NSOperationQueue</strong></h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p><strong>NSOperation</strong>和<strong>NSOperationQueue</strong>是基于GCD的更高一层的封装，分别对应GCD的<strong>任务</strong>和<strong>队列</strong>，完全地面向对象。</p>
+</blockquote>
+<p>但是比GCD更简单易用、代码可读性也更高。NSOperation和NSOperationQueue对比GCD会带来一点额外的系统开销，但是可以在多个操作Operation中添加附属。</p>
+<h2 id="GCD与NSOpration的区别"><a href="#GCD与NSOpration的区别" class="headerlink" title="GCD与NSOpration的区别"></a>GCD与NSOpration的区别</h2><ul>
+<li>设置依赖关系</li>
+<li>设置监听进度</li>
+<li>设置优先级</li>
+<li>还能继承</li>
+<li>可以取消准备执行的任务</li>
+<li>比GCD会带来一点额外的系统开销</li>
+<li>比GCD更简单易用、代码可读性也更高</li>
+</ul>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a><strong>如何使用</strong></h2><blockquote>
+<p>可以通过<code>start</code>方法直接启动<strong>NSOperation</strong>子类对象，并且默认<strong>同步执行任务</strong>，将NSOperation子类对象添加到<strong>NSOperationQueue</strong>中，该队列默认<strong>并发的调度任务</strong>。</p>
+</blockquote>
+<h3 id="开启操作的方式"><a href="#开启操作的方式" class="headerlink" title="开启操作的方式"></a>开启操作的方式</h3><blockquote>
+<p>开启操作有二种方式，一是通过<strong>start</strong>方法直接启动操作，该操作默认<strong>同步执行</strong>，二是将操作添加到<strong>NSOperationQueue</strong>中，然后由系统从队列中获取操作然后添加到一个新线程中执行，这些操作默认<strong>并发执行</strong>。</p>
+</blockquote>
+<h4 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h4><ul>
+<li><p>方式一：直接由<strong>NSOperation</strong>子类对象启动。 首先将需要执行的操作封装到<strong>NSOperation</strong>子类对象中，然后该对象调用<strong>Start</strong>方法。</p>
+</li>
+<li><p>方式二：当添加到<strong>NSOperationQueue</strong>对象中，由该队列对象启动操作。</p>
+</li>
+<li><ul>
+<li>将需要执行的操作封装到<strong>NSOperation</strong>子类对象中</li>
+<li>将该对象添加到<strong>NSOperationQueue</strong>中</li>
+<li>系统将<strong>NSOperation</strong>子类对象从<strong>NSOperationQueue</strong>中取出</li>
+<li>将取出的操作放到一个<strong>新线程</strong>中执行</li>
+</ul>
+</li>
+</ul>
+<p>使用队列来执行操作，分为2个阶段：第一阶段：<strong>添加到线程队列</strong>的过程，是上面的步骤1和2。第二阶段：<strong>系统自动从队列中取出线程</strong>，并且自动放到线程中执行，是上面的步骤3和4。</p>
+<h2 id="NSOperation"><a href="#NSOperation" class="headerlink" title="NSOperation"></a>NSOperation</h2><blockquote>
+<p><strong>NSOperation</strong>是一个和任务相关的抽象类，<strong>不具备封装操作的能力</strong>，必须使用其<strong>子类</strong>。</p>
+</blockquote>
+<p><strong>NSOperation⼦类</strong>的方式有3种：</p>
+<ul>
+<li>系统实现的具体子类：<strong>NSInvocationOperation</strong></li>
+<li>系统实现的具体子类：<strong>NSBlockOperation</strong></li>
+<li>自定义子类，实现内部相应的⽅法。该类是<strong>线程安全</strong>的，不必管理线程<strong>生命周期</strong>和<strong>同步</strong>等问题。</li>
+</ul>
+<h3 id="NSInvocationOperation子类"><a href="#NSInvocationOperation子类" class="headerlink" title="NSInvocationOperation子类"></a>NSInvocationOperation子类</h3><blockquote>
+<p>NSInvocationOperation类是NSOperation的一个具体子类，管理作为调用指定的单个封装任务执行的操作。这个类实现了一个<strong>非并发</strong>操作。方法属性无论使用该子类的哪个在初始化的方法，都会在添加一个任务。 和NSBlockOperation子类不同的是，<strong>因为没有额外添加任务的方法</strong>，<strong>使用NSInvocationOperation创建的对象只会有一个任务</strong>。</p>
+</blockquote>
+<h4 id="创建操作对象的方式"><a href="#创建操作对象的方式" class="headerlink" title="创建操作对象的方式"></a>创建操作对象的方式</h4><ul>
+<li>使用<code>initWithTarget:selector:object:</code>创建sel参数是一个或0个的操作对象</li>
+<li>使用<code>initWithInvocation:</code>方法，添加sel参数是0个或多个操作对象。</li>
+</ul>
+<p>在<strong>未添加到队列</strong>的情况下，创建操作对象的过程中<strong>不会开辟线程</strong>，会在当前线程中执行<strong>同步操作</strong>。创建完成后，直接调用start方法，会启动操作对象来执行，或者添加到NSOperationQueue队列中。</p>
+<p>默认情况下，调用start方法不会开辟一个新线程去执行操作，而是在当前线程同步执行任务。只有将其放到一个<strong>NSOperationQueue</strong>中，才会异步执行操作。</p>
+<h3 id="NSBlockOperation子类"><a href="#NSBlockOperation子类" class="headerlink" title="NSBlockOperation子类"></a>NSBlockOperation子类</h3><blockquote>
+<p>NSBlockOperation类是NSOperation的一个具体子类，它管理一个或多个块的<strong>并发执行</strong>。可以使用此对象一次执行多个块，而不必为每个块创建单独的操作对象。当执行多个块时，只有当所有块都完成执行时，才认为操作本身已经完成。</p>
+<p>添加到操作中的块(<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks/Articles/00_Introduction.html#//apple_ref/doc/uid/TP40007502">block</a>)将以默认优先级分配到适当的工作队列。</p>
+</blockquote>
+<h4 id="创建操作对象的方式-1"><a href="#创建操作对象的方式-1" class="headerlink" title="创建操作对象的方式"></a>创建操作对象的方式</h4><ul>
+<li>可以通过<code>blockOperationWithBlock:</code>创建<strong>NSBlockOperation</strong>对象，在创建的时候也添加一个任务。如果想<strong>添加更多</strong>的任务，可以使用<code>addExecutionBlock:</code>方法。</li>
+<li>也可以通过<code>init:</code>创建NSBlockOperation对象。但是这种创建方式并<strong>不会在创建对象的时候添加任务</strong>，同样可以使用<code>addExecutionBlock:</code>方法添加任务。</li>
+</ul>
+<p>对于启动操作和<strong>NSInvocationOperation</strong>类一样，都可以通过调用start方法和添加NSOperationQueue中来执行操作。</p>
+<h3 id="自定义子类"><a href="#自定义子类" class="headerlink" title="自定义子类"></a>自定义子类</h3><blockquote>
+<p>一般类NSInvocationOperation、NSBlockOperation就可以满足使用需要，当然还可以自己自定义子类。</p>
+</blockquote>
+<p>创建的子类时，需要考虑到可能会添加到串行和并发队列的不同情况，需要重写不同的方法。对于串行操作，仅仅需要重新main方法就行，在这个方法中添加想要实现的功能。对于并发操作，重写四个方法：<code>start</code>、<code>asynchronous</code>、<code>executing</code>、<code>finished</code>。并且需要自己创建自动释放池，因为异步操作无法访问主线程的自动释放池。</p>
+<p>注意：在自定义子类时，经常通过cancelled属性检查方法是否取消，并且对取消的做出响应。</p>
+<h3 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h3><p>在NSOperation实例在多线程上执行是安全的，不需要添加额外的锁。</p>
+<h2 id="NSThread"><a href="#NSThread" class="headerlink" title="NSThread"></a>NSThread</h2><blockquote>
+<p>NSThread是 Apple 官方提供面向对象操作线程的技术。有点事简单方便，可以直接操作线程对象，缺点是<strong>需要自己手动控制线程的生命周期</strong>。</p>
+</blockquote>
+<p>NSThread 能做的事情几乎都可以被 GCD 或 NSOperation 代替，使用场景较少，所以只做概念上的了解即可。</p>
+<h3 id="基本属性"><a href="#基本属性" class="headerlink" title="基本属性"></a>基本属性</h3><h4 id="线程字典"><a href="#线程字典" class="headerlink" title="线程字典"></a>线程字典</h4><p><code>threadDictionary</code> ，每个线程都维护了一个 key-value 的字典,它可以在线程里面的任何地方被访问。 你可以使用该字典来保存一些信息,这些信息在整个线程的执行过程中都保持不变。 比如，你可以使用它来存储在你的整个线程过程中 Run loop 里面多次迭代的状态信息。</p>
+<h4 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h4><p><code>threadPriority</code> ，NSThread 可以手动设置线程的优先级。</p>
+<h4 id="线程名称"><a href="#线程名称" class="headerlink" title="线程名称"></a>线程名称</h4><p><code>name</code> ，NSThread 可以手动设置每个线程的名称。</p>
+<h4 id="栈大小"><a href="#栈大小" class="headerlink" title="栈大小"></a>栈大小</h4><p><code>stackSize</code> ，NSThread 可以手动设置线程使用栈区大小，默认是512K。</p>
+<h4 id="线程执行"><a href="#线程执行" class="headerlink" title="线程执行"></a>线程执行</h4><p>NSThread 可以手动取消、结束正在执行的线程，以及判断线程的当前执行状态。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/database-boom/" title="通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复">通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复</a></h2>
+                <p class="excerpt">
+                
+                血的教训，数据库没来得及备份，Boom过后，寸草不生
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-12-02T05:48:18.000Z" class="post-list__meta--date date">2019-12-02</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E9%80%9A%E7%9F%A5/" rel="tag">通知</a>
+</span><a class="btn-border-small" href="/database-boom/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/learn-sketch/" title="我是如何快学上手 Sketch 的">我是如何快学上手 Sketch 的</a></h2>
+                <p class="excerpt">
+                
+                如何在短时间内快速学习并掌握 Sketch  常用的基础操作，本文记录了我从 0 基础开始的学习过程与快速上手的使用技巧总结，希望能够对你有所帮助。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-11-15T08:54:17.000Z" class="post-list__meta--date date">2019-11-15</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Sketch-%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/" rel="tag">Sketch, 技巧总结</a>
+</span><a class="btn-border-small" href="/learn-sketch/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-multithreading/';
+  var disqus_title = 'iOS多线程总结（GCD、NSOperation、NSTread）';
+  var disqus_url = 'http://shevakuilin.com/ios-multithreading/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
