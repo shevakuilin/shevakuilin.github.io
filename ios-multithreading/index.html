@@ -149,68 +149,38 @@
     <p>对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。<a id="more"></a></p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/64992682_p0_master1200.jpg">
 
-<h1 id="GCD替我们做了哪些工作-为什么要使用GCD"><a href="#GCD替我们做了哪些工作-为什么要使用GCD" class="headerlink" title="GCD替我们做了哪些工作(为什么要使用GCD)"></a>GCD替我们做了哪些工作(为什么要使用GCD)</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><blockquote>
+<h2 id="GCD替我们做了哪些工作-为什么要使用GCD"><a href="#GCD替我们做了哪些工作-为什么要使用GCD" class="headerlink" title="GCD替我们做了哪些工作(为什么要使用GCD)"></a>GCD替我们做了哪些工作(为什么要使用GCD)</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><blockquote>
 <p>它是一个在<code>线程池模式</code>的基础上执行的并发任务。线程池的限制上线是<code>64</code>个</p>
 </blockquote>
-<h2 id="为什么要用-GCD"><a href="#为什么要用-GCD" class="headerlink" title="为什么要用 GCD"></a>为什么要用 GCD</h2><ul>
+<h4 id="为什么要用-GCD"><a href="#为什么要用-GCD" class="headerlink" title="为什么要用 GCD"></a>为什么要用 GCD</h4><ul>
 <li>GCD可用于<code>多核</code>的<code>并行运算</code></li>
 <li>GCD会<code>自动利用</code>更多的CPU内核(比如双核、四核)</li>
 <li>GCD会<code>自动管理</code>线程的<code>生命周期</code>（<code>创建</code>线程、<code>调度</code>任务、<code>销毁</code>线程）</li>
 <li>工程师只需要告诉GCD想要执行什么任务，<code>不需要</code>编写任何<code>线程管理</code>代码</li>
 </ul>
 <h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><blockquote>
-<p><strong><code>任务</code>**和</strong><code>队列</code>**</p>
+<p><code>任务</code>和 <code>队列</code></p>
 </blockquote>
 <ul>
 <li><p><strong>任务</strong>执行任务有两种方式：<code>同步执行</code>（sync）和<code>异步执行</code>（async）主要区别：是否<code>等待</code>队列的任务执行结束，以及是否具备<code>开启新线程</code>的能力。</p>
-</li>
-<li><ul>
-<li><ul>
+<ul>
 <li>同步执行：等待/只能在<code>当前线程</code>中执行任务，<code>不具备</code>开启新线程的能力</li>
 <li>异步执行：不等待/可以在<code>新的线程</code>中执行任务，<code>具备</code>开启新线程的能力</li>
 </ul>
 </li>
-</ul>
-</li>
 <li><p><strong>队列</strong>这里的队列指<code>执行任务</code>的<code>等待队列</code>，即用来<code>存放任务</code>的队列采用<code>FIFO(先进先出)</code>的原则有两种队列：<code>串行队列</code>和<code>并发队列</code></p>
-</li>
-<li><ul>
-<li><ul>
+<ul>
 <li>串行队列：只开启<code>一个线程</code>，一个任务执行完毕后，再执行下一个任务 <code>SERIAL</code></li>
 <li>并发队列：可以开启<code>多个线程</code>，并且同时执行任务 <code>CONCURRENT</code>并发队列的<code>并发功能</code>只有在异步（dispatch_async）函数下才有效</li>
 </ul>
 </li>
-</ul>
-</li>
 <li><p><strong>使用步骤</strong>使用步骤其实很简单，只有两步1.<code>创建一个队列</code>（串行队列或并发队列）2.<code>将任务追加到任务的等待队列中</code>，然后系统就会根据任务类型执行任务（同步执行或异步执行）</p>
-</li>
-<li><ul>
-<li><code>队列</code>的创建方法/获取方法可以使用<code>dispatch_queue_create</code>来创建队列，需要传入两个参数</li>
-</ul>
-</li>
-<li><ul>
-<li><ul>
+<ul>
+<li><code>队列</code>的创建方法/获取方法可以使用<code>dispatch_queue_create</code>来创建队列，需要传入两个参数<ul>
 <li>第一个参数：队列的<code>唯一标识符</code></li>
 <li>第二个参数：<code>识别</code>是串行队列还是并发队列</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><ul>
-<li><ul>
-<li><ul>
 <li>串行队列：<code>主队列</code>（Main Dispatch Queue）<code>主线程执行</code></li>
-<li>并发队列：GCD<code>默认提供</code>了<code>全局并发队列</code>（Global Dispatch Queue）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><ul>
-<li><ul>
-<li><ul>
-<li><ul>
+<li>并发队列：GCD<code>默认提供</code>了<code>全局并发队列</code>（Global Dispatch Queue）<ul>
 <li>需要传入两个参数：1.表示<code>队列优先级</code>，一般默认 2.没什么用，一般用0</li>
 </ul>
 </li>
@@ -218,39 +188,26 @@
 </li>
 </ul>
 </li>
-</ul>
-</li>
 <li><ul>
-<li><code>任务</code>的创建方法</li>
-</ul>
-</li>
-<li><ul>
-<li><ul>
+<li><code>任务</code>的创建方法<ul>
 <li><code>同步执行任务</code>的创建方法：dispatch_sync</li>
 <li><code>异步执行任务</code>创建方法：dispatch_async</li>
 </ul>
 </li>
-</ul>
-</li>
-<li><ul>
 <li>队列&amp;任务<code>组合方式</code>1.同步执行 + 并发队列2.异步执行 + 并发队列3.同步执行 + 串行队列4.异步执行 + 串行队列5.同步执行 + 主队列6.异步执行 + 主队列</li>
 </ul>
 </li>
-<li><p><strong>GCD 线程间的**</strong><code>通信</code>**其他线程中先执行任务，执行完了之后回到主线程执行主线程的相应操作</p>
+<li><p>**GCD 线程间的<code>通信</code> **其他线程中先执行任务，执行完了之后回到主线程执行主线程的相应操作</p>
 </li>
-<li><p><strong>GCD 的**</strong><code>其他方法</code>**</p>
-</li>
-<li><ul>
-<li><strong><code>栅栏</code>**</strong>方法**：dispatch_barrier_async <code>并发队列</code>在执行完栅栏前面的操作之后，才执行栅栏操作，最后再执行栅栏后边的操作</li>
-<li>**<code>延时执行</code>**方法：dispatch_after <code>主队列</code>时间不精确</li>
-<li>**<code>一次性代码</code>**（只执行一次）：dispatch_once保证线程安全且只执行一次</li>
-<li>**<code>快速迭代</code>**：dispatch_apply指定的次数for循环的做法是每次取出一个元素，逐个遍历。dispatch_apply可以<code>同时遍历多个元素</code></li>
-<li>**<code>队列组</code>**：dispatch_group <code>全局并发队列</code>notify返回指定线程执行任务，一般是主线程</li>
-<li>**<code>信号量</code>**：dispatch_semaphore持有计数的信号，计数为0时等待，计数为1或大于1时，计数减1并执行</li>
-</ul>
+<li><p><strong>GCD 的<code>其他方法</code></strong></p>
 </li>
 <li><ul>
-<li><ul>
+<li><code>栅栏</code>方法：dispatch_barrier_async <code>并发队列</code>在执行完栅栏前面的操作之后，才执行栅栏操作，最后再执行栅栏后边的操作</li>
+<li><code>延时执行</code>方法：dispatch_after <code>主队列</code>时间不精确</li>
+<li><code>一次性代码</code>（只执行一次）：dispatch_once保证线程安全且只执行一次</li>
+<li><code>快速迭代</code>：dispatch_apply指定的次数for循环的做法是每次取出一个元素，逐个遍历。dispatch_apply可以<code>同时遍历多个元素</code></li>
+<li><code>队列组</code>：dispatch_group <code>全局并发队列</code>notify返回指定线程执行任务，一般是主线程</li>
+<li><code>信号量</code>：dispatch_semaphore持有计数的信号，计数为0时等待，计数为1或大于1时，计数减1并执行<ul>
 <li>保持线程同步，将异步执行任务转换为同步执行任务</li>
 <li>保证线程安全，为<code>线程加锁</code></li>
 </ul>
@@ -287,11 +244,11 @@
 </ul>
 </li>
 </ul>
-<h1 id="NSOpration-和-NSOperationQueue"><a href="#NSOpration-和-NSOperationQueue" class="headerlink" title="NSOpration 和 NSOperationQueue"></a>NSOpration 和 <strong>NSOperationQueue</strong></h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<h2 id="NSOpration-和-NSOperationQueue"><a href="#NSOpration-和-NSOperationQueue" class="headerlink" title="NSOpration 和 NSOperationQueue"></a>NSOpration 和 <strong>NSOperationQueue</strong></h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><blockquote>
 <p><strong>NSOperation</strong>和<strong>NSOperationQueue</strong>是基于GCD的更高一层的封装，分别对应GCD的<strong>任务</strong>和<strong>队列</strong>，完全地面向对象。</p>
 </blockquote>
 <p>但是比GCD更简单易用、代码可读性也更高。NSOperation和NSOperationQueue对比GCD会带来一点额外的系统开销，但是可以在多个操作Operation中添加附属。</p>
-<h2 id="GCD与NSOpration的区别"><a href="#GCD与NSOpration的区别" class="headerlink" title="GCD与NSOpration的区别"></a>GCD与NSOpration的区别</h2><ul>
+<h3 id="GCD与NSOpration的区别"><a href="#GCD与NSOpration的区别" class="headerlink" title="GCD与NSOpration的区别"></a>GCD与NSOpration的区别</h3><ul>
 <li>设置依赖关系</li>
 <li>设置监听进度</li>
 <li>设置优先级</li>
@@ -300,10 +257,10 @@
 <li>比GCD会带来一点额外的系统开销</li>
 <li>比GCD更简单易用、代码可读性也更高</li>
 </ul>
-<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a><strong>如何使用</strong></h2><blockquote>
+<h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a><strong>如何使用</strong></h3><blockquote>
 <p>可以通过<code>start</code>方法直接启动<strong>NSOperation</strong>子类对象，并且默认<strong>同步执行任务</strong>，将NSOperation子类对象添加到<strong>NSOperationQueue</strong>中，该队列默认<strong>并发的调度任务</strong>。</p>
 </blockquote>
-<h3 id="开启操作的方式"><a href="#开启操作的方式" class="headerlink" title="开启操作的方式"></a>开启操作的方式</h3><blockquote>
+<h4 id="开启操作的方式"><a href="#开启操作的方式" class="headerlink" title="开启操作的方式"></a>开启操作的方式</h4><blockquote>
 <p>开启操作有二种方式，一是通过<strong>start</strong>方法直接启动操作，该操作默认<strong>同步执行</strong>，二是将操作添加到<strong>NSOperationQueue</strong>中，然后由系统从队列中获取操作然后添加到一个新线程中执行，这些操作默认<strong>并发执行</strong>。</p>
 </blockquote>
 <h4 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h4><ul>
@@ -320,7 +277,7 @@
 </li>
 </ul>
 <p>使用队列来执行操作，分为2个阶段：第一阶段：<strong>添加到线程队列</strong>的过程，是上面的步骤1和2。第二阶段：<strong>系统自动从队列中取出线程</strong>，并且自动放到线程中执行，是上面的步骤3和4。</p>
-<h2 id="NSOperation"><a href="#NSOperation" class="headerlink" title="NSOperation"></a>NSOperation</h2><blockquote>
+<h3 id="NSOperation"><a href="#NSOperation" class="headerlink" title="NSOperation"></a>NSOperation</h3><blockquote>
 <p><strong>NSOperation</strong>是一个和任务相关的抽象类，<strong>不具备封装操作的能力</strong>，必须使用其<strong>子类</strong>。</p>
 </blockquote>
 <p><strong>NSOperation⼦类</strong>的方式有3种：</p>
