@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>NSMutableArray原理揭露阅读笔记 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="NSArray是线性连续内存，这个很好理解。但是NSMutableArray是可以插入和删除的，那么如何做到高效？就比如插入，如何做到尽可能少的移动或者不移动插入元素后其他元素的内存？实现数据结构原理是什么？">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="NSMutableArray原理揭露阅读笔记 | 跃迁引擎">
+    <meta name="twitter:description" content="NSArray是线性连续内存，这个很好理解。但是NSMutableArray是可以插入和删除的，那么如何做到高效？就比如插入，如何做到尽可能少的移动或者不移动插入元素后其他元素的内存？实现数据结构原理是什么？">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="NSMutableArray原理揭露阅读笔记 | 跃迁引擎">
+    <meta property="og:description" content="NSArray是线性连续内存，这个很好理解。但是NSMutableArray是可以插入和删除的，那么如何做到高效？就比如插入，如何做到尽可能少的移动或者不移动插入元素后其他元素的内存？实现数据结构原理是什么？">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/nsmutablearray-note/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-01-25T10:04:39.000Z" class="post-list__meta--date date">2019-01-25</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/NSMutableArray-NSArray-CFArray/" rel="tag">NSMutableArray, NSArray, CFArray</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">NSMutableArray原理揭露阅读笔记</h1>
+  </header>
+
+  <section class="post">
+    <p>NSArray是线性连续内存，这个很好理解。但是NSMutableArray是可以插入和删除的，那么如何做到高效？就比如插入，如何做到尽可能少的移动或者不移动插入元素后其他元素的内存？实现数据结构原理是什么？<a id="more"></a></p>
+<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/23068463_p0_master1200.jpg">
+
+<h4 id="NSMutableArray-和-NSArray-的基本区别"><a href="#NSMutableArray-和-NSArray-的基本区别" class="headerlink" title="NSMutableArray 和 NSArray 的基本区别"></a>NSMutableArray 和 NSArray 的基本区别</h4><ul>
+<li>NSMutableArray 是<strong>线程不安全</strong>的，内容可随时修改，拷贝自由</li>
+<li>NSArray 是<strong>线程安全</strong>的，内容无法随时修改，拷贝自由</li>
+</ul>
+<h4 id="数组的基本定义"><a href="#数组的基本定义" class="headerlink" title="数组的基本定义"></a>数组的基本定义</h4><blockquote>
+<p>可以归结为<strong>一段能被方便读写的连续内存空间</strong>。数组和指针并不相同，不能说：一块被 <strong>malloc</strong> 过的内存空间等同于一个数组 (一种被滥用了的说法)。</p>
+</blockquote>
+<p>注：malloc 分配</p>
+<p>使用一段线性内存空间的一个最明显的<strong>缺点</strong>是，在下标 0 处插入一个元素时，需要移动其它所有的元素，即 <strong>memmove</strong> 的原理：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/1396654/1603089894185-af79fc20-d089-4616-83f2-cedd976bdd9c.jpeg" alt="1.jpg"></p>
+<p>同样地，假如想要保持相同的内存指针作为首个元素的地址，移除第一个元素需要进行相同的动作：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/1396654/1603089925916-69973ad3-4485-4750-a553-08035898feb6.jpeg" alt="2.jpg"></p>
+<p>当数组非常大时，这样很快会成为问题。显而易见，直接指针存取在数组的世界里必定不是最高级的抽象。C 风格的数组通常很有用，但 Obj-C 程序员每天的主要工作使得它们需要 <strong>NSMutableArray</strong> 这样一个可变的、可索引的容器。</p>
+<h4 id="NSMutableArray"><a href="#NSMutableArray" class="headerlink" title="NSMutableArray"></a>NSMutableArray</h4><h5 id="NSMutableArray-是一个类簇——其具体实现实际上是-NSMutableArray-本身的子类。"><a href="#NSMutableArray-是一个类簇——其具体实现实际上是-NSMutableArray-本身的子类。" class="headerlink" title="NSMutableArray 是一个类簇——其具体实现实际上是 NSMutableArray 本身的子类。"></a>NSMutableArray 是一个类簇——其具体实现实际上是 NSMutableArray 本身的子类。</h5><blockquote>
+<p>类簇是Foundation框架中广泛使用的<strong>设计模式</strong>。类簇将一些私有的、具体的子类组合在一个公共的、抽象的超类下面，以这种方法来组织类可以简化一个面向对象框架的公开架构，而又不减少功能的丰富性。</p>
+</blockquote>
+<p>类簇 是一群隐藏在通用接口下的与实现相关的类，使得我们编写的代码可以独立于底层实现（因为接口是稳定的）。</p>
+<p>如创建NSString对象时，你得到的可能是NSLiteralString,NSCFString,NSSimpleCString等。即不同的NSString对象调用同一个接口A，接口A的实现可能是不同的。</p>
+<h5 id="NSMutableArray-new-实际上返回的是哪个类的实例呢？"><a href="#NSMutableArray-new-实际上返回的是哪个类的实例呢？" class="headerlink" title="[NSMutableArray new] 实际上返回的是哪个类的实例呢？"></a>[NSMutableArray new] 实际上返回的是哪个类的实例呢？</h5><p>答：<code>__NSArrayM</code></p>
+<h4 id="ivars-的意思"><a href="#ivars-的意思" class="headerlink" title="ivars 的意思"></a>ivars 的意思</h4><p>我们来概括下每个 ivar 的意思：</p>
+<ul>
+<li><strong>_used</strong> 是计数的意思</li>
+<li><strong>_list</strong> 是缓冲区指针</li>
+<li><strong>_size</strong> 是缓冲区的大小</li>
+<li><strong>_offset</strong> 是在缓冲区里的数组的第一个元素索引</li>
+</ul>
+<h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h5><p><strong>__NSArrayM</strong> 用了<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Circular_buffer">环形缓冲区 (circular buffer)</a>。这个数据结构相当简单，只是比常规数组或缓冲区复杂点。环形缓冲区的内容能在到达任意一端时绕向另一端。</p>
+<p>环形缓冲区有一些非常酷的属性。尤其是，除非缓冲区满了，否则在任意一端插入或删除均不会要求移动任何内存。我们来分析这个类如何充分利用环形缓冲区来使得自身比 C 数组强大得多。在任意一端插入或者删除，只是修改offset参数，不需要移动内存，我们访问的时候只是不和普通的数组一样index多少就是多少，这里会计算加上offset之后处理的值取数据，而不是插入头和尾巴的时候，环形结构会根据最少移动内存指针的方式插入，例如要在A和B之间插入，按照C的数组，我们需要把B到E的元素移动内存，但是环形缓冲区的设计，我们只要把A的值向前移动一个单位内存，即可，同时修改offset偏移量，就能保证最小的移动单元来完成中间插入。</p>
+<p>在两端插入或删除会相当地快，最糟糕的就是中间插入和删除中间。</p>
+<h5 id="子类"><a href="#子类" class="headerlink" title="子类"></a>子类</h5><p>任何 <strong>NSMutableArray</strong> 的子类只须实现 7 个最基本的方法。所有其它高等级的抽象建立在它们的基础之上</p>
+<ul>
+<li><strong>- count</strong></li>
+<li><strong>- objectAtIndex:</strong></li>
+<li><strong>- insertObject:atIndex:</strong></li>
+<li><strong>- removeObjectAtIndex:</strong></li>
+<li><strong>- addObject:</strong></li>
+<li><strong>- removeLastObject</strong></li>
+<li><strong>- replaceObjectAtIndex:withObject:</strong></li>
+</ul>
+<h4 id="CFArray"><a href="#CFArray" class="headerlink" title="CFArray"></a>CFArray</h4><blockquote>
+<p>当 CF 类可用时，不需要重新发明 实现了全新的 NS 类的轮子。</p>
+</blockquote>
+<p><strong>NSArray</strong> 或 <strong>NSMutableArray</strong> 和 <strong>CFArray</strong> 完全没有共同点。</p>
+<h5 id="CFArray-和-NSArrayM-异同点"><a href="#CFArray-和-NSArrayM-异同点" class="headerlink" title="CFArray 和 _NSArrayM 异同点"></a>CFArray 和 _NSArrayM 异同点</h5><p><strong>CFArray</strong> 不使用环形缓冲区，反而使用一个两端都填充着零的更大的缓冲区，使得枚举和获取正确的对象变得更加简单。在任意一端添加元素只是简单地吃到剩余的被填充的内存。</p>
+<p>这两者有什么共同点？它们是像<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Double-ended_queue">双向队列</a>这类抽象数据类型的具体实现。不管它的名字，<strong>NSMutableArray</strong> 是一个类固醇数组，剥除了 C 风格数组对应的缺点。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li><strong>NSMutableArray</strong> 是一个高级抽象数组，解决了 C 风格数组对应的缺点。（C数组插入的时候都会移动内存，不是O（1），用到了环形缓冲区数据结构来处理内存移动的损耗）。</li>
+<li>可变数组任意一端插入或删除能有固定时间的性能。而且在中间插入和删除的时候都会试着去移动最小化内存。</li>
+<li>环形缓冲区的数据结构如果是连续数组结构，在扩容的时候难免会移动大量内存，因此用链表实现环形缓冲会更好</li>
+</ul>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>[NSMutableArray原理揭露](<a target="_blank" rel="noopener" href="http://blog.joyingx.me/2015/05/03/NSMutableArray">http://blog.joyingx.me/2015/05/03/NSMutableArray</a> 原理揭露/)</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Deft_MKJing/article/details/82732833">NSDictionary和NSMutableArray底层原理（哈希表和环形缓冲区）</a></p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/build-ghost-on-centos7/" title="如何在 CentOS 7 上搭建一个 Ghost 博客">如何在 CentOS 7 上搭建一个 Ghost 博客</a></h2>
+                <p class="excerpt">
+                
+                Ghost 是一套基于 Node.js 构建的开原博客平台（Open source blogging platform），目标是取代臃肿的 Wordpress，界面简洁，专注写作，支持在线预览和在线写作。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-09-03T06:48:26.000Z" class="post-list__meta--date date">2019-09-03</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Ghost%E5%8D%9A%E5%AE%A2%EF%BC%8CCentOS7/" rel="tag">Ghost博客，CentOS7</a>
+</span><a class="btn-border-small" href="/build-ghost-on-centos7/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018-year-end-summary/" title="2018 年终总结">2018 年终总结</a></h2>
+                <p class="excerpt">
+                
+                2018 年终总结，记录在今年的最后一天工作日。本来只想发个沸点，但是写着写着发现字数太多了… ⇎_⇎
+总感觉是，碌碌无为。
+
+
+关于工作：
+年中的时候，送走了合作一年多的老搭档，一个月后迎来了一位新搭档，嗯，三个月后又送走了她。
+年初开发沸点的时候，遇到性能瓶颈，开发周期也非常紧张，做了个冒险的决
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-12-29T09:41:30.000Z" class="post-list__meta--date date">2018-12-29</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" rel="tag">年终总结</a>
+</span><a class="btn-border-small" href="/2018-year-end-summary/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/nsmutablearray-note/';
+  var disqus_title = 'NSMutableArray原理揭露阅读笔记';
+  var disqus_url = 'http://shevakuilin.com/nsmutablearray-note/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
