@@ -12,15 +12,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护，这两年主要的工作重点都是在这上面，也算是对自己工作的一个总结交代。">
+    <meta name="description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护。">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="谈谈 iOS 中的 Crash 防护 | 跃迁引擎">
-    <meta name="twitter:description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护，这两年主要的工作重点都是在这上面，也算是对自己工作的一个总结交代。">
+    <meta name="twitter:description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护。">
 
     <meta property="og:type" content="article">
     <meta property="og:title" content="谈谈 iOS 中的 Crash 防护 | 跃迁引擎">
-    <meta property="og:description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护，这两年主要的工作重点都是在这上面，也算是对自己工作的一个总结交代。">
+    <meta property="og:description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护。">
 
     
     <meta name="author" content="ShevaKuilin">
@@ -146,7 +146,7 @@
   </header>
 
   <section class="post">
-    <p>五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护，这两年主要的工作重点都是在这上面，也算是对自己工作的一个总结交代。<a id="more"></a></p>
+    <p>五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护。<a id="more"></a></p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/63238926_p0_master1200.jpg">
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>工程师们苦 Crash 久矣，尤其是用户感知最为明显的客户端。那居高不下的崩溃率、数不胜数的用户反馈、迟迟无法完成的 KPI，折磨着每一位客户端的开发同学。</p>
@@ -158,11 +158,12 @@
 <p>进攻是最好的防守。</p>
 </blockquote>
 <p>在工作中，你不能总是守株待兔，期待 Crash 自己找上门来，主动躺在你的 Todolist 里。你需要在问题大面积爆发前，提前感知，迅速解决，就像碟中谍里的汤姆斯·布鲁克，在悄然无息间拯救地球，深藏功与名。</p>
-<p>所以，我们需要一套 Crash 主动防护机制，来帮助工程师们快速处理这些问题。当然，你不可能去指望这套机制帮你写修复代码，所以它只需要能够准确定位到问题点即可。</p>
-<p>定位问题的前提是能够发现问题，我们需要一个可以帮我们将异常情况上报给工程师来进行排查的机制，它的基本工作原理很简单：捕获到异常然后将其上报。</p>
+<p>我们需要一套 Crash 主动防护机制，来帮助工程师们快速处理这些问题。</p>
+<p>防护的核心是定位，定位问题的前提是能够发现问题，首先需要做的是捕获到异常然后将其上报。</p>
 <h3 id="现存问题"><a href="#现存问题" class="headerlink" title="现存问题"></a>现存问题</h3><p>市面上能够找到的统计崩溃等异常的 SDK 非常多，友盟、Bugly、GrowingIO 等等，他们通常都是将捕获到的信息日志上传到对应的服务器上，以此来做一些后续的统计和分析。在一些规模较小的团队当中，无法面面俱到，直接引用这些 SDK 是可以接收的，但如果你的团队对应用性能有一定要求，那么这些 SDK 就会显得有些 “不够用” 了。</p>
 <p>作者对市面上主流的统计 SDK 都有过较长时间的使用经验，发现无论哪一家 SDK 都有或多或少存在着两个通病：<strong>上报延迟</strong>  和 <strong>日志表述模糊</strong>。</p>
-<p>我们要在用户感知之前提前发现问题，就需要在研发和提测阶段尽可能早的暴露出问题，这样一来可以在崩溃现场或第一时间捕获崩溃信息，然后将崩溃堆栈信息及时反馈给我们的工程师，也会大大提高测试和开发之前的沟通效率。由于上述 SDK 存在的问题，所以这部分工作就需要我们自己来进行补充。</p>
+<p>我们要在用户感知之前提前发现问题，就需要在研发和提测阶段尽可能早的暴露出问题，这样一来可以在崩溃现场或第一时间捕获崩溃信息，然后将崩溃堆栈信息及时反馈给我们的工程师，也会大大提高测试和开发之前的沟通效率。</p>
+<p>由于上述 SDK 存在的问题，所以这部分工作就需要我们自己来进行补充。</p>
 <h3 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h3><h4 id="Mach异常与Unix信号的捕获"><a href="#Mach异常与Unix信号的捕获" class="headerlink" title="Mach异常与Unix信号的捕获"></a>Mach异常与Unix信号的捕获</h4><p>iOS 中的 Crash 分为<code>mach exception</code>、<code>singal</code>、<code>NSException</code>三种类型，每一种类型的 C rash 都处在不同的系统层级上，当然也有各自不同的捕获方式。</p>
 <h5 id="mach-exception"><a href="#mach-exception" class="headerlink" title="mach exception"></a>mach exception</h5><p>Mach是一个XNU的微内核核心，Mach异常是指最底层的内核级异常，被定义在 <code>&lt;mach/exception_types.h&gt;</code>下 。Mach异常由处理器陷阱引发，在异常发生后会被异常处理程序转换成Mach消息，接着依次投递到<code>thread</code>、<code>task</code>和<code>host</code>端口。如果没有一个端口处理这个异常并返回<code>KERN_SUCCESS</code>，那么应用将被终止。每个端口拥有一个异常端口数组，系统暴露了后缀为<code>_set_exception_ports</code>的多个API让我们注册对应的异常处理到端口中，用以来捕获Mach异常，抓取Crash事件。</p>
 <p>所有Mach异常都在<code>host</code>层被<code>ux_exception</code>转换为相应的Unix信号，并通过<code>threadsignal</code>将信号投递到出错的线程。如：<code>EXC_BAD_ACCESS(SIGSEGV)</code>表示的意思就是：Mach层的EXC_BAD_ACCESS异常，在host层被转换成SIGSEGV信号投递到出错的线程。</p>
