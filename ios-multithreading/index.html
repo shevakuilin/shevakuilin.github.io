@@ -188,20 +188,28 @@
 </li>
 </ul>
 </li>
-<li><ul>
-<li><code>任务</code>的创建方法<ul>
-<li><code>同步执行任务</code>的创建方法：dispatch_sync</li>
-<li><code>异步执行任务</code>创建方法：dispatch_async</li>
+<li><p><code>任务</code>的创建方法</p>
+<ul>
+<li><p><code>同步执行任务</code>的创建方法：dispatch_sync</p>
+</li>
+<li><p><code>异步执行任务</code>创建方法：dispatch_async</p>
+</li>
+<li><p>队列&amp;任务<code>组合方式</code></p>
+<ul>
+<li>1.同步执行 + 并发队列</li>
+<li>2.异步执行 + 并发队列</li>
+<li>3.同步执行 + 串行队列</li>
+<li>4.异步执行 + 串行队列</li>
+<li>5.同步执行 + 主队列</li>
+<li>6.异步执行 + 主队列</li>
 </ul>
 </li>
-<li>队列&amp;任务<code>组合方式</code>1.同步执行 + 并发队列2.异步执行 + 并发队列3.同步执行 + 串行队列4.异步执行 + 串行队列5.同步执行 + 主队列6.异步执行 + 主队列</li>
 </ul>
 </li>
 <li><p>GCD 线程间的<code>通信</code> 其他线程中先执行任务，执行完了之后回到主线程执行主线程的相应操作</p>
 </li>
-<li><p><strong>GCD 的<code>其他方法</code></strong></p>
-</li>
-<li><ul>
+<li><p>GCD 的<code>其他方法</code></p>
+<ul>
 <li><code>栅栏</code>方法：dispatch_barrier_async <code>并发队列</code>在执行完栅栏前面的操作之后，才执行栅栏操作，最后再执行栅栏后边的操作</li>
 <li><code>延时执行</code>方法：dispatch_after <code>主队列</code>时间不精确</li>
 <li><code>一次性代码</code>（只执行一次）：dispatch_once保证线程安全且只执行一次</li>
@@ -224,21 +232,15 @@
 </ul>
 <h2 id="实现一个GCD的线程池"><a href="#实现一个GCD的线程池" class="headerlink" title="实现一个GCD的线程池"></a>实现一个GCD的线程池</h2><p>一个简单线程池至少包含下列<code>组成部分</code>:</p>
 <ul>
-<li><p><code>线程池管理器</code>（ThreadPoolManager）:用于<code>创建并管理</code>线程池线程池管理器至少有下列功能</p>
-</li>
-<li><ul>
+<li><code>线程池管理器</code>（ThreadPoolManager）:用于<code>创建并管理</code>线程池线程池管理器至少有下列功<ul>
 <li><code>创建</code>线程池</li>
 <li><code>销毁</code>线程池</li>
 <li><code>添加</code>新任务</li>
 </ul>
 </li>
-<li><p><code>工作线程</code>（WorkThread）: 线程池中线程一个可以<code>循环执行</code>任务的线程，在<code>没有任务时将等待</code></p>
-</li>
-<li><p><code>任务接口</code>（Task）:每个任务必须实现的接口，以供工作线程<code>调度任务</code>的执行规定了任务的<code>入口</code>，任务<code>执行完</code>后的收尾工作，任务的<code>执行状态</code>等</p>
-</li>
-<li><p><code>任务队列</code>:用于<code>存放没有处理</code>的任务。提供一种<code>缓冲机制</code>优化：</p>
-</li>
-<li><ul>
+<li><code>工作线程</code>（WorkThread）: 线程池中线程一个可以<code>循环执行</code>任务的线程，在<code>没有任务时将等待</code></li>
+<li><code>任务接口</code>（Task）:每个任务必须实现的接口，以供工作线程<code>调度任务</code>的执行规定了任务的<code>入口</code>，任务<code>执行完</code>后的收尾工作，任务的<code>执行状态</code>等</li>
+<li><code>任务队列</code>:用于<code>存放没有处理</code>的任务。提供一种<code>缓冲机制</code>优化：<ul>
 <li>动态增加工作线程</li>
 <li>优化工作线程数目</li>
 </ul>
@@ -264,11 +266,8 @@
 <p>开启操作有二种方式，一是通过<strong>start</strong>方法直接启动操作，该操作默认<strong>同步执行</strong>，二是将操作添加到<strong>NSOperationQueue</strong>中，然后由系统从队列中获取操作然后添加到一个新线程中执行，这些操作默认<strong>并发执行</strong>。</p>
 </blockquote>
 <h4 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h4><ul>
-<li><p>方式一：直接由<strong>NSOperation</strong>子类对象启动。 首先将需要执行的操作封装到<strong>NSOperation</strong>子类对象中，然后该对象调用<strong>Start</strong>方法。</p>
-</li>
-<li><p>方式二：当添加到<strong>NSOperationQueue</strong>对象中，由该队列对象启动操作。</p>
-</li>
-<li><ul>
+<li>方式一：直接由<strong>NSOperation</strong>子类对象启动。 首先将需要执行的操作封装到<strong>NSOperation</strong>子类对象中，然后该对象调用<strong>Start</strong>方法。</li>
+<li>方式二：当添加到<strong>NSOperationQueue</strong>对象中，由该队列对象启动操作。<ul>
 <li>将需要执行的操作封装到<strong>NSOperation</strong>子类对象中</li>
 <li>将该对象添加到<strong>NSOperationQueue</strong>中</li>
 <li>系统将<strong>NSOperation</strong>子类对象从<strong>NSOperationQueue</strong>中取出</li>
