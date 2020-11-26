@@ -202,7 +202,7 @@
 <li>软件异常通过kill() 直接抛出Signal异常</li>
 <li>系统通过launchd监听了EXC_CRASH，EXC_CRASH 是一种特殊类型，囊括硬件和软件异常，基本上会囊括所有的崩溃类型。软硬件异常最终都会转化为Signal信号。</li>
 </ul>
-<h3 id="捕获Signal"><a href="#捕获Signal" class="headerlink" title="捕获Signal"></a>捕获Signal</h3><p>从前面的结论可以看出，异常最终都会转换为Signal信号，所以我们可以将如何捕获<code>Mach Exception</code>的注意力转移到如何捕获<code>Signal</code>上了。</p>
+<h3 id="Signal的捕获"><a href="#Signal的捕获" class="headerlink" title="Signal的捕获"></a>Signal的捕获</h3><p>从前面的结论可以看出，异常最终都会转换为Signal信号，所以我们可以将如何捕获<code>Mach Exception</code>的注意力转移到如何捕获<code>Signal</code>上了。</p>
 <p>UNIX signals是一套基于<code>POSIX标准</code>开发的通信机制，在<code>signal.h</code>中声明了32种异常信号，以下六种为iOS常见的信号，它们均会导致程序崩溃。</p>
 <table>
 <thead>
@@ -239,7 +239,7 @@
 <p>Signal可以通过注册信号处理函数来捕获:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 装有6种常见信号的信号数组</span></span><br><span class="line"><span class="built_in">NSArray</span> *signals = @[@(SIGABRT), @(SIGBUS), @(SIGFPE), @(SIGILL), @(SIGTRAP), @(SIGSEGV)];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; signals.count; index ++) &#123;</span><br><span class="line">    <span class="comment">// 注册信号处理函数</span></span><br><span class="line">    <span class="comment">// - Note: signalExceptionHandler 为捕获后的回调函数</span></span><br><span class="line">    signal([signals[index] intValue], &amp;signalExceptionHandler);</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> signalExceptionHandler(<span class="keyword">int</span> signo) &#123;</span><br><span class="line">    <span class="comment">// Do something...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
+<h3 id="NSException的捕获"><a href="#NSException的捕获" class="headerlink" title="NSException的捕获"></a>NSException的捕获</h3>
   </section>
 
 </article>
