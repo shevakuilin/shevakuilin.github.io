@@ -201,7 +201,7 @@
 <li>软件异常通过kill() 直接抛出Signal异常</li>
 <li>系统通过launchd监听了EXC_CRASH，EXC_CRASH 是一种特殊类型，囊括硬件和软件异常，基本上会囊括所有的崩溃类型。软硬件异常最终都会转化为Signal信号。</li>
 </ul>
-<h4 id="基于Signa的异常捕捉"><a href="#基于Signa的异常捕捉" class="headerlink" title="基于Signa的异常捕捉"></a>基于Signa的异常捕捉</h4><p>从前面的结论可以看出，异常最终都会转换为Signal信号，所以我们可以将如何捕获<code>Mach Exception</code>的注意力转移到如何捕获<code>Signal</code>上了。</p>
+<h3 id="基于Signa的异常捕捉"><a href="#基于Signa的异常捕捉" class="headerlink" title="基于Signa的异常捕捉"></a>基于Signa的异常捕捉</h3><p>从前面的结论可以看出，异常最终都会转换为Signal信号，所以我们可以将如何捕获<code>Mach Exception</code>的注意力转移到如何捕获<code>Signal</code>上了。</p>
 
   </section>
 
