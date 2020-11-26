@@ -176,9 +176,8 @@
 <p><strong>在这里我们主要是针对 Mach异常 和信号的处理。</strong></p>
 <h3 id="异常处理流程"><a href="#异常处理流程" class="headerlink" title="异常处理流程"></a>异常处理流程</h3><p>首先要明确几个概念及其之间的联系：<code>硬件异常</code>, <code>软件异常</code>,<code>mach异常</code>, <code>Signal异常</code>。这四种异常概念，自底向上构建了iOS系统的异常处理模型。</p>
 <p>其之间的关系如下:</p>
-<img src="/Users/xiangkuilin/Desktop/hexo-shevakuilin.com/source/image/异常关系图.png" alt="异常关系图" style="zoom:50%;" />
-
-<h4 id="Mach异常与Signal的捕获"><a href="#Mach异常与Signal的捕获" class="headerlink" title="Mach异常与Signal的捕获"></a>Mach异常与Signal的捕获</h4><p>iOS 中的 Crash 分为<code>Mach Exception</code>、<code>Singal</code>、<code>NSException</code>三种类型，每一种类型的 C rash 都处在不同的系统层级上，当然也有各自不同的捕获方式。</p>
+<p><img src="/source/image/%E5%BC%82%E5%B8%B8%E5%85%B3%E7%B3%BB%E5%9B%BE.png"></p>
+<h4 id="Mach异常与Signal的捕获"><a href="#Mach异常与Signal的捕获" class="headerlink" title="Mach异常与Signal的捕获"></a>Mach异常与Signal的捕获</h4><p>iOS 中的 Crash 分为<code>Mach Exception</code>、<code>Singal</code>、<code>NSException</code>三种类型，每一种类型的 C rash 都处在不同的系统层级上，也有各自不同的捕获方式。</p>
 <h5 id="Mach-Exception"><a href="#Mach-Exception" class="headerlink" title="Mach Exception"></a>Mach Exception</h5><p>Mach是一个XNU的微内核核心，Mach异常是指最底层的内核级异常，被定义在 <code>&lt;mach/exception_types.h&gt;</code>下 。Mach异常由处理器陷阱引发，在异常发生后会被异常处理程序转换成Mach消息，接着依次投递到<code>thread</code>、<code>task</code>和<code>host</code>端口。如果没有一个端口处理这个异常并返回<code>KERN_SUCCESS</code>，那么应用将被终止。每个端口拥有一个异常端口数组，系统暴露了后缀为<code>_set_exception_ports</code>的多个API让我们注册对应的异常处理到端口中，用以来捕获Mach异常，抓取Crash事件。</p>
 <p>综上所述，基于 mach message 机制, 可以</p>
 <ul>
