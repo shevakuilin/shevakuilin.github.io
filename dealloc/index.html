@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     
-    <title>通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复 | 跃迁引擎</title>
+    <title>Dealloc的实现机制 | 跃迁引擎</title>
     <meta name="renderer" content="webkit">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -12,15 +12,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="description" content="血的教训，数据库没来得及备份，Boom过后，寸草不生">
+    <meta name="description" content="今天来聊聊 Dealloc，它的实现机制是内存管理部分的重点，把这个知识点弄明白，对于全方位的理解 iOS 内存管理非常有帮助。">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复 | 跃迁引擎">
-    <meta name="twitter:description" content="血的教训，数据库没来得及备份，Boom过后，寸草不生">
+    <meta name="twitter:title" content="Dealloc的实现机制 | 跃迁引擎">
+    <meta name="twitter:description" content="今天来聊聊 Dealloc，它的实现机制是内存管理部分的重点，把这个知识点弄明白，对于全方位的理解 iOS 内存管理非常有帮助。">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复 | 跃迁引擎">
-    <meta property="og:description" content="血的教训，数据库没来得及备份，Boom过后，寸草不生">
+    <meta property="og:title" content="Dealloc的实现机制 | 跃迁引擎">
+    <meta property="og:description" content="今天来聊聊 Dealloc，它的实现机制是内存管理部分的重点，把这个知识点弄明白，对于全方位的理解 iOS 内存管理非常有帮助。">
 
     
     <meta name="author" content="ShevaKuilin">
@@ -39,7 +39,7 @@
     <meta name="generator" content="hexo"/>
     
 
-    <link rel="canonical" href="http://shevakuilin.com/database-boom/"/>
+    <link rel="canonical" href="http://shevakuilin.com/dealloc/"/>
 
                  
 </head>
@@ -134,24 +134,19 @@
 
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2019-12-02T05:48:18.000Z" class="post-list__meta--date date">2019-12-02</time> &#8226; <span class="post-meta__tags tags">于 
-  <a class="-none-link" href="/tags/%E9%80%9A%E7%9F%A5/" rel="tag">通知</a>, <a class="-none-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a>
+      <time datetime="2019-11-27T05:26:57.000Z" class="post-list__meta--date date">2019-11-27</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Dealloc/" rel="tag">Dealloc</a>, <a class="-none-link" href="/tags/Runtime/" rel="tag">Runtime</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
  </span>
       <span class="page-pv">
        阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
       </span> 
    
     </div>
-    <h1 class="post-title">通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复</h1>
+    <h1 class="post-title">Dealloc的实现机制</h1>
   </header>
 
   <section class="post">
-    <p>血的教训，数据库没来得及备份，Boom过后，寸草不生<a id="more"></a></p>
-<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/71875434_p0_master1200.jpg">
-
-<h2 id="血的教训，数据库一定要及时备份"><a href="#血的教训，数据库一定要及时备份" class="headerlink" title="血的教训，数据库一定要及时备份"></a>血的教训，数据库一定要及时备份</h2><p>我就是因为没来得及备份，在某天早上起来之后，发现数据库💥了，所有文章，全！部！瞬！间！消失，当场我就😭了，太惨了….</p>
-<h2 id="感谢-Google"><a href="#感谢-Google" class="headerlink" title="感谢 Google"></a>感谢 Google</h2><p>一阵悲哀过后，我想到了 Google 的网页快照，可以缓存前不久的网站内容，赶紧去查我的所有文章快照，万幸万幸，找回了<code>95%</code>的文章内容，随后我在 Github 紧急开了一个<a target="_blank" rel="noopener" href="https://github.com/shevakuilin/shevakuilin.com.posts">仓库</a>，备份了我的全部快照数据，随后也会现在仓库里发文章，然后再同步到 shevakuilin.com，如果以后出现了本站访问不了的情况，可以去 Github 的仓库浏览</p>
-<h2 id="接下来做的事情"><a href="#接下来做的事情" class="headerlink" title="接下来做的事情"></a>接下来做的事情</h2><p>接下来准备给数据库做本地备份，以及初步恢复本网站的配置、文章，所以最近几天内可能文章不会太多，出现部分功能不可用的情况</p>
+    <p>今天来聊聊 Dealloc，它的实现机制是内存管理部分的重点，把这个知识点弄明白，对于全方位的理解 iOS 内存管理非常有帮助。<a id="more"></a></p>
 
   </section>
 
@@ -163,15 +158,15 @@
                
             <div class="read-more-item">
                 <span class="read-more-item-dim">最近的文章</span>
-                <h2 class="post-list__post-title post-title"><a href="/worldcup-champion/" title="世界杯夺冠球队猜想">世界杯夺冠球队猜想</a></h2>
+                <h2 class="post-list__post-title post-title"><a href="/database-boom/" title="通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复">通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复</a></h2>
                 <p class="excerpt">
                 
-                以自 2009 年以来亲身验证的结果，来阐释利用「动态规划」思想创造夺冠公式，来预测历届世界杯夺冠球队。
+                血的教训，数据库没来得及备份，Boom过后，寸草不生
                 &hellip;
                 </p>
-                <div class="post-list__meta"><time datetime="2019-12-24T08:27:55.000Z" class="post-list__meta--date date">2019-12-24</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a>, <a class="-none-link" href="/tags/%E7%8C%9C%E6%83%B3/" rel="tag">猜想</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
-</span><a class="btn-border-small" href="/worldcup-champion/">开始阅读</a></div>
+                <div class="post-list__meta"><time datetime="2019-12-02T05:48:18.000Z" class="post-list__meta--date date">2019-12-02</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E9%80%9A%E7%9F%A5/" rel="tag">通知</a>, <a class="-none-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a>
+</span><a class="btn-border-small" href="/database-boom/">开始阅读</a></div>
                            
             </div>
         
@@ -179,15 +174,15 @@
                
             <div class="read-more-item">
                 <span class="read-more-item-dim">更早的文章</span>
-                <h2 class="post-list__post-title post-title"><a href="/dealloc/" title="Dealloc的实现机制">Dealloc的实现机制</a></h2>
+                <h2 class="post-list__post-title post-title"><a href="/ios-multithreading/" title="iOS多线程总结（GCD、NSOperation、NSTread）">iOS多线程总结（GCD、NSOperation、NSTread）</a></h2>
                 <p class="excerpt">
                 
-                今天来聊聊 Dealloc，它的实现机制是内存管理部分的重点，把这个知识点弄明白，对于全方位的理解 iOS 内存管理非常有帮助。
+                对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。
                 &hellip;
                 </p>
-                <div class="post-list__meta"><time datetime="2019-11-27T05:26:57.000Z" class="post-list__meta--date date">2019-11-27</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Dealloc/" rel="tag">Dealloc</a>, <a class="-none-link" href="/tags/Runtime/" rel="tag">Runtime</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
-</span><a class="btn-border-small" href="/dealloc/">开始阅读</a></div>
+                <div class="post-list__meta"><time datetime="2019-11-25T09:08:56.000Z" class="post-list__meta--date date">2019-11-25</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-GCD-NSOperation-NSTread/" rel="tag">多线程, GCD, NSOperation, NSTread</a>
+</span><a class="btn-border-small" href="/ios-multithreading/">开始阅读</a></div>
                        
             </div>
         
@@ -203,9 +198,9 @@
   <script type="text/javascript">
       var disqus_shortname = 'warpdrive'; 
       
-  var disqus_identifier = '/database-boom/';
-  var disqus_title = '通告：之前网站无法访问，因为数据库出了问题，现已逐渐恢复';
-  var disqus_url = 'http://shevakuilin.com/database-boom/';
+  var disqus_identifier = '/dealloc/';
+  var disqus_title = 'Dealloc的实现机制';
+  var disqus_url = 'http://shevakuilin.com/dealloc/';
   
 
       /* * * DON'T EDIT BELOW THIS LINE * * */

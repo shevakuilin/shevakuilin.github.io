@@ -136,91 +136,32 @@
   
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/dealloc/" title="link to post.title">Dealloc的实现机制</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/autolayout-multiplier/" title="link to post.title">AutoLayout控件等比间距的百分比布局</a></h2>
       <p class="excerpt">
     
-      今天来聊聊 Dealloc，它的实现机制是内存管理部分的重点，把这个知识点弄明白，对于全方位的理解 iOS 内存管理非常有帮助。
+      多控件水平、垂直分布要求相同间距时，使用multiplier来进行布局，即百分比布局是最佳选择。
+在看本文前可以了解一下iOS NSLayoutConstraint 其中就提到过multiplier, 本文中的百分比布局都是基于 multiplier 实现的，下面来一一查看其实现。
+
+我们需要实现的功能很简单，以一个居中的按钮为基准，达成五个按钮等比间距水平分布在屏幕上的效果为例，首先约束居中按钮
     &hellip;
       </p>
-      <div class="post-list__meta"><time datetime="2019-11-27T05:26:57.000Z" class="post-list__meta--date date">2019-11-27</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Dealloc/" rel="tag">Dealloc</a>, <a class="-none-link" href="/tags/Runtime/" rel="tag">Runtime</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
-</span><a class="btn-border-small" href="/dealloc/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/ios-multithreading/" title="link to post.title">iOS多线程总结（GCD、NSOperation、NSTread）</a></h2>
-      <p class="excerpt">
-    
-      对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2019-11-25T09:08:56.000Z" class="post-list__meta--date date">2019-11-25</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-GCD-NSOperation-NSTread/" rel="tag">多线程, GCD, NSOperation, NSTread</a>
-</span><a class="btn-border-small" href="/ios-multithreading/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/learn-sketch/" title="link to post.title">我是如何快学上手 Sketch 的</a></h2>
-      <p class="excerpt">
-    
-      如何在短时间内快速学习并掌握 Sketch  常用的基础操作，本文记录了我从 0 基础开始的学习过程与快速上手的使用技巧总结，希望能够对你有所帮助。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2019-11-15T08:54:17.000Z" class="post-list__meta--date date">2019-11-15</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Sketch/" rel="tag">Sketch</a>, <a class="-none-link" href="/tags/%E5%B7%A5%E5%85%B7%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/" rel="tag">工具技巧总结</a>, <a class="-none-link" href="/tags/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/" rel="tag">折腾日记</a>
-</span><a class="btn-border-small" href="/learn-sketch/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/graph-cycle/" title="link to post.title">判断图中是否存在环</a></h2>
-      <p class="excerpt">
-    
-      使用「深度优先搜索」来判断图中是否存在回路，该题目出自 2018 年阿里巴巴手机淘宝 iOS 客户端架构组应届生面试题目。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2019-11-13T08:19:43.000Z" class="post-list__meta--date date">2019-11-13</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/%E6%97%A0%E5%90%91%E5%9B%BE/" rel="tag">无向图</a>, <a class="-none-link" href="/tags/%E6%9C%89%E5%90%91%E5%9B%BE/" rel="tag">有向图</a>, <a class="-none-link" href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" rel="tag">深度优先搜索</a>, <a class="-none-link" href="/tags/%E7%8E%AF%E8%B7%AF/" rel="tag">环路</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
-</span><a class="btn-border-small" href="/graph-cycle/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/fibonacci-sequence/" title="link to post.title">斐波那契数列</a></h2>
-      <p class="excerpt">
-    
-      用「动态规划」 「模拟」的思想，解决斐波那契数列，文中题目出自 LINE 的面试笔试算法题，难度中等偏上。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2019-11-12T12:28:20.000Z" class="post-list__meta--date date">2019-11-12</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a>, <a class="-none-link" href="/tags/%E5%A4%A7%E6%95%B4%E6%95%B0%E7%9B%B8%E5%8A%A0/" rel="tag">大整数相加</a>, <a class="-none-link" href="/tags/%E6%A8%A1%E6%8B%9F/" rel="tag">模拟</a>, <a class="-none-link" href="/tags/%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB/" rel="tag">状态转移</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>, <a class="-none-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a>
-</span><a class="btn-border-small" href="/fibonacci-sequence/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/dcep-dollarkiller/" title="link to post.title">数字货币DCEP--美元霸权的终结者</a></h2>
-      <p class="excerpt">
-    
-      关于央行发行的数字货币DCEP，和区块链技术未来在国内发展应用趋势的一点思考和看法
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2019-11-11T18:05:32.000Z" class="post-list__meta--date date">2019-11-12</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/DCEP/" rel="tag">DCEP</a>, <a class="-none-link" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag">区块链</a>, <a class="-none-link" href="/tags/%E6%95%B0%E5%AD%97%E8%B4%A7%E5%B8%81/" rel="tag">数字货币</a>, <a class="-none-link" href="/tags/%E7%BE%8E%E5%85%83%E9%9C%B8%E6%9D%83/" rel="tag">美元霸权</a>, <a class="-none-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a>
-</span><a class="btn-border-small" href="/dcep-dollarkiller/">开始阅读</a></div>
+      <div class="post-list__meta"><time datetime="2016-08-22T06:08:36.000Z" class="post-list__meta--date date">2016-08-22</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/NSLayoutConstraint/" rel="tag">NSLayoutConstraint</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AD%89%E6%AF%94%E9%97%B4%E8%B7%9D%E5%B8%83%E5%B1%80/" rel="tag">等比间距布局</a>
+</span><a class="btn-border-small" href="/autolayout-multiplier/">开始阅读</a></div>
       <hr class="post-list__divider" />
     </li>
   
     
   </ol>
 
+
+  <nav class="pagination" role="navigation">
+    
+      <a class="older-posts pagination__newer btn btn-small btn-tertiary" href="/#blog">&larr; 最近</a>
+    
+    <span class="pagination__page-number" >  2 / 2 </span>
+    
+  </nav>
 
  <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
