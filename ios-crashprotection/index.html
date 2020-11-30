@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     
-    <title>浅谈 iOS 中的 Crash 防护 | 跃迁引擎</title>
+    <title>浅谈 iOS 中的 Crash 捕获与防护 | 跃迁引擎</title>
     <meta name="renderer" content="webkit">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -15,11 +15,11 @@
     <meta name="description" content="iOS Research &amp; Development">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="浅谈 iOS 中的 Crash 防护 | 跃迁引擎">
+    <meta name="twitter:title" content="浅谈 iOS 中的 Crash 捕获与防护 | 跃迁引擎">
     <meta name="twitter:description" content="iOS Research &amp; Development">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="浅谈 iOS 中的 Crash 防护 | 跃迁引擎">
+    <meta property="og:title" content="浅谈 iOS 中的 Crash 捕获与防护 | 跃迁引擎">
     <meta property="og:description" content="iOS Research &amp; Development">
 
     
@@ -142,11 +142,11 @@
       </span> 
    
     </div>
-    <h1 class="post-title">浅谈 iOS 中的 Crash 防护</h1>
+    <h1 class="post-title">浅谈 iOS 中的 Crash 捕获与防护</h1>
   </header>
 
   <section class="post">
-    <p>五一假期的第一天，今天来聊聊 iOS 中的 Crash 防护。<a id="more"></a></p>
+    <p>五一假期的第一天，闲来无事，今天来聊一聊 iOS 中的 Crash 捕获与防护。<a id="more"></a></p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/63238926_p0_master1200.jpg">
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>工程师们苦 Crash 久矣，尤其是用户感知最为明显的客户端。那居高不下的崩溃率、数不胜数的用户反馈、迟迟无法完成的 KPI，折磨着每一位客户端的开发同学。</p>
@@ -330,7 +330,7 @@
 <h4 id="利用Runloop"><a href="#利用Runloop" class="headerlink" title="利用Runloop"></a>利用Runloop</h4><p>我们可以像这样创建一个<code>Runloop</code>，将主线程的所有<code>Runmode</code>都拿过来跑，作为应用程序主Runloop的替代。</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CFRunLoopRef</span> runLoop = <span class="built_in">CFRunLoopGetCurrent</span>();</span><br><span class="line"><span class="built_in">CFArrayRef</span> allModes = <span class="built_in">CFRunLoopCopyAllModes</span>(runLoop);</span><br><span class="line"><span class="keyword">while</span> (!dismissed) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">NSString</span> *mode <span class="keyword">in</span> (<span class="built_in">NSArray</span> *)allModes) &#123;</span><br><span class="line">        <span class="built_in">CFRunLoopRunInMode</span>((<span class="built_in">CFStringRef</span>)mode, <span class="number">0.001</span>, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">CFRelease</span>(allModes);</span><br></pre></td></tr></table></figure>
 
-<p>这样固然可以实现我们想要做的事情，但是会带来一个问题：因为我们为了继续执行程序而没有将控制权返回给导致崩溃的调用函数，并且我们启动了自己的<code>Runloop</code>，所以永远不会返回到原始的<code>Runloop</code>中去了，这将意味着导致异常的线程使用的<code>堆栈内存</code>将永久泄漏。因此这种类型的方法应被视为调试工具或最后手段。所以，我们只在Debug环境下使用它。</p>
+<p>这样固然可以实现我们想要做的事情，但是会带来一个问题：因为我们为了继续执行程序而没有将控制权返回给导致崩溃的调用函数，并且我们启动了自己的<code>Runloop</code>，所以永远不会返回到原始的<code>Runloop</code>中去了，这将意味着导致异常的线程使用的<code>堆栈内存</code>将永久泄漏。因此这种类型的方法应被视为调试工具或最后手段，所以，不要在Debug以外的环境使用它。</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> InstallUncaughtExceptionHandler(<span class="keyword">void</span>) &#123;</span><br><span class="line">	<span class="comment">// 注册 NSException</span></span><br><span class="line">	<span class="built_in">NSSetUncaughtExceptionHandler</span>(&amp;HandleException); </span><br><span class="line"> 	<span class="comment">// 注册 Signal</span></span><br><span class="line"> 	<span class="built_in">NSArray</span> *signals = @[@(SIGABRT), @(SIGBUS), @(SIGFPE), @(SIGILL), @(SIGTRAP), @(SIGSEGV)];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; signals.count; index ++) &#123;</span><br><span class="line">    	signal([signals[index] intValue], &amp;SignalExceptionHandler);</span><br><span class="line">	&#125;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> HandleException(<span class="built_in">NSException</span> *exception) &#123;</span><br><span class="line">    <span class="comment">// OSAtomicIncrement32是一个递增的一个全局计数器，既快速又安全，是为了防止并发数太大出现错误的情况。</span></span><br><span class="line">    int32_t exceptionCount = OSAtomicIncrement32(&amp;UncaughtExceptionCount);</span><br><span class="line">    <span class="keyword">if</span> (exceptionCount &gt; UncaughtExceptionMaximum) <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">// 获取堆栈信息的数组</span></span><br><span class="line">    <span class="built_in">NSArray</span> *callStack = [<span class="built_in">SKUncaughtExceptionHandler</span> backtrace];</span><br><span class="line">    <span class="comment">// 设置该字典</span></span><br><span class="line">    <span class="built_in">NSMutableDictionary</span> *userInfo =</span><br><span class="line">    [<span class="built_in">NSMutableDictionary</span> dictionaryWithDictionary:[exception userInfo]];</span><br><span class="line">    <span class="comment">// 给堆栈信息设置地址Key</span></span><br><span class="line">    [userInfo</span><br><span class="line">     setObject:callStack</span><br><span class="line">     forKey:UncaughtExceptionHandlerAddressesKey];</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 假如崩溃了执行 handleException: ，并且传出 NSException</span></span><br><span class="line">    [[[<span class="built_in">SKUncaughtExceptionHandler</span> alloc] init] performSelectorOnMainThread:<span class="keyword">@selector</span>(handleException:) withObject:[<span class="built_in">NSException</span> exceptionWithName:[exception name] reason:[exception reason]</span><br><span class="line">      userInfo:userInfo]</span><br><span class="line">     waitUntilDone:<span class="literal">true</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -341,6 +341,12 @@
 
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)handleException:(<span class="built_in">NSException</span> *)exception &#123;</span><br><span class="line">    <span class="comment">// 打印或弹出框</span></span><br><span class="line">		<span class="comment">// 此处省略</span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 创建自己的Runloop</span></span><br><span class="line">    <span class="built_in">CFRunLoopRef</span> runLoop = <span class="built_in">CFRunLoopGetCurrent</span>();</span><br><span class="line">    <span class="built_in">CFArrayRef</span> allModes = <span class="built_in">CFRunLoopCopyAllModes</span>(runLoop);</span><br><span class="line">    <span class="keyword">while</span> (!dismissed) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">NSString</span> *mode <span class="keyword">in</span> (<span class="built_in">NSArray</span> *)allModes) &#123;</span><br><span class="line">            <span class="built_in">CFRunLoopRunInMode</span>((<span class="built_in">CFStringRef</span>)mode, <span class="number">0.001</span>, <span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">CFRelease</span>(allModes);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 注销NSException和Signal</span></span><br><span class="line">    <span class="built_in">NSSetUncaughtExceptionHandler</span>(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">NSArray</span> *signals = @[@(SIGABRT), @(SIGBUS), @(SIGFPE), @(SIGILL), @(SIGTRAP), @(SIGSEGV)];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; signals.count; index ++) &#123;</span><br><span class="line">    	signal([signals[index] intValue], SIG_DFL);</span><br><span class="line">	&#125;&#125;</span><br><span class="line">    <span class="comment">// 杀死 或 唤起</span></span><br><span class="line">    <span class="keyword">if</span> ([[exception name] isEqual:UncaughtExceptionHandlerSignalExceptionName]) &#123;</span><br><span class="line">        kill(getpid(), [[[exception userInfo] objectForKey:UncaughtExceptionHandlerSignalKey] intValue]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [exception raise];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h3 id="Crash-定位"><a href="#Crash-定位" class="headerlink" title="Crash 定位"></a>Crash 定位</h3><p>前面我们已经将Crash的上报工作做完了，也就是解决了第一个问题: <strong>发现问题</strong>。问题既然被发现，那么就必须要被解决，一个Crash如何保证得到处理，需要准确地对Crash行为进行复现，也就是回到案发现场，场景再现。</p>
+<p>有些Crash比较容易复现，比如UI操作类、数组越界等，只要定位到具体的类，很快就能复现出崩溃，这种问题就比较好解决，我们称之为<strong>可稳定复现</strong>。既然有可以稳定复现的Crash，相对的也存在不那么稳定复现的Crash，它需要特定的条件才得以触发。比如同样的数据，在32位机器下的某个操作场景下就会Crash，而在64位机器下就无事发生，像这种问题我们就称为<strong>不稳定复现</strong>。</p>
+<p>像上述提到的两种问题，还都属于<strong>可复现</strong>的范畴内，通过排查各种客观因素，还是有很大概率能够复现出来的，这些都算不上定位上的难点。而真正难以复现的问题，往往是使用者无法直接感知到原因的，它可能在A页面发生闪退，重启后A没事了缺又在B页面闪退，令人头疼不已。这类问题往往都发生在内存上，最臭名昭著的就是<strong>野指针</strong>，像这种<strong>极难复现</strong>的问题，它需要工程师花费大量的时间和精力去排查，着手分析，不仅解决效率极低，且难以稳定暴露，那么有没有办法可以治它呢，有。</p>
+<h4 id="野指针"><a href="#野指针" class="headerlink" title="野指针"></a>野指针</h4><blockquote>
+<p><strong>当所指向的对象被释放或者收回，但是对该指针没有作任何的修改，以至于该指针仍旧指向已经回收的内存地址，此情况下该指针便称野指针。</strong></p>
+</blockquote>
 
   </section>
 
@@ -393,7 +399,7 @@
       var disqus_shortname = 'warpdrive'; 
       
   var disqus_identifier = '/ios-crashprotection/';
-  var disqus_title = '浅谈 iOS 中的 Crash 防护';
+  var disqus_title = '浅谈 iOS 中的 Crash 捕获与防护';
   var disqus_url = 'http://shevakuilin.com/ios-crashprotection/';
   
 
