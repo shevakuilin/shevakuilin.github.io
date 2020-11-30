@@ -416,7 +416,25 @@
 <li><strong>优点:</strong> 针对objc语言，利用objc的<code>方法交换</code>、<code>消息转发</code>等特性，对于iOS 项目来说更具有<code>针对性</code>和<code>可扩展性</code>。</li>
 <li><strong>缺点:</strong> 相对作用范围较小</li>
 </ul>
+<h3 id="Crash-防护"><a href="#Crash-防护" class="headerlink" title="Crash 防护"></a>Crash 防护</h3><p>在这个阶段需要做的事情主要就是<strong>问题修复</strong>和<strong>防止再次发生</strong>了，我们会列举几种 iOS 中常见的崩溃场景，并给出解决方案和相应的防护措施。</p>
+<h4 id="找不到方法的实现unrecognized-selector-sent-to-instance"><a href="#找不到方法的实现unrecognized-selector-sent-to-instance" class="headerlink" title="找不到方法的实现unrecognized selector sent to instance"></a>找不到方法的实现unrecognized selector sent to instance</h4><p><strong>常见场景</strong>：</p>
+<ul>
+<li>没有实现代理</li>
+<li>可变属性使用copy修饰</li>
+<li>低版本系统使用高版本API</li>
+</ul>
+<p><strong>原因</strong>：由于找不到方法 iOS 系统抛出异常导致崩溃。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>尽量避免使用<code>performSelector</code>一系列方法</li>
+<li><code>delegate</code> 方法调用前进行 <code>respondsToSelector</code> 判断，或者Release模式下使用<a target="_blank" rel="noopener" href="https://github.com/forkingdog/ProtocolKit">ProtocolKit</a>给协议添加默认实现防止崩溃，Debug模式下关闭默认实现</li>
+<li>可变属性（如<code>NSMutableArray</code>），不要使用<code>copy</code>修饰，或者重写<code>set</code>方法</li>
+<li>使用<code>高版本的系统方法</code>的时候做判断</li>
+</ul>
+<p><strong>防护措施</strong>：给 NSObject 添加一个分类，实现<code>消息转发</code>的几个方法，以此来规避 Crash 行为。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> respondsToSelector:aSelector]) &#123;</span><br><span class="line">        <span class="comment">// 已实现不做处理</span></span><br><span class="line">        <span class="keyword">return</span> [<span class="keyword">self</span> methodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="string">&quot;v@:&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;在 %@ 类中, 调用了没有实现的实例方法: %@ &quot;</span>, <span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]), <span class="built_in">NSStringFromSelector</span>(anInvocation.selector));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> respondsToSelector:aSelector]) &#123;</span><br><span class="line">        <span class="comment">// 已实现不做处理</span></span><br><span class="line">        <span class="keyword">return</span> [<span class="keyword">self</span> methodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="string">&quot;v@:&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;在 %@ 类中, 调用了没有实现的类方法: %@ &quot;</span>, <span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]), <span class="built_in">NSStringFromSelector</span>(anInvocation.selector));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h4 id="KVC造成的crash"><a href="#KVC造成的crash" class="headerlink" title="KVC造成的crash"></a>KVC造成的crash</h4>
   </section>
 
 </article>
