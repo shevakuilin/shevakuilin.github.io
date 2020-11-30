@@ -371,7 +371,7 @@
 <li>通过<code>free函数</code>来进行野指针定位</li>
 <li>通过<code>dealloc</code>函数来进行野指针定位</li>
 </ul>
-<h6 id="通过free函数"><a href="#通过free函数" class="headerlink" title="通过free函数"></a>通过free函数</h6><p>通过<code>fishhook</code>替换<code>C函数</code>的<code>free</code>方法为自身方法<code>safe_free</code>，就类似<code>runtime</code>的`方法交换。</p>
+<h6 id="通过free函数"><a href="#通过free函数" class="headerlink" title="通过free函数"></a>通过free函数</h6><p>通过<code>fishhook</code>替换C函数的free方法为自身方法safe_free，就类似runtime方法交换。</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> init_safe_free() &#123;</span><br><span class="line">    _unfreeQueue = ds_queue_create(MAX_STEAL_MEM_NUM);</span><br><span class="line">    orig_free = (<span class="keyword">void</span>(*)(<span class="keyword">void</span>*))dlsym(RTLD_DEFAULT, <span class="string">&quot;free&quot;</span>);</span><br><span class="line">    rebind_symbols((<span class="keyword">struct</span> rebinding[])&#123;&#123;<span class="string">&quot;free&quot;</span>, (<span class="keyword">void</span>*)safe_free&#125;&#125;, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>然后在<code>safe_free</code>方法中对<code>已经释放变量</code>的内存，填充<code>0x55</code>，使已经释放变量不能访问，从而使某些野指针从不必现Crash变成了必现。</p>
