@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     
-    <title>谈谈 iOS 中的 Crash 防护 | 跃迁引擎</title>
+    <title>浅谈 iOS 中的 Crash 防护 | 跃迁引擎</title>
     <meta name="renderer" content="webkit">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -12,15 +12,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护。">
+    <meta name="description" content="iOS Research &amp; Development">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="谈谈 iOS 中的 Crash 防护 | 跃迁引擎">
-    <meta name="twitter:description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护。">
+    <meta name="twitter:title" content="浅谈 iOS 中的 Crash 防护 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="谈谈 iOS 中的 Crash 防护 | 跃迁引擎">
-    <meta property="og:description" content="五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护。">
+    <meta property="og:title" content="浅谈 iOS 中的 Crash 防护 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
 
     
     <meta name="author" content="ShevaKuilin">
@@ -68,7 +68,7 @@
         <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
         
         <hr class="panel-cover__divider" />
-        <p class="panel-cover__description"></p>
+        <p class="panel-cover__description">iOS Research & Development</p>
         <hr class="panel-cover__divider panel-cover__divider--secondary" />
 
         <div class="navigation-wrapper">
@@ -142,11 +142,11 @@
       </span> 
    
     </div>
-    <h1 class="post-title">谈谈 iOS 中的 Crash 防护</h1>
+    <h1 class="post-title">浅谈 iOS 中的 Crash 防护</h1>
   </header>
 
   <section class="post">
-    <p>五一假期的第一天，今天我们来谈谈 iOS 中的 Crash 防护。<a id="more"></a></p>
+    <p>五一假期的第一天，今天来聊聊 iOS 中的 Crash 防护。<a id="more"></a></p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/63238926_p0_master1200.jpg">
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>工程师们苦 Crash 久矣，尤其是用户感知最为明显的客户端。那居高不下的崩溃率、数不胜数的用户反馈、迟迟无法完成的 KPI，折磨着每一位客户端的开发同学。</p>
@@ -280,7 +280,11 @@
 <p>Signal可以通过注册信号处理函数来捕获:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 装有6种常见信号的信号数组</span></span><br><span class="line"><span class="built_in">NSArray</span> *signals = @[@(SIGABRT), @(SIGBUS), @(SIGFPE), @(SIGILL), @(SIGTRAP), @(SIGSEGV)];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; signals.count; index ++) &#123;</span><br><span class="line">    <span class="comment">// 注册信号处理函数</span></span><br><span class="line">    <span class="comment">// - Note: signalExceptionHandler 为捕获后的回调函数</span></span><br><span class="line">    signal([signals[index] intValue], &amp;signalExceptionHandler);</span><br><span class="line">&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> signalExceptionHandler(<span class="keyword">int</span> signo) &#123;</span><br><span class="line">    <span class="comment">// Do something...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="NSException的捕获"><a href="#NSException的捕获" class="headerlink" title="NSException的捕获"></a>NSException的捕获</h3>
+<h3 id="NSException异常的捕获"><a href="#NSException异常的捕获" class="headerlink" title="NSException异常的捕获"></a>NSException异常的捕获</h3><p><code>NSException</code>就属于我们前面所说的软件异常。它是应用级异常，发生在<code>CoreFoundation</code>以及更高抽象层级，会通过<code>__cxa_throw</code>函数抛出异常。如果没有人为进行捕获或者在捕获回调函数中没有进行操作终止应用，那么最终会通过<code>abort()</code>函数来向进程抛出一个<code>SIGABRT</code>的信号。</p>
+<p><code>NSException</code>可以通过<code>@try-@catch</code>机制捕获，以此来避免应用Crash。同样地，如果没有catch处理，那么会被系统自带的错误处理所捕获，这个时候可以通过注册<code>NSUncaughtExceptionHandler</code>来捕获NSException异常。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注册NSUncaughtExceptionHandler</span></span><br><span class="line"><span class="built_in">NSSetUncaughtExceptionHandler</span>(&amp;UncaughtExceptionHandler);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 崩溃时的回调函数</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> UncaughtExceptionHandler(<span class="built_in">NSException</span> * exception) &#123;</span><br><span class="line">    <span class="comment">// Do something...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="避免覆盖"><a href="#避免覆盖" class="headerlink" title="避免覆盖"></a>避免覆盖</h4>
   </section>
 
 </article>
@@ -332,7 +336,7 @@
       var disqus_shortname = 'warpdrive'; 
       
   var disqus_identifier = '/ios-crashprotection/';
-  var disqus_title = '谈谈 iOS 中的 Crash 防护';
+  var disqus_title = '浅谈 iOS 中的 Crash 防护';
   var disqus_url = 'http://shevakuilin.com/ios-crashprotection/';
   
 
