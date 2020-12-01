@@ -479,6 +479,34 @@
 <li>对象的属性使用正确的修饰方式</li>
 <li>调用<code>block</code>的时候，须做判断</li>
 </ul>
+<h4 id="KVO引起的崩溃"><a href="#KVO引起的崩溃" class="headerlink" title="KVO引起的崩溃"></a>KVO引起的崩溃</h4><p><strong>常见场景</strong>：</p>
+<ul>
+<li>观察者/被观察者是局部变量，会崩溃</li>
+<li>没有实现observeValueForKeyPath:ofObject:changecontext:方法:，会崩溃</li>
+<li>重复移除观察者，会崩溃</li>
+</ul>
+<p><strong>原因</strong>：添加了观察者，没有在正确的时机移除；以及没有实现相应的监听方法</p>
+<p><strong>解决方案</strong>:</p>
+<ul>
+<li>addObserver和removeObserver一定要成对出现</li>
+<li>保证observeValueForKeyPath:ofObject:changecontext:的实现</li>
+</ul>
+<h4 id="集合类相关崩溃"><a href="#集合类相关崩溃" class="headerlink" title="集合类相关崩溃"></a>集合类相关崩溃</h4><p><strong>常见场景</strong>：</p>
+<ul>
+<li>数组越界</li>
+<li>向数组中添加nil元素</li>
+<li>数组遍历的时候使用错误的方式移除元素</li>
+<li>使用setObject:forKey:向字典中添加value为nil的键值对</li>
+</ul>
+<p><strong>原因</strong>：越界、添加nil、多线程非原子性操作、遍历的同时移除元素</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>给集合类添加<code>category</code>重写原来的方法，在内部做判断</li>
+<li>使用<code>Runtime</code>把原来的方法替换成自定义的安全方法</li>
+<li>给<code>NSMutableDictionary</code>添加元素的时候，使用<code>setObject:forKey:</code>向字典中添加value为nil的键值对，推荐使用KVC的<code>setValue:nil forKey:</code>。<code>[mutableDictionary setValue:nil ForKey:@&quot;name&quot;]</code>不会崩溃，只是从字典中移除name键值对</li>
+<li>因为<code>NSMutableArray、NSMutableDictionary</code>不是线程安全的，所以在多线程环境下要保证读写操作的原子性，使用 <strong>加锁</strong> 、<strong>信号量</strong> 、<strong>GCD串行队列</strong> 、<strong>GCD栅栏</strong><code>dispatch_barrier_async</code>、<strong>CGD组</strong>的<code>dispatch_group_enter</code>和<code>dispatch_group_leave</code></li>
+</ul>
+<h4 id="多线程中的崩溃"><a href="#多线程中的崩溃" class="headerlink" title="多线程中的崩溃"></a>多线程中的崩溃</h4><p><strong>常见场景</strong>：</p>
 
   </section>
 
