@@ -507,6 +507,33 @@
 <li>因为<code>NSMutableArray、NSMutableDictionary</code>不是线程安全的，所以在多线程环境下要保证读写操作的原子性，使用 <strong>加锁</strong> 、<strong>信号量</strong> 、<strong>GCD串行队列</strong> 、<strong>GCD栅栏</strong><code>dispatch_barrier_async</code>、<strong>CGD组</strong>的<code>dispatch_group_enter</code>和<code>dispatch_group_leave</code></li>
 </ul>
 <h4 id="多线程中的崩溃"><a href="#多线程中的崩溃" class="headerlink" title="多线程中的崩溃"></a>多线程中的崩溃</h4><p><strong>常见场景</strong>：</p>
+<ul>
+<li>dispatch_group_leave比dispatch_group_enter执行的次数多</li>
+<li>在子线程更新UI</li>
+<li>多个线程同时释放一个对象（多线程下非线程安全类的使用）</li>
+<li>多线程中的数组扩容、浅复制<ul>
+<li> 扩容：数组的地址已经改变，报错was mutated <strong>while</strong> being enumerated</li>
+<li>浅复制：访问僵尸对象，报错EXC_BAD_ACCESS</li>
+</ul>
+</li>
+</ul>
+<p><strong>原因</strong>：死锁、子线程中更新UI、多个线程同时释放一个对象</p>
+<p><strong>解决方案</strong>：多线程遇到需要同步的时候，加锁，添加信号量等进行同步操作。一般多线程发生的Crash，会收到SIGSEGV信号，表明试图访问未分配给自己的内存，或试图往没有写权限的内存地址写数据。</p>
+<h4 id="Socket长连接导致的崩溃"><a href="#Socket长连接导致的崩溃" class="headerlink" title="Socket长连接导致的崩溃"></a>Socket长连接导致的崩溃</h4><p><strong>常见场景</strong>：长连接socket或重定向管道进入后台，没有关闭导致崩溃</p>
+<p><strong>原因</strong>：当服务器close一个连接时，若client端接着发数据。根据TCP协议的规定，会收到一个RST响应，client再往这个服务器发送数据时，系统会发出一个SIGPIPE信号给进程，告诉进程这个连接已经断开了，不要再写了。而根据信号的默认处理规则，SIGPIPE信号的默认执行动作是terminate(终止、退出),所以client会退出。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>切换到后台时，关闭长连接和管道，回到前台重新创建</li>
+<li>使用signal(SIGPIPE, SIG_IGN)，将SIGPIP交给系统处理，这么做将SIGPIPE设为SIG_IGN，使客户端不执行默认操作，即不退出</li>
+</ul>
+<h4 id="Watch-Dog超时造成的崩溃"><a href="#Watch-Dog超时造成的崩溃" class="headerlink" title="Watch Dog超时造成的崩溃"></a>Watch Dog超时造成的崩溃</h4><p><strong>常见场景</strong>：应用启动阶段用时过长造成崩溃</p>
+<p><strong>原因</strong>：这是由于触发了看门狗（Watch Dog）机制造成的，通常是应用花费太多的时间无法启动、终止或者响应系统事件，一般异常编码是0x8badf00d，表示应用发生watch dog超时而被iOS终止。在不同的生命周期，触发看门狗机制的超时时间有所不同：</p>
+<img src="/image/watchdog-timeout.png" style="zoom:50%">
+
+<p><strong>解决方案</strong>：主线程只负责更新UI和事件响应，将耗时操作（网络请求、数据库读写等）异步放到后台线程执行。</p>
+<h4 id="服务器返回NSNull导致的崩溃"><a href="#服务器返回NSNull导致的崩溃" class="headerlink" title="服务器返回NSNull导致的崩溃"></a>服务器返回NSNull导致的崩溃</h4><p><strong>常见场景</strong>：多见于Java做后台服务器开发语言</p>
+<p><strong>原因</strong>：NSNull用于objc对象的占位，一般会作为集合中的占位元素，给NSNull对象发送消息会crash的</p>
+<p><strong>解决方案</strong>：利用消息转发。参考：<a target="_blank" rel="noopener" href="https://github.com/nicklockwood/NullSafe">NullSafe</a>。当我们给一个NSNull对象发送消息的话，可能会崩溃（null是有内存的），而发送给nil的话，是不会崩溃的。</p>
 
   </section>
 
