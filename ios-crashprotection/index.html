@@ -233,6 +233,10 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Exception Type: EXC_CRASH (SIGABRT)</span><br><span class="line">Exception Codes: <span class="number">0x0000000000000000</span>, <span class="number">0x0000000000000000</span></span><br></pre></td></tr></table></figure>
 
 <p>所以，软/硬件异常最终都会转化为Signal信号，但他们的处理流程是<strong>不同的</strong>。</p>
+<h4 id="Jetsam"><a href="#Jetsam" class="headerlink" title="Jetsam"></a>Jetsam</h4><p>MacOS/iOS是一个从BSD衍生而来的系统。其内核是Mach，但是对于上层暴露的接口一般都是基于BSD层对于Mach包装后的。虽然说Mach是个微内核的架构，真正的虚拟内存管理是在其中进行，但是BSD对于内存管理提供了相对较为上层的接口，同时，各种常见的<strong>JetSam事件也是由BSD产生</strong>。</p>
+<p>关于Jetsam，可能有些人还不是很理解。我们可以从<strong>手机设置-&gt;隐私-&gt;分析</strong>这条路径看看系统的日志，会发现手机上有许多<code>JetsamEvent</code>开头的日志。打开这些日志，一般会显示一些内存大小，CPU时间什么的数据。</p>
+<p>之所以会发生这么JetsamEvent，主要还是由于iOS设备不存在交换区导致的内存受限，所以iOS内核不得不把一些<strong>优先级不高或者占用内存过大的</strong>杀掉。这些<code>JetsamEvent</code>就是系统在杀掉App后记录的一些数据信息。</p>
+<p>从某种程度来说，JetsamEvent是一种另类的Crash事件，但是在常规的Crash捕获工具中，<strong>由于iOS上能捕获的信号量的限制，所以因为内存导致App被杀掉是无法被捕获的</strong>。</p>
 <p>篇幅有限，这里不做过多介绍，感兴趣可以自行了解。</p>
 <h4 id="Mach异常与Signal的选择"><a href="#Mach异常与Signal的选择" class="headerlink" title="Mach异常与Signal的选择"></a>Mach异常与Signal的选择</h4><h5 id="该捕获谁？"><a href="#该捕获谁？" class="headerlink" title="该捕获谁？"></a>该捕获谁？</h5><p>捕获Mach异常或者Signal都可以抓到Crash事件，这两种方式哪个更好呢？</p>
 <p>理论上优选Mach异常，因为Mach异常处理会先于Signal处理发生，如果Mach异常的handler让程序exit了，那么Signal就永远不会到达这个进程了。</p>
@@ -554,10 +558,11 @@
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://www.cocoawithlove.com/2010/05/handling-unhandled-exceptions-and.html">Handling unhandled exceptions and signals</a></p>
 <p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/xcode/diagnosing_issues_using_crash_reports_and_device_logs/identifying_the_cause_of_common_crashes/addressing_watchdog_terminations">Addressing Watchdog Terminations</a></p>
 <p><a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://developer.apple.com/library/mac/documentation/Darwin/Conceptual/KernelProgramming/Architecture/Architecture.html#//apple_ref/doc/uid/TP30000905-CH1g-CACDAEDC">Apple Kernel Programming Guide</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/04f822f929f0">iOS Mach 异常、Unix 信号 和NSException 异常</a></p>
-<p><a target="_blank" rel="noopener" href="https://junyixie.github.io/2019/09/28/CrashMonitorSystem/">崩溃捕获系统的原理（一）异常信号</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/725e7d69272c">浅谈Mach Exceptions</a></p>
 <p><a target="_blank" rel="noopener" href="https://toutiao.io/posts/ziqho/preview">漫谈 iOS Crash 收集框架</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/725e7d69272c">浅谈Mach Exceptions</a></p>
+<p><a target="_blank" rel="noopener" href="https://junyixie.github.io/2019/09/28/CrashMonitorSystem/">崩溃捕获系统的原理（一）异常信号</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/04f822f929f0">iOS Mach 异常、Unix 信号 和NSException 异常</a></p>
+<p><a target="_blank" rel="noopener" href="https://satanwoo.github.io/2017/10/18/abort/">iOS内存abort(Jetsam) 原理探究</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38633659/article/details/82496635">iOS开发：Crash异常总结与捕获</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9fd4dc046046">iOS 野指针定位:野指针嗅探器</a></p>
 <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903748435705864#heading-21">LLVM &amp; Clang 入门</a></p>
