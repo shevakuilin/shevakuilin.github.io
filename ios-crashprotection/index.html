@@ -426,15 +426,60 @@
 <p><strong>原因</strong>：由于找不到方法 iOS 系统抛出异常导致崩溃。</p>
 <p><strong>解决方案</strong>：</p>
 <ul>
-<li>尽量避免使用<code>performSelector</code>一系列方法</li>
-<li><code>delegate</code> 方法调用前进行 <code>respondsToSelector</code> 判断，或者Release模式下使用<a target="_blank" rel="noopener" href="https://github.com/forkingdog/ProtocolKit">ProtocolKit</a>给协议添加默认实现防止崩溃，Debug模式下关闭默认实现</li>
-<li>可变属性（如<code>NSMutableArray</code>），不要使用<code>copy</code>修饰，或者重写<code>set</code>方法</li>
-<li>使用<code>高版本的系统方法</code>的时候做判断</li>
-</ul>
-<p><strong>防护措施</strong>：给 NSObject 添加一个分类，实现<code>消息转发</code>的几个方法，以此来规避 Crash 行为。</p>
+<li><p>尽量避免使用<code>performSelector</code>一系列方法</p>
+</li>
+<li><p><code>delegate</code> 方法调用前进行 <code>respondsToSelector</code> 判断，或者Release模式下使用<a target="_blank" rel="noopener" href="https://github.com/forkingdog/ProtocolKit">ProtocolKit</a>给协议添加默认实现防止崩溃，Debug模式下关闭默认实现</p>
+</li>
+<li><p>使用<code>高版本的系统方法</code>的时候做判断</p>
+</li>
+<li><p>可变属性（如<code>NSMutableArray</code>），不要使用<code>copy</code>修饰，或者重写<code>set</code>方法，我们也可以通过 LLVM &amp; Clang 编写 Xcode 插件来及时提醒工程师对修饰符的使用</p>
+<img src="/image/xcode-plugin.png" style="zoom:50%">
+</li>
+<li><p>没有实现代理，可以给 NSObject 添加一个分类，实现<code>消息转发</code>的几个方法，以此来规避 Crash 行为。</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> respondsToSelector:aSelector]) &#123;</span><br><span class="line">        <span class="comment">// 已实现不做处理</span></span><br><span class="line">        <span class="keyword">return</span> [<span class="keyword">self</span> methodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="string">&quot;v@:&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;在 %@ 类中, 调用了没有实现的实例方法: %@ &quot;</span>, <span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]), <span class="built_in">NSStringFromSelector</span>(anInvocation.selector));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> respondsToSelector:aSelector]) &#123;</span><br><span class="line">        <span class="comment">// 已实现不做处理</span></span><br><span class="line">        <span class="keyword">return</span> [<span class="keyword">self</span> methodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="string">&quot;v@:&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;在 %@ 类中, 调用了没有实现的类方法: %@ &quot;</span>, <span class="built_in">NSStringFromClass</span>([<span class="keyword">self</span> <span class="keyword">class</span>]), <span class="built_in">NSStringFromSelector</span>(anInvocation.selector));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="KVC造成的crash"><a href="#KVC造成的crash" class="headerlink" title="KVC造成的crash"></a>KVC造成的crash</h4>
+
+
+</li>
+</ul>
+<h4 id="KVC造成的crash"><a href="#KVC造成的crash" class="headerlink" title="KVC造成的crash"></a>KVC造成的crash</h4><p><strong>常见场景</strong>：</p>
+<ul>
+<li>对象不支持KVC</li>
+<li>key为nil</li>
+<li>key不是object的属性产生的crash</li>
+</ul>
+<p><strong>原因</strong>：给不存在的key（包括key为nil）设置value</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li><p>如果属性存在，利用iOS的反射机制来规避，<code>NSStringFromSelector(@selector())</code>将<code>SEL</code>反射为字符串作为key。这样在<code>@selector()</code>中传入方法名的过程中，编译器会有合法性检查，如果方法不存在或未实现会报黄色警告</p>
+</li>
+<li><p>重写类的<code>setValue:forUndefinedKey:</code>和<code>valueForUndefinedKey:</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)setValue:(<span class="keyword">id</span>)value forUndefinedKey:(<span class="built_in">NSString</span> *)key&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">id</span>)valueForUndefinedKey:(<span class="built_in">NSString</span> *)key&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="EXC-BAD-ACCESS"><a href="#EXC-BAD-ACCESS" class="headerlink" title="EXC_BAD_ACCESS"></a>EXC_BAD_ACCESS</h4><p><strong>常见场景</strong>：</p>
+<p>基本都是悬垂指针/野指针问题</p>
+<ul>
+<li>访问没有实现的blcok</li>
+<li>对象没有被初始化</li>
+<li>访问的对象已经被释放掉<ul>
+<li>unsafe_unretained修饰的对象释放后，不会自动置nil，变成野指针</li>
+<li>应该使用strong/weak修饰的对象，却错误的使用assign修饰，释放后不会自动置nil，导致崩溃</li>
+<li>给类添加添加关联变量的时候，类似上面的场景，应该使用OBJC_ASSOCIATION_RETAIN_NONATOMIC修饰，却错误使用OBJC_ASSOCIATION_ASSIGN</li>
+</ul>
+</li>
+</ul>
+<p><strong>原因</strong>：出现悬垂指针，对象没有被初始化，或者访问的对象被释放</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li><code>Debug</code>阶段开启僵尸模式，<code>Release</code>时关闭僵尸模式</li>
+<li>使用Xcode的<code>Address Sanitizer</code>检查地址访问越界</li>
+<li>创建对象的时候记得初始化</li>
+<li>对象的属性使用正确的修饰方式</li>
+<li>调用<code>block</code>的时候，须做判断</li>
+</ul>
+
   </section>
 
 </article>
