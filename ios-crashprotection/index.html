@@ -548,6 +548,9 @@
 <h4 id="服务器返回NSNull导致的崩溃"><a href="#服务器返回NSNull导致的崩溃" class="headerlink" title="服务器返回NSNull导致的崩溃"></a>服务器返回NSNull导致的崩溃</h4><p><strong>常见场景</strong>：多见于Java做后台服务器开发语言</p>
 <p><strong>原因</strong>：NSNull用于objc对象的占位，一般会作为集合中的占位元素，给NSNull对象发送消息会crash的</p>
 <p><strong>解决方案</strong>：利用消息转发。参考：<a target="_blank" rel="noopener" href="https://github.com/nicklockwood/NullSafe">NullSafe</a>。当我们给一个NSNull对象发送消息的话，可能会崩溃（null是有内存的），而发送给nil的话，是不会崩溃的。</p>
+<h4 id="某些32位机型才会出现的崩溃"><a href="#某些32位机型才会出现的崩溃" class="headerlink" title="某些32位机型才会出现的崩溃"></a>某些32位机型才会出现的崩溃</h4><p><strong>常见场景</strong>：在32位机型上使用NSNumber时，由于修饰符使用不当可能会造成Crash</p>
+<p><strong>原因</strong>：ARC模式下系统在32位设备上对<code>NSNumber</code>类型的对象做的优化不够彻底，只对-1～12这少数的几个数做了优化，在该范围内创建的实例对象存储在<code>内存共享区</code>，永远不会被销毁。而只要大于12或小于-1就是正常的创建在堆上的对象，系统根据引用计数管理对象是否回收。如果此时恰好使用了错误的修饰符（如assgin），导致对象可能被提前释放，就会引发Crash</p>
+<p><strong>解决方案</strong>：NSNumber 一律采用 strong 修饰</p>
 
   </section>
 
