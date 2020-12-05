@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>进程与线程 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="进程与线程 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="进程与线程 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/process-thread/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-11-23T01:47:54.000Z" class="post-list__meta--date date">2018-11-23</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/%E6%9C%AD%E8%AE%B0/" rel="tag">札记</a>, <a class="-none-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8E%9F%E7%90%86/" rel="tag">计算机原理</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">进程与线程</h1>
+  </header>
+
+  <section class="post">
+    <p>我们常说的进程和线程听起来名字很像，但他们之间有着什么样的联系呢？<a id="more"></a></p>
+<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/72147880_p0_master1200.jpg">
+
+<p>———– 2020年11月23日更新 ———– </p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><h3 id="什么是进程？"><a href="#什么是进程？" class="headerlink" title="什么是进程？"></a>什么是进程？</h3><blockquote>
+<p>进程是一个具有一定独立功能的程序在一个数据集合上依次动态执行的过程。进程是一个正在执行程序的实例，包括程序计数器、寄存器和程序变量的当前值。</p>
+</blockquote>
+<p>简单来说<strong>进程就是一个程序的执行流程，内部保存程序运行所需的资源</strong>。</p>
+<p>在操作系统中可以有多个进程在运行，可对于CPU来说，同一时刻，一个CPU只能运行一个进程，但在某一时间段内，CPU将这一时间段拆分成更短的时间片，CPU不停的在各个进程间游走，这就给人一种并行的错觉，像CPU可以同时运行多个进程一样，这就是<strong>伪并行</strong>。</p>
+<h3 id="进程和程序有什么联系？"><a href="#进程和程序有什么联系？" class="headerlink" title="进程和程序有什么联系？"></a>进程和程序有什么联系？</h3><p>一个进程是某种类型的一个活动，它有程序、输入、输出以及状态。单个处理器可以被若干进程共享，它使用某种调度算法决定何时停止一个进程的工作，并转而为另一个进程提供服务。</p>
+<ul>
+<li>程序是产生进程的基础</li>
+<li>程序的每次运行产生不同的进程</li>
+<li>进程是程序功能的体现</li>
+<li>通过多次执行，一个程序可对应多个进程；通过调用关系，一个进程可包括多个程序</li>
+</ul>
+<h3 id="进程和程序有什么区别？"><a href="#进程和程序有什么区别？" class="headerlink" title="进程和程序有什么区别？"></a>进程和程序有什么区别？</h3><ul>
+<li><strong>进程是动态的，程序是静态的</strong>：程序是有序代码的集合，进程是程序的执行。</li>
+<li><strong>进程是暂时的，程序是永久的</strong>：进程是一个状态变化的过程，程序可长久保存。</li>
+<li><strong>进程和程序的组成不同</strong>：进程的组成包括程序、数据和进程控制块（进程状态信息），而程序是一组计算机能识别和执行的指令，它以某些程序设计语言编写，运行于某种目标结构体系上。</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018-year-end-summary/" title="2018 年终总结">2018 年终总结</a></h2>
+                <p class="excerpt">
+                
+                2018 年终总结，记录在今年的最后一天工作日。本来只想发个沸点，但是写着写着发现字数太多了… ⇎_⇎
+总感觉是，碌碌无为。
+
+
+关于工作：
+年中的时候，送走了合作一年多的老搭档，一个月后迎来了一位新搭档，嗯，三个月后又送走了她。
+年初开发沸点的时候，遇到性能瓶颈，开发周期也非常紧张，做了个冒险的决
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-12-29T09:41:30.000Z" class="post-list__meta--date date">2018-12-29</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" rel="tag">年终总结</a>, <a class="-none-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a>
+</span><a class="btn-border-small" href="/2018-year-end-summary/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/juejin-memory/" title="难追难回味">难追难回味</a></h2>
+                <p class="excerpt">
+                
+                
+你瞧这些白云聚了又聚，散了又散，人生离合，亦复如斯。
+
+人们都说，这是金庸对人生的感悟，将人世的分分合合看的很透彻。
+大概他们都忘了，这句话的后半段写的是什么：
+
+她话虽如此说, 却也忍不住流下泪来。
+
+道理我们都明白，聚散苦匆匆，可是真正经历下来，又有谁能独善其身呢。
+知与谁同“啊，难受”
+一整
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-11-17T15:46:03.000Z" class="post-list__meta--date date">2018-11-17</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E6%8E%98%E9%87%91/" rel="tag">掘金</a>, <a class="-none-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a>
+</span><a class="btn-border-small" href="/juejin-memory/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/process-thread/';
+  var disqus_title = '进程与线程';
+  var disqus_url = 'http://shevakuilin.com/process-thread/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
