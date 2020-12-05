@@ -223,7 +223,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="gcd在后台执行一个任务，小任务定时器，实现步骤："><a href="#gcd在后台执行一个任务，小任务定时器，实现步骤：" class="headerlink" title="gcd在后台执行一个任务，小任务定时器，实现步骤："></a>gcd在后台执行一个任务，小任务定时器，实现步骤：</h2><ul>
+<h2 id="GCD在后台执行一个任务，小任务定时器，实现步骤："><a href="#GCD在后台执行一个任务，小任务定时器，实现步骤：" class="headerlink" title="GCD在后台执行一个任务，小任务定时器，实现步骤："></a>GCD在后台执行一个任务，小任务定时器，实现步骤：</h2><ul>
 <li><code>获取全局并发队列</code>dispatch_get_global_queue</li>
 <li>将获取到的全局并发队列作为参数，<code>创建队列</code>dispatch_source_create</li>
 <li><code>设置定时器</code>dispatch_source_set_timer</li>
@@ -246,6 +246,10 @@
 </ul>
 </li>
 </ul>
+<h2 id="GCD的执行结果"><a href="#GCD的执行结果" class="headerlink" title="GCD的执行结果"></a>GCD的执行结果</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 题目：写出NSLog的打印结果（来自美团 GCD 面试题）</span></span><br><span class="line">__block <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (a &lt; <span class="number">5</span>) &#123;</span><br><span class="line">    <span class="built_in">dispatch_async</span>(dispatch_get_global_queue(<span class="number">0</span>, <span class="number">0</span>), ^&#123;</span><br><span class="line">        a++;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;输出: %d&quot;</span>, a);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 答案：</span></span><br><span class="line"><span class="comment">// 输出结果为：a &gt;= 5</span></span><br><span class="line"><span class="comment">// 原因：while循环内部执行并发耗时任务，ARC环境下，一旦Block赋值就会触发copy，__block就会copy到堆上，所以当执行a++时，Block外部也能访问到改变后的值；当a不满足循环条件而跳出时，并发任务可能仍在只执行，此时仍然会改变a的值，鉴于不同机器的CPU和线程差异影响，所以最终输出结果会大于等于5</span></span><br><span class="line"><span class="comment">// 注意：a的输出值结果是a&gt;=5，但是a的实际结果会远远大于5（NSLog输出完成后，并发耗时任务可能尚未完全结束）</span></span><br></pre></td></tr></table></figure>
+
+
+
 <h2 id="NSOpration-和-NSOperationQueue"><a href="#NSOpration-和-NSOperationQueue" class="headerlink" title="NSOpration 和 NSOperationQueue"></a>NSOpration 和 <strong>NSOperationQueue</strong></h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><blockquote>
 <p><strong>NSOperation</strong>和<strong>NSOperationQueue</strong>是基于GCD的更高一层的封装，分别对应GCD的<strong>任务</strong>和<strong>队列</strong>，完全地面向对象。</p>
 </blockquote>
