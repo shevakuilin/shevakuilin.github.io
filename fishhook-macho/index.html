@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>通过fishhook了解APP启动过程 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="通过fishhook了解APP启动过程 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="通过fishhook了解APP启动过程 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/fishhook-macho/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-06-03T11:33:50.000Z" class="post-list__meta--date date">2019-06-03</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/APP%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B/" rel="tag">APP启动过程</a>, <a class="-none-link" href="/tags/fishhook/" rel="tag">fishhook</a>, <a class="-none-link" href="/tags/hook/" rel="tag">hook</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">通过fishhook了解APP启动过程</h1>
+  </header>
+
+  <section class="post">
+    <p>本文通过对 fishhook 运行原理的分析，来深入探究一个 iOS 应用在启动过程中究竟做了哪些操作。<a id="more"></a></p>
+<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/54238596_p0_master1200.jpg">
+
+<h2 id="fishhook"><a href="#fishhook" class="headerlink" title="fishhook"></a>fishhook</h2><p><a target="_blank" rel="noopener" href="https://github.com/facebook/fishhook">fishhook</a> 是 Facebook 提供的一个动态修改链接 Mach-O 文件的工具。利用 Mach-O 文件加载原理（动态绑定机制），通过修改懒加载和非懒加载两个表的指针，达到 hook 系统 C 函数的目的。</p>
+<p>在 iOS 中， dyld 通过更新 Mach-O 二进制文件的 _data 段的特定部分中的指针来绑定懒加载和非懒加载符号，而 fishhook 就是通过传递给 rebinind _ symbols 的每个符号的更新位置，写出相应的替换符，从而重新绑定这些符号，来完成对系统 C 函数的 hook。</p>
+<p>在懒加载或非懒加载指针表中查找给定条目名称的过程如下:</p>
+<img src="https://camo.githubusercontent.com/c29a64a3786c3ce426e142ef4ae697ba79c0ab2f2161923e08a458b99928b145/687474703a2f2f692e696d6775722e636f6d2f4856587148437a2e706e67">
+
+<p>fishhook 非常轻量级，总共也只有300多行代码，但其中蕴含的思想价值却非常值得我们研究，本文不会对其源码进行逐行分析，相关文章网上已有许多，需要可以自行查找。下文仅会罗列我们在分析过程中需要使用到的函数，重点是对其运行原理的探究，以此来窥探 iOS 应用在启动过程中究竟做了哪些工作。</p>
+<h2 id="fishhook的简单应用"><a href="#fishhook的简单应用" class="headerlink" title="fishhook的简单应用"></a>fishhook的简单应用</h2><p>fishhook的头文件中，提供了下面这两个API：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对动态链接的符号进行重新绑定，操作对象是进程的所有镜像</span></span><br><span class="line"><span class="comment">// @param rebindings 结构体数组</span></span><br><span class="line"><span class="comment">// @param rebindings_nel 数组长度</span></span><br><span class="line">FISHHOOK_VISIBILITY</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rebind_symbols</span><span class="params">(struct rebinding rebindings[], <span class="keyword">size_t</span> rebindings_nel)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对动态链接的符号进行重新绑定，操作对象是某个指定的镜像</span></span><br><span class="line"><span class="comment">// @param header 指定镜像的 Mach-o header</span></span><br><span class="line"><span class="comment">// @param slide 偏移量</span></span><br><span class="line"><span class="comment">// @param rebindings 结构体数组</span></span><br><span class="line"><span class="comment">// @param rebindings_nel 数组长度</span></span><br><span class="line">FISHHOOK_VISIBILITY</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rebind_symbols_image</span><span class="params">(<span class="keyword">void</span> *header,</span></span></span><br><span class="line"><span class="function"><span class="params">                         <span class="keyword">intptr_t</span> slide,</span></span></span><br><span class="line"><span class="function"><span class="params">                         struct rebinding rebindings[],</span></span></span><br><span class="line"><span class="function"><span class="params">                         <span class="keyword">size_t</span> rebindings_nel)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这两个API除了操作对象不同外，其功能是一样的，在没有指定镜像需求的情况下，我们使用<code>rebind_symbols</code>函数就可以了。</p>
+<p>其中 <code>rebinding</code> 是个结构体，其作用就是字面意思：用于重新绑定符号的特定结构，结构体定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rebinding</span> &#123;</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *name; <span class="comment">// 需要hook的函数名，C字符串</span></span><br><span class="line">  <span class="keyword">void</span> *replacement; <span class="comment">// 新函数的地址</span></span><br><span class="line">  <span class="keyword">void</span> **replaced;  <span class="comment">// 原始函数地址的指针 (用来存放原始函数地址)</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>下面我们使用 fishhook 尝试对 iOS 系统函数 <code>NSLog</code> 进行 hook。</p>
+<p>首先我们进入Foundation/NSObjCRuntime.h 查看一下 NSLog 是如何定义的:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里省略了部分代码，我们只需要只要函数定义即可</span></span><br><span class="line">... void NSLog(NSString *format, ...) ...;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们仿照系统的定义方式，来自己声明一个 system_nslog 函数，用来保存等下被替换掉的原始 NSLog 函数地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 名字随便起，这里叫system_nslog</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="title">void</span> <span class="params">(*system_nslog)</span><span class="params">(NSString *format, ...)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>接着我们需要实现一个自定义的 my_nslog 函数，用来替换被 hook 的 NSLog 函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">my_nslog</span><span class="params">(NSString *format, ...)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hook成功，执行my_nslog&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建 rebinding 结构体，按照其结构内定义的变量进行传值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个rebinding结构体，命名为nslog_rebinding</span></span><br><span class="line"><span class="comment">// 3个参数对应着rebinding结构体定义的三个变量</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rebinding</span> <span class="title">nslog_rebinding</span> =</span> &#123;<span class="string">&quot;NSLog&quot;</span>, my_nslog, (<span class="keyword">void</span> *)&amp;system_nslog&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者你可以这么写</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rebinding</span> <span class="title">nslog_rebinding</span>;</span></span><br><span class="line">nslog_rebinding.name = <span class="string">&quot;NSLog&quot;</span>;</span><br><span class="line">nslog_rebinding.replacement = my_nslog;</span><br><span class="line">nslog_rebinding.replaced = (<span class="keyword">void</span> *)&amp;system_nslog;</span><br></pre></td></tr></table></figure>
+
+<p>调用 rebind_symbols 进行重新绑定符号：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 重新绑定符号</span></span><br><span class="line"><span class="comment">// 第一个参数是前面创建的rebinding结构体数组，第二个参数的这个数组的长度</span></span><br><span class="line">rebind_symbols((struct rebinding[<span class="number">1</span>])&#123;nslog_rebinding&#125;, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者你可以这么写</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rebinding</span> <span class="title">rebs</span>[1] =</span> &#123;nslog_rebinding&#125;;</span><br><span class="line">rebind_symbols(rebs, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在 ViewController.m 里试验一下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&quot;fishhook.h&quot;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&quot;ViewController.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;首次执行NSLog&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">struct</span> rebinding nslog_rebinding = &#123;<span class="string">&quot;NSLog&quot;</span>, my_nslog, (<span class="keyword">void</span> *)&amp;system_nslog&#125;;</span><br><span class="line">    rebind_symbols((<span class="keyword">struct</span> rebinding[<span class="number">1</span>])&#123;nslog_rebinding&#125;, <span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;第二次执行NSLog&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> (*system_nslog)(<span class="built_in">NSString</span> *format, ...);</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> my_nslog(<span class="built_in">NSString</span> *format, ...) &#123;</span><br><span class="line">    printf(<span class="string">&quot;hook成功，执行my_nslog&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- 首次执行NSLog</span><br><span class="line">- hook成功，执行my_nslog</span><br></pre></td></tr></table></figure>
+
+<p>Ok，hook 系统 NSLog 成功。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/build-ghost-on-centos7/" title="如何在 CentOS 7 上搭建一个 Ghost 博客">如何在 CentOS 7 上搭建一个 Ghost 博客</a></h2>
+                <p class="excerpt">
+                
+                Ghost 是一套基于 Node.js 构建的开原博客平台（Open source blogging platform），目标是取代臃肿的 Wordpress，界面简洁，专注写作，支持在线预览和在线写作。
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-09-03T06:48:26.000Z" class="post-list__meta--date date">2019-09-03</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/CentOS7/" rel="tag">CentOS7</a>, <a class="-none-link" href="/tags/Ghost%E5%8D%9A%E5%AE%A2/" rel="tag">Ghost博客</a>, <a class="-none-link" href="/tags/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/" rel="tag">折腾日记</a>
+</span><a class="btn-border-small" href="/build-ghost-on-centos7/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/nsmutablearray-note/" title="NSMutableArray原理揭露阅读笔记">NSMutableArray原理揭露阅读笔记</a></h2>
+                <p class="excerpt">
+                
+                NSArray是线性连续内存，这个很好理解。但是NSMutableArray是可以插入和删除的，那么如何做到高效？就比如插入，如何做到尽可能少的移动或者不移动插入元素后其他元素的内存？实现数据结构原理是什么？
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-01-25T10:04:39.000Z" class="post-list__meta--date date">2019-01-25</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/CFArray/" rel="tag">CFArray</a>, <a class="-none-link" href="/tags/NSArray/" rel="tag">NSArray</a>, <a class="-none-link" href="/tags/NSMutableArray/" rel="tag">NSMutableArray</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E6%9C%AD%E8%AE%B0/" rel="tag">札记</a>
+</span><a class="btn-border-small" href="/nsmutablearray-note/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/fishhook-macho/';
+  var disqus_title = '通过fishhook了解APP启动过程';
+  var disqus_url = 'http://shevakuilin.com/fishhook-macho/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
