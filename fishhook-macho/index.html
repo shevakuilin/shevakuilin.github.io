@@ -220,6 +220,28 @@
 <p>有没有发现，NSLog 函数并没有出现在非懒加载表中，而是懒加载表中。这说明，NSLog 函数是以懒加载的方式进行加载的，也就是说，如果没有调用 NSLog，那么在 Mach-O 中是看不到它的。因为我们在 rebind_symbols 之前调用了一次 NSLog，所以我的 Mach-O 中的懒加载表里可以看到它：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    NSLog(@<span class="string">&quot;首次执行NSLog&quot;</span>); <span class="comment">// 这里</span></span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">rebinding</span> <span class="title">nslog_rebinding</span> =</span> &#123;<span class="string">&quot;NSLog&quot;</span>, my_nslog, (<span class="keyword">void</span> *)&amp;system_nslog&#125;;</span><br><span class="line">    rebind_symbols((struct rebinding[<span class="number">1</span>])&#123;nslog_rebinding&#125;, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>那么 NSLog 现在在内存的哪个区域呢？可以通过 lldb 查看下，在 Xcode 中 <code>rebind_symbols((**struct** rebinding[1])&#123;nslog_rebinding&#125;, 1);</code> 行出打上断点，输入下列命令</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image <span class="built_in">list</span> <span class="comment">// 打印当前所有模块列表</span></span><br></pre></td></tr></table></figure>
+
+<img src="/image/lldb-imagelist.png" style="zoom:50%">
+
+<p>可以看到，在首先加载了我们 Demo 的可执行文件后，紧接着就是 dyld、Foundation、dylib …</p>
+<p>因为我们想看 NSLog 在内存的哪个区域，所以我们读一下它的 Mach-O 文件的内存地址 <code>0x0000000104934000</code>（就是图中FishhookDemo可执行文件前面的地址），lldb 输入下列命令</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x <span class="number">0x0000000104934000</span>+<span class="number">0x8018</span> <span class="comment">// 加号后面的0x8018为NSLog的偏移量</span></span><br></pre></td></tr></table></figure>
+
+<img src="/image/lldb-nslog-x.png" style="zoom:50%">
+
+<p>其中冒号左边的值是指针（symbol）的地址，冒号右边的到00中间这部分是该指针的值。那么这个指针的值是指向的谁呢？是 NSLog 吗？我们不妨通过打印汇编代码来验证一下，由于 iOS 的 CPU 是小段序的，所以我们要从右往左读<code>3c e5 2e 84 01</code>，也就是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dis -s <span class="number">0x01842ee53c</span></span><br></pre></td></tr></table></figure>
+
+<img src="/image/dis-nslog.png" style="zoom:50%">
+
+<p>结果果然不出所料，就是 NSLog，这样一来，我们就找到了 NSLog 在内存中的实际地址了。那么下面第二行那段又是指向谁的地址呢？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dis -s <span class="number">0x018802cfb4</span></span><br></pre></td></tr></table></figure>
+
+<img src="/image/dis-uiapplicationmain.png" style="zoom:50%">
+
+<p>发现它指向的地址是我们的 UIApplicationMain 函数。</p>
 
   </section>
 
