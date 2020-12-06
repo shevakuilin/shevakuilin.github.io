@@ -154,7 +154,7 @@
 <li><a target="_blank" rel="noopener" href="https://www.desgard.com/iOS-Source-Probe/C/mach-o/Mach-O%20%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E6%8E%A2%E7%B4%A2.html">Mach-O 文件格式探索</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.sunnyxx.com/2014/08/30/objc-pre-main/">iOS 程序 main 函数之前发生了什么</a></li>
 </ul>
-<h2 id="fishhook"><a href="#fishhook" class="headerlink" title="fishhook"></a>fishhook</h2><p><a target="_blank" rel="noopener" href="https://github.com/facebook/fishhook">fishhook</a> 是 Facebook 提供的一个动态修改链接 Mach-O 文件的工具。利用 Mach-O 文件加载原理（动态绑定机制），通过修改懒加载和非懒加载两个表的指针，达到 hook 系统 C 函数的目的。</p>
+<h2 id="fishhook"><a href="#fishhook" class="headerlink" title="fishhook"></a>fishhook</h2><p><a target="_blank" rel="noopener" href="https://github.com/facebook/fishhook">fishhook</a> 是 Facebook 提供的一个动态修改链接 Mach-O 文件的工具。一句话概括就是：利用 Mach-O 文件加载原理（动态绑定机制），通过修改懒加载和非懒加载两个表的指针，达到 hook 系统 C 函数的目的。</p>
 <p>在 iOS 中， dyld 通过更新 Mach-O 二进制文件的 _data 段的特定部分中的指针来绑定懒加载和非懒加载符号，而 fishhook 就是通过传递给 rebinind _ symbols 的每个符号的更新位置，写出相应的替换符，从而重新绑定这些符号，来完成对系统 C 函数的 hook。</p>
 <p>在懒加载或非懒加载指针表中查找给定条目名称的过程如下:</p>
 <img src="https://camo.githubusercontent.com/c29a64a3786c3ce426e142ef4ae697ba79c0ab2f2161923e08a458b99928b145/687474703a2f2f692e696d6775722e636f6d2f4856587148437a2e706e67">
