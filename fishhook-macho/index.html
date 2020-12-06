@@ -242,6 +242,24 @@
 <img src="/image/dis-uiapplicationmain.png" style="zoom:50%">
 
 <p>发现它指向的地址是我们的 UIApplicationMain 函数。</p>
+<p>由于我们断点打在了<code>rebind_symbols((**struct** rebinding[1])&#123;nslog_rebinding&#125;, 1);</code> 这一行，说明fishhook的重绑定还未开始，NSLog 还未交换成我们自己的函数，所以地址指向的仍然是 NSLog，那么当fishhook完成重绑定后又会变成什么呢？</p>
+<p>向下执行到这一行</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;第二次执行NSLog&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>现在我们再来看看刚才指向 NSLog 的指针（symbol）地址现在指向的是谁，也就是之前绑定了 NSLog 的符号现在绑定的是谁，继续打印 Mach-O 文件的地址</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x <span class="number">0x0000000104934000</span>+<span class="number">0x8018</span></span><br></pre></td></tr></table></figure>
+
+<img src="/image/lldb-didchange-nslog.png" style="zoom:50%">
+
+<p>冒号左边的指针地址没变，说明还是同一个指针（symbol），但是冒号右边指针的值缺明显发生改变了。现在它值想的是谁呢？我们来看一下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dis -s <span class="number">01049394</span>d4</span><br></pre></td></tr></table></figure>
+
+<img src="/image/dis-my_nslog.png" style="zoom:50%">
+
+<p>现在之前指向 NSLog 的指针指向了我们自定义的 my_nslog 函数的地址，也就是说，绑定 NSLog 的符号现在被 fishhook 重新绑定到了 my_nslog 上，这也就是 fishhook 运行的原理，就这么简单。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.cnbluebox.com/blog/2017/10/12/dyld2/">Dyld之二: 动态链接过程</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhangbuhuai.com/post/fishhook.html">分析 fishhook</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903789783154702">fishhook的实现原理浅析</a></p>
 
   </section>
 
