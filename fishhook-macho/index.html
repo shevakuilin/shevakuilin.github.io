@@ -202,6 +202,7 @@
 <p>当你的应用要调用一个 Mach-O 外部的系统函数时（例如 NSLog），那么 PIC 会在你的 Mach-O 文件的 <code>__DATA</code> 段中创建一个指针（这个指针也就是我们说的符号，<strong>symbol</strong>），并赋予 8bit 的空间用来保存外部函数的地址；这个指针由 dyld 操作，当 dyld 加载了 Mach-O 之后，在我们自己的 Mach-O 中，是不知道系统库函数 NSLog 的具体地址的，这个时候只有对 Mach-O 以及 dylib （准确地说应该是dylib的共享缓存库）进行加载的 dyld 才知道它们各自的具体位置（毕竟是通过它来加载的嘛，如果连地址都不知道，怎么能正常加载呢），所以这个时候 dyld（这里指的是动态链接器） 会去访问 Mach-O 文件的 <code>Load commands</code> 描述文件，在描述文件中会标明这个 Mach-O 依赖了哪些库（LoadCommand 里面的会有一个cmd来描述 dynamic loader info）。</p>
 <p>以 NSLog 为例，当 dyld 发现我们的 Mach-O 依赖了 NSLog 所在的动态库，那么这个时候就会开始进行绑定（bind），绑定的过程就是将动态库里 NSLog 的地址赋值给我们之前说的 __DATA 段里创建的那个指针 ，所以 Apple 采用 PIC 这个技术就是为了让 C 的底层也能拥有动态性。</p>
 <p>一句话概括就是：<strong>dyld利用PIC将内部函数的指针（符号）与外部函数的指针（符号）绑定在一起</strong>。</p>
+<p>也许现在你就会明白 dyld 为什么会叫这个名字了，因为它是<strong>Dynamic Loader</strong>，动态加载。</p>
 <p>从这里我们也可以看出：<strong>C语言虽然是静态的，但是系统可以造就其动态性</strong>。</p>
 <p>fishhook 正是利用了 PIC 技术做了这么两个操作：</p>
 <ul>
@@ -209,7 +210,7 @@
 <li><strong>将内部函数的指针在动态链接时指向系统方法的地址</strong>。</li>
 </ul>
 <p>这样就把系统方法与自己定义的方法进行了交换，达到 HOOK 系统 C 函数（共享库中的）的目的。</p>
-<p>也许现在你就会明白 dyld 为什么会叫这个名字了，因为它是<strong>Dynamic Loader</strong>，动态加载。</p>
+<p>所以fishhook的函数名叫rebind_symbols（重新绑定符号），这同样也解释了为什么fishhook只能hook系统C函数，而不能hook我们自己的函数。</p>
 
   </section>
 
