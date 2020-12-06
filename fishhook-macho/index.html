@@ -149,7 +149,7 @@
     <p>本文通过对 fishhook 运行原理的分析，来探寻一个 iOS 应用在启动加载过程中究竟做了哪些操作。<a id="more"></a></p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/54238596_p0_master1200.jpg">
 
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>阅读本文前，你需要了解 Mach-O 文件的基本结构以及 dyld 的基本作用，不清楚的同学可以通过下面两篇文章做下简单的了解：</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>阅读本文前，你需要了解 Mach-O 文件的基本结构以及 dyld 的基本作用，不清楚的同学可以通过下面两篇文章做下简单的了解，下文将不会对这些基础概念进行额外介绍：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.desgard.com/iOS-Source-Probe/C/mach-o/Mach-O%20%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E6%8E%A2%E7%B4%A2.html">Mach-O 文件格式探索</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.sunnyxx.com/2014/08/30/objc-pre-main/">iOS 程序 main 函数之前发生了什么</a></li>
@@ -191,6 +191,13 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- 首次执行NSLog</span><br><span class="line">- hook成功，执行my_nslog</span><br></pre></td></tr></table></figure>
 
 <p>Ok，hook 系统 NSLog 成功。</p>
+<h2 id="fishhook是如何工作的"><a href="#fishhook是如何工作的" class="headerlink" title="fishhook是如何工作的"></a>fishhook是如何工作的</h2><p>通过前面的演示，我们可以看到 fishhook 很轻松的就对 iOS 的系统库 NSLog 函数进行了 hook，虽然 Facebook 官方告诉我们 fishhook 是利用 Mach-O 文件动态绑定机制，通过对符号进行重新绑定来实现的 hook，但它究竟是如何工作的呢？我们都知道 C 函数的静态的，也就是说在编译期 IDE 就知道了它的函数地址，那为什么 fishhook 仍然能够改变 C 函数的调用呢，这其中是什么原理，让我们来一探究竟。</p>
+<h3 id="Mach-O如何被加载进应用内存的"><a href="#Mach-O如何被加载进应用内存的" class="headerlink" title="Mach-O如何被加载进应用内存的"></a>Mach-O如何被加载进应用内存的</h3><p>我们知道 Mach-O 文件是通过 dyld 进行加载的，但在 dyld 对 Mach-O 进行加载的过程中，出于安全考虑使用了一项技术 <strong>ASLR</strong>（Address space layout randomization），翻译过来就叫<strong>地址空间布局随机化</strong>，其作用就是在 dyld 加载每一个可执行文件（Mach-O）的时候，在这个文件的地址前，加上了一段偏移地址，并且这段偏移地址是一个随机值。</p>
+<p>由于 ASLR 的使用，导致了每次 dyld 加载 Mach-O 的时候其地址都不一样。而我们自己定义的 .h .m 文件都会被编译成二进制文件.o，它是 Mach-O 的一种文件类型，所以也会被 dyld 进行加载。而系统库函数 NSLog 则不在我们的 Mach-O 当中，它存在于系统的动态库 Foundation 里。iOS 系统有许多动态库（dylib），只有在使用的时候，这些动态库才会被系统加载到内存中。这些系统的动态库有一个公用的共享缓存区（也叫共享缓存库），由于动态库在系统中只保留一份内存，所以当某个 APP 使用到这个动态库的时候，就会去访问这个共享缓存区。</p>
+<p>当我们自己的 Mach-O 被 dyld 加载进内存后，会运行 dyld 动态链接器（Dynamic Linker）来检查 Mach-O 对动态库的依赖，并以此为依据对动态库进行加载。以我们之前写的代码为例：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">  	<span class="comment">// dyld动态链接器检测到这里使用了 NSLog</span></span><br><span class="line">  	<span class="comment">// 接着会找到包含 NSLog 函数的动态库，并对其进行链接</span></span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;首次执行NSLog&quot;</span>);</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为我们自己的代码会被以 Mach-O 的形式进行加载，但在我们自己的 Mach-O 中，是不知道系统库函数 NSLog 的具体地址的，这个时候只有对 Mach-O 以及 dylib 进行加载的 dyld 才知道她们各自的具体位置（毕竟是通过它来加载的嘛，如果连地址都不知道，怎么能正常加载呢），所以会通过动态链接器对其进行链接。</p>
 
   </section>
 
