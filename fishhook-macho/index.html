@@ -169,8 +169,7 @@
 <p>其中 <code>rebinding</code> 是个结构体，其作用就是字面意思：用于重新绑定符号的特定结构，结构体定义如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rebinding</span> &#123;</span></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *name; <span class="comment">// 需要hook的函数名，C字符串</span></span><br><span class="line">  <span class="keyword">void</span> *replacement; <span class="comment">// 新函数的地址</span></span><br><span class="line">  <span class="keyword">void</span> **replaced;  <span class="comment">// 原始函数地址的指针 (用来存放原始函数地址)</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>下面我们使用 fishhook 尝试对 iOS 系统函数 <code>NSLog</code> 进行 hook。</p>
-<p>首先我们进入Foundation/NSObjCRuntime.h 查看一下 NSLog 是如何定义的:</p>
+<h3 id="下面我们-尝试使用-fishhook-对-iOS-系统函数-NSLog-进行-hook。"><a href="#下面我们-尝试使用-fishhook-对-iOS-系统函数-NSLog-进行-hook。" class="headerlink" title="下面我们 尝试使用 fishhook 对 iOS 系统函数 NSLog 进行 hook。"></a>下面我们 尝试使用 fishhook 对 iOS 系统函数 NSLog 进行 hook。</h3><p>首先我们进入Foundation/NSObjCRuntime.h 查看一下 NSLog 是如何定义的:</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里省略了部分代码，我们只需要只要函数定义即可</span></span><br><span class="line">... void NSLog(NSString *format, ...) ...;</span><br></pre></td></tr></table></figure>
 
 <p>然后我们仿照系统的定义方式，来自己声明一个 system_nslog 函数，用来保存等下被替换掉的原始 NSLog 函数地址。</p>
