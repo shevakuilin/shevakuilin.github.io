@@ -155,11 +155,11 @@
 <li><a target="_blank" rel="noopener" href="https://blog.sunnyxx.com/2014/08/30/objc-pre-main/">iOS 程序 main 函数之前发生了什么</a></li>
 </ul>
 <h2 id="fishhook"><a href="#fishhook" class="headerlink" title="fishhook"></a>fishhook</h2><p><a target="_blank" rel="noopener" href="https://github.com/facebook/fishhook">fishhook</a> 是 Facebook 提供的一个动态修改链接 Mach-O 文件的工具。一句话概括就是：利用 Mach-O 文件加载原理（动态绑定机制），通过修改懒加载和非懒加载两个表的指针，达到 hook 系统 C 函数的目的。</p>
-<p>在 iOS 中， dyld 通过更新 Mach-O 二进制文件的 _data 段的特定部分中的指针来绑定懒加载和非懒加载符号，而 fishhook 就是通过传递给 rebinind _ symbols 的每个符号的更新位置，写出相应的替换符，从而重新绑定这些符号，来完成对系统 C 函数的 hook。</p>
+<p>在 iOS 中， dyld 通过更新 Mach-O 二进制文件的 _data 段的特定部分中的指针来绑定懒加载和非懒加载符号，而 fishhook 就是通过传递给 rebinind_symbols 的每个符号的更新位置，写出相应的替换符，从而重新绑定这些符号，来完成对系统 C 函数的 hook。</p>
 <p>在懒加载或非懒加载指针表中查找给定条目名称的过程如下:</p>
 <img src="https://camo.githubusercontent.com/c29a64a3786c3ce426e142ef4ae697ba79c0ab2f2161923e08a458b99928b145/687474703a2f2f692e696d6775722e636f6d2f4856587148437a2e706e67">
 
-<p>fishhook 非常轻量级，总共也只有300多行代码，但其中蕴含的思想价值却非常值得我们研究，本文不会对其源码进行逐行分析，相关文章网上已有许多，需要可以自行查找。下文仅会罗列我们在分析过程中需要使用到的函数，重点是对其运行原理的探究，以此来窥探 iOS 应用在启动过程中究竟做了哪些工作。</p>
+<p>fishhook 非常轻量级，总共也只有300多行代码，但其中蕴含的思想价值却非常值得我们研究，本文不会对其源码进行逐行分析，相关文章网上已有许多，需要可以自行查找。下文仅会罗列我们在分析过程中需要使用到的函数，重点是对其运行原理的探究，以此来窥探 iOS 应用在启动加载过程中究竟做了哪些工作。</p>
 <h2 id="fishhook的简单应用"><a href="#fishhook的简单应用" class="headerlink" title="fishhook的简单应用"></a>fishhook的简单应用</h2><p>fishhook的头文件中，提供了下面这两个API：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对动态链接的符号进行重新绑定，操作对象是进程的所有镜像</span></span><br><span class="line"><span class="comment">// @param rebindings 结构体数组</span></span><br><span class="line"><span class="comment">// @param rebindings_nel 数组长度</span></span><br><span class="line">FISHHOOK_VISIBILITY</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rebind_symbols</span><span class="params">(struct rebinding rebindings[], <span class="keyword">size_t</span> rebindings_nel)</span></span>;</span><br></pre></td></tr></table></figure>
 
