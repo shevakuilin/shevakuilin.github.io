@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     
-    <title>通过fishhook了解APP启动过程 | 跃迁引擎</title>
+    <title>通过fishhook探寻APP启动加载 | 跃迁引擎</title>
     <meta name="renderer" content="webkit">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -15,11 +15,11 @@
     <meta name="description" content="iOS Research &amp; Development">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="通过fishhook了解APP启动过程 | 跃迁引擎">
+    <meta name="twitter:title" content="通过fishhook探寻APP启动加载 | 跃迁引擎">
     <meta name="twitter:description" content="iOS Research &amp; Development">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="通过fishhook了解APP启动过程 | 跃迁引擎">
+    <meta property="og:title" content="通过fishhook探寻APP启动加载 | 跃迁引擎">
     <meta property="og:description" content="iOS Research &amp; Development">
 
     
@@ -142,13 +142,18 @@
       </span> 
    
     </div>
-    <h1 class="post-title">通过fishhook了解APP启动过程</h1>
+    <h1 class="post-title">通过fishhook探寻APP启动加载</h1>
   </header>
 
   <section class="post">
-    <p>本文通过对 fishhook 运行原理的分析，来深入探究一个 iOS 应用在启动过程中究竟做了哪些操作。<a id="more"></a></p>
+    <p>本文通过对 fishhook 运行原理的分析，来探寻一个 iOS 应用在启动加载过程中究竟做了哪些操作。<a id="more"></a></p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/54238596_p0_master1200.jpg">
 
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>阅读本文前，你需要了解 Mach-O 文件的基本结构以及 dyld 的基本作用，不清楚的同学可以通过下面两篇文章做下简单的了解：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.desgard.com/iOS-Source-Probe/C/mach-o/Mach-O%20%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E6%8E%A2%E7%B4%A2.html">Mach-O 文件格式探索</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.sunnyxx.com/2014/08/30/objc-pre-main/">iOS 程序 main 函数之前发生了什么</a></li>
+</ul>
 <h2 id="fishhook"><a href="#fishhook" class="headerlink" title="fishhook"></a>fishhook</h2><p><a target="_blank" rel="noopener" href="https://github.com/facebook/fishhook">fishhook</a> 是 Facebook 提供的一个动态修改链接 Mach-O 文件的工具。利用 Mach-O 文件加载原理（动态绑定机制），通过修改懒加载和非懒加载两个表的指针，达到 hook 系统 C 函数的目的。</p>
 <p>在 iOS 中， dyld 通过更新 Mach-O 二进制文件的 _data 段的特定部分中的指针来绑定懒加载和非懒加载符号，而 fishhook 就是通过传递给 rebinind _ symbols 的每个符号的更新位置，写出相应的替换符，从而重新绑定这些符号，来完成对系统 C 函数的 hook。</p>
 <p>在懒加载或非懒加载指针表中查找给定条目名称的过程如下:</p>
@@ -239,7 +244,7 @@
       var disqus_shortname = 'warpdrive'; 
       
   var disqus_identifier = '/fishhook-macho/';
-  var disqus_title = '通过fishhook了解APP启动过程';
+  var disqus_title = '通过fishhook探寻APP启动加载';
   var disqus_url = 'http://shevakuilin.com/fishhook-macho/';
   
 
