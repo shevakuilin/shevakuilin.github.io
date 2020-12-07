@@ -555,6 +555,7 @@
 <h4 id="某些32位机型才会出现的崩溃"><a href="#某些32位机型才会出现的崩溃" class="headerlink" title="某些32位机型才会出现的崩溃"></a>某些32位机型才会出现的崩溃</h4><p><strong>常见场景</strong>：在32位机型上使用NSNumber时，由于修饰符使用不当可能会造成Crash</p>
 <p><strong>原因</strong>：ARC模式下系统在32位设备上对<code>NSNumber</code>类型的对象做的优化不够彻底，只对-1～12这少数的几个数做了优化，在该范围内创建的实例对象存储在<code>内存共享区</code>，永远不会被销毁。而只要大于12或小于-1就是正常的创建在堆上的对象，系统根据引用计数管理对象是否回收。如果此时恰好使用了错误的修饰符（如assgin），导致对象可能被提前释放，就会引发Crash</p>
 <p><strong>解决方案</strong>：NSNumber 一律采用 strong 修饰</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>最后感谢头条的<a target="_blank" rel="noopener" href="https://junyixie.github.io/">谢俊逸</a>同学对软件异常转换信号方面疑惑的解答！</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://www.cocoawithlove.com/2010/05/handling-unhandled-exceptions-and.html">Handling unhandled exceptions and signals</a></p>
 <p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/xcode/diagnosing_issues_using_crash_reports_and_device_logs/identifying_the_cause_of_common_crashes/addressing_watchdog_terminations">Addressing Watchdog Terminations</a></p>
 <p><a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://developer.apple.com/library/mac/documentation/Darwin/Conceptual/KernelProgramming/Architecture/Architecture.html#//apple_ref/doc/uid/TP30000905-CH1g-CACDAEDC">Apple Kernel Programming Guide</a></p>
