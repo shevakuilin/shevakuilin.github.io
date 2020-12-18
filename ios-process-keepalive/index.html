@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>iOS 应用进程后台保活方案 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iOS 应用进程后台保活方案 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="iOS 应用进程后台保活方案 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-process-keepalive/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2020-12-18T14:20:10.000Z" class="post-list__meta--date date">2020-12-18</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%90%8E%E5%8F%B0%E4%BF%9D%E6%B4%BB/" rel="tag">后台保活</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">iOS 应用进程后台保活方案</h1>
+  </header>
+
+  <section class="post">
+    <p>这是我加入洋葱学院基础架构组接手的第一项任务：iOS 后台线程保活问题 <!--- more --></p>
+<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>目前洋葱学院 iOS 端在 iOS 13.0+ 系统上的后台进程存活时间仅为30s，当应用退入后台，30s后再次返回前台，将触发应用的<strong>冷启动</strong>，从而无法满足常驻性业务场景需求。</p>
+<h2 id="开始排查"><a href="#开始排查" class="headerlink" title="开始排查"></a>开始排查</h2><h3 id="猜测"><a href="#猜测" class="headerlink" title="猜测"></a>猜测</h3><ul>
+<li>内存占用过大被系统触杀</li>
+<li>后台频繁I/O操作导致系统触杀</li>
+</ul>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ul>
+<li><p>查看本机系统Jetsam、CrashReporter等日志，未发现洋葱学院入列；关闭本机相册、相机等高耗存后仍存活不过30s，排除内存问题触发异常原因被强杀 ❌</p>
+</li>
+<li><p>Instruments 监测挂起状态时的后台I/O操作，发现存在 Background Task ✅</p>
+</li>
+<li><ul>
+<li>经 File Activity 排查，挂起阶段发现批量I/O操作行为，集中在后台下载任务YCVipGoodInfoVM、SDImageCache磁盘I/O、YCTaskPriorityQueue、UM/MobClickInternal、UM/WorkDispatch、JCore等处</li>
+<li>排查挂起阶段代码，发现后台下载 &amp; 埋点上传等 Background Task</li>
+<li>将上述代码注释掉之后进行测试：</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>将应用挂入后台30s后返回，<strong>未触发冷启动</strong></li>
+<li>挂入后台5’30s后返回，<strong>未触发冷启动</strong></li>
+<li>挂入后台10’35s后返回，<strong>未触发冷启动</strong></li>
+<li>挂入后台16’后返回，<strong>未触发冷启动</strong></li>
+<li>挂入后台30’后返回，<strong>未触发冷启动</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1396654/1608202772517-1fdce0c8-af17-49a3-85eb-de492197f63a.png?x-oss-process=image/resize,w_1500" alt="Lark20201217185902.png"></p>
+<h3 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h3><p>经过上面的分析，可以确认是由于后台任务导致的系统触杀，范围锁定在下列三个函数作用域中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)applicationWillResignActive:(UIApplication *)application</span><br><span class="line">- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler</span><br><span class="line">- (void)applicationDidEnterBackground:(UIApplication *)application</span><br></pre></td></tr></table></figure>
+
+<p>测试1：只保留上述三个函数中的 applicationWillResignActive 函数中埋点上传代码，后台挂起30s后返回，<strong>应用未触发冷启动</strong>，排除该函数</p>
+<p>测试二：只保留后两个函数，屏蔽第一个函数，<strong>应用触发冷启动</strong>，范围确定在后两个函数</p>
+<p>测试三：屏蔽第二个函数中的 YCVideoDownloadManager 相关方法，<strong>应用触发冷启动</strong>，进一步锁定在后台下载管理类 YCThunderDownloadManager 的相关方法</p>
+<p>测试三：屏蔽YCThunderDownloadManager 的相关方法，<strong>应用触发冷启动</strong>，证明并非是其造成的</p>
+<p>测试三：屏蔽 beginBackgroundTaskWithExpirationHandler 函数，关闭所有可能的后台任务入口，<strong>应用未触发冷启动</strong>，证明可能存在其他后台任务影响了应用进程的存活。</p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>为何 beginBackgroundTaskWithExpirationHandler 函数一执行，就会造成应用在后台被杀的情况呢？去官方文档查阅了对该函数的描述，发现有这么一句话：</p>
+<blockquote>
+<p>Failure to end the task explicitly will result in the termination of the app.</p>
+</blockquote>
+<p>这句话是说，<strong>如果任务没有明确结束，将导致应用程序的终止</strong>。看到这里虎躯一震，我好像知道问题出在哪里了，摁住躁动的心继续往下看</p>
+<blockquote>
+<p>A unique identifier for the new background task. You must pass this value to the endBackgroundTask: method to mark the end of this task. </p>
+</blockquote>
+<p>意思就是说，<strong>必须将**</strong>后台任务的唯一标识符**<strong>传递给 endBackgroundTask: 方法，以标记此任务的结束</strong>。这么一来可以看出，如果没有执行 endBackgroundTask: 方法，后台任务就<strong>无**</strong>法被标记结束**。</p>
+<p>看到这里我立刻返回工程里搜索了一下 endBackgroundTask，发现除了个别第三方库中调用了该函数外，洋葱本身的工程里是没有任何后台结束标记的，这个问题就很严重了，是个低级人为错误。</p>
+<p>另外，文档中还提到</p>
+<blockquote>
+<p>For background tasks requiring more time use <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks">Background Tasks</a>.</p>
+</blockquote>
+<p>对于需要更多时间的后台任务，需要使用Background Tasks，我去看了下相关文档，这是一个iOS 13 才开放的API，可以指定在后台运行的最大时间，相当于一个可自由设置时间的后台保活 API。</p>
+<blockquote>
+<p>Each call to this method must be balanced by a matching call to the <code>endBackgroundTask:</code> method. Apps running background tasks have a finite amount of time in which to run them. (You can find out the maximum background time available using the <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/uiapplication/1623029-backgroundtimeremaining"><code>backgroundTimeRemaining</code></a> property.) If you do not call <code>endBackgroundTask:</code> for each task before time expires, the system kills the app. If you provide a block object in the <code>handler</code> parameter, the system calls your handler before time expires to give you a chance to end the task.</p>
+</blockquote>
+<p>大概就是说，每一个 beginBackgroundTaskWithExpirationHandler 都必须对应一个 endBackgroundTask，也就是这个方法的调用必须成对平衡。而且运行后台任务的应用程序所运行它们的时间是有限的，会存在一个最大背景时间，具体时间可以通过 backgroundtimeremining 属性查看。如果你不调用 endBackgroundTask: 在时间到期之前，系统会终止该应用程序。如果在 handlder 参数中提供了一个 block 对象，系统会在时间过期之前调用你的 handlder 程序，让你有机会结束任务。</p>
+<p>在 applicationDidEnterBackground: 的相关文档中还提到：</p>
+<blockquote>
+<p>Your implementation of this method has approximately five seconds to perform any tasks and return. If you need additional time to perform any final tasks, request additional execution time from the system by calling <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/uiapplication/1623031-beginbackgroundtaskwithexpiratio?language=objc"><code>beginBackgroundTaskWithExpirationHandler:</code></a>. In practice, you should return from <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622997-applicationdidenterbackground?language=objc"><code>applicationDidEnterBackground:</code></a> as quickly as possible. If the method doesn’t return before time runs out, your app is terminated and purged from memory.</p>
+<p>Perform any tasks relating to adjusting your user interface before this method exits. Move other tasks (such as saving state) to a concurrent dispatch queue or secondary thread as needed. Because it’s likely any background tasks you start in <code>applicationDidEnterBackground:</code> won’t run until after that method exits, request additional background execution time before starting those tasks. In other words, first call <code>beginBackgroundTaskWithExpirationHandler:</code> and <em>then</em> run the task on a dispatch queue or secondary thread.</p>
+</blockquote>
+<p>applicationDidEnterBackground: 方法的实现大约有5秒钟的时间来执行任何任务并返回。如果你需要额外的时间来执行后台任务，可以通过调用 beginBackgroundTaskWithExpirationHandler: 从系统请求额外的执行时间。苹果建议开发者应该尽快从 applicationDidEnterBackground 返回，如果方法在时间结束前没有返回，那么你的应用程序将被终止并从内存中清除。</p>
+<p>在 applicationDidEnterBackground: 方法退出之前，会执行与调整用户界面有关的任何任务。根据需要将其他任务(如保存状态)移动到并发分派队列或辅助线程。因为它很可能是在 applicationDidEnterBackground 中启动的任何后台任务: 在该方法退出之前不会运行，所以在启动这些任务之前请求额外的后台执行时间。换句话说，首先调用 beginBackgroundTaskWithExpirationHandler: 然后在调度队列或辅助线程上运行该任务。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>根据官方文档的说明我们可以得出下列结论：</p>
+<ul>
+<li>applicationDidEnterBackground: 在<strong>不开启后台任务</strong>的前提下，只5秒左右的时间来执行任务，不要在该方法内启动超时任务，否则会被系统触杀</li>
+<li>applicationDidEnterBackground: 方法中可以调用 beginBackgroundTaskWithExpirationHandler: 从系统请求额外的执行时间，以此来运行后台任务</li>
+<li>beginBackgroundTaskWithExpirationHandler: 与 endBackgroundTask: 这两个方法必须成对出现，否则会被系统触杀</li>
+<li>endBackgroundTask: 的最大触发时机取决于系统当前允许的最大后台运行时间</li>
+<li>可以通过 backgroundtimeremining 属性拿到系统当前允许的最大后台运行时间</li>
+<li>iOS 13+ 系统可以使用 Background Tasks 相关 API 来进行精准后台任务管控</li>
+</ul>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>最简单的处理办法是在 beginBackgroundTaskWithExpirationHandler: 的回调中加入 endBackgroundTask: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">AppDelegate.m</span><br><span class="line">&#x2F;&#x2F; 类似处理方式可解决上述问题（仅供参考）</span><br><span class="line">- (void)applicationDidEnterBackground:(UIApplication *)application &#123;</span><br><span class="line">    __block UIBackgroundTaskIdentifier backgroundTask &#x3D; [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^&#123;</span><br><span class="line">        [[UIApplication sharedApplication] endBackgroundTask:backgroundTask];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<blockquote>
+<p>Every identifier in the <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/bundleresources/information_property_list/bgtaskschedulerpermittedidentifiers?language=objc"><code>BGTaskSchedulerPermittedIdentifiers</code></a> requires a handler. Registration of all launch handlers must be complete before the end of <a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623053-applicationdidfinishlaunching?language=objc"><code>applicationDidFinishLaunching:</code></a>.</p>
+</blockquote>
+<p>Bgtaskscheduler 中的每个标识符都需要一个处理程序。所有启动处理程序的注册必须在 applicationDidFinishLaunching: 结束之前完成，否则运行过程中会发生 Crash</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1396654/1608279335793-3b4318f1-f262-4743-adfd-b783f3f2250d.png" alt="xcode-build-error.png"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/uiapplication/1623031-beginbackgroundtaskwithexpiratio">beginBackgroundTaskWithExpirationHandler:</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622997-applicationdidenterbackground?language=objc">applicationDidEnterBackground:</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks?language=objc">Background Tasks</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/uiapplication/1623029-backgroundtimeremaining">backgroundTimeRemaining</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks/bgtaskscheduler?language=objc">BGTask Scheduler</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverrun.com/cn/q/8227965">beginBackgroundTaskWithExpirationHandler calling endBackgroundTask but not ending process</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks/bgtaskscheduler/3180427-registerfortaskwithidentifier?language=objc">registerForTaskWithIdentifier:usingQueue:launchHandler:</a></p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/linkedlist-reverse-k/" title="链表中倒数第k个节点">链表中倒数第k个节点</a></h2>
+                <p class="excerpt">
+                
+                题目出自：剑指 Offer 22. 链表中倒数第k个节点
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2020-12-09T04:55:59.000Z" class="post-list__meta--date date">2020-12-09</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88/" rel="tag">快慢指针</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>, <a class="-none-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a>
+</span><a class="btn-border-small" href="/linkedlist-reverse-k/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-process-keepalive/';
+  var disqus_title = 'iOS 应用进程后台保活方案';
+  var disqus_url = 'http://shevakuilin.com/ios-process-keepalive/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>

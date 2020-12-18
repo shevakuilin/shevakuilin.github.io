@@ -156,7 +156,7 @@
 <p>但如果用快慢指针来解决这个问题，就很轻松了，我们来看看如何解题。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">getKthFromEnd</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ListNode fast, slow; <span class="comment">// 快慢指针</span></span><br><span class="line">        fast = slow = head;</span><br><span class="line">        <span class="comment">// 先让快指针走k步</span></span><br><span class="line">        <span class="keyword">while</span> (k-- &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 然后快慢指针再同时出发</span></span><br><span class="line">        <span class="comment">// 这样做的目的是，快指针永远在前，只要它走到链表末尾，那么它身后落后k个身位的慢指针的位置就是倒数第k个节点</span></span><br><span class="line">        <span class="keyword">while</span> (fast != <span class="keyword">null</span>) &#123;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>核心思路就是：让快指针先走k步，然后快慢指针再同时出发。这样做的目的是，快指针永远在前面，只要它走到链表末尾，那么它身后落后k个身位的慢指针的位置就是倒数第k个节点了。这一来，我们只需要一遍就能找到倒数第k个节点，是不是很赞。</p>
+<p>核心思路就是：让快指针先走k步，然后快慢指针再同时出发。这样做的目的是，快指针永远在前面，只要它走到链表末尾，那么它身后落后k个身位的慢指针的位置就是倒数第k个节点了。这样一来，我们只需要一遍就能找到倒数第k个节点，是不是很赞。</p>
 
   </section>
 
@@ -165,6 +165,24 @@
 <section class="read-more">
            
     
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-process-keepalive/" title="iOS 应用进程后台保活方案">iOS 应用进程后台保活方案</a></h2>
+                <p class="excerpt">
+                
+                这是我加入洋葱学院基础架构组接手的第一项任务：iOS 后台线程保活问题 
+问题背景目前洋葱学院 iOS 端在 iOS 13.0+ 系统上的后台进程存活时间仅为30s，当应用退入后台，30s后再次返回前台，将触发应用的冷启动，从而无法满足常驻性业务场景需求。
+开始排查猜测
+内存占用过大被系统触杀
+后台
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2020-12-18T14:20:10.000Z" class="post-list__meta--date date">2020-12-18</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%90%8E%E5%8F%B0%E4%BF%9D%E6%B4%BB/" rel="tag">后台保活</a>
+</span><a class="btn-border-small" href="/ios-process-keepalive/">开始阅读</a></div>
+                           
+            </div>
         
         
                
