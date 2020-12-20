@@ -155,21 +155,18 @@
 <li>后台频繁I/O操作导致系统触杀</li>
 </ul>
 <h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ul>
-<li><p>查看本机系统Jetsam、CrashReporter等日志，未发现洋葱学院入列；关闭本机相册、相机等高耗存后仍存活不过30s，排除内存问题触发异常原因被强杀 ❌</p>
-</li>
-<li><p>Instruments 监测挂起状态时的后台I/O操作，发现存在 Background Task ✅</p>
-<ul>
+<li>查看本机系统Jetsam、CrashReporter等日志，未发现洋葱学院入列；关闭本机相册、相机等高耗存后仍存活不过30s，排除内存问题触发异常原因被强杀 ❌</li>
+<li>Instruments 监测挂起状态时的后台I/O操作，发现存在 Background Task ✅<ul>
 <li>经 File Activity 排查，挂起阶段发现批量I/O操作行为，集中在后台下载任务YCVipGoodInfoVM、SDImageCache磁盘I/O、YCTaskPriorityQueue、UM/MobClickInternal、UM/WorkDispatch、JCore等处</li>
 <li>排查挂起阶段代码，发现后台下载 &amp; 埋点上传等 Background Task</li>
-</ul>
-</li>
-<li><p>将上述代码注释掉之后进行测试：</p>
-<ul>
+<li>将上述代码注释掉之后进行测试：<ul>
 <li>将应用挂入后台30s后返回，<strong>未触发冷启动</strong></li>
 <li>挂入后台5’30s后返回，<strong>未触发冷启动</strong></li>
 <li>挂入后台10’35s后返回，<strong>未触发冷启动</strong></li>
 <li>挂入后台16’后返回，<strong>未触发冷启动</strong></li>
 <li>挂入后台30’后返回，<strong>未触发冷启动</strong></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
