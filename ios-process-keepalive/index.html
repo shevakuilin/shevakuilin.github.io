@@ -198,7 +198,7 @@
 <blockquote>
 <p>For background tasks requiring more time use Background Tasks.</p>
 </blockquote>
-<p>对于需要更多时间的后台任务，需要使用<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks">Background Tasks</a>，我去看了下相关文档，这是一个iOS 13 才开放的API，可以指定在后台运行的最大时间，相当于一个可自由设置时间的后台保活 API。</p>
+<p>对于需要更多时间的后台任务，需要使用<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks">Background Tasks</a>，我去看了下相关文档，这是一个iOS 13 才开放的API，<del>可以指定在后台运行的最大时间，相当于一个可自由设置时间的后台保活 API</del> 该API只能设置在后台运行的最早时间，且系统无法保证一定在该时间触发，只保证不在你设置的时间之前触发该后台任务，只适合周期性后台任务，不适合高频次后台任务。</p>
 <blockquote>
 <p>Each call to this method must be balanced by a matching call to the <code>endBackgroundTask:</code> method. Apps running background tasks have a finite amount of time in which to run them. (You can find out the maximum background time available using the backgroundTimeRemaining property.) If you do not call <code>endBackgroundTask:</code> for each task before time expires, the system kills the app. If you provide a block object in the <code>handler</code> parameter, the system calls your handler before time expires to give you a chance to end the task.</p>
 </blockquote>
@@ -217,18 +217,30 @@
 <li>beginBackgroundTaskWithExpirationHandler: 与 endBackgroundTask: 这两个方法必须成对出现，否则会被系统触杀</li>
 <li>endBackgroundTask: 的最大触发时机取决于系统当前允许的最大后台运行时间</li>
 <li>可以通过 backgroundtimeremining 属性拿到系统当前允许的最大后台运行时间</li>
-<li>iOS 13+ 系统可以使用 Background Tasks 相关 API 来进行精准后台任务管控</li>
+<li><del>iOS 13+ 系统可以使用 Background Tasks 相关 API 来进行精准后台任务管控</del>（它更适合比如一周一次的定时后台清理任务）</li>
 </ul>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>1.最简单的处理办法是在 beginBackgroundTaskWithExpirationHandler: 的回调中加入 endBackgroundTask: </p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>1.最简单的处理办法是在 beginBackgroundTaskWithExpirationHandler: 的回调中加入 endBackgroundTask: </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">AppDelegate.m</span><br><span class="line">&#x2F;&#x2F; 类似处理方式可解决上述问题（仅供参考）</span><br><span class="line">- (void)applicationDidEnterBackground:(UIApplication *)application &#123;</span><br><span class="line">    __block UIBackgroundTaskIdentifier backgroundTask &#x3D; [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^&#123;</span><br><span class="line">        [[UIApplication sharedApplication] endBackgroundTask:backgroundTask];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>当然，如果你有多个后台任务，最好是为每一个后台任务单独执行一对 beginBackgroundTask 和 endBackgroundTask。</p>
-<p>2.使用 Background Tasks 相关 API 来进行精准后台任务管控，具体使用可以参考<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks/bgtaskscheduler?language=objc">官方文档</a>，篇幅限制这里就不多做介绍了，需要注意一点：</p>
+<p>2.使用 Background Tasks 相关 API 来进行 <del>精准后台任务管控</del> 周期性后台任务管控，具体使用可以参考<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks/bgtaskscheduler?language=objc">官方文档</a>，篇幅限制这里就不多做介绍了，需要注意一点：</p>
 <blockquote>
 <p>Every identifier in the BGTaskSchedulerPermittedIdentifiers requires a handler. Registration of all launch handlers must be complete before the end of applicationDidFinishLaunching:.</p>
 </blockquote>
 <p>Bgtaskscheduler 中的每个标识符都需要一个处理程序。所有启动处理程序的注册必须在 applicationDidFinishLaunching: 结束之前完成，否则运行过程中会发生 Crash。</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2020/png/1396654/1608279335793-3b4318f1-f262-4743-adfd-b783f3f2250d.png" alt="xcode-build-error.png"></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BGProcessingTaskRequest *taskRequest = [[BGProcessingTaskRequest alloc] initWithIdentifier:<span class="string">@&quot;com.yangcong345.match.test_background_task&quot;</span>];</span><br><span class="line">taskRequest.requiresNetworkConnectivity = <span class="literal">true</span>; <span class="comment">// 后台任务是否需要网络连接</span></span><br><span class="line">taskRequest.requiresExternalPower = <span class="literal">false</span>; <span class="comment">// 是否仅在设备连接到外部电源时才执行此请求表示的后台任务 (任务占用大量资源时，推荐打开，可减少对电池寿命的影响）</span></span><br><span class="line">taskRequest.earliestBeginDate = [[<span class="built_in">NSDate</span> alloc] initWithTimeIntervalSinceNow:<span class="number">0</span>]; <span class="comment">// 后台任务最早运行时间（延迟多久执行，注意：此属性不能保证在指定的时间开始，只能保证不会提前开始，如果设置的时间过长，系统可能选择不启动该后台任务）</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>The delay between the time you schedule a background task and when the system launches your app to run the task can be many hours. While developing your app, you can use two private functions to start a task and to force early termination of the task according to your selected timeline. The debug functions work only on devices.</p>
+</blockquote>
+<p>从你调度一个后台任务到系统启动你的应用程序运行这个任务之间的<strong>时间延迟可能要好几个小时</strong>。在开发你的应用程序时，你可以使用两个私有函数来启动一个任务，并根据你选择的时间表强制提前终止任务（只能使用真机调试）。</p>
+<p>调试启动一个后台任务：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e -l objc -- (<span class="keyword">void</span>)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:<span class="string">@&quot;TASK_IDENTIFIER&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>调试强制终止一个后台任务：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e -l objc -- (<span class="keyword">void</span>)[[BGTaskScheduler sharedScheduler] _simulateExpirationForTaskWithIdentifier:<span class="string">@&quot;TASK_IDENTIFIER&quot;</span>]</span><br></pre></td></tr></table></figure>
+
 <h3 id="溯本求源"><a href="#溯本求源" class="headerlink" title="溯本求源"></a>溯本求源</h3><p>为什么系统会杀死我们在后台的应用呢？</p>
 <p>根据苹果在 WWDC 2020 上的介绍，目前会导致应用在后台被杀死的 case 大概有以下 6 种</p>
 <ul>
@@ -274,6 +286,10 @@
 <p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks/bgtaskscheduler/3180427-registerfortaskwithidentifier?language=objc">registerForTaskWithIdentifier:usingQueue:launchHandler:</a></p>
 <p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10078/">WWDC 2020: Why is my app getting killed?</a></p>
 <p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/view_controllers/preserving_your_app_s_ui_across_launches/about_the_ui_restoration_process">About the UI Restoration Process</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/57197958/xcode-11-what-is-the-new-background-processing-background-mode">Xcode 11 - What is the new “Background Processing” Background Mode?</a></p>
+<p><a target="_blank" rel="noopener" href="https://dzone.com/articles/how-to-update-app-content-with-background-tasks-us">How to Update App Content With Background Tasks Using The Task Scheduler In iOS 13?</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks/refreshing_and_maintaining_your_app_using_background_tasks?language=objc">Refreshing and Maintaining Your App Using Background Tasks</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/backgroundtasks/starting_and_terminating_tasks_during_development?language=objc">Starting and Terminating Tasks During Development</a></p>
 
   </section>
 
@@ -331,7 +347,7 @@
 
             <footer class="footer">
     <span class="footer__copyright">
-        &copy; 2020 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        &copy; 2021 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
        
     </span>
     <span class="footer__copyright">
