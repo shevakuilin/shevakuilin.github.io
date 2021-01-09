@@ -171,9 +171,9 @@
 
 <p>RAC 定时器的首次执行时间比首次启动时间晚了整整1分钟，而这1分钟刚好是我设定的 <code>interval</code> 的值，这就是个大问题了：<strong>定时器的延迟执行时间和执行间隔时间挂钩了</strong>。</p>
 <p>至少从运行表现上看，这两个时间是挂钩的。但我想 Facebook 这种级别的公司应该不会犯这种低级错误，或者不考虑两者可能独立共存的场景，于是我仔细查看了 RAC 定时器的源码：</p>
-<img src="/image/RACSignalCategorySource.png">
+<h3 id="RACSignal-Operations"><a href="#RACSignal-Operations" class="headerlink" title="RACSignal+Operations"></a>RACSignal+Operations</h3><img src="/image/RACSignalCategorySource.png">
 
-<img src="/image/RACQueueSchedulerSource.png">
+<h3 id="RACQueueScheduler"><a href="#RACQueueScheduler" class="headerlink" title="RACQueueScheduler"></a>RACQueueScheduler</h3><img src="/image/RACQueueSchedulerSource.png">
 
 <p>看完后只想说一句话：WTF？？？</p>
 <p>RAC 的定时器底层还是一套 GCD 的定时器，相当于给 GCD 定时器做了套兼容 RACSignal 的封装。这本来没什么，但是要命的是，Facebook 的工程师将延迟执行时间与执行间隔时间这两个参数进行了强关联，这两个还真的是挂钩的，且外部不可对延迟执行时间做任何操作。这也就解释了为什么在我设置了1分钟的执行间隔时间后，我的定时器会在启动后延迟1分钟的时间才开始执行。</p>
