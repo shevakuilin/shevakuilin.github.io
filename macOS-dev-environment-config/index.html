@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>为一台 macOS 新设备快速配置基本开发环境的最佳实践（避坑）指南 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="为一台 macOS 新设备快速配置基本开发环境的最佳实践（避坑）指南 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="为一台 macOS 新设备快速配置基本开发环境的最佳实践（避坑）指南 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/macOS-dev-environment-config/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2021-01-17T09:11:29.000Z" class="post-list__meta--date date">2021-01-17</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/macOS/" rel="tag">macOS</a>, <a class="-none-link" href="/tags/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/" rel="tag">折腾日记</a>, <a class="-none-link" href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" rel="tag">环境配置</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">为一台 macOS 新设备快速配置基本开发环境的最佳实践（避坑）指南</h1>
+  </header>
+
+  <section class="post">
+    <p>本文将提供一套最佳实践流，来帮助你告别 macOS 裸机配置开发环境时的各种坑，告别痛苦，一发入魂<a id="more"></a></p>
+<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/72684073_p0_master1200.jpg">
+
+<h2 id="前文"><a href="#前文" class="headerlink" title="前文"></a>前文</h2><p>在经历了一个月内连续为两台全新 MBP 配置开发环境的痛苦过后，终于不胜其扰，遂决定写一篇可以一次 AC 的配置流程，从此告别 macOS 系统裸机配置环境的各种坑。作者打包票，完全按照本文的顺序操作，可以保证你顺利的一次配置完成基本的开发环境。</p>
+<blockquote>
+<p>本文初稿时的操作系统为 macOS Catalina 10.15.7，不排除后续本教程的更新</p>
+</blockquote>
+<h2 id="步骤1-下载-amp-安装Xcode"><a href="#步骤1-下载-amp-安装Xcode" class="headerlink" title="步骤1 下载 &amp; 安装Xcode"></a>步骤1 下载 &amp; 安装Xcode</h2><p>当你拿到一台全新的 mac 裸机时，你要做的第一件事情，就是打开 AppStore 然后去下载 Xcode，因为它几乎集成了你所需要的所有最基本的开发工具链，无论你需要配置什么样的开发环境，几乎都绕不过 Xcode。</p>
+<h2 id="步骤2-安装必备应用"><a href="#步骤2-安装必备应用" class="headerlink" title="步骤2 安装必备应用"></a>步骤2 安装必备应用</h2><p>下载 Xcode 的过程通常很漫长，光是 Xcode12 就已经达到恐怖的 11.7 G了。所以这个时候，我们可以去下载安装一些必备应用（建议按照顺序安装）：</p>
+<h3 id="Chrome-浏览器"><a href="#Chrome-浏览器" class="headerlink" title="Chrome 浏览器"></a>Chrome 浏览器</h3><p>想不出为什么还会有工程师选择不用 Chrome 🤔。<a target="_blank" rel="noopener" href="https://www.google.com/intl/zh-CN/chrome/">下载地址</a></p>
+<h3 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h3><p>macOS 上最好用的命令行工具，没有之一！<a target="_blank" rel="noopener" href="https://iterm2.com/">下载地址</a></p>
+<h3 id="SwitchHosts"><a href="#SwitchHosts" class="headerlink" title="SwitchHosts"></a>SwitchHosts</h3><p>快速编辑 host 的工具，尤其对于国内的工程师，通过调整 host 能够帮你避免大多数因为墙而导致的类似 curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused 的网络连接问题。下载地址](<a target="_blank" rel="noopener" href="https://github.com/oldj/SwitchHosts/releases">https://github.com/oldj/SwitchHosts/releases</a>)</p>
+<h3 id="V2RayU"><a href="#V2RayU" class="headerlink" title="V2RayU"></a>V2RayU</h3><p>开源（现已删除 github 源码，但仍提供 dmg下载）的基于 V2Ray 协议的梯子，SSR已经非常不安全了，如果你用的还是 SSR，建议你立刻使用 V2Ray，至于为什么？<a target="_blank" rel="noopener" href="https://www.idleleo.com/05/2071.html">感兴趣的同学自行了解</a>，自己看别问，如果你不想安装这个，只要保证你有稳定的梯子即可，不做强制要求。<a target="_blank" rel="noopener" href="https://github.com/yanue/V2rayU/tags">下载地址</a></p>
+<h3 id="搜狗输入法"><a href="#搜狗输入法" class="headerlink" title="搜狗输入法"></a>搜狗输入法</h3><p>macOS 自带的输入法之难用，用过的都懂，作者推荐搜狗，如果你有自己习惯的输入法，可以自行安装。<a target="_blank" rel="noopener" href="https://pinyin.sogou.com/mac/">下载地址</a></p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>以上罗列的应用是必备的（头铁的出了问题不要来找我），至于其他个人喜好的应用、办公软件，请自行下载，这里不再罗列。</p>
+<h2 id="步骤3-修改-Hosts"><a href="#步骤3-修改-Hosts" class="headerlink" title="步骤3 修改 Hosts"></a>步骤3 修改 Hosts</h2><p>打开上一步中安装好的 SwitchHosts，选择左边菜单栏的 <strong>My Hosts</strong>，然后在右边 <code># My hosts</code> 下方的空白处输入以下内容</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> raw.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> user-images.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> avatars2.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> avatars1.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.96</span><span class="number">.133</span> raw.github.com</span><br></pre></td></tr></table></figure>
+
+<h3 id="步骤4-安装-Oh-my-zsh"><a href="#步骤4-安装-Oh-my-zsh" class="headerlink" title="步骤4 安装 Oh-my-zsh"></a>步骤4 安装 Oh-my-zsh</h3><p><a target="_blank" rel="noopener" href="https://ohmyz.sh/#install">Oh-my-zsh</a> 是一个必备的命令行高亮插件，打开 iTerm2 输入命令进行安装</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">&quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/merge-binarytree/" title="合并二叉树">合并二叉树</a></h2>
+                <p class="excerpt">
+                
+                LeetCode 617 合并二叉树
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2021-01-10T15:02:07.000Z" class="post-list__meta--date date">2021-01-10</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>, <a class="-none-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a>
+</span><a class="btn-border-small" href="/merge-binarytree/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/macOS-dev-environment-config/';
+  var disqus_title = '为一台 macOS 新设备快速配置基本开发环境的最佳实践（避坑）指南';
+  var disqus_url = 'http://shevakuilin.com/macOS-dev-environment-config/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2021 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
