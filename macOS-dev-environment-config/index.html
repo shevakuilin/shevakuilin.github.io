@@ -157,22 +157,22 @@
 <blockquote>
 <p>本文初稿时的操作系统为 macOS Catalina 10.15.7，不排除后续本教程的更新</p>
 </blockquote>
-<h2 id="步骤1-下载-amp-安装Xcode"><a href="#步骤1-下载-amp-安装Xcode" class="headerlink" title="步骤1 下载 &amp; 安装Xcode"></a>步骤1 下载 &amp; 安装Xcode</h2><p>当你拿到一台全新的 mac 裸机时，你要做的第一件事情，就是打开 AppStore 然后去下载 Xcode，因为它几乎集成了你所需要的所有最基本的开发工具链，无论你需要配置什么样的开发环境，几乎都绕不过 Xcode。</p>
-<h2 id="步骤2-安装必备应用"><a href="#步骤2-安装必备应用" class="headerlink" title="步骤2 安装必备应用"></a>步骤2 安装必备应用</h2><p>下载 Xcode 的过程通常很漫长，光是 Xcode12 就已经达到恐怖的 11.7 G了。所以这个时候，我们可以去下载安装一些必备应用（建议按照顺序安装）：</p>
-<h3 id="Chrome-浏览器"><a href="#Chrome-浏览器" class="headerlink" title="Chrome 浏览器"></a>Chrome 浏览器</h3><p>想不出为什么还会有工程师选择不用 Chrome 🤔。<a target="_blank" rel="noopener" href="https://www.google.com/intl/zh-CN/chrome/">下载地址</a></p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="步骤1-下载-amp-安装Xcode"><a href="#步骤1-下载-amp-安装Xcode" class="headerlink" title="步骤1 下载 &amp; 安装Xcode"></a>步骤1 下载 &amp; 安装Xcode</h3><p>当你拿到一台全新的 mac 裸机时，你要做的第一件事情，就是打开 AppStore 然后去下载 Xcode，因为它几乎集成了你所需要的所有最基本的开发工具链，无论你需要配置什么样的开发环境，几乎都绕不过 Xcode。</p>
+<h3 id="步骤2-安装必备应用"><a href="#步骤2-安装必备应用" class="headerlink" title="步骤2 安装必备应用"></a>步骤2 安装必备应用</h3><p>下载 Xcode 的过程通常很漫长，光是 Xcode12 就已经达到恐怖的 11.7 G了。所以这个时候，我们可以去下载安装一些必备应用（建议按照顺序安装）：</p>
+<h4 id="Chrome-浏览器"><a href="#Chrome-浏览器" class="headerlink" title="Chrome 浏览器"></a>Chrome 浏览器</h4><p>想不为什么还会有工程师选择不用 Chrome 🤔。<a target="_blank" rel="noopener" href="https://www.google.com/intl/zh-CN/chrome/">下载地址</a></p>
 <h3 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h3><p>macOS 上最好用的命令行工具，没有之一！<a target="_blank" rel="noopener" href="https://iterm2.com/">下载地址</a></p>
 <h3 id="SwitchHosts"><a href="#SwitchHosts" class="headerlink" title="SwitchHosts"></a>SwitchHosts</h3><p>快速编辑 host 的工具，尤其对于国内的工程师，通过调整 host 能够帮你避免大多数因为墙而导致的类似 curl: (7) Failed to connect to raw.githubusercontent.com port 443: Connection refused 的网络连接问题。下载地址](<a target="_blank" rel="noopener" href="https://github.com/oldj/SwitchHosts/releases">https://github.com/oldj/SwitchHosts/releases</a>)</p>
 <h3 id="V2RayU"><a href="#V2RayU" class="headerlink" title="V2RayU"></a>V2RayU</h3><p>开源（现已删除 github 源码，但仍提供 dmg下载）的基于 V2Ray 协议的梯子，SSR已经非常不安全了，如果你用的还是 SSR，建议你立刻使用 V2Ray，至于为什么？<a target="_blank" rel="noopener" href="https://www.idleleo.com/05/2071.html">感兴趣的同学自行了解</a>，自己看别问，如果你不想安装这个，只要保证你有稳定的梯子即可，不做强制要求。<a target="_blank" rel="noopener" href="https://github.com/yanue/V2rayU/tags">下载地址</a></p>
 <h3 id="搜狗输入法"><a href="#搜狗输入法" class="headerlink" title="搜狗输入法"></a>搜狗输入法</h3><p>macOS 自带的输入法之难用，用过的都懂，作者推荐搜狗，如果你有自己习惯的输入法，可以自行安装。<a target="_blank" rel="noopener" href="https://pinyin.sogou.com/mac/">下载地址</a></p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>以上罗列的应用是必备的（头铁的出了问题不要来找我），至于其他个人喜好的应用、办公软件，请自行下载，这里不再罗列。</p>
-<h2 id="步骤3-安装初始化-Xcode"><a href="#步骤3-安装初始化-Xcode" class="headerlink" title="步骤3 安装初始化 Xcode"></a>步骤3 安装初始化 Xcode</h2><p>Xcode 下载完成后，进行初始化安装，必须安装完成才可以进行下一步操作。</p>
-<h2 id="步骤4-修改-Hosts"><a href="#步骤4-修改-Hosts" class="headerlink" title="步骤4 修改 Hosts"></a>步骤4 修改 Hosts</h2><p>打开上一步中安装好的 SwitchHosts，选择左边菜单栏的 <strong>My Hosts</strong>，然后在右边 <code># My hosts</code> 下方的空白处输入以下内容</p>
+<h3 id="步骤3-安装初始化-Xcode"><a href="#步骤3-安装初始化-Xcode" class="headerlink" title="步骤3 安装初始化 Xcode"></a>步骤3 安装初始化 Xcode</h3><p>Xcode 下载完成后，进行初始化安装，必须安装完成才可以进行下一步操作。</p>
+<h3 id="步骤4-修改-Hosts"><a href="#步骤4-修改-Hosts" class="headerlink" title="步骤4 修改 Hosts"></a>步骤4 修改 Hosts</h3><p>打开上一步中安装好的 SwitchHosts，选择左边菜单栏的 <strong>My Hosts</strong>，然后在右边 <code># My hosts</code> 下方的空白处输入以下内容</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> raw.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> user-images.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> avatars2.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> avatars1.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.96</span><span class="number">.133</span> raw.github.com</span><br></pre></td></tr></table></figure>
 
-<h2 id="步骤5-安装-Oh-my-zsh"><a href="#步骤5-安装-Oh-my-zsh" class="headerlink" title="步骤5 安装 Oh-my-zsh"></a>步骤5 安装 Oh-my-zsh</h2><p><a target="_blank" rel="noopener" href="https://ohmyz.sh/#install">Oh-my-zsh</a> 是一个必备的命令行高亮插件，打开 iTerm2 输入命令进行安装（从这一步开始，请全程保证梯子的开启状态）</p>
+<h3 id="步骤5-安装-Oh-my-zsh"><a href="#步骤5-安装-Oh-my-zsh" class="headerlink" title="步骤5 安装 Oh-my-zsh"></a>步骤5 安装 Oh-my-zsh</h3><p><a target="_blank" rel="noopener" href="https://ohmyz.sh/#install">Oh-my-zsh</a> 是一个必备的命令行高亮插件，打开 iTerm2 输入命令进行安装（从这一步开始，请全程保证梯子的开启状态）</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">&quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="步骤6-安装-Homebrew"><a href="#步骤6-安装-Homebrew" class="headerlink" title="步骤6 安装 Homebrew"></a>步骤6 安装 Homebrew</h2><p>不要头铁，不要迷信你的梯子可以顺利下载，不想来回折腾就老老实实操作。</p>
+<h3 id="步骤6-安装-Homebrew"><a href="#步骤6-安装-Homebrew" class="headerlink" title="步骤6 安装 Homebrew"></a>步骤6 安装 Homebrew</h3><p>不要头铁，不要迷信你的梯子可以顺利下载，不想来回折腾就老老实实操作。</p>
 <p>1.复制下面 url 到浏览器</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/raw.githubusercontent.com/</span>Homebrew/install/master/install.sh</span><br></pre></td></tr></table></figure>
 
@@ -181,11 +181,11 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash brew_install.sh</span><br></pre></td></tr></table></figure>
 
 <p>等待安装完成即可</p>
-<h2 id="步骤7-安装-RVM"><a href="#步骤7-安装-RVM" class="headerlink" title="步骤7 安装 RVM"></a>步骤7 安装 RVM</h2><p>安装命令</p>
+<h3 id="步骤7-安装-RVM"><a href="#步骤7-安装-RVM" class="headerlink" title="步骤7 安装 RVM"></a>步骤7 安装 RVM</h3><p>安装命令</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L <span class="symbol">https:</span>/<span class="regexp">/get.rvm.io | bash -s stable</span></span><br></pre></td></tr></table></figure>
 
 <p>安装完成之后，记得按照提示初始化 rvm，否则会提示找不到 rvm。</p>
-<h2 id="步骤8-安装并初始化-Ruby"><a href="#步骤8-安装并初始化-Ruby" class="headerlink" title="步骤8 安装并初始化 Ruby"></a>步骤8 安装并初始化 Ruby</h2><p>1.查找可安装的 Ruby 版本</p>
+<h3 id="步骤8-安装并初始化-Ruby"><a href="#步骤8-安装并初始化-Ruby" class="headerlink" title="步骤8 安装并初始化 Ruby"></a>步骤8 安装并初始化 Ruby</h3><p>1.查找可安装的 Ruby 版本</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rvm list known</span><br></pre></td></tr></table></figure>
 
 <p>2.找到列出的可安装版本进行安装。</p>
@@ -201,9 +201,29 @@
 
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rvm --default use <span class="number">3.0</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="步骤9-安装-Node"><a href="#步骤9-安装-Node" class="headerlink" title="步骤9 安装 Node"></a>步骤9 安装 Node</h2><p>输入下面的命令进行安装</p>
+<h3 id="步骤9-安装-Node"><a href="#步骤9-安装-Node" class="headerlink" title="步骤9 安装 Node"></a>步骤9 安装 Node</h3><p>1.输入下面的命令进行安装</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br></pre></td></tr></table></figure>
 
+<p>2.完成后验证下版本即可</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure>
+
+<p>出现刚才安装的版本即可。</p>
+<h3 id="安装-CocoaPods"><a href="#安装-CocoaPods" class="headerlink" title="安装 CocoaPods"></a>安装 CocoaPods</h3><blockquote>
+<p>基础环境到上一步基本就结束了，到这里就是 iOS 同学的专场了，其他同学可以去自行安装自己的其他具体环境了。</p>
+</blockquote>
+<p>安装 cocoaPods（全程保持手机热点）</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install cocoapods <span class="comment"># 默认安装最新pods</span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要指定版本（首次安装不推荐，头铁的同学自便）</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install -n /usr/local/bin cocoapods -v <span class="number">1.10</span>.<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="项目初始化"><a href="#项目初始化" class="headerlink" title="项目初始化"></a>项目初始化</h3><p>如果项目使用了基于pod的私有库，需要提前添加私有库</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod repo add xxx xxx.git <span class="comment"># xxx是pod名称，xxx.git是私有库地址</span></span><br></pre></td></tr></table></figure>
+
+<p>进入项目根目录，初始化项目pods</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>至此，这套 macOS 新设备配置开发环境的最佳实践流就结束了，完全按照操作你基本不会遇到任何障碍，一定不要头铁啊。</p>
 
   </section>
 
