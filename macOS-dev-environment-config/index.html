@@ -165,13 +165,44 @@
 <h3 id="V2RayU"><a href="#V2RayU" class="headerlink" title="V2RayU"></a>V2RayU</h3><p>开源（现已删除 github 源码，但仍提供 dmg下载）的基于 V2Ray 协议的梯子，SSR已经非常不安全了，如果你用的还是 SSR，建议你立刻使用 V2Ray，至于为什么？<a target="_blank" rel="noopener" href="https://www.idleleo.com/05/2071.html">感兴趣的同学自行了解</a>，自己看别问，如果你不想安装这个，只要保证你有稳定的梯子即可，不做强制要求。<a target="_blank" rel="noopener" href="https://github.com/yanue/V2rayU/tags">下载地址</a></p>
 <h3 id="搜狗输入法"><a href="#搜狗输入法" class="headerlink" title="搜狗输入法"></a>搜狗输入法</h3><p>macOS 自带的输入法之难用，用过的都懂，作者推荐搜狗，如果你有自己习惯的输入法，可以自行安装。<a target="_blank" rel="noopener" href="https://pinyin.sogou.com/mac/">下载地址</a></p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>以上罗列的应用是必备的（头铁的出了问题不要来找我），至于其他个人喜好的应用、办公软件，请自行下载，这里不再罗列。</p>
-<h2 id="步骤3-修改-Hosts"><a href="#步骤3-修改-Hosts" class="headerlink" title="步骤3 修改 Hosts"></a>步骤3 修改 Hosts</h2><p>打开上一步中安装好的 SwitchHosts，选择左边菜单栏的 <strong>My Hosts</strong>，然后在右边 <code># My hosts</code> 下方的空白处输入以下内容</p>
+<h2 id="步骤3-安装初始化-Xcode"><a href="#步骤3-安装初始化-Xcode" class="headerlink" title="步骤3 安装初始化 Xcode"></a>步骤3 安装初始化 Xcode</h2><p>Xcode 下载完成后，进行初始化安装，必须安装完成才可以进行下一步操作。</p>
+<h2 id="步骤4-修改-Hosts"><a href="#步骤4-修改-Hosts" class="headerlink" title="步骤4 修改 Hosts"></a>步骤4 修改 Hosts</h2><p>打开上一步中安装好的 SwitchHosts，选择左边菜单栏的 <strong>My Hosts</strong>，然后在右边 <code># My hosts</code> 下方的空白处输入以下内容</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> raw.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> user-images.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> avatars2.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> avatars1.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.96</span><span class="number">.133</span> raw.github.com</span><br></pre></td></tr></table></figure>
 
-<h3 id="步骤4-安装-Oh-my-zsh"><a href="#步骤4-安装-Oh-my-zsh" class="headerlink" title="步骤4 安装 Oh-my-zsh"></a>步骤4 安装 Oh-my-zsh</h3><p><a target="_blank" rel="noopener" href="https://ohmyz.sh/#install">Oh-my-zsh</a> 是一个必备的命令行高亮插件，打开 iTerm2 输入命令进行安装</p>
+<h2 id="步骤5-安装-Oh-my-zsh"><a href="#步骤5-安装-Oh-my-zsh" class="headerlink" title="步骤5 安装 Oh-my-zsh"></a>步骤5 安装 Oh-my-zsh</h2><p><a target="_blank" rel="noopener" href="https://ohmyz.sh/#install">Oh-my-zsh</a> 是一个必备的命令行高亮插件，打开 iTerm2 输入命令进行安装（从这一步开始，请全程保证梯子的开启状态）</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">&quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="步骤6-安装-Homebrew"><a href="#步骤6-安装-Homebrew" class="headerlink" title="步骤6 安装 Homebrew"></a>步骤6 安装 Homebrew</h2><p>不要头铁，不要迷信你的梯子可以顺利下载，不想来回折腾就老老实实操作。</p>
+<p>1.复制下面 url 到浏览器</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/raw.githubusercontent.com/</span>Homebrew/install/master/install.sh</span><br></pre></td></tr></table></figure>
 
+<p>2.保存网页的脚本内容到本地 brew_install.sh</p>
+<p>3.打开 iTerm2 至脚本目录执行</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash brew_install.sh</span><br></pre></td></tr></table></figure>
+
+<p>等待安装完成即可</p>
+<h2 id="步骤7-安装-RVM"><a href="#步骤7-安装-RVM" class="headerlink" title="步骤7 安装 RVM"></a>步骤7 安装 RVM</h2><p>安装命令</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L <span class="symbol">https:</span>/<span class="regexp">/get.rvm.io | bash -s stable</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成之后，记得按照提示初始化 rvm，否则会提示找不到 rvm。</p>
+<h2 id="步骤8-安装并初始化-Ruby"><a href="#步骤8-安装并初始化-Ruby" class="headerlink" title="步骤8 安装并初始化 Ruby"></a>步骤8 安装并初始化 Ruby</h2><p>1.查找可安装的 Ruby 版本</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rvm list known</span><br></pre></td></tr></table></figure>
+
+<p>2.找到列出的可安装版本进行安装。</p>
+<p>这个过程比较长，头铁并且对自己网络自信的同学可以耐心等待，不想出问题来回折腾的请<strong>自觉关闭 wifi 连上手机热点，保证网路的稳定</strong>。不过头铁的同学大概率会收到<code>Requirements installation failed with status:1</code>大礼包，请默默换到手机热点。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rvm install ruby-<span class="number">3.0</span>.<span class="number">0</span> <span class="comment"># 可以简写为 rvm install 3.0.0</span></span><br></pre></td></tr></table></figure>
+
+<p>3.查看安装完成的 Ruby 版本</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -v</span><br></pre></td></tr></table></figure>
+
+<p>显示刚才安装的版本则说明已安装完成。</p>
+<p>4.将安装完成的 Ruby 版本设为默认版本</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rvm ruby use ruby-<span class="number">3.0</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rvm --default use <span class="number">3.0</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="步骤9-安装-Node"><a href="#步骤9-安装-Node" class="headerlink" title="步骤9 安装 Node"></a>步骤9 安装 Node</h2><p>输入下面的命令进行安装</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br></pre></td></tr></table></figure>
 
 
   </section>
