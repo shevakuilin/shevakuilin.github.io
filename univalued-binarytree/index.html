@@ -151,6 +151,21 @@
 
   <section class="post">
     <p>LeetCode 965. 单值二叉树 <a id="more"></a></p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>如果二叉树每个节点都具有相同的值，那么该二叉树就是单值二叉树。</p>
+<p>只有给定的树是单值二叉树时，才返回 true；否则返回 false。 </p>
+<p><strong>示例 1</strong>：</p>
+<img src="/image/univalued-binary-tree1.png">
+
+<p>输入：[1,1,1,1,1,null,1]<br>输出：true</p>
+<p><strong>示例 2</strong>：</p>
+<img src="/image/univalued-binary-tree2.png">
+
+<p>输入：[2,2,2,5,2]<br>输出：false</p>
+<p><strong>提示</strong>：</p>
+<p>给定树的节点数范围是 [1, 100]。<br>每个节点的值都是整数，范围为 [0, 99] 。</p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>只要保证每个节点的值都与根节点的值相同即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isUnivalTree</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 先判断第一层是否是单值，也就是左右子节点的值是否与根节点的值相同</span></span><br><span class="line">        <span class="keyword">if</span> (root.left != <span class="keyword">null</span> &amp;&amp; root.left.val != root.val) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (root.right != <span class="keyword">null</span> &amp;&amp; root.right.val != root.val) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 向下继续递归，左右子树均为单值时，整棵二叉树即为单值二叉树</span></span><br><span class="line">        <span class="keyword">return</span> isUnivalTree(root.left) &amp;&amp; isUnivalTree(root.right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
   </section>
 
