@@ -150,7 +150,7 @@
   </header>
 
   <section class="post">
-    <p>&lt;img src&#x3D;”<img src="https://github.com/shevakuilin/GhostPostsImages/blob/raw/ios-launch-black.png">“&gt;</p>
+    <p>&lt;img src&#x3D;”<img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/ios-launch-black.png">“&gt;</p>
 <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>目前 iOS 端应用在安装后概率性会出现黑屏问题，主要表现为某次安装（有些设备是100%必现）后，每次启动时，在出现启动图之前都会出现一段持续 1 ~ 2s 的黑屏现象。这种现象并不是每个用户都会遇到，但是一旦在某次安装时出现，那么在未卸载的这段时间内，每次启动都会遇到该问题</p>
 <h2 id="分析报告"><a href="#分析报告" class="headerlink" title="分析报告"></a>分析报告</h2><h3 id="出现黑屏的原因"><a href="#出现黑屏的原因" class="headerlink" title="出现黑屏的原因"></a>出现黑屏的原因</h3><h4 id="猜测"><a href="#猜测" class="headerlink" title="猜测"></a>猜测</h4><ul>
 <li>启动阶段耗时任务导致阻塞了UI线程的加载</li>
@@ -171,7 +171,9 @@
 </ul>
 </li>
 <li><p>断点停留在 didFinishLaunchingWithOptions 函数第一行，查看调用链以及启动图变化，发现果然存在一个针对 didFinishLaunchingWithOptions 函数的 hook 操作，会不会就是它呢？</p>
-<img scr="/image/ios-launch-black-debug01.png">
+<img src="/image/ios-launch-black-debug01.png">
+
+
 
 <ul>
 <li>找到这个函数后，发现是在 +load 函数内进行的方法交换，以此来做 Crash 防护的若干工作，于是屏蔽了这段代码，发现黑屏问题依旧存在，根本就不是因为启动阶段的代码导致的❌</li>
