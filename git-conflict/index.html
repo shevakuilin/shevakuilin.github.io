@@ -150,7 +150,7 @@
   </header>
 
   <section class="post">
-    <p>从 Git 原理上解析， Git 是如何在代码合并时发现冲突的。<a id="more"></a></p>
+    <p>从 Git 原理上解析， Git 是如何在代码合并时发现冲突的。<span id="more"></span></p>
 <img src ="https://github.com/shevakuilin/GhostPostsImages/raw/master/77414471_p0_master1200.jpg" >
 
 <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>写这篇文章的起因源于<del>今年初</del>去年初的一次面试，当时正在「印象笔试」面试 macOS 工程师，面试官是他们 macOS &amp; iOS 端的负责人，在考察 Git 的时候突然问了这么一个问题：</p>
@@ -189,7 +189,7 @@
 <img src="https://github.com/shevakuilin/GhostImageGit/raw/master/EF7499D7-25D0-4B23-91C5-BA0E5B08D26B.png" width="800" height ="468" />
 
 <h4 id="文件元数据"><a href="#文件元数据" class="headerlink" title="文件元数据"></a>文件元数据</h4><p>图中的 <code>index</code> 表示文件的<strong>元数据</strong>（Metadata），<code>7defa7d</code>和<code>161da96</code>表示两个文件的 <code>hashes</code>，相当于它们的 HashID，这个 HashID 就代表了一个文件对象的特定版本，最后的一串数字代表了一个文件的模式（100644 代表它是一个普通的文件，100755 表示一个可执行文件，120000 仅仅是一符号链接）。</p>
-<h4 id="标记-a-b"><a href="#标记-a-b" class="headerlink" title="标记 a/b"></a>标记 a/b</h4><p>我们可以看到在元数据的下面两行，分别出现了 <code>a</code> 和 <code> b</code> 两个标识，它标识文件的两个不同版本。为了区分它们，<code>a</code>和 <code>b</code> 都被赋予了它们特有的符号：对于版本 <code>a</code>，它的符号是一个减号（“-”）；而对于版本 <code>b</code> ，它会使用一个加号（“+”）。</p>
+<h4 id="标记-a-x2F-b"><a href="#标记-a-x2F-b" class="headerlink" title="标记 a&#x2F;b"></a>标记 a&#x2F;b</h4><p>我们可以看到在元数据的下面两行，分别出现了 <code>a</code> 和 <code> b</code> 两个标识，它标识文件的两个不同版本。为了区分它们，<code>a</code>和 <code>b</code> 都被赋予了它们特有的符号：对于版本 <code>a</code>，它的符号是一个减号（“-”）；而对于版本 <code>b</code> ，它会使用一个加号（“+”）。</p>
 <h4 id="区块标头"><a href="#区块标头" class="headerlink" title="区块标头"></a>区块标头</h4><p>Git 会告诉你哪些行存在差异，它们被显示在两个 “@@” 符号之前，以上图示例中所表示的含义为：</p>
 <ul>
 <li>来自文件 a （标记为 “-”），从第 73 行开始之后的 7 行代码。</li>
@@ -197,11 +197,11 @@
 </ul>
 <p>而”@@”后面的紧跟着的部分就是其上下文信息。</p>
 <h4 id="具体改动"><a href="#具体改动" class="headerlink" title="具体改动"></a>具体改动</h4><p>在每一个被改动过的代码行之前都会前置一个 “+” 或是 “-” 符号。这些符号可以帮助你准确了解版本 a 和 版本 b ，例如前置了 “-” 符号的行就代表来自版本 a，反之带有符号 “+” 的行就代表来自于版本 b。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> - (<span class="keyword">void</span>)tableView:(<span class="built_in">UITableView</span> *)tableView didSelectRowAtIndexPath:(<span class="built_in">NSIndexPath</span> *)indexPath &#123;</span><br><span class="line">-    [<span class="keyword">self</span> toOrderPaymentStatusWithOrderInfo:<span class="string">@&quot;&quot;</span>];</span><br><span class="line">+    <span class="keyword">if</span> (indexPath.row &gt; <span class="number">20</span>) &#123;</span><br><span class="line">+        <span class="keyword">return</span>;</span><br><span class="line">+    &#125;</span><br><span class="line">+<span class="comment">//    [self toOrderPaymentStatusWithOrderInfo:@&quot;&quot;];</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> - (<span class="type">void</span>)tableView:(<span class="built_in">UITableView</span> *)tableView didSelectRowAtIndexPath:(<span class="built_in">NSIndexPath</span> *)indexPath &#123;</span><br><span class="line">-    [<span class="keyword">self</span> toOrderPaymentStatusWithOrderInfo:<span class="string">@&quot;&quot;</span>];</span><br><span class="line">+    <span class="keyword">if</span> (indexPath.row &gt; <span class="number">20</span>) &#123;</span><br><span class="line">+        <span class="keyword">return</span>;</span><br><span class="line">+    &#125;</span><br><span class="line">+<span class="comment">//    [self toOrderPaymentStatusWithOrderInfo:@&quot;&quot;];</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="Myers-算法"><a href="#Myers-算法" class="headerlink" title="Myers 算法"></a>Myers 算法</h4><p>Git 为我们生成的 diff 是很直观易懂的，”+”和”-“的区域划分非常明显，一看就知道我们对文件进行了哪些改动，但这实际上涉及到一个复杂的算法问题。即使是很小的改动，a-b之间所产生的 diff 都可能有无穷多种。所以，我们需要一个算法，生成直观的 diff，除此之外，diff 还需要尽可能的简短，只显示实际的改动。那么，如何找到最直观最简短的 diff ，就是我们的问题。</p>
 <p><strong>Myers 算法</strong> 是一个差异算法，出自尤金·迈尔斯（Eugene W. Myers）之手，是一个能在大部分情况产生<strong>最直观最简短</strong> diff 的一个算法，也是一个典型的「<strong>动态规划</strong>」算法，父问题的最优解归结为子问题的最优解，也就是「<strong>最优子结构</strong>」。要知道 A1 的最优坐标，必须先要知道 A2 的最优坐标，要知道 A2  的最优坐标，必须知道 A3 的结果，以此类推。</p>
-<p>寻找 diff 的过程可以被表示为图搜索，寻找 diff 实际上就是个图搜索的问题，至于为什么，我猜你肯定不想看数学证明。所以这里直接给出结论：<strong>最直观最简短的 diff = 寻找图的最短路径</strong>，这也是<strong>Myers 算法</strong>的基本思想。</p>
+<p>寻找 diff 的过程可以被表示为图搜索，寻找 diff 实际上就是个图搜索的问题，至于为什么，我猜你肯定不想看数学证明。所以这里直接给出结论：<strong>最直观最简短的 diff &#x3D; 寻找图的最短路径</strong>，这也是<strong>Myers 算法</strong>的基本思想。</p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/WX20200107-110854.png" width="800" height ="737" />
 
 <p><strong>Myers算法</strong>背后的想法非常简单：如图对比两个字符串<code>ABCABBA</code> 和 <code>CBABAC</code>之间的差异。我们希望以尽可能少的步骤从（0,0）移动到（7,6）（右下）。「移动」是向右（从<code>a</code>删除）或向下（从<code>b</code> 插入）的单个步骤。图中我们从<code>a</code>移动到<code>b</code>进行的最多移动数是13：两个字符串的总长度 7 + 6。</p>
@@ -299,7 +299,7 @@
 
             <footer class="footer">
     <span class="footer__copyright">
-        &copy; 2021 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
        
     </span>
     <span class="footer__copyright">

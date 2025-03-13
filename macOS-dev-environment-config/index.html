@@ -150,7 +150,7 @@
   </header>
 
   <section class="post">
-    <p>本文将提供一套最佳实践流，来帮助你告别 macOS 裸机配置开发环境时的各种坑，告别痛苦，一发入魂<a id="more"></a></p>
+    <p>本文将提供一套最佳实践流，来帮助你告别 macOS 裸机配置开发环境时的各种坑，告别痛苦，一发入魂<span id="more"></span></p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/72684073_p0_master1200.jpg">
 
 <h2 id="前文"><a href="#前文" class="headerlink" title="前文"></a>前文</h2><p>在经历了一个月内连续为两台全新 MBP 配置开发环境的痛苦过后，终于不胜其扰，遂决定写一篇可以一次 AC 的配置流程，从此告别 macOS 系统裸机配置环境的各种坑。作者打包票，完全按照本文的顺序操作，可以保证你顺利的一次配置完成基本的开发环境。</p>
@@ -167,14 +167,14 @@
 <h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>以上罗列的应用是必备的（头铁的出了问题不要来找我），至于其他个人喜好的应用、办公软件，请自行下载，这里不再罗列。</p>
 <h3 id="步骤3-安装初始化-Xcode"><a href="#步骤3-安装初始化-Xcode" class="headerlink" title="步骤3 安装初始化 Xcode"></a>步骤3 安装初始化 Xcode</h3><p>Xcode 下载完成后，进行初始化安装，必须安装完成才可以进行下一步操作。</p>
 <h3 id="步骤4-修改-Hosts"><a href="#步骤4-修改-Hosts" class="headerlink" title="步骤4 修改 Hosts"></a>步骤4 修改 Hosts</h3><p>打开上一步中安装好的 SwitchHosts，选择左边菜单栏的 <strong>My Hosts</strong>，然后在右边 <code># My hosts</code> 下方的空白处输入以下内容</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> raw.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> user-images.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> avatars2.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.68</span><span class="number">.133</span> avatars1.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span><span class="number">.96</span><span class="number">.133</span> raw.github.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">199.232</span>.<span class="number">68.133</span> raw.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span>.<span class="number">68.133</span> user-images.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span>.<span class="number">68.133</span> avatars2.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span>.<span class="number">68.133</span> avatars1.githubusercontent.com</span><br><span class="line"><span class="number">199.232</span>.<span class="number">96.133</span> raw.github.com</span><br></pre></td></tr></table></figure>
 
 <h3 id="步骤5-安装-Oh-my-zsh"><a href="#步骤5-安装-Oh-my-zsh" class="headerlink" title="步骤5 安装 Oh-my-zsh"></a>步骤5 安装 Oh-my-zsh</h3><p><a target="_blank" rel="noopener" href="https://ohmyz.sh/#install">Oh-my-zsh</a> 是一个必备的命令行高亮插件，打开 iTerm2 输入命令进行安装（从这一步开始，请全程保证梯子的开启状态）</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">&quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="步骤6-安装-Homebrew"><a href="#步骤6-安装-Homebrew" class="headerlink" title="步骤6 安装 Homebrew"></a>步骤6 安装 Homebrew</h3><p>不要头铁，不要迷信你的梯子可以顺利下载，不想来回折腾就老老实实操作。</p>
 <p>1.复制下面 url 到浏览器</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/raw.githubusercontent.com/</span>Homebrew/install/master/install.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/raw.githubusercontent.com/</span><span class="title class_">Homebrew</span>/install/master/install.sh</span><br></pre></td></tr></table></figure>
 
 <p>2.保存网页的脚本内容到本地 brew_install.sh</p>
 <p>3.打开 iTerm2 至脚本目录执行</p>
@@ -295,7 +295,7 @@
 
             <footer class="footer">
     <span class="footer__copyright">
-        &copy; 2021 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
        
     </span>
     <span class="footer__copyright">

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>DSL Native+ 动态化方案设计 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="DSL Native+ 动态化方案设计 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DSL Native+ 动态化方案设计 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/DSL-Native/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2022-02-01T05:01:25.000Z" class="post-list__meta--date date">2022-02-01</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/DSL/" rel="tag">DSL</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" rel="tag">动态化</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">DSL Native+ 动态化方案设计</h1>
+  </header>
+
+  <section class="post">
+    <img src ="https://github.com/shevakuilin/GhostPostsImages/raw/master/dsl-native.png">
+
+<h2 id="为什么要有动态化？"><a href="#为什么要有动态化？" class="headerlink" title="为什么要有动态化？"></a>为什么要有动态化？</h2><ol>
+<li><strong>应“变”</strong>：随着互联网红利的消失，整个移动市场的关注从“流量”转成了“留量”，大部分的移动产品也都告别了初期的抢占市场，对某个业务领域的精细化打磨、避免 App 发布漫长的周期，在出现问题时还能即时对线上进行中止血，成为了所有业务的基本诉求。</li>
+<li><strong>提“效”</strong>：动态化往往和跨端化一桌而谈，如何在“变”的基础上还能提升 iOS&#x2F;Android 两端，甚至 H5 M Site 三端的研发效能，做到“一次开发、多端运行”，让技术更快满足业务的迭代助力业务发展。</li>
+</ol>
+<h3 id="动态化几个阶段（类型）"><a href="#动态化几个阶段（类型）" class="headerlink" title="动态化几个阶段（类型）"></a>动态化几个阶段（类型）</h3><ol>
+<li>Native 组件 + 局部配置化下发：最原始阶段，可变化范围小，大变还是需要<strong>依赖各端 Native 开发发版</strong>。</li>
+<li>DSL Native+：通过一个特定语法的 XML&#x2F;JSON 文件描述布局，端侧植入 SDK 进行渲染；可做到纯 UI 变化完全不依赖发版，但<strong>可能缺少富逻辑和交互处理能力</strong>。</li>
+<li>JS Runtime + Native View 转译：RN&#x2F;Weex 方案，通过 JS 运行时解析 DOM 转换为 Native View 渲染，逻辑层通过 JS 执行，依赖 Native 特有能力需要 Native-JS 桥接，<strong>性能不可观</strong>。</li>
+<li>WebView：完整的浏览器渲染引擎，和标准前端开发接轨，灵活性高，生态成熟，<strong>性能低</strong>。<ol>
+<li></li>
+</ol>
+</li>
+</ol>
+<h2 id="为什么是-DSL-Native-？"><a href="#为什么是-DSL-Native-？" class="headerlink" title="为什么是 DSL Native+？"></a>为什么是 DSL Native+？</h2><p>从「支持动态化的程度」、「与原生体验的差异」、「方案集成与功能开发成本的高低」三个维度出发，将市面上的移动端动态化方案分成三个方向：</p>
+<img src="/image/why-dsl.png">
+
+<blockquote>
+<p>动态化方案需要满足「跨平台」、「热更新」两个基本诉求，因此没有考虑 Android 插件化这个大类下的方案。</p>
+</blockquote>
+<ul>
+<li>「<strong>Web 增强（Web+）</strong>」方向主要基于 WebView 实现，能够进行快速的迭代，在洋葱已经有了对应的解决方案；</li>
+<li>GPL 和 DSL 可以看作「<strong>Native 增强（Native+）</strong>」方向的子方向，Native+ 方向基于 App 内自带的语言解析器，独立于 WebView 实现动态化逻辑的解析、布局和渲染。</li>
+<li>「<strong>基于 GPL 的 Native 增强（GPL）</strong>」这个方向是移动端动态化的热门方向，React Native、Flutter、NativeScript 等等，实现原理各不相同，共同的特点是利用了通用编程语言器，可以是系统提供的（如 Javascript），或者是集成到 App 的（如 Dart），再辅以某个布局系统和渲染方案，由于语言是图灵完备的，可以提供完美的动态化解决方案；</li>
+<li>「<strong>基于 DSL 的 Native 增强（DSL）</strong>」GPL 方案虽然美好但始终需要在动态化能力、渲染性能、Framework 体积、学习和开发成本等方面取舍，难以达到完美。于是产生了基于领域专用语言的解决方案，此类方案通过采用适合专业场景的的 DSL 解析云端下发的逻辑结构，舍弃一部分动态化灵活性，换取其他方面的优势。</li>
+</ul>
+<p>动态化方案选择要考量的因素很多，如渲染效率、动态化灵活程度与用户体验的取舍、方案实现成本等等。其中重点强调一下「<strong>方案实现成本</strong>」，这个因素应该基于开发团队的现状进行考量，可以包括开发成本、学习成本和人才培养成本，开发成本很好理解，即该方案从调研到落地的工作成本；学习成本和人才培养成本往往是我们容易忽略的，基于团队已经掌握的技术栈，不同的方案需要的需要掌握的知识有所不同，学习成本也不同。而人才培养成本强调的是市场上是否有对应的专业人才，不是很熟悉或者没有亲身实践过这个技术方案的人多久能够熟练掌握这项技能？比如 RN 为代表的基于 Javascript 的 GPL 方案通常需要前端开发技能和移动端开发技能的配合使用，对人力培养成本比 Native+ 和 Web + 的成本要高。</p>
+<p>讨论了这么多，我们应该选哪个方向呢？针对公司现有的业务场景、工程现状，我们梳理出需要优先考量的原则：</p>
+<ul>
+<li>「<strong>接近 Native 的高性能</strong>」落地页及二级页面的动态化的核心要求。相比于 Web 的灵活性，接近 Native 性能需求更强烈。滑动流畅是信息流列表的基础需求，而对于落地页，打开速度和使用体验也是重中之重；</li>
+<li>「<strong>项目能够快速启动</strong>」高速发展的业务诉求。项目需要能够快速启动，快速上线；</li>
+<li>「低人力成本」在业务快速迭代的过程中，支撑业务开发的同时，技术方案上的投入资源有限，前后端都很难有充足的人力投入，新方案应该占用尽可能少的人力，并且对现有工程的改造降至最低；</li>
+<li>「<strong>App 包体积影响小</strong>」洋葱 App 重视用户体验，新技术对 App 性能、包体积不能产生负面影响。包体积是影响应用增长的重要因素，App Store 应用如果超过 150M，则无法在 4G 环境下下载，将会极大的影响 App 的增长，所以新的方案需要尽可能少的影响包体积；</li>
+<li>「<strong>平滑迁移</strong>」基于技术架构现状。落地页及二级页面是基于现有业务的，不能因为动态化而要求整个业务侧重构，所以需要保证新的方案能够和现有业务方案完全兼容；</li>
+<li>「<strong>持续演进</strong>」快速启动后的发展方案。整体框架需要支持高扩展性，可以在上线后进行持续的需求迭代。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>性能</th>
+<th>动态化能力</th>
+<th>学习成本</th>
+<th>迁移成本</th>
+<th>人力成本</th>
+<th>扩展性</th>
+<th>包体积</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GPL Native+</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+<td>中</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Web+</td>
+<td>低</td>
+<td>高</td>
+<td>低</td>
+<td>中</td>
+<td>低</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>DSL Native+</td>
+<td>高</td>
+<td>中</td>
+<td>低</td>
+<td>低</td>
+<td>低</td>
+<td>高</td>
+<td>低</td>
+</tr>
+</tbody></table>
+<p>「Web+」方向在性能和稳定性上略差，而且使用场景有限，不适合在落地页信息流这种流畅性要求高的场景中使用；「GPL」方向提供一套完全不同于 Native 的开发模式，可以在其基础上实现动态化功能，且能够保证较好的性能，但是目前的解决方案接入成本和学习成本都比较高，并且与复杂业务场景结合时均有难以解决的问题，不适合在已有业务中接入。</p>
+<p>综上考虑，最终我们决定采用基于 Flexbox 的 DSL Native+ 动态化方案即 OMCD（Onion Mobile Client DSL）。OMCD 方案在业务上具有如下优势：</p>
+<ul>
+<li>和现有技术栈完美融合。洋葱 iOS App 绝大部分业务组件基于 Yoga 实现的，几乎几乎不会产生额外的学习成本；</li>
+<li>快速上线，后期维护成本较低：整体方案的上手难度低，不需要学习新的技术，能够快速进行功能迭代开发；</li>
+<li>对包体积影响小：整个方案只是增加了 Google-FlexboxLayout、Yoga 两个轻量级开源布局框架，对体积影响可以忽略不计；</li>
+<li>支持现有A&#x2F;B测实验组，很好的满足样式实验、数据采集的需求。</li>
+</ul>
+<h3 id="为什么是-Flexbox？"><a href="#为什么是-Flexbox？" class="headerlink" title="为什么是 Flexbox？"></a>为什么是 Flexbox？</h3><p>动态布局方案基于 Flexbox，带来的好处是：</p>
+<ul>
+<li>Flexbox 为盒状模型提供最大的灵活性，是目前布局系统的首选；</li>
+<li>跨平台方案，双端统一；</li>
+<li>和洋葱 App 现有技术栈匹配度高，开源环境中有优秀开源库的本地化。</li>
+<li>iOS 端 Facebook 开源的 <a href="https://link.zhihu.com/?target=https://github.com/facebook/yoga">Yoga</a> 已经经过 10+ release 迭代，有 1.1w+ 的 Star，在生产环境经过长时间验证；</li>
+<li>Android 端的 Yoga 库有一些难以解决的问题，选择 Google 的 <a href="https://link.zhihu.com/?target=https://github.com/google/flexbox-layout">FlexboxLayout</a> 框架来解析，该框架也非常成熟，在和 iOS Yoga 配合中仅需要很少的双端适配。</li>
+</ul>
+<h3 id="为什么是-JSON？"><a href="#为什么是-JSON？" class="headerlink" title="为什么是 JSON？"></a>为什么是 JSON？</h3><p>布局描述语言上，由于各种描述语言的描述能力差异不大，在这种情况下，<strong>开发成本</strong>成为我们选型描述语言的重点。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>传输体积</th>
+<th>描述能力</th>
+<th>基于现状的开发成本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>XML</td>
+<td>大</td>
+<td>大</td>
+<td>高</td>
+</tr>
+<tr>
+<td>JSON</td>
+<td>中</td>
+<td>中</td>
+<td>低</td>
+</tr>
+<tr>
+<td>Proto Buffer</td>
+<td>小</td>
+<td>小</td>
+<td>高</td>
+</tr>
+<tr>
+<td>YAML</td>
+<td>中</td>
+<td>中</td>
+<td>高</td>
+</tr>
+<tr>
+<td>TOML</td>
+<td>中</td>
+<td>中</td>
+<td>高</td>
+</tr>
+</tbody></table>
+<p>开发成本考虑的是基于洋葱 App 现有客户端和后端的交互结构，目前前后端数据传输采用的是 JSON 格式，如果要换成其他格式的数据，客户端和后端都需要进行额外的工作处理，应采取 JSON 格式来描述布局样式。</p>
+<h2 id="如何设计DSL-Native-动态化方案架构"><a href="#如何设计DSL-Native-动态化方案架构" class="headerlink" title="如何设计DSL Native+ 动态化方案架构"></a>如何设计DSL Native+ 动态化方案架构</h2><p>我们将一个使用  DSL 系统，以 JSON 格式组织的描述一个视图树结构的配置称为<strong>样式</strong>。实现动态化的核心业务流程是实现布局文件云端下发和解析：<em>编写样式文件 -&gt; 上传到服务端 -&gt; 云端下发样式到 App 端 -&gt; App 端收到数据后解析样式文件进行展示</em>。</p>
+<h3 id="样式管理平台"><a href="#样式管理平台" class="headerlink" title="样式管理平台"></a>样式管理平台</h3><p>样式管理平台由<strong>业务端</strong>、<strong>引擎端</strong>和<strong>接口层</strong>三部分共同组成。其中<strong>业务端</strong>提供面向需求方的模板投放管理平台（可视化操作、样式关系的JSON数据转换等）；<strong>引擎端</strong>负责存储和处理相关数据（储存样式模板、下发样式模板、实验分流等）；和 App 端直接交互的是<strong>接口层</strong>，负责响应对应业务请求接口，和样式下发接口，根据 App 端的请求，选取符合规则的样式下发给 App 端，同时对处在实验内的样式进行流量分流。（理论上业务接口与样式接口应当在引擎端聚合，鉴于公司现有技术体系，前期不做强要求，满足样式下发接口即可）</p>
+<img src="/image/dsl-uml.png">
+
+<h1 id="业内竞品调研总结（DSL-Native-类）"><a href="#业内竞品调研总结（DSL-Native-类）" class="headerlink" title="业内竞品调研总结（DSL Native+ 类）"></a>业内竞品调研总结（DSL Native+ 类）</h1><table>
+<thead>
+<tr>
+<th>公司</th>
+<th>产品</th>
+<th>开源？</th>
+<th>活跃？</th>
+<th>覆盖端型</th>
+<th>DSL</th>
+<th>布局模型</th>
+<th>布局框架</th>
+<th>学习&#x2F;维护成本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>阿里内部</td>
+<td>XX</td>
+<td>✗</td>
+<td></td>
+<td>iOS&#x2F;AndroidH5&#x2F;小程序</td>
+<td>XML</td>
+<td>Mesure</td>
+<td>自研</td>
+<td>高</td>
+</tr>
+<tr>
+<td>阿里-天猫</td>
+<td>VirtualView</td>
+<td>✓</td>
+<td>已放弃</td>
+<td>iOS&#x2F;Android</td>
+<td>XML</td>
+<td>Mesure</td>
+<td>自研</td>
+<td>高</td>
+</tr>
+<tr>
+<td>知乎</td>
+<td>Morph</td>
+<td>✗</td>
+<td></td>
+<td>iOS&#x2F;Android</td>
+<td>JSON</td>
+<td>Flexbox</td>
+<td>iOS-Yoga Android-FlexboxLayout</td>
+<td>低</td>
+</tr>
+<tr>
+<td>美团（大众点评）</td>
+<td>Picasso</td>
+<td>✗</td>
+<td></td>
+<td>iOS&#x2F;AndroidH5&#x2F;小程序</td>
+<td>TypeScript</td>
+<td>自研</td>
+<td>自研</td>
+<td>高</td>
+</tr>
+<tr>
+<td>陌陌</td>
+<td>MLN</td>
+<td>✓</td>
+<td>维护力度低</td>
+<td>iOS&#x2F;Android</td>
+<td>Lua</td>
+<td>Flexbox</td>
+<td>ArgoUI</td>
+<td>高</td>
+</tr>
+</tbody></table>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><ol>
+<li>有能力的公司内部都已经涉足该技术领域，这不是一个新鲜概念。</li>
+<li>唯一一个相对比较成熟开源的项目（天猫 VirtualView），还被放弃维护了，开源界里并没有一个可用的方案。陌陌的MLN本质上并不是一个DSL方案，其基于Lua虚拟机的跨端能力将造成极高的后期维护成本且iOS侧对Lua的Bridge支持力度远不及Android。</li>
+<li>我们期望打造一套「自主可控」、「可塑性强」、「契合现有技术栈」、「低学习成本和低维护成本」的DLS方案。所以知乎的Morph思路最值得借鉴：<ol>
+<li>DSL无任何改造成本，Json与现有后端业务也可以无缝对接。</li>
+<li>Flexbox在iOS（Yoga）和Android（FlexboxLayout）双端都拥有非常成熟的布局框架与模型体系。</li>
+<li>双端仅需要引入一套Flexbox布局框架即可（iOS现有业务包括播放器已大量使用Yoga），无任何额外第三方依赖库。</li>
+<li>自研对组内所带来的技术提升和后期维护成本的大幅度降低将带来显著收益，形成洋葱移动端侧的实质性技术壁垒。</li>
+</ol>
+</li>
+</ol>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/univalued-binarytree/" title="单值二叉树">单值二叉树</a></h2>
+                <p class="excerpt">
+                
+                LeetCode 965. 单值二叉树
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2021-01-19T15:39:02.000Z" class="post-list__meta--date date">2021-01-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>, <a class="-none-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a>
+</span><a class="btn-border-small" href="/univalued-binarytree/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/DSL-Native/';
+  var disqus_title = 'DSL Native+ 动态化方案设计';
+  var disqus_url = 'http://shevakuilin.com/DSL-Native/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>

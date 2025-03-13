@@ -150,7 +150,7 @@
   </header>
 
   <section class="post">
-    <p>对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。<a id="more"></a></p>
+    <p>对 iOS 多线程技术 GCD、NSOperation、NSTread的一些总结。<span id="more"></span></p>
 <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/64992682_p0_master1200.jpg">
 
 <h2 id="GCD替我们做了哪些工作-为什么要使用GCD"><a href="#GCD替我们做了哪些工作-为什么要使用GCD" class="headerlink" title="GCD替我们做了哪些工作(为什么要使用GCD)"></a>GCD替我们做了哪些工作(为什么要使用GCD)</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><blockquote>
@@ -168,8 +168,8 @@
 <ul>
 <li><p><strong>任务</strong>执行任务有两种方式：<code>同步执行</code>（sync）和<code>异步执行</code>（async）主要区别：是否<code>等待</code>队列的任务执行结束，以及是否具备<code>开启新线程</code>的能力。</p>
 <ul>
-<li>同步执行：等待/只能在<code>当前线程</code>中执行任务，<code>不具备</code>开启新线程的能力</li>
-<li>异步执行：不等待/可以在<code>新的线程</code>中执行任务，<code>具备</code>开启新线程的能力</li>
+<li>同步执行：等待&#x2F;只能在<code>当前线程</code>中执行任务，<code>不具备</code>开启新线程的能力</li>
+<li>异步执行：不等待&#x2F;可以在<code>新的线程</code>中执行任务，<code>具备</code>开启新线程的能力</li>
 </ul>
 </li>
 <li><p><strong>队列</strong>这里的队列指<code>执行任务</code>的<code>等待队列</code>，即用来<code>存放任务</code>的队列采用<code>FIFO(先进先出)</code>的原则有两种队列：<code>串行队列</code>和<code>并发队列</code></p>
@@ -180,7 +180,7 @@
 </li>
 <li><p><strong>使用步骤</strong>使用步骤其实很简单，只有两步1.<code>创建一个队列</code>（串行队列或并发队列）2.<code>将任务追加到任务的等待队列中</code>，然后系统就会根据任务类型执行任务（同步执行或异步执行）</p>
 <ul>
-<li><code>队列</code>的创建方法/获取方法可以使用<code>dispatch_queue_create</code>来创建队列，需要传入两个参数<ul>
+<li><code>队列</code>的创建方法&#x2F;获取方法可以使用<code>dispatch_queue_create</code>来创建队列，需要传入两个参数<ul>
 <li>第一个参数：队列的<code>唯一标识符</code></li>
 <li>第二个参数：<code>识别</code>是串行队列还是并发队列</li>
 <li>串行队列：<code>主队列</code>（Main Dispatch Queue）<code>主线程执行</code></li>
@@ -250,7 +250,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="写出GCD的执行结果"><a href="#写出GCD的执行结果" class="headerlink" title="写出GCD的执行结果"></a>写出GCD的执行结果</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 题目：写出NSLog的打印结果（来自美团 GCD 面试题）</span></span><br><span class="line">__block <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (a &lt; <span class="number">5</span>) &#123;</span><br><span class="line">    <span class="built_in">dispatch_async</span>(dispatch_get_global_queue(<span class="number">0</span>, <span class="number">0</span>), ^&#123;</span><br><span class="line">        a++;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;输出: %d&quot;</span>, a);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 答案：</span></span><br><span class="line"><span class="comment">// 输出结果为：a &gt;= 5</span></span><br><span class="line"><span class="comment">// 原因：while循环内部执行并发耗时任务，ARC环境下，一旦Block赋值就会触发copy，__block就会copy到堆上，所以当执行a++时，Block外部也能访问到改变后的值；当a不满足循环条件而跳出时，并发任务可能仍在只执行，此时仍然会改变a的值，鉴于不同机器的CPU和线程差异影响，所以最终输出结果会大于等于5</span></span><br><span class="line"><span class="comment">// 注意：a的输出值结果是a&gt;=5，但是a的实际结果会远远大于5（NSLog输出完成后，并发耗时任务可能尚未完全结束）</span></span><br></pre></td></tr></table></figure>
+<h2 id="写出GCD的执行结果"><a href="#写出GCD的执行结果" class="headerlink" title="写出GCD的执行结果"></a>写出GCD的执行结果</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 题目：写出NSLog的打印结果（来自美团 GCD 面试题）</span></span><br><span class="line">__block <span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (a &lt; <span class="number">5</span>) &#123;</span><br><span class="line">    <span class="built_in">dispatch_async</span>(dispatch_get_global_queue(<span class="number">0</span>, <span class="number">0</span>), ^&#123;</span><br><span class="line">        a++;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;输出: %d&quot;</span>, a);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 答案：</span></span><br><span class="line"><span class="comment">// 输出结果为：a &gt;= 5</span></span><br><span class="line"><span class="comment">// 原因：while循环内部执行并发耗时任务，ARC环境下，一旦Block赋值就会触发copy，__block就会copy到堆上，所以当执行a++时，Block外部也能访问到改变后的值；当a不满足循环条件而跳出时，并发任务可能仍在只执行，此时仍然会改变a的值，鉴于不同机器的CPU和线程差异影响，所以最终输出结果会大于等于5</span></span><br><span class="line"><span class="comment">// 注意：a的输出值结果是a&gt;=5，但是a的实际结果会远远大于5（NSLog输出完成后，并发耗时任务可能尚未完全结束）</span></span><br></pre></td></tr></table></figure>
 
 
 
@@ -397,7 +397,7 @@
 
             <footer class="footer">
     <span class="footer__copyright">
-        &copy; 2021 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
        
     </span>
     <span class="footer__copyright">
