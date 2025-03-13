@@ -150,7 +150,9 @@
   </header>
 
   <section class="post">
-    <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>iOS开发中，使用Xcode</p>
+    <img scr="https://github.com/shevakuilin/GhostPostsImages/blob/raw/xcode-lldb-error.png">
+
+<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>iOS开发中，使用Xcode</p>
 <p>开发时，有时候原本运行好好的项目，突然调试时，发现 po 命令无法正常显示变量的值，无论是清空编译目录，还是重装Xcode，都无法解决问题。</p>
 <h2 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h2><p>自从 Xcode 13.3 到 Xcode 14 测试版之前，当尝试使用静态框架&#x2F;库与 LLDB 或使用 CocoaPods 并启用框架和静态链接时，会出现一个奇怪的 bug。</p>
 <p>当你在框架代码中使用简单的 LLDB 命令（如 po <something>）时，调试控制台会显示以下消息：</p>
