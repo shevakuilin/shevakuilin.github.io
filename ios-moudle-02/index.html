@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>洋葱学园 iOS 端组件化重构之路[二]-实施方案 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="洋葱学园 iOS 端组件化重构之路[二]-实施方案 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="洋葱学园 iOS 端组件化重构之路[二]-实施方案 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-moudle-02/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2025-11-01T02:41:50.000Z" class="post-list__meta--date date">2025-11-01</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>, <a class="-none-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">洋葱学园 iOS 端组件化重构之路[二]-实施方案</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/ios-moudle-02.jpg">
+
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>基于[洋葱学园 iOS 端组件化重构之路[一]-现状梳理] (<a href="https://shevakuilin.com/ios-moudle-01/">https://shevakuilin.com/ios-moudle-01/</a>) 得出的结论与方案，需要验证方案的可行性及实施成本，设计完整架构图和演示工程，包括后续持续集成的改造思路等。</p>
+<h2 id="实施目标"><a href="#实施目标" class="headerlink" title="实施目标"></a>实施目标</h2><ul>
+<li>中间件的方案，产出完整调度能力的中间件Demo，包含下沉依赖关系演示</li>
+<li>列出现有功能的基于中间件改造成本</li>
+<li>如何梳理职能范围，拆分力度如何确认（依赖链是否保持单一）</li>
+<li>设计完整架构图，确保双端都可基于组件的独立运行单元测试、运行、迭代</li>
+<li>Jenkins 基于独立工程改造（能设置指定工程路径）<code>以分支切换的形式</code></li>
+</ul>
+<h2 id="调度演示"><a href="#调度演示" class="headerlink" title="调度演示"></a>调度演示</h2><blockquote>
+<p>具体效果见实际 Demo</p>
+</blockquote>
+<h3 id="演示流程"><a href="#演示流程" class="headerlink" title="演示流程"></a>演示流程</h3><h4 id="流程1-C-端用户进入备考"><a href="#流程1-C-端用户进入备考" class="headerlink" title="流程1: C 端用户进入备考"></a>流程1: C 端用户进入备考</h4><p>单元测试 APP 启动 -&gt; (首次)中间件调度 C 端用户登录组件进行登录 -&gt; 登录组件完成，通过中间件调度用户数据组件进行 C 端用户数据缓存 -&gt;进入单元测试 APP 首页 -&gt; 点击首页备考入口，通过中间件调度用户数据组件读取已缓存的 C 端用户数据  -&gt; 通过中间件调度备考业务组件</p>
+<img src="ios-moudle-02-uml01">
+
+<h4 id="流程2-B-端用户进入备考"><a href="#流程2-B-端用户进入备考" class="headerlink" title="流程2: B 端用户进入备考"></a>流程2: B 端用户进入备考</h4><p>单元测试 APP 启动 -&gt; (首次)中间件调度 B 端用户登录组件进行登录 -&gt; 登录组件完成，通过中间件调度用户数据组件进行 B 端用户数据缓存 -&gt;进入单元测试 APP 首页 -&gt; 点击首页备考入口，通过中间件调度用户数据组件读取已缓存的 B 端用户数据  -&gt; 通过中间件调度备考业务组件</p>
+<img src="ios-moudle-02-uml02">
+
+<h4 id="流程3-C-端用户进入抖葱"><a href="#流程3-C-端用户进入抖葱" class="headerlink" title="流程3: C 端用户进入抖葱"></a>流程3: C 端用户进入抖葱</h4><p>单元测试 APP 启动 -&gt; (首次)中间件调度 C 端用户登录组件进行登录 -&gt; 登录组件完成，通过中间件调度用户数据组件进行 C 端用户数据缓存 -&gt;进入单元测试 APP 首页 -&gt; 点击首页备考入口，通过中间件调度用户数据组件读取已缓存的 C 端用户数据  -&gt; 通过中间件调度抖葱业务组件</p>
+<img src="ios-moudle-02-uml03">
+
+<h2 id="中间件设计"><a href="#中间件设计" class="headerlink" title="中间件设计"></a>中间件设计</h2><h3 id="YCMediator"><a href="#YCMediator" class="headerlink" title="YCMediator"></a>YCMediator</h3><blockquote>
+<p>基于<strong>维护成本</strong> 、<strong>解耦力度</strong> 、<strong>扩展性</strong> 及<strong>现有工程侵入性</strong> 的综合评估，决定采取 <strong>Runtime</strong> 方案实现中间件，并在业内知名中间件 CTMediator 基础上进行强化改造，后续自行维护</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * _Nonnull <span class="keyword">const</span> kCTMediatorParamsKeySwiftTargetModuleName;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CTMediator</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">instancetype</span> _Nonnull)sharedInstance;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 远程App调用入口</span></span><br><span class="line">- (<span class="type">id</span> _Nullable)performActionWithUrl:(<span class="built_in">NSURL</span> * _Nullable)url completion:(<span class="type">void</span>(^_Nullable)(<span class="built_in">NSDictionary</span> * _Nullable info))completion;</span><br><span class="line"><span class="comment">// 本地组件调用入口</span></span><br><span class="line">- (<span class="type">id</span> _Nullable )performTarget:(<span class="built_in">NSString</span> * _Nullable)targetName action:(<span class="built_in">NSString</span> * _Nullable)actionName params:(<span class="built_in">NSDictionary</span> * _Nullable)params shouldCacheTarget:(<span class="type">BOOL</span>)shouldCacheTarget;</span><br><span class="line">- (<span class="type">void</span>)releaseCachedTargetWithFullTargetName:(<span class="built_in">NSString</span> * _Nullable)fullTargetName;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">// 简化调用单例的函数</span></span><br><span class="line"><span class="built_in">CTMediator</span>* _Nonnull CT(<span class="type">void</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="改造成本"><a href="#改造成本" class="headerlink" title="改造成本"></a>改造成本</h2><p>按照现有工程的组件化现状，将改造成本分为<strong>解决依赖链问题的「解耦成本」</strong> ，和<strong>填补目前没有中间件调度能力的「通信改造成本」</strong> 。</p>
+<h3 id="解耦成本"><a href="#解耦成本" class="headerlink" title="解耦成本"></a>解耦成本</h3><h4 id="基本评估"><a href="#基本评估" class="headerlink" title="基本评估"></a>基本评估</h4><p>复杂度：★★☆☆☆</p>
+<p>挪动代码并没有什么复杂度，复杂度基本体现在需要职能拆分时，如何拆分、合并和重组。</p>
+<p>人力成本：★★★☆☆</p>
+<p>涉及的实际库比较多，需要实际过一遍代码，且属于前置项，要尽短批量的完成，所以需要完成会花费较多人力的时间成本。</p>
+<h4 id="涉及范围"><a href="#涉及范围" class="headerlink" title="涉及范围"></a>涉及范围</h4><ul>
+<li>全部中台库</li>
+<li>中学基础库（不含业务库）</li>
+</ul>
+<h4 id="解耦内容"><a href="#解耦内容" class="headerlink" title="解耦内容"></a>解耦内容</h4><p>按照后文梳理出的职能范围规范，拆分代码，各司其职，该下沉的下沉至基础服务中，该上提的提入到通用服务或业务中。</p>
+<p>⚠️⚠️非必要情况，只挪动代码，不调整代码逻辑，建议整类迁移⚠️⚠️</p>
+<p>如果类中掺杂了不属于该库只能的代码，则继续秉持职能范围规范，并入其他现有库或与其他同职能散落代码合并独立成库。</p>
+<h3 id="通信改造成本"><a href="#通信改造成本" class="headerlink" title="通信改造成本"></a>通信改造成本</h3><h4 id="基本评估-1"><a href="#基本评估-1" class="headerlink" title="基本评估"></a>基本评估</h4><p>复杂度：★☆☆☆☆</p>
+<p>仅需要在目标库中建立一个Target类，和一个基于中间件建立目标库的 Category 库，共同负责对外通信，无侵入，不涉及旧代码已有逻辑，考虑到组件对外调度接口都不多，所以复杂度很低。</p>
+<p>人力成本：★☆☆☆☆</p>
+<p>因为不涉及业务入侵，所以引入单元测试时再进行开发即可（只增加通信代码），不会占用多少人力成本。</p>
+<h4 id="涉及范围-1"><a href="#涉及范围-1" class="headerlink" title="涉及范围"></a>涉及范围</h4><ul>
+<li>全部中台库</li>
+<li>全部中学库</li>
+<li>全部教师&#x2F;入校库</li>
+</ul>
+<h4 id="改造内容"><a href="#改造内容" class="headerlink" title="改造内容"></a>改造内容</h4><p>在需要中间件调度通信（同层横向依赖）时，在需要被调度的库当中建立一个Target类，再建立一个与被调度的库相对应的，基于中间件的 Category 库即可。需要横向依赖才进行改造，无横向依赖时不需要改造，理论上，基础服务库之间不应存在横向依赖（具体见架构图）。</p>
+<h2 id="梳理职能范围"><a href="#梳理职能范围" class="headerlink" title="梳理职能范围"></a>梳理职能范围</h2><p>职能按照<strong>基础服务</strong> 、<strong>通用服务</strong> 、<strong>基础业务</strong> 、<strong>通用业务</strong> 、<strong>独立业务</strong>来划分</p>
+<p>⚠️注意：非洋葱自行维护的第三方库不在职能范围内，因为第三方库不会主动与洋葱内部职能库产生依赖关系，只存在单向被引用的依赖关系。</p>
+<h3 id="基础服务"><a href="#基础服务" class="headerlink" title="基础服务"></a>基础服务</h3><blockquote>
+<p>基础服务属于能力基建，不与任何具体业务、具体功能挂钩，只提供应用程序的最基本支撑能力，应当放之四海皆通用，是组成应用程序的充分必要条件，由现有中台继成维护。</p>
+<p>基础服务应足够 “干净”，不应存在任何形式的彼此横向依赖，如果产生了就需要抽离拆分。</p>
+<p>⚠️基础服务原则上不直接提供给业务方使用，由上层通用服务封装后向上层业务提供能力，其目的是保证基建不依赖某一特定技术项目，可随时迁移、替换。</p>
+</blockquote>
+<h4 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h4><ul>
+<li>基础网络库</li>
+</ul>
+<h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><ul>
+<li>基础数据库</li>
+</ul>
+<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><ul>
+<li>基础日志库</li>
+</ul>
+<h4 id="APM"><a href="#APM" class="headerlink" title="APM"></a>APM</h4><ul>
+<li>性能监控</li>
+<li>崩溃防护</li>
+</ul>
+<h3 id="通用服务"><a href="#通用服务" class="headerlink" title="通用服务"></a>通用服务</h3><blockquote>
+<p>通用服务属于依赖于基础服务之上的，面向业务层的通用服务，同样是提供能力而不是具体业务，不关心具体业务细节，面向洋葱所有业务线提供通用服务能力，是组成应用程序的充分不必要条件，但在洋葱内部同样属于充分必要条件，可供洋葱所有 APP 使用的能力，由现有中台继承维护。</p>
+<p>通用服务之间可由中间件进行横向调度，只单向依赖于基础服务</p>
+</blockquote>
+<h4 id="环境-x2F-配置"><a href="#环境-x2F-配置" class="headerlink" title="环境&#x2F;配置"></a>环境&#x2F;配置</h4><ul>
+<li>通用宏&#x2F;静态变量配置（不含业务字段）</li>
+<li>热更新</li>
+<li>函数扩展&#x2F;类扩展</li>
+<li>环境校验</li>
+</ul>
+<h4 id="视频播放器"><a href="#视频播放器" class="headerlink" title="视频播放器"></a>视频播放器</h4><ul>
+<li>基础播放器（不含插件、不含特定业务功能）</li>
+</ul>
+<h4 id="支付"><a href="#支付" class="headerlink" title="支付"></a>支付</h4><ul>
+<li>基础 IAP 内购</li>
+<li>第三方支付</li>
+</ul>
+<h4 id="分享"><a href="#分享" class="headerlink" title="分享"></a>分享</h4><ul>
+<li>通用分享</li>
+</ul>
+<h4 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h4><ul>
+<li>基础通用浏览器</li>
+<li>通信桥（Riki）</li>
+</ul>
+<h4 id="埋点"><a href="#埋点" class="headerlink" title="埋点"></a>埋点</h4><ul>
+<li>数仓日志上报</li>
+<li>阿里云日志上报</li>
+</ul>
+<h4 id="数据缓存"><a href="#数据缓存" class="headerlink" title="数据缓存"></a>数据缓存</h4><ul>
+<li>视频下载缓存</li>
+<li>偏好管理</li>
+</ul>
+<h3 id="基础业务"><a href="#基础业务" class="headerlink" title="基础业务"></a>基础业务</h3><blockquote>
+<p>基础业务面向业务，向下依赖通用服务，属于面向洋葱内部所有 APP 的通用性的基础业务组件的集合。基础业务兼具能力与功能，可通过配置兼容不同具体业务线的具体业务要求。是组成应用程序的不充分不必要条件，在洋葱内部属于不充分必要条件</p>
+<p>⚠️基础业务必须是具有可根据参数动态配置的能力，各业务线开箱即用的状态，或拥有极佳的扩展性帮助业务线快速扩展所需能力</p>
+<p>⚠️基础业务只向下依赖通用服务，不依赖其他业务内容</p>
+</blockquote>
+<h4 id="业务播放器"><a href="#业务播放器" class="headerlink" title="业务播放器"></a>业务播放器</h4><ul>
+<li>基础功能播放器插件</li>
+</ul>
+<h4 id="支付中心"><a href="#支付中心" class="headerlink" title="支付中心"></a>支付中心</h4><ul>
+<li>基于通用业务封装的支付功能</li>
+</ul>
+<h4 id="分享中心"><a href="#分享中心" class="headerlink" title="分享中心"></a>分享中心</h4><ul>
+<li>基于通用业务封装的分享功能</li>
+</ul>
+<h4 id="鉴权"><a href="#鉴权" class="headerlink" title="鉴权"></a>鉴权</h4><ul>
+<li>通用鉴权</li>
+</ul>
+<h4 id="用户数据"><a href="#用户数据" class="headerlink" title="用户数据"></a>用户数据</h4><ul>
+<li>基础用户模型</li>
+</ul>
+<h4 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h4><ul>
+<li>基础登录功能（可配置的不包含具体业务线的登录业务能力，不含UI）</li>
+</ul>
+<h4 id="动态化"><a href="#动态化" class="headerlink" title="动态化"></a>动态化</h4><ul>
+<li>DSL</li>
+</ul>
+<h3 id="通用业务"><a href="#通用业务" class="headerlink" title="通用业务"></a>通用业务</h3><blockquote>
+<p>通用业务主要包含可复用的细颗粒度业务功能，非完整业务功能，主要由具体业务线内部负责维护，是该业务线内部可重复使用的功能。</p>
+<p>⚠️原则上同样只向下依赖基础业务，不横向依赖其他业务</p>
+</blockquote>
+<h4 id="业务播放器-1"><a href="#业务播放器-1" class="headerlink" title="业务播放器"></a>业务播放器</h4><ul>
+<li>学习播放器</li>
+<li>短视频播放器</li>
+<li>简单播放器</li>
+</ul>
+<h4 id="用户数据-1"><a href="#用户数据-1" class="headerlink" title="用户数据"></a>用户数据</h4><ul>
+<li>各端基于基础用户模型扩展的本业务线具体用户模型</li>
+</ul>
+<h4 id="登录-1"><a href="#登录-1" class="headerlink" title="登录"></a>登录</h4><ul>
+<li>基于基础登录扩展的本业务线具体登录功能</li>
+</ul>
+<h4 id="客服中心"><a href="#客服中心" class="headerlink" title="客服中心"></a>客服中心</h4><ul>
+<li>通用客服中心</li>
+</ul>
+<h4 id="鉴权-1"><a href="#鉴权-1" class="headerlink" title="鉴权"></a>鉴权</h4><ul>
+<li>基于基础鉴权扩展的本业务线的通用鉴权</li>
+</ul>
+<h4 id="浏览器-1"><a href="#浏览器-1" class="headerlink" title="浏览器"></a>浏览器</h4><ul>
+<li>基于基础浏览器扩展的本业务线浏览器</li>
+</ul>
+<h3 id="独立业务"><a href="#独立业务" class="headerlink" title="独立业务"></a>独立业务</h3><blockquote>
+<p>顾名思义，基于通用业务构建而成的纯业务组件，向下雨来通用业务，横向由中间件调度进行通信。有个具体业务线负责维护，无需考虑复用性，只做组件下沉</p>
+</blockquote>
+<h4 id="具体业务"><a href="#具体业务" class="headerlink" title="具体业务"></a>具体业务</h4><ul>
+<li>业务线登录组件</li>
+<li>备考组件</li>
+<li>抖葱组件</li>
+</ul>
+<h2 id="完整架构设计"><a href="#完整架构设计" class="headerlink" title="完整架构设计"></a>完整架构设计</h2><img src="ios-moudle-02-uml04">
+
+<h2 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h2><p>只需要在 Jenkins 上维护一个单元测试工程即可，用企业包维护测试环境和线上后门环境即可，通过 branch 来区分具体的测试单元。</p>
+<h3 id="单元测试工程"><a href="#单元测试工程" class="headerlink" title="单元测试工程"></a>单元测试工程</h3><ul>
+<li>集成配置：包含中学、教师和校园的 request host 等基础配置即可</li>
+</ul>
+<h3 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h3><ul>
+<li>维护 UnitTest_Test 和 UnitTest_Release 两个 Job</li>
+<li>每次独立的单元测试用独立的 branch 进行区分，master 分支只保留包含了集成配置和中间件的空主工程，各组件由各 branch 独立添加</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-xcode-lldb-error/" title="Xcode lldb控制台打印 po 命令失效问题解决记录">Xcode lldb控制台打印 po 命令失效问题解决记录</a></h2>
+                <p class="excerpt">
+                
+                
+
+问题背景iOS开发中，使用Xcode
+开发时，有时候原本运行好好的项目，突然调试时，发现 po 命令无法正常显示变量的值，无论是清空编译目录，还是重装Xcode，都无法解决问题。
+问题原因自从 Xcode 13.3 到 Xcode 14 测试版之前，当尝试使用静态框架&amp;#x2F;库与 LLDB 
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-10-23T09:08:48.000Z" class="post-list__meta--date date">2024-10-23</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a>, <a class="-none-link" href="/tags/LLDB/" rel="tag">LLDB</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+</span><a class="btn-border-small" href="/ios-xcode-lldb-error/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-moudle-02/';
+  var disqus_title = '洋葱学园 iOS 端组件化重构之路[二]-实施方案';
+  var disqus_url = 'http://shevakuilin.com/ios-moudle-02/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
