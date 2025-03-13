@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>WKWebView缓存协议验证 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="WKWebView缓存协议验证 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="WKWebView缓存协议验证 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-wkwebview-cache-test/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-08-24T06:34:35.000Z" class="post-list__meta--date date">2024-08-24</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/WKWebview/" rel="tag">WKWebview</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">WKWebView缓存协议验证</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/wkwebview-cache.png">
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本次我们基于 <code>URLRequest.CachePolicy</code> 协议进行 WKWebView 缓存能力的验证，主要验证方向为网页页面及相应资源的内容缓存。</p>
+<p>API 如下</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> <span class="title class_">URLRequest</span> : <span class="title class_ inherited__">ReferenceConvertible</span>, <span class="title class_ inherited__">Equatable</span>, <span class="title class_ inherited__">Hashable</span>, <span class="title class_ inherited__">Sendable</span> &#123;</span><br><span class="line">    <span class="operator">...</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// Creates and initializes a URLRequest with the given URL and cache policy.</span></span><br><span class="line">    <span class="comment">/// - parameter: url The URL for the request. </span></span><br><span class="line">    <span class="comment">/// - parameter: cachePolicy The cache policy for the request. Defaults to `.useProtocolCachePolicy`</span></span><br><span class="line">    <span class="comment">/// - parameter: timeoutInterval The timeout interval for the request. See the commentary for the `timeoutInterval` for more information on timeout intervals. Defaults to 60.0</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(<span class="params">url</span>: <span class="type">URL</span>, <span class="params">cachePolicy</span>: <span class="type">URLRequest</span>.<span class="type">CachePolicy</span> <span class="operator">=</span> .useProtocolCachePolicy, <span class="params">timeoutInterval</span>: <span class="type">TimeInterval</span> <span class="operator">=</span> <span class="number">60.0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="operator">...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">NSURLRequest</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">        @enum NSURLRequestCachePolicy</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        @discussion The NSURLRequestCachePolicy enum defines constants that</span></span><br><span class="line"><span class="comment">        can be used to specify the type of interactions that take place with</span></span><br><span class="line"><span class="comment">        the caching system when the URL loading system processes a request.</span></span><br><span class="line"><span class="comment">        Specifically, these constants cover interactions that have to do</span></span><br><span class="line"><span class="comment">        with whether already-existing cache data is returned to satisfy a</span></span><br><span class="line"><span class="comment">        URL load request.</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        @constant NSURLRequestUseProtocolCachePolicy Specifies that the</span></span><br><span class="line"><span class="comment">        caching logic defined in the protocol implementation, if any, is</span></span><br><span class="line"><span class="comment">        used for a particular URL load request. This is the default policy</span></span><br><span class="line"><span class="comment">        for URL load requests.</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        @constant NSURLRequestReloadIgnoringLocalCacheData Specifies that the</span></span><br><span class="line"><span class="comment">        data for the URL load should be loaded from the origin source. No</span></span><br><span class="line"><span class="comment">        existing local cache data, regardless of its freshness or validity,</span></span><br><span class="line"><span class="comment">        should be used to satisfy a URL load request.</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        @constant NSURLRequestReloadIgnoringLocalAndRemoteCacheData Specifies that</span></span><br><span class="line"><span class="comment">        not only should the local cache data be ignored, but that proxies and</span></span><br><span class="line"><span class="comment">        other intermediates should be instructed to disregard their caches</span></span><br><span class="line"><span class="comment">        so far as the protocol allows.</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        @constant NSURLRequestReloadIgnoringCacheData Older name for</span></span><br><span class="line"><span class="comment">        NSURLRequestReloadIgnoringLocalCacheData.</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        @constant NSURLRequestReturnCacheDataElseLoad Specifies that the</span></span><br><span class="line"><span class="comment">        existing cache data should be used to satisfy a URL load request,</span></span><br><span class="line"><span class="comment">        regardless of its age or expiration date. However, if there is no</span></span><br><span class="line"><span class="comment">        existing data in the cache corresponding to a URL load request,</span></span><br><span class="line"><span class="comment">        the URL is loaded from the origin source.</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        @constant NSURLRequestReturnCacheDataDontLoad Specifies that the</span></span><br><span class="line"><span class="comment">        existing cache data should be used to satisfy a URL load request,</span></span><br><span class="line"><span class="comment">        regardless of its age or expiration date. However, if there is no</span></span><br><span class="line"><span class="comment">        existing data in the cache corresponding to a URL load request, no</span></span><br><span class="line"><span class="comment">        attempt is made to load the URL from the origin source, and the</span></span><br><span class="line"><span class="comment">        load is considered to have failed. This constant specifies a</span></span><br><span class="line"><span class="comment">        behavior that is similar to an &quot;offline&quot; mode.</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        @constant NSURLRequestReloadRevalidatingCacheData Specifies that</span></span><br><span class="line"><span class="comment">        the existing cache data may be used provided the origin source</span></span><br><span class="line"><span class="comment">        confirms its validity, otherwise the URL is loaded from the</span></span><br><span class="line"><span class="comment">        origin source.</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">CachePolicy</span> : <span class="title class_ inherited__">UInt</span>, @unchecked <span class="title class_ inherited__">Sendable</span> &#123;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">case</span> useProtocolCachePolicy <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">case</span> reloadIgnoringLocalCacheData <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> reloadIgnoringLocalAndRemoteCacheData <span class="operator">=</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> reloadIgnoringCacheData: <span class="type">NSURLRequest</span>.<span class="type">CachePolicy</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">case</span> returnCacheDataElseLoad <span class="operator">=</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> returnCacheDataDontLoad <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">case</span> reloadRevalidatingCacheData <span class="operator">=</span> <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证策略"><a href="#验证策略" class="headerlink" title="验证策略"></a>验证策略</h2><p>我们采取的验证策略为</p>
+<ol>
+<li>不设置请求头状态下<ol>
+<li>联网状态正常进入，加载网页，查看网页是否正常显示</li>
+<li>杀死 APP 后，断开网络，加载网页，查看网页是否正常显示</li>
+</ol>
+</li>
+<li>设置请求头状态下<ol>
+<li>联网状态正常进入，加载网页，查看网页是否正常显示</li>
+<li>杀死 APP 后，断开网络，加载网页，查看网页是否正常显示</li>
+</ol>
+</li>
+</ol>
+<p>验证代码如下</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ViewController</span>: <span class="title class_ inherited__">UIViewController</span>, <span class="title class_ inherited__">WKNavigationDelegate</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lazy</span> <span class="keyword">var</span> webView: <span class="type">WKWebView</span> <span class="operator">=</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> config <span class="operator">=</span> <span class="type">WKWebViewConfiguration</span>()</span><br><span class="line">        <span class="keyword">let</span> webview <span class="operator">=</span> <span class="type">WKWebView</span>(frame: <span class="keyword">self</span>.view.bounds, configuration: config)</span><br><span class="line">        webview.backgroundColor <span class="operator">=</span> .white</span><br><span class="line">        webview.navigationDelegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">        <span class="keyword">return</span> webview</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">viewDidLoad</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">self</span>.view.addSubview(<span class="keyword">self</span>.webView)</span><br><span class="line">        <span class="keyword">let</span> toutiao <span class="operator">=</span> <span class="string">&quot;https://m.toutiao.com&quot;</span></span><br><span class="line">        <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">URL</span>(string: toutiao)<span class="operator">!</span></span><br><span class="line">        <span class="keyword">let</span> request <span class="operator">=</span> <span class="type">URLRequest</span>.<span class="keyword">init</span>(url: url,</span><br><span class="line">                                      cachePolicy: .useProtocolCachePolicy,</span><br><span class="line">                                      timeoutInterval: <span class="number">15.0</span>)</span><br><span class="line">        <span class="keyword">self</span>.webView.load(request)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WKWebView</span>, <span class="params">decidePolicyFor</span> <span class="params">navigationAction</span>: <span class="type">WKNavigationAction</span>, <span class="params">decisionHandler</span>: <span class="keyword">@escaping</span> (<span class="type">WKNavigationActionPolicy</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> url <span class="operator">=</span> navigationAction.request.url &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Loading URL: <span class="subst">\(url)</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        decisionHandler(.allow)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证过程"><a href="#验证过程" class="headerlink" title="验证过程"></a>验证过程</h2><h3 id="固定协议策略"><a href="#固定协议策略" class="headerlink" title="固定协议策略"></a>固定协议策略</h3><blockquote>
+<p>固定使用一个缓存协议模式</p>
+</blockquote>
+<ul>
+<li>useProtocolCachePolicy 默认方式<ul>
+<li>测试结果：第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页无法打开</li>
+<li>设置请求头状态下： 第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页正常打开</li>
+<li>结论：<ul>
+<li>优点：默认策略，无需特别关注配置，网页内容更新不会收到缓存影响，如果本地有缓存可用，会根据缓存控制头来加载缓存内容，会默认进行页面内容缓存。</li>
+<li>缺点：默认情况下断网后无法加载任何内容，需要根据 HTTP 协议中的缓存控制头（例如 Cache-Control 和 Expires）来决定是否使用缓存中的数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>reloadIgnoringLocalCacheData 忽略本地缓存<ul>
+<li>测试结果：测试结果：第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页无法打开</li>
+<li>设置请求头状态下： 第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页无法打开<ul>
+<li>结论：<ul>
+<li>优点：联网状态下每次都更新最新的内容，忽略本地缓存中的数据，即不使用任何本地存储的缓存副本，当使用此策略时，即使本地缓存中有数据，也会强制从网络重新加载资源。</li>
+<li>缺点：完全忽略了本地缓存，断网后无法加载任何内容</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>reloadIgnoringLocalAndRemoteCacheData 忽略任何缓存<ul>
+<li>测试结果：测试结果：第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页无法打开</li>
+<li>设置请求头状态下： 第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页无法打开<ul>
+<li>结论：<ul>
+<li>优点：永远展示的是最新的数据，不会受到任何缓存干扰。</li>
+<li>缺点：完全依赖网络， 忽略本地缓存和远程缓存中的数据，还进一步忽略了远程缓存（例如 CDN 缓存）中的数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>returnCacheDataElseLoad 如果缓存中有可用的数据，则使用缓存中的数据；如果没有缓存或者缓存已过期，则从网络重新加载数据<ul>
+<li>测试结果：第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页打开正常</li>
+<li>设置请求头状态下： 第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页正常打开，缓存过期后无法打开<ul>
+<li>结论：<ul>
+<li>优点：断网后可以正常打开网页，打开的内容是上次最后一次联网记录的内容，如果缓存中有可用的数据，则使用缓存中的数据；如果没有缓存或者缓存已过期，则从网络重新加载数据。</li>
+<li>缺点：如果一旦缓存成功且不过期，即使联网也不会更新内容，即每次打开的页面都是相同的内容（只有没缓存内容或缓存过期时，才会从网络进行请求）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>returnCacheDataDontLoad 离线模式，如果缓存中有可用的数据，则使用缓存中的数据；如果没有缓存或者缓存已过期，则不从网络重新加载数据。<ul>
+<li>测试结果：第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页打开正常</li>
+<li>设置请求头状态下： 第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页正常打开，缓存过期后也能打开<ul>
+<li>结论：<ul>
+<li>优点：不依赖网络，纯离线模式，即使没有网，只要有缓存就可以展示内容。</li>
+<li>缺点：完全无法更新内容，每次打开内容都相同。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>reloadRevalidatingCacheData 强制从网络重新加载数据，但在加载前会验证缓存中的数据是否仍然有效。<ul>
+<li>测试结果：第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页无法打开</li>
+<li>设置请求头状态下： 第一次联网进入，网页打开正常，杀死APP，断网重新进入，网页正常打开，缓存过期无法打开<ul>
+<li>结论：<ul>
+<li>优点：在缓存过期后能够立即更新到新的内容，同时能够节省流量，在缓存有效期内不进行网络请求</li>
+<li>缺点：依赖联网，需要请求头中配置内容，否则断网后无法打开，也不会进行页面缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="动态协议策略"><a href="#动态协议策略" class="headerlink" title="动态协议策略"></a>动态协议策略</h3><blockquote>
+<p>根据网络状态动态切换协议策略</p>
+</blockquote>
+<ul>
+<li>测试根据网络环境切换协议 useProtocolCachePolicy -&gt; returnCacheDataDontLoad<ul>
+<li>测试结果：有网时正常打开，无网络时正常打开，但只有缓存的资源可以加载展示</li>
+</ul>
+</li>
+<li>测试根据网络环境切换协议 useProtocolCachePolicy -&gt; returnCacheDataElseLoad<ul>
+<li>测试结果：有网时正常打开，无网络时正常打开，但只有缓存的资源可以加载展示</li>
+</ul>
+</li>
+<li>测试根据网络环境切换协议 useProtocolCachePolicy -&gt; reloadRevalidatingCacheData<ul>
+<li>测试结果：有网时正常打开，无网络时无法打开</li>
+</ul>
+</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li>当前 YCOneBrowserViewController 中使用的缓存协议为 <code>useProtocolCachePolicy</code>，断网后无法加载任何内容，但可以根据 HTTP 协议中的缓存控制头（例如 Cache-Control 和 Expires）来决定是否使用缓存中的数据。</li>
+<li><code>returnCacheDataElseLoad</code>、<code>returnCacheDataDontLoad</code> 、 <code>reloadRevalidatingCacheData</code> 和 <code>useProtocolCachePolicy</code>四种协议均可以在断网后使用页面缓存，但对网络的依赖程度和页面更新的影响不同。</li>
+<li>固定协议策略模式下，按断网时缓存生效的可靠性排名：<code>returnCacheDataDontLoad</code> &gt; <code>returnCacheDataElseLoad</code> &#x3D; <code>reloadRevalidatingCacheData</code> &#x3D; <code>useProtocolCachePolicy</code></li>
+<li>动态协议策略下，按断网时缓存生效的可靠性排名：<code>returnCacheDataDontLoad</code> &gt; <code>returnCacheDataElseLoad</code> &#x3D; <code>reloadRevalidatingCacheData</code> &#x3D; <code>useProtocolCachePolicy</code></li>
+<li>适合目前使用的策略为根据动态协议策略，在联网状态下采用 <code>useProtocolCachePolicy</code> 协议，该协议会在加载完毕后缓存本页面的内容，在断网状态下切换为 <code>returnCacheDataDontLoad</code> 保证页面可以加载出来（除非从来没有缓存成功过）。</li>
+</ul>
+<h2 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h2><ul>
+<li>Web页面分级<ul>
+<li>强更新级</li>
+<li>强静态级</li>
+</ul>
+</li>
+<li>切换策略<ul>
+<li>保证缓存<ul>
+<li>全局策略使用固定策略 <code>reloadRevalidatingCacheData</code></li>
+<li>配置内容使用 默认<code>useProtocolCachePolicy</code>，断网<code>returnCacheDataDontLoad</code></li>
+</ul>
+</li>
+<li>根据网络状态<ul>
+<li>有网 <code>useProtocolCachePolicy</code>，如果触发白屏检测切换到 <code>returnCacheDataDontLoad</code> 继续加载，添加逻辑进行二次白屏检测</li>
+<li>断网 <code>returnCacheDataDontLoad</code>，重新联网切换回 <code>useProtocolCachePolicy</code><ul>
+<li>检测协议缓存是否存在？</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>开关<ul>
+<li>全局配置：默认<code>useProtocolCachePolicy</code>，断网<code>returnCacheDataDontLoad</code></li>
+<li>局部配置：根据 url 配置策略</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;yangcong345.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;config&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="string">&quot;useProtocolCachePolicy&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;loseNet&quot;</span><span class="punctuation">:</span> <span class="string">&quot;returnCacheDataDontLoad&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">    </span><br><span class="line">    <span class="string">&quot;baidu.com/xxx/xxx&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;douyin.com/xxx/xxx&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;yangcong345.com/xxx/xxxx&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="YCOneBrowserViewController-缓存逻辑"><a href="#YCOneBrowserViewController-缓存逻辑" class="headerlink" title="YCOneBrowserViewController 缓存逻辑"></a>YCOneBrowserViewController 缓存逻辑</h2><ol>
+<li><p>初始化浏览器</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">YCOneBrowserViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="variable language_">super</span> viewDidLoad];</span><br><span class="line">    ...</span><br><span class="line">    [<span class="keyword">self</span> initBrowser];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加载 requesetURL</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)initBrowser &#123;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (![<span class="keyword">self</span>.configuration disableStartLoadRequest]) &#123;</span><br><span class="line">        [<span class="keyword">self</span> loadRequest];</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始加载 url</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)loadRequest &#123;</span><br><span class="line"></span><br><span class="line">    [<span class="keyword">self</span> loadRequestWithData:<span class="literal">nil</span> baseURL:<span class="literal">nil</span>];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入加载逻辑</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*!</span></span><br><span class="line"><span class="comment"> * 手动加载请求，默认自动执行加载, 不需要手动调用</span></span><br><span class="line"><span class="comment"> * @note configuration.disableStartLoadRequest 为 YES 时，手动执行该方法调用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">- (<span class="type">void</span>)loadRequestWithData:(<span class="built_in">NSString</span> *)requestData baseURL:(<span class="built_in">NSURL</span> *)baseURL &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (requestData) &#123; <span class="comment">// 用HTML数据直接加载</span></span><br><span class="line">        ...</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">self</span>.URL.isFileURL) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [[YCHttpCacheFactory returnWebCacheControl] headForHtmlWithRequest:[<span class="built_in">NSURLRequest</span> requestWithURL:<span class="keyword">self</span>.URL]</span><br><span class="line">                                                               resultBlock:^(<span class="built_in">NSURLRequest</span> *resultReqeust) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入缓存位</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">YCWebCacheHeaderControl</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据HEAD请求，判断静态资源是否更新</span></span><br><span class="line">- (<span class="type">void</span>)headForHtmlWithRequest:(<span class="built_in">NSURLRequest</span> *)request resultBlock:(<span class="type">void</span>(^)(<span class="built_in">NSURLRequest</span> *resultReqeust))resultBlock &#123;</span><br><span class="line">    <span class="comment">// 若是本地url，则不进行缓存校验</span></span><br><span class="line">    <span class="keyword">if</span> (request.URL.isFileURL</span><br><span class="line">        || ![<span class="keyword">self</span> isInWhiteList:request.URL.absoluteString]) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 移除已有缓存</span></span><br><span class="line">        [<span class="keyword">self</span> clearHttpCacheForRequest:request];</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">NSMutableURLRequest</span> *mutableRequest = request.mutableCopy;</span><br><span class="line">        [mutableRequest setCachePolicy:<span class="built_in">NSURLRequestReloadIgnoringLocalCacheData</span>];</span><br><span class="line">        <span class="keyword">if</span> (resultBlock) &#123;</span><br><span class="line">            resultBlock(mutableRequest.copy);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSMutableURLRequest</span> *mutableRequest = request.mutableCopy;</span><br><span class="line">    </span><br><span class="line">    mutableRequest.HTTPMethod = <span class="string">@&quot;HEAD&quot;</span>;</span><br><span class="line">    [mutableRequest setCachePolicy:<span class="built_in">NSURLRequestReloadIgnoringLocalCacheData</span>];</span><br><span class="line">    mutableRequest.timeoutInterval = <span class="number">5.</span>f;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取请求的本地header</span></span><br><span class="line">    <span class="built_in">NSDictionary</span> *cachedHeaders = [<span class="keyword">self</span>.diskCache getHeaderByRequestUrl:mutableRequest.URL.absoluteString];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置 headers</span></span><br><span class="line">    <span class="keyword">if</span> (cachedHeaders) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *etag = [cachedHeaders objectForKey:<span class="string">@&quot;Etag&quot;</span>];</span><br><span class="line">        <span class="keyword">if</span> (etag) &#123;</span><br><span class="line">            [mutableRequest setValue:etag forHTTPHeaderField:<span class="string">@&quot;If-None-Match&quot;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">NSString</span> *lastModified = [cachedHeaders objectForKey:<span class="string">@&quot;Last-Modified&quot;</span>];</span><br><span class="line">        <span class="keyword">if</span> (lastModified) &#123;</span><br><span class="line">            [mutableRequest setValue:lastModified forHTTPHeaderField:<span class="string">@&quot;If-Modified-Since&quot;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    [[[<span class="built_in">NSURLSession</span> sharedSession] dataTaskWithRequest:mutableRequest</span><br><span class="line">                                     completionHandler:^(<span class="built_in">NSData</span> *data, <span class="built_in">NSURLResponse</span> *response, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">                                         </span><br><span class="line">                                         <span class="built_in">NSHTTPURLResponse</span> *httpResponse = (<span class="built_in">NSHTTPURLResponse</span> *)response;</span><br><span class="line">                                         </span><br><span class="line">                                         <span class="comment">// 判断响应的状态码 未改变或者离线</span></span><br><span class="line">                                         <span class="keyword">if</span> (httpResponse.statusCode == <span class="number">304</span></span><br><span class="line">                                             || httpResponse.statusCode == <span class="number">0</span>) &#123;</span><br><span class="line">                                             <span class="comment">// 读取本地缓存</span></span><br><span class="line">                                             [mutableRequest setCachePolicy:<span class="built_in">NSURLRequestReturnCacheDataElseLoad</span>];</span><br><span class="line">                                         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                             <span class="comment">// 存header</span></span><br><span class="line">                                             <span class="keyword">if</span> (httpResponse.allHeaderFields) &#123;</span><br><span class="line">                                                 [<span class="keyword">self</span>.diskCache saveHeader:httpResponse.allHeaderFields ByRequestUrl:request.URL.absoluteString];</span><br><span class="line">                                             &#125;</span><br><span class="line">                                             </span><br><span class="line">                                             <span class="comment">// 加载远程</span></span><br><span class="line">                                             [mutableRequest setCachePolicy:<span class="built_in">NSURLRequestReloadIgnoringLocalCacheData</span>];</span><br><span class="line">                                         &#125;</span><br><span class="line">                                         </span><br><span class="line">                                         <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                                             <span class="comment">// 加载资源</span></span><br><span class="line">                                             mutableRequest.HTTPMethod = <span class="string">@&quot;GET&quot;</span>;</span><br><span class="line">                                             <span class="keyword">if</span> (resultBlock) &#123;</span><br><span class="line">                                                 resultBlock(mutableRequest.copy);</span><br><span class="line">                                             &#125;</span><br><span class="line">                                         &#125;);</span><br><span class="line">                                     &#125;] resume];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="为何缓存失效时间和发起请求的当前时间一致"><a href="#为何缓存失效时间和发起请求的当前时间一致" class="headerlink" title="为何缓存失效时间和发起请求的当前时间一致"></a>为何缓存失效时间和发起请求的当前时间一致</h3><p>Q: 解释这段response，为何缓存失效时间和发起请求的当前时间一致？</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">当前时间: <span class="number">2024</span><span class="operator">-</span><span class="number">08</span><span class="operator">-</span><span class="number">28</span> <span class="number">06</span>:<span class="number">13</span>:<span class="number">17</span> <span class="operator">+</span><span class="number">0000</span> </span><br><span class="line"><span class="type">SK</span><span class="operator">---</span>x<span class="operator">-</span>cache<span class="operator">-</span>webcdn: <span class="type">BYPASS</span> from blzone02 </span><br><span class="line"><span class="type">SK</span><span class="operator">---</span>idc: shjd </span><br><span class="line"><span class="type">SK</span><span class="operator">---</span><span class="type">Content</span><span class="operator">-</span><span class="type">Type</span>: text<span class="operator">/</span>html; charset<span class="operator">=</span>utf<span class="operator">-</span><span class="number">8</span> </span><br><span class="line"><span class="type">SK</span><span class="operator">---</span><span class="type">Cache</span><span class="operator">-</span><span class="type">Control</span>: no<span class="operator">-</span>cache </span><br><span class="line"><span class="type">SK</span><span class="operator">---</span>gear: <span class="number">1</span> </span><br><span class="line"><span class="type">SK</span><span class="operator">---</span><span class="type">Content</span><span class="operator">-</span><span class="type">Encoding</span>: gzip </span><br><span class="line"><span class="type">SK</span><span class="operator">---</span><span class="type">Date</span>: <span class="type">Wed</span>, <span class="number">28</span> <span class="type">Aug</span> <span class="number">2024</span> <span class="number">06</span>:<span class="number">13</span>:<span class="number">17</span> <span class="type">GMT</span> </span><br><span class="line"><span class="type">SK</span><span class="operator">---</span><span class="type">Expires</span>: <span class="type">Wed</span>, <span class="number">28</span> <span class="type">Aug</span> <span class="number">2024</span> <span class="number">06</span>:<span class="number">13</span>:<span class="number">16</span> <span class="type">GMT</span></span><br></pre></td></tr></table></figure>
+
+<p>A: 根据提供的响应头部信息，我们可以详细解释为什么缓存失效时间（Expires）和发起请求的当前时间几乎一致。</p>
+<p><strong>详细解释</strong> </p>
+<ol>
+<li>SK—Cache-Control: no-cache</li>
+</ol>
+<p>含义: 指示客户端不要缓存响应内容。</p>
+<p>作用: 确保客户端每次请求都会从服务器获取最新数据，不使用缓存版本。</p>
+<ol>
+<li>SK—Expires: Wed, 28 Aug 2024 06:13:16 GMT</li>
+</ol>
+<p>含义: 表示响应内容的有效期截止时间为 Wed, 28 Aug 2024 06:13:16 GMT。</p>
+<p>作用: 告诉客户端在指定的时间之前，可以缓存该响应内容；超过该时间后，需要重新请求。</p>
+<ol>
+<li>SK—Date: Wed, 28 Aug 2024 06:13:17 GMT</li>
+</ol>
+<p>含义: 表示响应的生成时间为 Wed, 28 Aug 2024 06:13:17 GMT。</p>
+<p>作用: 帮助客户端和服务器同步时间，用于缓存验证和其他时间相关的操作。</p>
+<p><strong>为什么缓存失效时间和发起请求的当前时间一致？</strong> </p>
+<ol>
+<li>Cache-Control: no-cache:</li>
+</ol>
+<p>该头部明确指示客户端不要缓存响应内容。这意味着每次请求都应该从服务器获取最新数据。</p>
+<ol>
+<li>Expires 和 Date 时间几乎一致:</li>
+</ol>
+<p>Expires 时间为 Wed, 28 Aug 2024 06:13:16 GMT。</p>
+<p>Date 时间为 Wed, 28 Aug 2024 06:13:17 GMT。</p>
+<p>这两个时间几乎一致，表明服务器希望响应内容在生成后立即失效。</p>
+<p><strong>具体原因</strong> </p>
+<ol>
+<li>即时失效:</li>
+</ol>
+<p>由于 Expires 时间几乎与 Date 时间一致，这意味着响应内容在生成后立即失效。</p>
+<p>这种设置通常用于需要频繁更新的内容，确保客户端每次请求都能获取到最新数据。</p>
+<ol>
+<li>结合 Cache-Control: no-cache:</li>
+</ol>
+<p>即使 Expires 时间已经过去，Cache-Control: no-cache 也会强制客户端每次都从服务器获取最新数据。</p>
+<p><strong>总结</strong> </p>
+<ol>
+<li>Cache-Control: no-cache 指示客户端不要缓存响应内容。</li>
+<li>Expires 时间几乎与 Date 时间一致 表明响应内容在生成后立即失效。</li>
+<li>这种设置通常用于需要频繁更新的内容，确保客户端每次请求都能获取到最新数据。</li>
+</ol>
+<h3 id="returnCacheDataDontLoad-为何在缓存过期后仍然可以展示"><a href="#returnCacheDataDontLoad-为何在缓存过期后仍然可以展示" class="headerlink" title="returnCacheDataDontLoad 为何在缓存过期后仍然可以展示?"></a>returnCacheDataDontLoad 为何在缓存过期后仍然可以展示?</h3><p>Q: 在得到上述response时我使用的缓存策略是useProtocolCachePolicy，如果webview遵循Cache-Control: no-cache 指示客户端不要缓存响应内容，为何我切换为returnCacheDataDontLoad在断网后仍然能展示之前加载过的内容？</p>
+<p>A: 在使用 WKWebView 时，缓存策略的选择会影响页面加载的行为。具体来说，WKWebView 提供了几种不同的缓存策略，其中包括 useProtocolCachePolicy 和 returnCacheDataDontLoad。</p>
+<p><strong>缓存策略详解</strong> </p>
+<ol>
+<li>useProtocolCachePolicy：</li>
+</ol>
+<p>使用协议级别的缓存策略。</p>
+<p>遵循 HTTP 缓存控制头（如 Cache-Control 和 Expires）。</p>
+<p>如果缓存控制头指示不缓存，则不会使用缓存数据。</p>
+<ol>
+<li>returnCacheDataDontLoad：</li>
+</ol>
+<p>优先返回缓存数据，即使缓存已过期也不再发起网络请求。</p>
+<p>如果没有缓存数据，则显示空白页面。</p>
+<p><strong>为什么 returnCacheDataDontLoad 在断网后仍能展示之前加载过的内容</strong></p>
+<p>当你使用 returnCacheDataDontLoad 缓存策略时，即使缓存控制头指示不缓存（如 Cache-Control: no-cache），WKWebView 仍然会尝试从缓存中加载数据。这是因为：</p>
+<ol>
+<li>缓存策略优先级：<ol>
+<li>returnCacheDataDontLoad 策略优先返回缓存数据，无论缓存控制头如何指示。</li>
+<li>这意味着即使 Cache-Control: no-cache，WKWebView 也会尝试从缓存中加载数据。</li>
+</ol>
+</li>
+<li>缓存存储机制：<ol>
+<li>WKWebView 有一个本地缓存存储机制，即使缓存控制头指示不缓存，实际的响应数据仍然可能被缓存。</li>
+<li>这种缓存存储机制是为了提高性能和用户体验，即使在某些情况下缓存控制头指示不缓存，实际数据仍然会被缓存。</li>
+</ol>
+</li>
+</ol>
+<p><strong>总结</strong> </p>
+<ol>
+<li>useProtocolCachePolicy：<ol>
+<li>遵循 HTTP 缓存控制头（如 Cache-Control 和 Expires）。</li>
+<li>如果缓存控制头指示不缓存，则不会使用缓存数据。</li>
+</ol>
+</li>
+<li>returnCacheDataDontLoad：<ol>
+<li>优先返回缓存数据，即使缓存已过期也不再发起网络请求。</li>
+<li>即使 Cache-Control: no-cache，WKWebView 仍然会尝试从缓存中加载数据。</li>
+</ol>
+</li>
+</ol>
+<p>因此，在断网情况下，使用 returnCacheDataDontLoad 策略时，WKWebView 会优先返回缓存数据，即使缓存控制头指示不缓存。</p>
+<h3 id="这个缓存存储机制的具体机制是什么，比如缓存内容的大小限制，对缓存的清理时机等等"><a href="#这个缓存存储机制的具体机制是什么，比如缓存内容的大小限制，对缓存的清理时机等等" class="headerlink" title="这个缓存存储机制的具体机制是什么，比如缓存内容的大小限制，对缓存的清理时机等等"></a>这个缓存存储机制的具体机制是什么，比如缓存内容的大小限制，对缓存的清理时机等等</h3><p>A: WKWebView 的缓存机制涉及多个方面，包括缓存内容的大小限制、缓存的清理时机等。下面详细解释这些机制。</p>
+<p>缓存存储机制</p>
+<ol>
+<li><p>缓存内容的大小限制</p>
+<p>WKWebView 的缓存机制主要依赖于 Safari 的缓存系统。具体来说，WKWebView 使用的是 WebKit 引擎的缓存机制，而 WebKit 的缓存机制又基于 Safari 的缓存策略。</p>
+<ol>
+<li><p>默认缓存大小：</p>
+<ol>
+<li>Safari 和 WebKit 默认的缓存大小为 50MB。这意味着总的缓存大小不会超过 50MB。</li>
+<li>这个大小限制是为了避免缓存占用过多的存储空间。</li>
+</ol>
+</li>
+<li><p>自定义缓存大小：</p>
+<ol>
+<li><p>可以通过修改 WebKit 的缓存配置来调整缓存大小。</p>
+</li>
+<li><p>例如，可以通过 WKWebsiteDataStore 来设置缓存大小。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">configureWebCacheSize</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">    <span class="keyword">let</span> cacheConfig <span class="operator">=</span> <span class="type">WKStorageName</span>.default().appendingPathComponent(<span class="string">&quot;WebCache&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    websiteDataStore.setCapacityOfBytes(for: cacheConfig, to: <span class="number">100</span> <span class="operator">*</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>) <span class="comment">// 设置为 100MB</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>缓存的清理时机</p>
+</li>
+</ol>
+<p>WKWebView 的缓存清理机制主要包括以下几种情况：</p>
+<ol>
+<li>缓存过期：<ol>
+<li>当缓存内容的 Expires 时间到达时，缓存内容将被视为过期。</li>
+<li>Expires 头部指定了缓存内容的有效期。</li>
+</ol>
+</li>
+<li>缓存大小限制：<ol>
+<li>当缓存总大小超过设定的大小限制时，WKWebView 会自动清理旧的缓存内容。</li>
+<li>清理逻辑通常是按照最近最少使用（LRU）原则进行。</li>
+</ol>
+</li>
+<li>手动清理缓存：<ol>
+<li>可以通过调用 WKWebsiteDataStore 的方法手动清理缓存。</li>
+<li>例如，可以定期清理缓存以释放存储空间。</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">clearWebCache</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">    websiteDataStore.fetchDataRecords(ofTypes: <span class="type">WKWebsiteDataStore</span>.allWebsiteDataTypes()) &#123; records <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">let</span> types <span class="operator">=</span> records.map &#123; <span class="variable">$0</span>.type &#125;</span><br><span class="line">        websiteDataStore.removeData(ofTypes: types, modifiedSince: <span class="type">Date</span>.distantPast) &#123; error <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;Error clearing cache: <span class="subst">\(error.localizedDescription)</span>&quot;</span>)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;Cache cleared successfully.&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例代码</strong> </p>
+<p>下面是一个完整的示例代码，展示了如何配置缓存大小和手动清理缓存：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ViewController</span>: <span class="title class_ inherited__">UIViewController</span>, <span class="title class_ inherited__">WKNavigationDelegate</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> webView: <span class="type">WKWebView</span>!</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">viewDidLoad</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化 WKWebView</span></span><br><span class="line">        webView <span class="operator">=</span> <span class="type">WKWebView</span>()</span><br><span class="line">        webView.navigationDelegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">        view.addSubview(webView)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加约束</span></span><br><span class="line">        webView.translatesAutoresizingMaskIntoConstraints <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">        <span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),</span><br><span class="line">            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),</span><br><span class="line">            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),</span><br><span class="line">            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)</span><br><span class="line">        ])</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 配置缓存大小</span></span><br><span class="line">        configureWebCacheSize()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载 URL</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;https://example.com&quot;</span>) &#123;</span><br><span class="line">            <span class="keyword">let</span> request <span class="operator">=</span> <span class="type">URLRequest</span>(url: url)</span><br><span class="line">            webView.load(request)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// MARK: - WKNavigationDelegate</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WKWebView</span>, <span class="params">decidePolicyFor</span> <span class="params">navigationResponse</span>: <span class="type">WKNavigationResponse</span>) <span class="keyword">async</span> -&gt; <span class="type">WKNavigationResponsePolicy</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> httpResponse <span class="operator">=</span> navigationResponse.response <span class="keyword">as?</span> <span class="type">HTTPURLResponse</span> &#123;</span><br><span class="line">            <span class="comment">// 打印状态码</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;HTTP Status Code: <span class="subst">\(httpResponse.statusCode)</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 获取并打印头部信息</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> allHeaderFields <span class="operator">=</span> httpResponse.allHeaderFields &#123;</span><br><span class="line">                <span class="keyword">for</span> (key, value) <span class="keyword">in</span> allHeaderFields &#123;</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">let</span> keyString <span class="operator">=</span> key <span class="keyword">as?</span> <span class="type">String</span>, <span class="keyword">let</span> valueString <span class="operator">=</span> value <span class="keyword">as?</span> <span class="type">String</span> &#123;</span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(keyString)</span>: <span class="subst">\(valueString)</span>&quot;</span>)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> .allow</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 可选：实现其他 WKNavigationDelegate 方法</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WKWebView</span>, <span class="params">didFinish</span> <span class="params">navigation</span>: <span class="type">WKNavigation</span>!) &#123;</span><br><span class="line">        <span class="comment">// 页面加载完成时的处理</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Page loaded.&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置缓存大小</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">configureWebCacheSize</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">        <span class="keyword">let</span> cacheConfig <span class="operator">=</span> <span class="type">WKStorageName</span>.default().appendingPathComponent(<span class="string">&quot;WebCache&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        websiteDataStore.setCapacityOfBytes(for: cacheConfig, to: <span class="number">100</span> <span class="operator">*</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>) <span class="comment">// 设置为 100MB</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清理缓存</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">clearWebCache</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">        websiteDataStore.fetchDataRecords(ofTypes: <span class="type">WKWebsiteDataStore</span>.allWebsiteDataTypes()) &#123; records <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> types <span class="operator">=</span> records.map &#123; <span class="variable">$0</span>.type &#125;</span><br><span class="line">            websiteDataStore.removeData(ofTypes: types, modifiedSince: <span class="type">Date</span>.distantPast) &#123; error <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&quot;Error clearing cache: <span class="subst">\(error.localizedDescription)</span>&quot;</span>)</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&quot;Cache cleared successfully.&quot;</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结</strong> </p>
+<ol>
+<li>缓存内容的大小限制：<ol>
+<li>默认缓存大小为 50MB。</li>
+<li>可以通过 WKWebsiteDataStore 调整缓存大小。</li>
+</ol>
+</li>
+<li>缓存的清理时机：<ol>
+<li>缓存过期：根据 Expires 头部。</li>
+<li>缓存大小限制：当缓存总大小超过设定的大小限制时，自动清理旧的缓存内容。</li>
+<li>手动清理缓存：通过调用 WKWebsiteDataStore 的方法进行清理。</li>
+</ol>
+</li>
+</ol>
+<p>通过这些机制，WKWebView 能够有效地管理和维护缓存数据，确保在需要时能够及时加载最新的内容，同时避免占用过多的存储空间。</p>
+<h3 id="当缓存内容的-Expires-时间到达时，缓存内容将被视为过期，就会被清理，那为什么我在过期时间以后使用returnCacheDataDontLoad策略依然可以展示已缓存的网页内容呢？"><a href="#当缓存内容的-Expires-时间到达时，缓存内容将被视为过期，就会被清理，那为什么我在过期时间以后使用returnCacheDataDontLoad策略依然可以展示已缓存的网页内容呢？" class="headerlink" title="当缓存内容的 Expires 时间到达时，缓存内容将被视为过期，就会被清理，那为什么我在过期时间以后使用returnCacheDataDontLoad策略依然可以展示已缓存的网页内容呢？"></a>当缓存内容的 Expires 时间到达时，缓存内容将被视为过期，就会被清理，那为什么我在过期时间以后使用returnCacheDataDontLoad策略依然可以展示已缓存的网页内容呢？</h3><p>A: 在使用 WKWebView 时，尽管 Expires 或 Cache-Control 指令可以指示缓存何时过期，但是 WKWebView 的行为受到其缓存策略的影响。特别是当你使用 WKWebViewConfiguration.requestCachePolicy &#x3D; .returnCacheDataDontLoad 时，即使缓存已过期，WKWebView 仍然会尝试从缓存中加载数据。</p>
+<p><strong>缓存策略 .returnCacheDataDontLoad 的行为</strong></p>
+<ol>
+<li>.returnCacheDataDontLoad：<ol>
+<li>这个策略指示 WKWebView 在加载资源时优先从缓存中读取数据。</li>
+<li>如果缓存数据可用，那么 WKWebView 将直接使用缓存数据而不发起新的网络请求。</li>
+<li>如果没有缓存数据或者缓存数据不可用（例如，缓存已被清理），则 WKWebView 可能会显示空白页面或其它默认内容。</li>
+</ol>
+</li>
+</ol>
+<p><strong>为什么过期后仍然能展示缓存内容</strong> </p>
+<ol>
+<li>缓存过期不等于立即清理：<ol>
+<li>Expires 或 Cache-Control 指令标记缓存数据何时被认为是“过期”的，但这并不意味着缓存数据会立即被删除。</li>
+<li>实际上，缓存数据可能会继续保留在存储中，直到缓存管理器根据其自身的策略决定清理它为止。</li>
+</ol>
+</li>
+<li>缓存管理器的清理策略：<ol>
+<li>WKWebView 的缓存管理器通常会根据 LRU（Least Recently Used，最近最少使用）原则来决定哪些缓存数据应该被保留，哪些应该被清理。</li>
+<li>如果缓存空间足够，并且没有达到最大缓存大小限制，那么即使缓存数据过期，也可能暂时不会被清理掉。</li>
+</ol>
+</li>
+<li>缓存策略优先级：<ol>
+<li>当使用 .returnCacheDataDontLoad 策略时，WKWebView 会优先尝试使用任何可用的缓存数据。</li>
+<li>这意味着即使缓存数据已经过期，只要它仍然存在于缓存中，WKWebView 就会使用它。</li>
+</ol>
+</li>
+</ol>
+<p><strong>总结</strong> </p>
+<ol>
+<li>缓存过期不等于立即清理：<ol>
+<li>Expires 或 Cache-Control 指令标记缓存数据何时被认为是“过期”的，但这并不意味着缓存数据会立即被删除。</li>
+</ol>
+</li>
+<li>缓存策略优先级：<ol>
+<li>当使用 .returnCacheDataDontLoad 策略时，WKWebView 会优先尝试使用任何可用的缓存数据，即使这些数据已经过期。</li>
+</ol>
+</li>
+</ol>
+<p>因此，在使用 .returnCacheDataDontLoad 策略时，即使缓存数据已经过期，只要它仍然存在于缓存中，WKWebView 就会使用它。这意味着即使在断网情况下，用户仍然可以看到之前加载过的页面内容。</p>
+<h3 id="这里所说的大小限制是多少"><a href="#这里所说的大小限制是多少" class="headerlink" title="这里所说的大小限制是多少"></a>这里所说的大小限制是多少</h3><p>Q: “如果缓存空间足够，并且没有达到最大缓存大小限制，那么即使缓存数据过期，也可能暂时不会被清理掉” 这里所说的大小限制是多少</p>
+<p>A: 关于 WKWebView 的缓存大小限制，具体来说，默认情况下，WKWebView 使用的缓存大小限制为 50MB。这是 Safari 和 WebKit 默认的缓存大小限制</p>
+<p><strong>缓存大小限制</strong> </p>
+<ol>
+<li>默认缓存大小：<ol>
+<li>WKWebView 默认的缓存大小为 50MB。</li>
+<li>这个大小限制是为了防止缓存占用过多的存储空间。</li>
+</ol>
+</li>
+<li>自定义缓存大小：<ol>
+<li>可以通过 WKWebsiteDataStore 来调整缓存大小。</li>
+<li>你可以根据需要设置一个更大的或更小的缓存大小。</li>
+</ol>
+</li>
+</ol>
+<p><strong>如何查看和调整缓存大小</strong> </p>
+<ol>
+<li>查看当前缓存大小</li>
+</ol>
+<p>可以通过 WKWebsiteDataStore 来查询当前的缓存大小：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">getCurrentCacheSize</span>(<span class="params">completion</span>: <span class="keyword">@escaping</span> (<span class="type">UInt64</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">    websiteDataStore.fetchDataRecords(ofTypes: [<span class="type">WKWebsiteDataTypeDiskCache</span>]) &#123; records <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">let</span> totalSize <span class="operator">=</span> records.reduce(<span class="number">0</span>) &#123; <span class="variable">$0</span> <span class="operator">+</span> <span class="variable">$1</span>.estimatedDataSize &#125;</span><br><span class="line">        completion(<span class="type">UInt64</span>(totalSize))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用示例</span></span><br><span class="line">getCurrentCacheSize &#123; size <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Current cache size: <span class="subst">\(size)</span> bytes&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>调整缓存大小</li>
+</ol>
+<p>可以通过 WKWebsiteDataStore 来调整缓存大小：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">setCacheSize</span>(<span class="params">to</span> <span class="params">sizeInBytes</span>: <span class="type">UInt64</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">    <span class="keyword">let</span> cacheConfig <span class="operator">=</span> <span class="type">WKStorageName</span>.default().appendingPathComponent(<span class="string">&quot;WebCache&quot;</span>)</span><br><span class="line">    websiteDataStore.setCapacityOfBytes(for: cacheConfig, to: sizeInBytes)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用示例</span></span><br><span class="line">setCacheSize(to: <span class="number">100</span> <span class="operator">*</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>) <span class="comment">// 设置为 100MB</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>缓存清理机制</strong> </p>
+<ol>
+<li>缓存过期：<ol>
+<li>当缓存数据的 Expires 时间到达时，缓存数据将被视为过期。</li>
+<li>过期的数据可能会被清理，但不是立即清理。</li>
+</ol>
+</li>
+<li>缓存大小限制：<ol>
+<li>当缓存总大小超过设定的大小限制时，WKWebView 会自动清理旧的缓存内容。</li>
+<li>清理逻辑通常是按照最近最少使用（LRU）原则进行。</li>
+</ol>
+</li>
+<li>手动清理缓存：<ol>
+<li>可以通过调用 WKWebsiteDataStore 的方法手动清理缓存。</li>
+<li>例如，可以定期清理缓存以释放存储空间。</li>
+</ol>
+</li>
+</ol>
+<p><strong>示例代码</strong> </p>
+<p>以下是一个完整的示例代码，展示了如何配置缓存大小和手动清理缓存：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ViewController</span>: <span class="title class_ inherited__">UIViewController</span>, <span class="title class_ inherited__">WKNavigationDelegate</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> webView: <span class="type">WKWebView</span>!</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">viewDidLoad</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化 WKWebView</span></span><br><span class="line">        webView <span class="operator">=</span> <span class="type">WKWebView</span>()</span><br><span class="line">        webView.navigationDelegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">        view.addSubview(webView)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加约束</span></span><br><span class="line">        webView.translatesAutoresizingMaskIntoConstraints <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">        <span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),</span><br><span class="line">            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),</span><br><span class="line">            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),</span><br><span class="line">            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)</span><br><span class="line">        ])</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 配置缓存大小</span></span><br><span class="line">        configureWebCacheSize()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载 URL</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;https://example.com&quot;</span>) &#123;</span><br><span class="line">            <span class="keyword">let</span> request <span class="operator">=</span> <span class="type">URLRequest</span>(url: url)</span><br><span class="line">            webView.load(request)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// MARK: - WKNavigationDelegate</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WKWebView</span>, <span class="params">decidePolicyFor</span> <span class="params">navigationResponse</span>: <span class="type">WKNavigationResponse</span>) <span class="keyword">async</span> -&gt; <span class="type">WKNavigationResponsePolicy</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> httpResponse <span class="operator">=</span> navigationResponse.response <span class="keyword">as?</span> <span class="type">HTTPURLResponse</span> &#123;</span><br><span class="line">            <span class="comment">// 打印状态码</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;HTTP Status Code: <span class="subst">\(httpResponse.statusCode)</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 获取并打印头部信息</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> allHeaderFields <span class="operator">=</span> httpResponse.allHeaderFields &#123;</span><br><span class="line">                <span class="keyword">for</span> (key, value) <span class="keyword">in</span> allHeaderFields &#123;</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">let</span> keyString <span class="operator">=</span> key <span class="keyword">as?</span> <span class="type">String</span>, <span class="keyword">let</span> valueString <span class="operator">=</span> value <span class="keyword">as?</span> <span class="type">String</span> &#123;</span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(keyString)</span>: <span class="subst">\(valueString)</span>&quot;</span>)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> .allow</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 可选：实现其他 WKNavigationDelegate 方法</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WKWebView</span>, <span class="params">didFinish</span> <span class="params">navigation</span>: <span class="type">WKNavigation</span>!) &#123;</span><br><span class="line">        <span class="comment">// 页面加载完成时的处理</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Page loaded.&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置缓存大小</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">configureWebCacheSize</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">        <span class="keyword">let</span> cacheConfig <span class="operator">=</span> <span class="type">WKStorageName</span>.default().appendingPathComponent(<span class="string">&quot;WebCache&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        websiteDataStore.setCapacityOfBytes(for: cacheConfig, to: <span class="number">100</span> <span class="operator">*</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>) <span class="comment">// 设置为 100MB</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清理缓存</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">clearWebCache</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">        websiteDataStore.fetchDataRecords(ofTypes: <span class="type">WKWebsiteDataStore</span>.allWebsiteDataTypes()) &#123; records <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> types <span class="operator">=</span> records.map &#123; <span class="variable">$0</span>.type &#125;</span><br><span class="line">            websiteDataStore.removeData(ofTypes: types, modifiedSince: <span class="type">Date</span>.distantPast) &#123; error <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error &#123;</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&quot;Error clearing cache: <span class="subst">\(error.localizedDescription)</span>&quot;</span>)</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&quot;Cache cleared successfully.&quot;</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结</strong> </p>
+<ol>
+<li>默认缓存大小：<ol>
+<li>WKWebView 默认的缓存大小为 50MB。</li>
+</ol>
+</li>
+<li>自定义缓存大小：<ol>
+<li>可以通过 WKWebsiteDataStore 来调整缓存大小。</li>
+</ol>
+</li>
+<li>缓存清理机制：<ol>
+<li>缓存过期：根据 Expires 头部。</li>
+<li>缓存大小限制：当缓存总大小超过设定的大小限制时，自动清理旧的缓存内容。</li>
+<li>手动清理缓存：通过调用 WKWebsiteDataStore 的方法进行清理。</li>
+</ol>
+</li>
+</ol>
+<p>通过这些机制，WKWebView 能够有效地管理和维护缓存数据，确保在需要时能够及时加载最新的内容，同时避免占用过多的存储空间。</p>
+<h3 id="如果我可以自己调整缓存大小，那这个大小是否存在一个规定的上限值？"><a href="#如果我可以自己调整缓存大小，那这个大小是否存在一个规定的上限值？" class="headerlink" title="如果我可以自己调整缓存大小，那这个大小是否存在一个规定的上限值？"></a>如果我可以自己调整缓存大小，那这个大小是否存在一个规定的上限值？</h3><p>A: 关于 WKWebView 的缓存大小，虽然你可以自定义缓存大小，但确实存在一些实际的上限值。这些上限值取决于设备的存储空间以及系统的限制。以下是一些关键点：</p>
+<p><strong>缓存大小的上限</strong>  </p>
+<ol>
+<li>系统限制：<ol>
+<li>iOS 和 macOS 系统对缓存大小有一定的限制。</li>
+<li>一般来说，缓存大小不应超过设备的可用存储空间。</li>
+</ol>
+</li>
+<li>实际限制：<ol>
+<li>通常情况下，WKWebView 的缓存大小建议不超过几百 MB。</li>
+<li>具体的上限值取决于设备的存储空间和系统配置。</li>
+</ol>
+</li>
+</ol>
+<p><strong>实际操作中的限制</strong> </p>
+<ol>
+<li>iOS 设备：<ol>
+<li>对于 iOS 设备，通常建议缓存大小不要超过几百 MB，例如 100MB 到 500MB。</li>
+<li>实际上限取决于设备的存储空间。</li>
+</ol>
+</li>
+<li>macOS 设备：<ol>
+<li>对于 macOS 设备，缓存大小可以稍微大一些，但也建议不要超过几百 MB。</li>
+</ol>
+</li>
+</ol>
+<p><strong>实际测试和调整</strong> </p>
+<ol>
+<li>测试不同大小：<ol>
+<li>你可以通过实际测试来确定最适合应用的缓存大小。</li>
+<li>测试不同的缓存大小，观察应用的表现和设备的性能。</li>
+</ol>
+</li>
+<li>动态调整：<ol>
+<li>根据设备的实际存储空间动态调整缓存大小。</li>
+<li>例如，可以检查设备的剩余存储空间，并根据剩余空间动态设置缓存大小。</li>
+</ol>
+</li>
+</ol>
+<p><strong>示例代码</strong> </p>
+<p>以下是一个示例代码，展示了如何动态调整缓存大小：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> WebKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ViewController</span>: <span class="title class_ inherited__">UIViewController</span>, <span class="title class_ inherited__">WKNavigationDelegate</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> webView: <span class="type">WKWebView</span>!</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">viewDidLoad</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化 WKWebView</span></span><br><span class="line">        webView <span class="operator">=</span> <span class="type">WKWebView</span>()</span><br><span class="line">        webView.navigationDelegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">        view.addSubview(webView)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加约束</span></span><br><span class="line">        webView.translatesAutoresizingMaskIntoConstraints <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">        <span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),</span><br><span class="line">            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),</span><br><span class="line">            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),</span><br><span class="line">            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)</span><br><span class="line">        ])</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 动态调整缓存大小</span></span><br><span class="line">        adjustCacheSizeBasedOnDeviceStorage()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 加载 URL</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;https://example.com&quot;</span>) &#123;</span><br><span class="line">            <span class="keyword">let</span> request <span class="operator">=</span> <span class="type">URLRequest</span>(url: url)</span><br><span class="line">            webView.load(request)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// MARK: - WKNavigationDelegate</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WKWebView</span>, <span class="params">decidePolicyFor</span> <span class="params">navigationResponse</span>: <span class="type">WKNavigationResponse</span>) <span class="keyword">async</span> -&gt; <span class="type">WKNavigationResponsePolicy</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> httpResponse <span class="operator">=</span> navigationResponse.response <span class="keyword">as?</span> <span class="type">HTTPURLResponse</span> &#123;</span><br><span class="line">            <span class="comment">// 打印状态码</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;HTTP Status Code: <span class="subst">\(httpResponse.statusCode)</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 获取并打印头部信息</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> allHeaderFields <span class="operator">=</span> httpResponse.allHeaderFields &#123;</span><br><span class="line">                <span class="keyword">for</span> (key, value) <span class="keyword">in</span> allHeaderFields &#123;</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">let</span> keyString <span class="operator">=</span> key <span class="keyword">as?</span> <span class="type">String</span>, <span class="keyword">let</span> valueString <span class="operator">=</span> value <span class="keyword">as?</span> <span class="type">String</span> &#123;</span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(keyString)</span>: <span class="subst">\(valueString)</span>&quot;</span>)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> .allow</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 可选：实现其他 WKNavigationDelegate 方法</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WKWebView</span>, <span class="params">didFinish</span> <span class="params">navigation</span>: <span class="type">WKNavigation</span>!) &#123;</span><br><span class="line">        <span class="comment">// 页面加载完成时的处理</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Page loaded.&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 动态调整缓存大小</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">adjustCacheSizeBasedOnDeviceStorage</span>() &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> storageManager <span class="operator">=</span> <span class="type">FileManager</span>.default.storageManager() <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Failed to get storage manager.&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> freeSpace <span class="operator">=</span> storageManager.freeDiskSpace()</span><br><span class="line">        <span class="keyword">let</span> cacheSize <span class="operator">=</span> <span class="built_in">min</span>(freeSpace <span class="operator">/</span> <span class="number">10</span>, <span class="number">500</span> <span class="operator">*</span> <span class="number">1024</span> <span class="operator">*</span> <span class="number">1024</span>) <span class="comment">// 不超过总剩余空间的10%，最多500MB</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">        <span class="keyword">let</span> cacheConfig <span class="operator">=</span> <span class="type">WKStorageName</span>.default().appendingPathComponent(<span class="string">&quot;WebCache&quot;</span>)</span><br><span class="line">        websiteDataStore.setCapacityOfBytes(for: cacheConfig, to: cacheSize)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">ViewController</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">getCurrentCacheSize</span>(<span class="params">completion</span>: <span class="keyword">@escaping</span> (<span class="type">UInt64</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> websiteDataStore <span class="operator">=</span> <span class="type">WKWebsiteDataStore</span>.default()</span><br><span class="line">        websiteDataStore.fetchDataRecords(ofTypes: [<span class="type">WKWebsiteDataTypeDiskCache</span>]) &#123; records <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> totalSize <span class="operator">=</span> records.reduce(<span class="number">0</span>) &#123; <span class="variable">$0</span> <span class="operator">+</span> <span class="variable">$0</span>.estimatedDataSize &#125;</span><br><span class="line">            completion(<span class="type">UInt64</span>(totalSize))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结</strong> </p>
+<ol>
+<li>系统限制：<ol>
+<li>iOS 和 macOS 系统对缓存大小有一定的限制。</li>
+<li>通常建议缓存大小不要超过几百 MB。</li>
+</ol>
+</li>
+<li>实际限制：<ol>
+<li>具体的上限值取决于设备的存储空间和系统配置。</li>
+<li>一般建议不要超过设备剩余存储空间的一定比例，例如 10%。</li>
+</ol>
+</li>
+<li>动态调整：<ol>
+<li>可以根据设备的实际存储空间动态调整缓存大小，以确保应用的性能和用户体验。</li>
+</ol>
+</li>
+</ol>
+<p>通过这些措施，你可以更好地管理 WKWebView 的缓存大小，确保应用在不同设备上的表现和性能。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-xcode-lldb-error/" title="Xcode lldb控制台打印 po 命令失效问题解决记录">Xcode lldb控制台打印 po 命令失效问题解决记录</a></h2>
+                <p class="excerpt">
+                
+                
+
+问题背景iOS开发中，使用Xcode
+开发时，有时候原本运行好好的项目，突然调试时，发现 po 命令无法正常显示变量的值，无论是清空编译目录，还是重装Xcode，都无法解决问题。
+问题原因自从 Xcode 13.3 到 Xcode 14 测试版之前，当尝试使用静态框架&amp;#x2F;库与 LLDB 
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-10-23T09:08:48.000Z" class="post-list__meta--date date">2024-10-23</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a>, <a class="-none-link" href="/tags/LLDB/" rel="tag">LLDB</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+</span><a class="btn-border-small" href="/ios-xcode-lldb-error/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/DSL-Native/" title="DSL Native+ 动态化方案设计">DSL Native+ 动态化方案设计</a></h2>
+                <p class="excerpt">
+                
+                
+
+为什么要有动态化？
+应“变”：随着互联网红利的消失，整个移动市场的关注从“流量”转成了“留量”，大部分的移动产品也都告别了初期的抢占市场，对某个业务领域的精细化打磨、避免 App 发布漫长的周期，在出现问题时还能即时对线上进行中止血，成为了所有业务的基本诉求。
+提“效”：动态化往往和跨端化一桌而
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-02-01T05:01:25.000Z" class="post-list__meta--date date">2022-02-01</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/DSL/" rel="tag">DSL</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" rel="tag">动态化</a>
+</span><a class="btn-border-small" href="/DSL-Native/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-wkwebview-cache-test/';
+  var disqus_title = 'WKWebView缓存协议验证';
+  var disqus_url = 'http://shevakuilin.com/ios-wkwebview-cache-test/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
