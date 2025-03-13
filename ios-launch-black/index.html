@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>iOS 端启动页黑屏解决方案 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iOS 端启动页黑屏解决方案 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="iOS 端启动页黑屏解决方案 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-launch-black/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2021-03-03T09:25:27.000Z" class="post-list__meta--date date">2021-03-03</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%90%AF%E5%8A%A8%E9%BB%91%E5%B1%8F/" rel="tag">启动黑屏</a>, <a class="-none-link" href="/tags/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="tag">问题排查</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">iOS 端启动页黑屏解决方案</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>目前 iOS 端应用在安装后概率性会出现黑屏问题，主要表现为某次安装（有些设备是100%必现）后，每次启动时，在出现启动图之前都会出现一段持续 1 ~ 2s 的黑屏现象。这种现象并不是每个用户都会遇到，但是一旦在某次安装时出现，那么在未卸载的这段时间内，每次启动都会遇到该问题</p>
+<h2 id="分析报告"><a href="#分析报告" class="headerlink" title="分析报告"></a>分析报告</h2><h3 id="出现黑屏的原因"><a href="#出现黑屏的原因" class="headerlink" title="出现黑屏的原因"></a>出现黑屏的原因</h3><h4 id="猜测"><a href="#猜测" class="headerlink" title="猜测"></a>猜测</h4><ul>
+<li>启动阶段耗时任务导致阻塞了UI线程的加载</li>
+<li>系统对启动图片缓存导致</li>
+<li>启动图尺寸问题</li>
+<li>启动配置有误导致无法正常加载</li>
+</ul>
+<h4 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h4><h5 id="启动阶段耗时任务导致阻塞了UI线程的加载"><a href="#启动阶段耗时任务导致阻塞了UI线程的加载" class="headerlink" title="启动阶段耗时任务导致阻塞了UI线程的加载"></a>启动阶段耗时任务导致阻塞了UI线程的加载</h5><ul>
+<li><p>通过设置环境变量来查看App的启动时间， 在 Scheme 的参数中添加 <code>DYLD_PRINT_STATISTICS</code> 和 <code>DYLD_PRINT_STATISTICS_DETAILS</code>  查看，未发现明显异常情况，排除启动阶段过长导致的加载延迟 ❌</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2021</span><span class="number">-03</span><span class="number">-03</span> <span class="number">12</span>:<span class="number">30</span>:<span class="number">29.872999</span>+<span class="number">0800</span> DataTrack-Debug[<span class="number">13475</span>:<span class="number">3206592</span>] WF: _WebFilterIsActive returning: <span class="literal">NO</span></span><br><span class="line">Total pre-main time: <span class="number">1.5</span> seconds (<span class="number">100.0</span>%)</span><br><span class="line">         dylib loading time: <span class="number">118.27</span> milliseconds (<span class="number">7.7</span>%)</span><br><span class="line">        rebase/binding time: <span class="number">121.23</span> milliseconds (<span class="number">7.9</span>%)</span><br><span class="line">            ObjC setup time:  <span class="number">43.85</span> milliseconds (<span class="number">2.8</span>%)</span><br><span class="line">           initializer time: <span class="number">1.2</span> seconds (<span class="number">81.5</span>%)</span><br><span class="line">           slowest intializers :</span><br><span class="line">             libSystem.B.dylib :   <span class="number">8.82</span> milliseconds (<span class="number">0.5</span>%)</span><br><span class="line">    libMainThreadChecker.dylib :  <span class="number">35.91</span> milliseconds (<span class="number">2.3</span>%)</span><br><span class="line">          libglInterpose.dylib : <span class="number">477.57</span> milliseconds (<span class="number">31.1</span>%)</span><br><span class="line">               DataTrack-Debug : <span class="number">1.2</span> seconds (<span class="number">82.5</span>%)</span><br><span class="line"></span><br><span class="line">  total time: <span class="number">3.0</span> seconds (<span class="number">100.0</span>%)</span><br><span class="line">  total images loaded:  <span class="number">522</span> (<span class="number">507</span> from dyld shared cache)</span><br><span class="line">  total segments mapped: <span class="number">55</span>, into <span class="number">2872</span> pages</span><br><span class="line">  total images loading time: <span class="number">1.5</span> seconds (<span class="number">51.1</span>%)</span><br><span class="line">  total load time <span class="keyword">in</span> ObjC:  <span class="number">43.85</span> milliseconds (<span class="number">1.4</span>%)</span><br><span class="line">  total debugger pause time: <span class="number">1.4</span> seconds (<span class="number">47.3</span>%)</span><br><span class="line">  total dtrace DOF registration time:   <span class="number">0.00</span> milliseconds (<span class="number">0.0</span>%)</span><br><span class="line">  total rebase fixups:  <span class="number">624</span>,<span class="number">012</span></span><br><span class="line">  total rebase fixups time:  <span class="number">56.78</span> milliseconds (<span class="number">1.8</span>%)</span><br><span class="line">  total binding fixups: <span class="number">108</span>,<span class="number">035</span></span><br><span class="line">  total binding fixups time:  <span class="number">68.05</span> milliseconds (<span class="number">2.2</span>%)</span><br><span class="line">  total <span class="keyword">weak</span> binding fixups time:  <span class="number">65.72</span> milliseconds (<span class="number">2.1</span>%)</span><br><span class="line">  total redo shared cached bindings time:  <span class="number">69.34</span> milliseconds (<span class="number">2.2</span>%)</span><br><span class="line">  total bindings lazily fixed up: <span class="number">0</span> of <span class="number">0</span></span><br><span class="line">  total time <span class="keyword">in</span> initializers and ObjC +load: <span class="number">1.2</span> seconds (<span class="number">41.0</span>%)</span><br><span class="line">                         libSystem.B.dylib :   <span class="number">8.82</span> milliseconds (<span class="number">0.2</span>%)</span><br><span class="line">               libBacktraceRecording.dylib :   <span class="number">7.47</span> milliseconds (<span class="number">0.2</span>%)</span><br><span class="line">                           libobjc.A.dylib :   <span class="number">3.27</span> milliseconds (<span class="number">0.1</span>%)</span><br><span class="line">                libMainThreadChecker.dylib :  <span class="number">35.91</span> milliseconds (<span class="number">1.1</span>%)</span><br><span class="line">                      libglInterpose.dylib : <span class="number">477.57</span> milliseconds (<span class="number">15.7</span>%)</span><br><span class="line">                       libMTLCapture.dylib :  <span class="number">15.86</span> milliseconds (<span class="number">0.5</span>%)</span><br><span class="line">              libViewDebuggerSupport.dylib :  <span class="number">16.14</span> milliseconds (<span class="number">0.5</span>%)</span><br><span class="line">                              LookinServer :   <span class="number">7.18</span> milliseconds (<span class="number">0.2</span>%)</span><br><span class="line">                           DataTrack-Debug : <span class="number">1.2</span> seconds (<span class="number">41.6</span>%)</span><br><span class="line">total symbol trie searches:    <span class="number">369778</span></span><br><span class="line">total symbol table binary searches:    <span class="number">0</span></span><br><span class="line">total images defining <span class="keyword">weak</span> symbols:  <span class="number">55</span></span><br><span class="line">total images using <span class="keyword">weak</span> symbols:  <span class="number">130</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>屏蔽 didFinishLaunchingWithOptions 中除设置根视图以外的代码，运行后发现无变化，依旧存在黑屏，排除启动阶段，由于代码执行逻辑阻塞UI线程导致的黑屏问题 ❌</p>
+<ul>
+<li>此时就非常令人感到疑惑了，<strong>既然没有阻塞UI线程的代码逻辑，为何还会出现加载延迟的现象呢</strong>？</li>
+<li>尝试屏蔽了 didFinishLaunchingWithOptions 中的所有代码逻辑（理论上只会影响进入落地页，而不会影响启动图），黑屏问题依旧存在，说明也不是根视图设置有问题❌</li>
+<li>那么，有没有可能是在 didFinishLaunchingWithOptions 执行前做了什么，导致加载被阻塞了呢？</li>
+</ul>
+</li>
+<li><p>断点停留在 didFinishLaunchingWithOptions 函数第一行，查看调用链以及启动图变化，发现果然存在一个针对 didFinishLaunchingWithOptions 函数的 hook 操作，会不会就是它呢？</p>
+<img scr="/image/ios-launch-black-debug01.png">
+
+<ul>
+<li>找到这个函数后，发现是在 +load 函数内进行的方法交换，以此来做 Crash 防护的若干工作，于是屏蔽了这段代码，发现黑屏问题依旧存在，根本就不是因为启动阶段的代码导致的❌</li>
+<li>不甘心，又用 Instruments 详细查看了启动阶段各个函数的耗时，并且将耗时较多的任务逐一屏蔽，毫无帮助❌</li>
+<li>此时问题就来了，既然不是我们自身的代码导致，是否有可能是启动阶段的优化，如二进制重拍而导致的问题呢？但是鉴于这个黑屏问题的表现，这种可能性我认为不大，如果是因为启动优化造成的，那么这个问题必然是100%出现在每个用户的设备商，所以排除❌</li>
+</ul>
+<p>至此，基本排除了因为启动阶段耗时任务导致阻塞了UI线程的加载的因素。</p>
+<h5 id="启动配置有误导致无法正常加载"><a href="#启动配置有误导致无法正常加载" class="headerlink" title="启动配置有误导致无法正常加载"></a>启动配置有误导致无法正常加载</h5><p>检查过后发现配置毫无问题</p>
+<h5 id="系统对启动图片缓存导致"><a href="#系统对启动图片缓存导致" class="headerlink" title="系统对启动图片缓存导致"></a>系统对启动图片缓存导致</h5><p>排除了代码问题，接下来很可能就是由于启动图缓存导致的黑屏了</p>
+<ul>
+<li><p>每次启动，都进行清除缓存的操作，并无效果，排除设备缓存问题 ❌</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;UIKit/UIKit.h&gt; </span></span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UIApplication</span> (<span class="title">LaunchScreen</span>) </span></span><br><span class="line">- (<span class="type">void</span>)clearLaunchScreenCache; </span><br><span class="line"><span class="keyword">@end</span> </span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="string">&quot;UIApplication+LaunchScreen.h&quot;</span> </span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIApplication</span> (<span class="title">LaunchScreen</span>) </span></span><br><span class="line">- (<span class="type">void</span>)clearLaunchScreenCache &#123;    </span><br><span class="line">    <span class="built_in">NSError</span> *error;     </span><br><span class="line">    [<span class="built_in">NSFileManager</span>.defaultManager removeItemAtPath:[<span class="built_in">NSString</span> stringWithFormat:<span class="string">@&quot;%@/Library/Caches/Snapshots&quot;</span>,<span class="built_in">NSHomeDirectory</span>()] error:&amp;error];    </span><br><span class="line">    <span class="keyword">if</span> (error) &#123;        </span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;Failed to delete launch screen cache: %@&quot;</span>,error);     </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line"><span class="meta">#import <span class="string">&quot;UIApplication+LaunchScreen.h&quot;</span> </span></span><br><span class="line">[<span class="built_in">UIApplication</span>.sharedApplication clearLaunchScreenCache];</span><br></pre></td></tr></table></figure>
+
+<h5 id="诡异的现象"><a href="#诡异的现象" class="headerlink" title="诡异的现象"></a>诡异的现象</h5><ul>
+<li><p>怀疑可能根据图片名做了缓存，于是修改启动图片名称，发现更改名称后<strong>首次启动有效</strong>，启动图立即展示，但随后的启动再次回到之前的黑屏状态，虽然表现非常奇怪，但是也侧面证明了和加载的图片路径有关，因为每次替换图片名，也就相当于替换了图片的绝对路径，但首次有效，第二次无效这个问题，多半是对路径下的同名图片做了缓存，但为何一读缓存就加载失败，这显然非常的诡异</p>
+</li>
+<li><p>因为实在太诡异了，所以我把启动图放到一个新建的demo工程里，发现一切正常，启动的一瞬间就加载出来了，直到这个时候，我才意识到此前忽略的一点：启动图应当出现在 didFinishLaunchingWithOptions 之前才对，而先前打断点的时候明显感知到，在 didFinishLaunchingWithOptions 完全执行完毕后，才开始加载启动图，我觉得有些不对劲，打开工程目录发现同时存在着一个 strongBoard 和 xib 的同名 LaunchScreen 文件</p>
+</li>
+<li><p>我查看了工程内的引用，发现有一段代码引用这xib文件，并且有一段注释写道: 这段代码主要是为了解决，启动页后的白屏问题，恍惚间我意识到什么，用一个新的 UIView 替换了这个 xib，再次运行，果然，启动图全部消失，一片黑屏后，进入了首页，这说明 stroyBoard 的启动图压根就没有加载成功，先前看到的启动图实际上是这段 xib！</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这段代码主要是为了解决，启动页后的白屏问题</span></span><br><span class="line"><span class="built_in">UIView</span>*lanuchView= [[[<span class="built_in">NSBundlemainBundle</span>] loadNibNamed:<span class="string">@&quot;LaunchScreen&quot;</span>owner:niloptions:<span class="literal">nil</span>] lastObject];</span><br></pre></td></tr></table></figure>
+
+<h5 id="重新设置-storyBoard"><a href="#重新设置-storyBoard" class="headerlink" title="重新设置 storyBoard"></a>重新设置 storyBoard</h5><p>进入 stroyBoard 后，看不出什么明显的问题，突然想到有没有可能是图片尺寸问题导致加载不出来，毕竟之前看到过类似的文章介绍，但转念一想，demo一模一样的图片就没问题，所以不太可能是图片本身的问题，那就可能是其他原因导致的，于是做出如下尝试</p>
+<ul>
+<li>替换图片，随便替换了一张工程内的图片，发现依旧黑屏❌</li>
+<li>换了图还不行，怀疑是 storyBoard 作为入口失效了，可能整体就没加载出来，于是删除所有控件的图片，更换背景色，背景色的启动页面加载成功！✅</li>
+<li>说明 storyBoard 本身的加载没问题，是显示的内容出了问题，于是加上了一个 UILabel 控件，随便填了点内容，发现启动页面和 UILabel 控件加载正常！✅</li>
+<li>控件也没问题？那有没有可能是拉的约束出了问题，毕竟 storyBoard 玩的溜的人不多，约束出问题也是有可能的（但如果真的这个问题造成的，黑屏就应该是100%出现的），删除所有 AutoLayout 约束，并填上之前的图片，依旧黑屏，不是约束的问题❌</li>
+<li>难道这个 UIImageView 控件有问题，没法加载？于是删掉此前的 UIImageView，重新添加新的 UIImageView，再填充启动图片，依旧黑屏❌  我可要爆粗口了啊</li>
+<li>会不会是图片太大了？（但是demo咋没问题）不甘心的我又试了试，换了张很小的按钮的切图，加载成功！✅</li>
+<li>难道是图片大小的关系？不应该啊，于是仔细观察加载成功和不成功的图片区别，发现：加载成功的图片都是存放在 Images.xcassets 中的，不成功的都是放在其他目录的！于是把启动图放到 Images.xcassets 中，再次 UIImageView 中填入启动图，加载成功！✅</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>目前可以暂时得出一个简易的结论：必须放到 Images.xcassets 中的资源文件才可以被 storyBoard 准确加载，有个别文章还专门强调要放到根路径下，不知误导了多少同学。不过目前具体原理暂时不清楚，待我搜寻一番官方文档或 WWDC 看谁能解释清楚，有结论后会更新一篇新文章来介绍。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/clang-xcode/" title="基于 Clang 的 Xcode 编译器插件开发">基于 Clang 的 Xcode 编译器插件开发</a></h2>
+                <p class="excerpt">
+                
+                LLVM &amp;amp; Clang官方文档
+Clang 是作为常规 LLVM 版本的一部分发布的，你可以从 https://LLVM.org/releases/下载版本。
+1.下载LLVM工程1git clone git@github.com:llvm/llvm-project.git
+
+其中包含
+
+
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2021-03-13T15:45:09.000Z" class="post-list__meta--date date">2021-03-13</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Clang/" rel="tag">Clang</a>, <a class="-none-link" href="/tags/IDE-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag">IDE 插件开发</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+</span><a class="btn-border-small" href="/clang-xcode/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/univalued-binarytree/" title="单值二叉树">单值二叉树</a></h2>
+                <p class="excerpt">
+                
+                LeetCode 965. 单值二叉树
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2021-01-19T15:39:02.000Z" class="post-list__meta--date date">2021-01-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>, <a class="-none-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a>
+</span><a class="btn-border-small" href="/univalued-binarytree/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-launch-black/';
+  var disqus_title = 'iOS 端启动页黑屏解决方案';
+  var disqus_url = 'http://shevakuilin.com/ios-launch-black/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
