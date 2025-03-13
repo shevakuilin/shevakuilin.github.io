@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>基于 Clang 的 Xcode 编译器插件开发 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="基于 Clang 的 Xcode 编译器插件开发 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="基于 Clang 的 Xcode 编译器插件开发 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/clang-xcode/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2021-03-13T15:45:09.000Z" class="post-list__meta--date date">2021-03-13</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Clang/" rel="tag">Clang</a>, <a class="-none-link" href="/tags/IDE-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag">IDE 插件开发</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">基于 Clang 的 Xcode 编译器插件开发</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="LLVM-amp-Clang"><a href="#LLVM-amp-Clang" class="headerlink" title="LLVM &amp; Clang"></a>LLVM &amp; Clang</h2><p><a target="_blank" rel="noopener" href="https://clang.llvm.org/get_started.html">官方文档</a></p>
+<p>Clang 是作为常规 LLVM 版本的一部分发布的，你可以从 <a target="_blank" rel="noopener" href="https://llvm.org/releases/%E4%B8%8B%E8%BD%BD%E7%89%88%E6%9C%AC%E3%80%82">https://LLVM.org/releases/下载版本。</a></p>
+<h3 id="1-下载LLVM工程"><a href="#1-下载LLVM工程" class="headerlink" title="1.下载LLVM工程"></a>1.下载LLVM工程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:llvm/llvm-project.git</span><br></pre></td></tr></table></figure>
+
+<p>其中包含</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/docs/index.html">LLVM</a> (<a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/docs/ReleaseNotes.html">release notes</a>)</li>
+<li><a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/clang/docs/index.html">Clang</a> (<a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/clang/docs/ReleaseNotes.html">release notes</a>)</li>
+<li><a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/clang/tools/extra/docs/index.html">clang-tools-extra</a> (<a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/clang/tools/extra/docs/ReleaseNotes.html">release notes</a>)</li>
+<li><a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/lld/docs/index.html">LLD</a> (<a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/lld/docs/ReleaseNotes.html">release notes</a>)</li>
+<li><a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/projects/libcxx/docs/index.html">libc++</a> (<a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/projects/libcxx/docs/ReleaseNotes.html">release notes</a>)</li>
+<li><a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/polly/docs/index.html">Polly</a> (<a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/polly/docs/ReleaseNotes.html">release notes</a>)</li>
+<li><a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/flang/docs/index.html">Flang</a> (<a target="_blank" rel="noopener" href="https://releases.llvm.org/12.0.1/tools/flang/docs/ReleaseNotes.html">release notes</a>)</li>
+</ul>
+<p>下载完成后，将根目录的clang文件夹移到&#x2F;拷贝到llvm&#x2F;tools中。</p>
+<h3 id="2-安装CMake"><a href="#2-安装CMake" class="headerlink" title="2.安装CMake"></a>2.安装CMake</h3><p>由于最新的LLVM只支持cmake来编译，所以需要安装cmake</p>
+<ul>
+<li>查看brew是否安装cmake，如果已经安装，则跳过下面步骤 – brew list </li>
+<li>通过brew安装cmake – <code>brew install cmake</code></li>
+</ul>
+<h3 id="3-编译LLVM"><a href="#3-编译LLVM" class="headerlink" title="3.编译LLVM"></a>3.编译LLVM</h3><p>有两种编译方式</p>
+<ul>
+<li>通过Xcode编译LLVM </li>
+<li>通过ninja编译LLVM</li>
+</ul>
+<p>为了方便，这里我们选择Xcode</p>
+<h4 id="通过Xcode编译"><a href="#通过Xcode编译" class="headerlink" title="通过Xcode编译"></a>通过Xcode编译</h4><p>在llvm同级目录创建llvm_xcode文件夹，cd到llvm_xcode文件夹，运行cmake命令，将llvm编译成Xcode项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake -G Xcode ../llvm </span><br></pre></td></tr></table></figure>
+
+<p>编译命令：cmake -G <generator> [options] <path to llvm sources><strong>generator commands</strong>:<strong>options commands</strong></p>
+<ul>
+<li>Unix Makefiles — 生成和 make 兼容的并行的 makefile。</li>
+<li>Ninja — 生成一个 Ninja 编译文件，大多数 LLVM 开发者使用 Ninja。</li>
+<li>Visual Studio — 生成一个 Visual Studio 项目。</li>
+<li>Xcode — 生成一个 Xcode 项目。</li>
+<li>-DCMAKE_INSTALL_PREFIX&#x3D;”directory” — 安装 LLVM 工具和库的完整路径，默认&#x2F;usr&#x2F;local。</li>
+<li>-DCMAKE_BUILD_TYPE&#x3D;”type” — type 的值为Debug,Release, RelWithDebInfo和MinSizeRel，默认Debug。</li>
+<li>-DLLVM_ENABLE_ASSERTIONS&#x3D;”On” — 在启用断言检查的情况下编译，默认为Yes。</li>
+<li>这里我们使用<code>$ cmake -G Xcode ../llvm</code>命令生成一个Xcode项目。</li>
+</ul>
+<p>创建完成后，打开生成的Xcode，选择手动设置schems，添加clang和clangTools这个两个target（这里有个坑，选择自动schems可能会造成创建的自定义插件找不到）。</p>
+<p>编译，选择自动schems选择ALL_BUILD这个Scheme进行编译，手动的选择clang进行编译，预计1小时左右。</p>
+<h3 id="4-新建插件配置及源码文件"><a href="#4-新建插件配置及源码文件" class="headerlink" title="4.新建插件配置及源码文件"></a>4.新建插件配置及源码文件</h3><p>llvm&#x2F;tools&#x2F;clang&#x2F;tools&#x2F;目录下，新增cmake需要的配置：</p>
+<p>在CMakeLists.txt文件添加插件信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add_clang_subdirectory(YCPlugin) </span><br></pre></td></tr></table></figure>
+
+<p>新建YCPlugin目录，在其中新建一个CMakeLists.txt文件和YCPlugin.cpp文件：</p>
+<p>add_llvm_library( YCPlugin MODULE BUILDTREE_ONLY YCPlugin.cpp )</p>
+<p>cpp代码中注意保持与plugin名称一致。</p>
+<p><em><strong>注意</strong></em>：这里CMakeLists.txt文件中填写的不是网上到处说的命令 add_llvm_loadable_module。 而是应该 <em><strong>仿照Loadable modules中的LLVMHello中的格式填写</strong></em>。</p>
+<p>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">add_llvm_library</span>( YCPlugin MODULE BUILDTREE_ONLY</span><br><span class="line">  YCPlugin.cpp</span><br><span class="line"></span><br><span class="line">  DEPENDS</span><br><span class="line">  intrinsics_gen</span><br><span class="line">  PLUGIN_TOOL</span><br><span class="line">  opt</span><br><span class="line">  )</span><br></pre></td></tr></table></figure>
+
+<p>然后需要重新生成一遍llvm_xcode中的工程，建议清空一遍之前创建的工程，从头重新生成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake -G Xcode ../llvm</span><br></pre></td></tr></table></figure>
+
+<p>与第一次编译时一样，手动管理schems，这个时候打开工程，在Loadable modules文件夹下就可以看到YCPlugin了，然后在Manage Schemes中添加我们的YCPlugin。</p>
+<p>之后就可以进入YCPlugin.cpp中开始写插件代码了，已测试插件为例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;clang/AST/AST.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;clang/AST/DeclObjC.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;clang/AST/ASTConsumer.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;clang/ASTMatchers/ASTMatchers.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;clang/Frontend/CompilerInstance.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;clang/ASTMatchers/ASTMatchFinder.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;clang/Frontend/FrontendPluginRegistry.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> clang;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> llvm;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> clang::ast_matchers;</span><br><span class="line"><span class="comment">//声明命名空间，和插件同名</span></span><br><span class="line"><span class="keyword">namespace</span> YCPlugin &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//第三步：扫描完毕的回调函数</span></span><br><span class="line"><span class="comment">//4、自定义回调类，继承自MatchCallback</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YCMatchCallback</span>: <span class="keyword">public</span> MatchFinder::MatchCallback &#123;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">//CI传递路径：YCASTAction类中的CreateASTConsumer方法参数 - YCConsumer的构造函数 - YCMatchCallback的私有属性，通过构造函数从YCASTConsumer构造函数中获取</span></span><br><span class="line">    CompilerInstance &amp;CI;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//判断是否是自己的文件</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isUserSourceCode</span><span class="params">(<span class="type">const</span> string filename)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//文件名不为空</span></span><br><span class="line">        <span class="keyword">if</span> (filename.<span class="built_in">empty</span>()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="comment">//非xcode中的源码都认为是用户的</span></span><br><span class="line">        <span class="keyword">if</span> (filename.<span class="built_in">find</span>(<span class="string">&quot;/Applications/Xcode.app/&quot;</span>) == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span>  <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断是否应该用copy修饰</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isShouldUseCopy</span><span class="params">(<span class="type">const</span> string typeStr)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//判断类型是否是NSString | NSArray | NSDictionary</span></span><br><span class="line">        <span class="keyword">if</span> (typeStr.<span class="built_in">find</span>(<span class="string">&quot;NSString&quot;</span>) != string::npos ||</span><br><span class="line">            typeStr.<span class="built_in">find</span>(<span class="string">&quot;NSArray&quot;</span>) != string::npos ||</span><br><span class="line">            typeStr.<span class="built_in">find</span>(<span class="string">&quot;NSDictionary&quot;</span>) != string::npos<span class="comment">/*...*/</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">YCMatchCallback</span>(CompilerInstance &amp;CI):<span class="built_in">CI</span>(CI)&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//重写run方法</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">run</span><span class="params">(<span class="type">const</span> MatchFinder::MatchResult &amp;Result)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//通过result获取到相关节点 -- 根据节点标记获取（标记需要与YCASTConsumer构造方法中一致）</span></span><br><span class="line">        <span class="type">const</span> ObjCPropertyDecl *propertyDecl = Result.Nodes.<span class="built_in">getNodeAs</span>&lt;ObjCPropertyDecl&gt;(<span class="string">&quot;objcPropertyDecl&quot;</span>);</span><br><span class="line">        <span class="comment">//判断节点有值，并且是用户文件</span></span><br><span class="line">        <span class="keyword">if</span> (propertyDecl &amp;&amp; <span class="built_in">isUserSourceCode</span>(CI.<span class="built_in">getSourceManager</span>().<span class="built_in">getFilename</span>(propertyDecl-&gt;<span class="built_in">getSourceRange</span>().<span class="built_in">getBegin</span>()).<span class="built_in">str</span>()) ) &#123;</span><br><span class="line">            <span class="comment">//15、获取节点的描述信息</span></span><br><span class="line">            ObjCPropertyAttribute::Kind attrKind = propertyDecl-&gt;<span class="built_in">getPropertyAttributes</span>();</span><br><span class="line">            <span class="comment">//获取节点的类型，并转成字符串</span></span><br><span class="line">            string typeStr = propertyDecl-&gt;<span class="built_in">getType</span>().<span class="built_in">getAsString</span>();</span><br><span class="line"><span class="comment">//            cout&lt;&lt;&quot;---------拿到了：&quot;&lt;&lt;typeStr&lt;&lt;&quot;---------&quot;&lt;&lt;endl;</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">//判断应该使用copy，但是没有使用copy</span></span><br><span class="line">            <span class="keyword">if</span> (propertyDecl-&gt;<span class="built_in">getTypeSourceInfo</span>() &amp;&amp; <span class="built_in">isShouldUseCopy</span>(typeStr) &amp;&amp; !(attrKind &amp; ObjCPropertyAttribute::kind_copy)) &#123;</span><br><span class="line">                <span class="comment">//使用CI发警告信息</span></span><br><span class="line">                <span class="comment">//通过CI获取诊断引擎</span></span><br><span class="line">                DiagnosticsEngine &amp;diag = CI.<span class="built_in">getDiagnostics</span>();</span><br><span class="line">                <span class="comment">//通过诊断引擎 report报告 错误，即抛出异常</span></span><br><span class="line">                <span class="comment">/*</span></span><br><span class="line"><span class="comment">                错误位置：getBeginLoc 节点开始位置</span></span><br><span class="line"><span class="comment">                错误：getCustomDiagID（等级，提示）</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                diag.<span class="built_in">Report</span>(propertyDecl-&gt;<span class="built_in">getBeginLoc</span>(), diag.<span class="built_in">getCustomDiagID</span>(DiagnosticsEngine::Warning, <span class="string">&quot;%0 - 听我一句劝，NSString用copy!!&quot;</span>))&lt;&lt; typeStr;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//第二步：扫描配置完毕</span></span><br><span class="line"><span class="comment">//3、自定义YCASTConsumer，继承自ASTConsumer，用于监听AST节点的信息 -- 过滤器</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YCASTConsumer</span>: <span class="keyword">public</span> ASTConsumer &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">//AST节点的查找过滤器</span></span><br><span class="line">    MatchFinder matcher;</span><br><span class="line">    <span class="comment">//定义回调类对象</span></span><br><span class="line">    YCMatchCallback callback;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//构造方法中创建matcherFinder对象</span></span><br><span class="line">    <span class="built_in">YCASTConsumer</span>(CompilerInstance &amp;CI) : <span class="built_in">callback</span>(CI) &#123;</span><br><span class="line">        <span class="comment">//添加一个MatchFinder，每个objcPropertyDecl节点绑定一个objcPropertyDecl标识（去匹配objcPropertyDecl节点）</span></span><br><span class="line">        <span class="comment">//回调callback，其实是在YCMatchCallback里面重写run方法（真正回调的是回调run方法）</span></span><br><span class="line">        matcher.<span class="built_in">addMatcher</span>(<span class="built_in">objcPropertyDecl</span>().<span class="built_in">bind</span>(<span class="string">&quot;objcPropertyDecl&quot;</span>), &amp;callback);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//实现两个回调方法 HandleTopLevelDecl 和 HandleTranslationUnit</span></span><br><span class="line">    <span class="comment">//解析完一个顶级的声明，就回调一次(顶级节点，相当于一个全局变量、函数声明)</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">HandleTopLevelDecl</span><span class="params">(DeclGroupRef D)</span></span>&#123;</span><br><span class="line"><span class="comment">//        cout&lt;&lt;&quot;正在解析...&quot;&lt;&lt;endl;</span></span><br><span class="line">        <span class="keyword">return</span>  <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//整个文件都解析完成的回调</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">HandleTranslationUnit</span><span class="params">(ASTContext &amp;context)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        cout&lt;&lt;&quot;文件解析完毕!&quot;&lt;&lt;endl;</span></span><br><span class="line">        <span class="comment">//将文件解析完毕后的上下文context（即AST语法树） 给 matcher</span></span><br><span class="line">        matcher.<span class="built_in">matchAST</span>(context);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//2、继承PluginASTAction，实现我们自定义的Action，即自定义AST语法树行为</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YCASTAction</span>: <span class="keyword">public</span> PluginASTAction &#123;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//重载ParseArgs 和 CreateASTConsumer方法</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">ParseArgs</span><span class="params">(<span class="type">const</span> CompilerInstance &amp;ci, <span class="type">const</span> std::vector&lt;std::string&gt; &amp;args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//返回ASTConsumer类型对象，其中ASTConsumer是一个抽象类，即基类</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     解析给定的插件命令行参数。</span></span><br><span class="line"><span class="comment">     - param CI 编译器实例，用于报告诊断。</span></span><br><span class="line"><span class="comment">     - return 如果解析成功，则为true；否则，插件将被销毁，并且不执行任何操作。该插件负责使用CompilerInstance的Diagnostic对象报告错误。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">unique_ptr&lt;ASTConsumer&gt; <span class="title">CreateASTConsumer</span><span class="params">(CompilerInstance &amp;CI, StringRef iFile)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//返回自定义的YCASTConsumer,即ASTConsumer的子类对象</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         CI用于：</span></span><br><span class="line"><span class="comment">         - 判断文件是否使用户的</span></span><br><span class="line"><span class="comment">         - 抛出警告</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">unique_ptr</span>&lt;YCASTConsumer&gt; (<span class="keyword">new</span> <span class="built_in">YCASTConsumer</span>(CI));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//第一步：注册插件，并自定义AST语法树Action类</span></span><br><span class="line"><span class="comment">//1、注册插件</span></span><br><span class="line"><span class="function"><span class="type">static</span> FrontendPluginRegistry::Add&lt;YCPlugin::YCASTAction&gt; <span class="title">YC</span><span class="params">(<span class="string">&quot;YCPlugin&quot;</span>, <span class="string">&quot;This is YCPlugin&quot;</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-验证"><a href="#5-验证" class="headerlink" title="5.验证"></a>5.验证</h3><p>在YCPlugin.cpp中写完插件代码后，CMD+B编译生成.dylib文件，找到插件对应的.dylib，右键show in finder。</p>
+<p>在llvm的同级目录创建我们的ClangDemo（一个新的Xcode工程），cd到ClangDemo文件夹执行下面指令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">自己编译的clang文件路径 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator14.3.sdk/ -Xclang -load -Xclang 插件(.dylib)路径 -Xclang -add-plugin -Xclang 插件名 -c 资源文件(.h或者.m)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-集成到Xcode"><a href="#6-集成到Xcode" class="headerlink" title="6.集成到Xcode"></a>6.集成到Xcode</h3><h4 id="加载插件"><a href="#加载插件" class="headerlink" title="加载插件"></a>加载插件</h4><p>新建一个测试项目，打开测试项目，在target-&gt;Build Settings -&gt; other Flags添加已下内容</p>
+<p>-Xclang -load -Xclang &#x2F;Users&#x2F;shevakuilin&#x2F;Desktop&#x2F;llvm-project&#x2F;llvm_xcode&#x2F;Debug&#x2F;lib&#x2F;YCPlugin.dylib -Xclang -add-plugin -Xclang YCPlugin</p>
+<h4 id="设置编译器"><a href="#设置编译器" class="headerlink" title="设置编译器"></a>设置编译器</h4><p>Command + B进行编译，会报错。因为由于clang插件需要使用对应的版本去加载，如果版本不一致会导致编译失败。</p>
+<p>在Build Settings栏目新增两项用户定义的设置分别是CC和CXX。</p>
+<ul>
+<li>CC 对应的是自己编译的clang的绝对路径 </li>
+<li>CXX 对应的是自己编译的clang++的绝对路径</li>
+</ul>
+<p>接下来在Build Settings中搜索index，将Enable Index-Wihle-Building Functionality的Default改为NO。</p>
+<p>最后重新编译即可看到插件提示效果。</p>
+<blockquote>
+<p>最后有一个小问题，由于将 <code>Index-Wihle-Building Functionality</code> 设置为 <code>NO</code> 了，会导致 Xcode 的自动补全功能和代码颜色提醒失效，其作用是使用Xcode时会顺便建立索引。目前没有太好的解决办法。也许可以将插件做成工具形式，需要时再执行</p>
+</blockquote>
+<h2 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h2><img src="/image/clang-xcode.png">
+
+<h2 id="问题-amp-解决方案"><a href="#问题-amp-解决方案" class="headerlink" title="问题 &amp; 解决方案"></a>问题 &amp; 解决方案</h2><p>1.如果 cmake -G Xcode ..&#x2F;llvm 命令生成的工程里找不到插件</p>
+<ul>
+<li>清空llvc_xcode文件夹内的全部内容</li>
+<li>选择手动设置schems，添加clang和clangTools这个两个target</li>
+</ul>
+<p>2.llvm-project下载下来之后llvm&#x2F;tools中找不到clang文件夹</p>
+<ul>
+<li>将根目录的clang文件夹移到&#x2F;拷贝到llvm&#x2F;tools中</li>
+</ul>
+<p>3.cmake -G Xcode ..&#x2F;llvm 命令报错提示当前Xcode无法支持</p>
+<ul>
+<li>Xcode12及以上需要使用llvm 11.0及以上版本</li>
+</ul>
+<p>4.插件内的C++代码报错，如：Cannot initialize object parameter of type ‘const clang::Decl’ with an expression of type ‘const clang::ObjCPropertyDecl’</p>
+<ul>
+<li>Build Settings -&gt; C++ Language Dialect -&gt; 设置成C++ 14即可解决报错问题</li>
+</ul>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903748435705864">LLVM &amp; Clang 入门</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a2c3ab517019">iOS-LLVM的编译以及Clang的插件编写</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2fe026e577f5">iOS 开发 Clang 插件的配置及流程</a></li>
+<li><a target="_blank" rel="noopener" href="https://mirror.tuna.tsinghua.edu.cn/help/llvm-project.git/">清华大学LLVM镜像</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6937229938705580068">iOS之武功秘籍⑰: Clang插件开发</a> </li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904004602822664">编译原理：如何制作clang插件来为iOS开发提效</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904095921209357">LLVM-Clang插件开发</a></li>
+<li><a target="_blank" rel="noopener" href="https://answers.unrealengine.com/questions/678667/cannot-initialize-object-parameter-of-type-uactorc.html">Cannot initialize object parameter of type ‘UActorComponent’ with an expression of type ‘UPositionReport’</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6890831804770156558">Clang 代码规范检查插件</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1794441">iOS 编译时间优化</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.gushiciku.cn/pl/pW4d">微信团队分享：极致优化，iOS版微信编译速度3倍提升的实践总结</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903592592146440">Clang 之旅–实现一个自定义检查规范的 Clang 插件</a></li>
+<li><a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/LibASTMatchersReference.html#decl-matchers">AST Matcher Reference</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/apocelipes/p/14415033.html">彻底理解c++的隐式类型转换</a></li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/DSL-Native/" title="DSL Native+ 动态化方案设计">DSL Native+ 动态化方案设计</a></h2>
+                <p class="excerpt">
+                
+                
+
+为什么要有动态化？
+应“变”：随着互联网红利的消失，整个移动市场的关注从“流量”转成了“留量”，大部分的移动产品也都告别了初期的抢占市场，对某个业务领域的精细化打磨、避免 App 发布漫长的周期，在出现问题时还能即时对线上进行中止血，成为了所有业务的基本诉求。
+提“效”：动态化往往和跨端化一桌而
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-02-01T05:01:25.000Z" class="post-list__meta--date date">2022-02-01</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/DSL/" rel="tag">DSL</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" rel="tag">动态化</a>
+</span><a class="btn-border-small" href="/DSL-Native/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/univalued-binarytree/" title="单值二叉树">单值二叉树</a></h2>
+                <p class="excerpt">
+                
+                LeetCode 965. 单值二叉树
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2021-01-19T15:39:02.000Z" class="post-list__meta--date date">2021-01-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>, <a class="-none-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a>
+</span><a class="btn-border-small" href="/univalued-binarytree/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/clang-xcode/';
+  var disqus_title = '基于 Clang 的 Xcode 编译器插件开发';
+  var disqus_url = 'http://shevakuilin.com/clang-xcode/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
