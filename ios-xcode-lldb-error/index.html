@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>Xcode lldb控制台打印 po 命令失效问题解决记录 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Xcode lldb控制台打印 po 命令失效问题解决记录 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Xcode lldb控制台打印 po 命令失效问题解决记录 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-xcode-lldb-error/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-10-23T09:08:48.000Z" class="post-list__meta--date date">2024-10-23</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a>, <a class="-none-link" href="/tags/LLDB/" rel="tag">LLDB</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">Xcode lldb控制台打印 po 命令失效问题解决记录</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>iOS开发中，使用Xcode</p>
+<p>开发时，有时候原本运行好好的项目，突然调试时，发现 po 命令无法正常显示变量的值，无论是清空编译目录，还是重装Xcode，都无法解决问题。</p>
+<h2 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h2><p>自从 Xcode 13.3 到 Xcode 14 测试版之前，当尝试使用静态框架&#x2F;库与 LLDB 或使用 CocoaPods 并启用框架和静态链接时，会出现一个奇怪的 bug。</p>
+<p>当你在框架代码中使用简单的 LLDB 命令（如 po <something>）时，调试控制台会显示以下消息：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">error: expression failed to parse:</span><br><span class="line">error: Couldn<span class="string">&#x27;t realize type of self.</span></span><br></pre></td></tr></table></figure>
+
+<p>这个错误消息表明在使用静态框架或库时，LLDB 无法正确地解析和显示对象的内容。这是由于 Xcode 在这一版本范围内存在一个已知的问题。</p>
+<p>因为我们的项目是通过Pod集成依赖的，所以按照解决方案中针对pod的解决方式就行。</p>
+<h2 id="参考方案"><a href="#参考方案" class="headerlink" title="参考方案"></a>参考方案</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">post_integrate <span class="keyword">do</span> |<span class="params">installer</span>|</span><br><span class="line">    xcconfig_path = installer.sandbox.target_support_files_root.to_s + <span class="string">&#x27;/Pods-App/Pods-App.debug.xcconfig&#x27;</span></span><br><span class="line"></span><br><span class="line">    xcconfig_content = <span class="title class_">File</span>.read xcconfig_path</span><br><span class="line">    xcconfig_original_ld_flags = xcconfig_content.match(<span class="regexp">/OTHER_LDFLAGS = ([^\n]+)\n/</span>)[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    xcconfig_new_ld_flags = <span class="string">&lt;&lt;~CONTENT</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // Xcode 13.3+</span></span><br><span class="line"><span class="string">    OTHER_LDFLAGS = <span class="subst">#&#123;xcconfig_original_ld_flags&#125;</span> -Wl,-add_ast_path,$(TARGET_BUILD_DIR)/InternalPod/InternalPod.framework/Modules/InternalPod.swiftmodule/$(NATIVE_ARCH_ACTUAL)-apple-$(SHALLOW_BUNDLE_TRIPLE).swiftmodule</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // Xcode 13.2</span></span><br><span class="line"><span class="string">    OTHER_LDFLAGS[sdk=iphoneos15.2] = <span class="subst">#&#123;xcconfig_original_ld_flags&#125;</span> -Wl,-add_ast_path,$(TARGET_BUILD_DIR)/InternalPod/InternalPod.framework/Modules/InternalPod.swiftmodule/$(NATIVE_ARCH_ACTUAL)-apple-ios.swiftmodule</span></span><br><span class="line"><span class="string">    OTHER_LDFLAGS[sdk=iphonesimulator15.2] = <span class="subst">#&#123;xcconfig_original_ld_flags&#125;</span> -Wl,-add_ast_path,$(TARGET_BUILD_DIR)/InternalPod/InternalPod.framework/Modules/InternalPod.swiftmodule/$(NATIVE_ARCH_ACTUAL)-apple-simulator.swiftmodule</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    CONTENT</span></span><br><span class="line"></span><br><span class="line">    xcconfig_content.gsub! <span class="regexp">/OTHER_LDFLAGS = ([^\n]+)\n/</span>, xcconfig_new_ld_flags</span><br><span class="line"></span><br><span class="line">    <span class="title class_">File</span>.open(xcconfig_path, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">do</span> |<span class="params">f</span>|</span><br><span class="line">      f.puts xcconfig_content</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Pods-App"><a href="#Pods-App" class="headerlink" title="Pods-App"></a>Pods-App</h3><p>这个 Pods-App 指的是 target 的名称，我们直接去工程里找到 Pod 目录，找到 Targets Support Files 文件夹，打开我们想要进行调试的 target 目录，比如 Pods-DataTrack-Debug，这个 Pods-DataTrack-Debug 就是 上面的 Pods-App，但我们要填入的是 .xcconfig 文件的路径，它又去哪里了呢？</p>
+<img src="/image/xcode-lldb01.png">
+
+<p>右键这个 Pods-DataTrack-Debug.debug 文件，选择 Show in finder，可以看到，它就是我们要的 .xcconfig 文件，我们将它的地址填入到刚才的路径里就可以了。</p>
+<img src="/image/xcode-lldb02.png">
+
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修复 xcode 执行 po 命令失效问题</span></span><br><span class="line">post_integrate <span class="keyword">do</span> |<span class="params">installer</span>|</span><br><span class="line">  <span class="comment"># 注意在项目里面找到对应文件的正确路径,如果这个文件路径经有问题,pod install会报错</span></span><br><span class="line">  xcconfig_path = installer.sandbox.target_support_files_root.to_s + <span class="string">&#x27;/Pods-DataTrack-Debug/Pods-DataTrack-Debug.debug.xcconfig&#x27;</span></span><br><span class="line">  </span><br><span class="line">  xcconfig_content = <span class="title class_">File</span>.read xcconfig_path</span><br><span class="line">  xcconfig_original_ld_flags = xcconfig_content.match(<span class="regexp">/OTHER_LDFLAGS = ([^\n]+)\n/</span>)[<span class="number">1</span>]</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 需要添加 swiftmodule 路径的模块列表</span></span><br><span class="line">  modules = <span class="string">%w[</span></span><br><span class="line"><span class="string">    YCPlatformManagers</span></span><br><span class="line"><span class="string">    YCPlatformVideo</span></span><br><span class="line"><span class="string">    YCPlatformVideoBusiness</span></span><br><span class="line"><span class="string">    YCPlatformVideoPlugins</span></span><br><span class="line"><span class="string">    YCPlatformDataTrack</span></span><br><span class="line"><span class="string">    YCPlatformDataShared</span></span><br><span class="line"><span class="string">    YCPlatformPreferenceManager</span></span><br><span class="line"><span class="string">    YCPlatformDownload</span></span><br><span class="line"><span class="string">    YCPlatformDownloadCache</span></span><br><span class="line"><span class="string">    YCPlatformPush</span></span><br><span class="line"><span class="string">    YCPlatformNetwork</span></span><br><span class="line"><span class="string">    YCPlatformIAPManager</span></span><br><span class="line"><span class="string">    YCPlatformTools</span></span><br><span class="line"><span class="string">    YCPlatformShare</span></span><br><span class="line"><span class="string">    YCPlatformBusinessInterfaces</span></span><br><span class="line"><span class="string">    YCPlatformLog</span></span><br><span class="line"><span class="string">    YCPlatformLogPlugin</span></span><br><span class="line"><span class="string">    YCPlatformVersionCheck</span></span><br><span class="line"><span class="string">    YCPlatformLogin</span></span><br><span class="line"><span class="string">    YCPlatformDiagnosis</span></span><br><span class="line"><span class="string">    YCPlatformRouter</span></span><br><span class="line"><span class="string">    YCPlatformScreen</span></span><br><span class="line"><span class="string">    YCPlatformBrowser</span></span><br><span class="line"><span class="string">    YCPlatformUIKits</span></span><br><span class="line"><span class="string">    YCPlatformBusinessRouter</span></span><br><span class="line"><span class="string">    YCPlatformStatistics</span></span><br><span class="line"><span class="string">  ]</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 构建新的 OTHER_LDFLAGS</span></span><br><span class="line">  module_flags = modules.map <span class="keyword">do</span> |<span class="params">module_name</span>|</span><br><span class="line">    <span class="string">&quot;-Wl,-add_ast_path,$(TARGET_BUILD_DIR)/<span class="subst">#&#123;module_name&#125;</span>/<span class="subst">#&#123;module_name&#125;</span>.framework/Modules/<span class="subst">#&#123;module_name&#125;</span>.swiftmodule/$(NATIVE_ARCH_ACTUAL)-apple-$(SHALLOW_BUNDLE_TRIPLE).swiftmodule&quot;</span></span><br><span class="line">  <span class="keyword">end</span>.join(<span class="string">&quot; \\\n    &quot;</span>)</span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 更新 xcconfig 文件</span></span><br><span class="line">  new_content = <span class="string">&lt;&lt;~CONTENT</span></span><br><span class="line"><span class="string">  # Xcode 13.3+</span></span><br><span class="line"><span class="string">  # 添加所有需要 debug 的 Swift 模块路径</span></span><br><span class="line"><span class="string">  OTHER_LDFLAGS = <span class="subst">#&#123;xcconfig_original_ld_flags&#125;</span> \\</span></span><br><span class="line"><span class="string">    <span class="subst">#&#123;module_flags&#125;</span></span></span><br><span class="line"><span class="string">  CONTENT</span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  xcconfig_content.gsub!(<span class="regexp">/OTHER_LDFLAGS = ([^\n]+)(\n|$)/</span>, new_content)</span><br><span class="line">  <span class="title class_">File</span>.write(xcconfig_path, xcconfig_content)</span><br><span class="line">  </span><br><span class="line">  puts <span class="string">&quot;\e[38;5;141mRunning post_integrate for DataTrack-Debug target\e[0m&quot;</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>执行 pod install，当出现紫色的提示表示执行成功，如果弹出 xcode 弹窗，选择高亮选项即可</p>
+<img src="/image/xcode-lldb03.png">
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/DSL-Native/" title="DSL Native+ 动态化方案设计">DSL Native+ 动态化方案设计</a></h2>
+                <p class="excerpt">
+                
+                
+
+为什么要有动态化？
+应“变”：随着互联网红利的消失，整个移动市场的关注从“流量”转成了“留量”，大部分的移动产品也都告别了初期的抢占市场，对某个业务领域的精细化打磨、避免 App 发布漫长的周期，在出现问题时还能即时对线上进行中止血，成为了所有业务的基本诉求。
+提“效”：动态化往往和跨端化一桌而
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-02-01T05:01:25.000Z" class="post-list__meta--date date">2022-02-01</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/DSL/" rel="tag">DSL</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" rel="tag">动态化</a>
+</span><a class="btn-border-small" href="/DSL-Native/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-xcode-lldb-error/';
+  var disqus_title = 'Xcode lldb控制台打印 po 命令失效问题解决记录';
+  var disqus_url = 'http://shevakuilin.com/ios-xcode-lldb-error/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
