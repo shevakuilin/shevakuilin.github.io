@@ -164,13 +164,13 @@
 <p>具体效果见实际 Demo</p>
 </blockquote>
 <h3 id="演示流程"><a href="#演示流程" class="headerlink" title="演示流程"></a>演示流程</h3><h4 id="流程1-C-端用户进入备考"><a href="#流程1-C-端用户进入备考" class="headerlink" title="流程1: C 端用户进入备考"></a>流程1: C 端用户进入备考</h4><p>单元测试 APP 启动 -&gt; (首次)中间件调度 C 端用户登录组件进行登录 -&gt; 登录组件完成，通过中间件调度用户数据组件进行 C 端用户数据缓存 -&gt;进入单元测试 APP 首页 -&gt; 点击首页备考入口，通过中间件调度用户数据组件读取已缓存的 C 端用户数据  -&gt; 通过中间件调度备考业务组件</p>
-<img src="ios-moudle-02-uml01">
+<img src="/image/ios-moudle-02-uml01">
 
 <h4 id="流程2-B-端用户进入备考"><a href="#流程2-B-端用户进入备考" class="headerlink" title="流程2: B 端用户进入备考"></a>流程2: B 端用户进入备考</h4><p>单元测试 APP 启动 -&gt; (首次)中间件调度 B 端用户登录组件进行登录 -&gt; 登录组件完成，通过中间件调度用户数据组件进行 B 端用户数据缓存 -&gt;进入单元测试 APP 首页 -&gt; 点击首页备考入口，通过中间件调度用户数据组件读取已缓存的 B 端用户数据  -&gt; 通过中间件调度备考业务组件</p>
-<img src="ios-moudle-02-uml02">
+<img src="/image/ios-moudle-02-uml02">
 
 <h4 id="流程3-C-端用户进入抖葱"><a href="#流程3-C-端用户进入抖葱" class="headerlink" title="流程3: C 端用户进入抖葱"></a>流程3: C 端用户进入抖葱</h4><p>单元测试 APP 启动 -&gt; (首次)中间件调度 C 端用户登录组件进行登录 -&gt; 登录组件完成，通过中间件调度用户数据组件进行 C 端用户数据缓存 -&gt;进入单元测试 APP 首页 -&gt; 点击首页备考入口，通过中间件调度用户数据组件读取已缓存的 C 端用户数据  -&gt; 通过中间件调度抖葱业务组件</p>
-<img src="ios-moudle-02-uml03">
+<img src="/image/ios-moudle-02-uml03">
 
 <h2 id="中间件设计"><a href="#中间件设计" class="headerlink" title="中间件设计"></a>中间件设计</h2><h3 id="YCMediator"><a href="#YCMediator" class="headerlink" title="YCMediator"></a>YCMediator</h3><blockquote>
 <p>基于<strong>维护成本</strong> 、<strong>解耦力度</strong> 、<strong>扩展性</strong> 及<strong>现有工程侵入性</strong> 的综合评估，决定采取 <strong>Runtime</strong> 方案实现中间件，并在业内知名中间件 CTMediator 基础上进行强化改造，后续自行维护</p>
@@ -309,7 +309,7 @@
 <li>备考组件</li>
 <li>抖葱组件</li>
 </ul>
-<h2 id="完整架构设计"><a href="#完整架构设计" class="headerlink" title="完整架构设计"></a>完整架构设计</h2><img src="ios-moudle-02-uml04">
+<h2 id="完整架构设计"><a href="#完整架构设计" class="headerlink" title="完整架构设计"></a>完整架构设计</h2><img src="/image/ios-moudle-02-uml04">
 
 <h2 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h2><p>只需要在 Jenkins 上维护一个单元测试工程即可，用企业包维护测试环境和线上后门环境即可，通过 branch 来区分具体的测试单元。</p>
 <h3 id="单元测试工程"><a href="#单元测试工程" class="headerlink" title="单元测试工程"></a>单元测试工程</h3><ul>
