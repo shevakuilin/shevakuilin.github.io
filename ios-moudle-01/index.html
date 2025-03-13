@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>洋葱学园 iOS 端组件化重构之路[一]-现状梳理 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="洋葱学园 iOS 端组件化重构之路[一]-现状梳理 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="洋葱学园 iOS 端组件化重构之路[一]-现状梳理 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-moudle-01/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2022-10-23T07:14:52.000Z" class="post-list__meta--date date">2022-10-23</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>, <a class="-none-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">洋葱学园 iOS 端组件化重构之路[一]-现状梳理</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/ios-moudle-01.png">
+
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>当前，洋葱学园 iOS 端工程的组件化水平过低，在影响工程师开发效率的同时，又难以兜住持续集成的影响范围，不利于整体工程的高质量建设，已无法满足日益增长的工程预期与精细化控制的需求。</p>
+<p><strong>现存问题如下</strong></p>
+<ul>
+<li><strong>缺乏组件必要的独立运作能力</strong></li>
+<li><strong>缺乏统一中间件进行调度</strong></li>
+<li><strong>无法进行单元测试，回归测试成本高</strong></li>
+<li><strong>组件间依赖链紊乱，维护成本高</strong></li>
+<li><strong>组件化颗粒度过粗，服务下沉不达标，多端引用成本高</strong></li>
+</ul>
+<h2 id="目标收益"><a href="#目标收益" class="headerlink" title="目标收益"></a>目标收益</h2><p>我们期望组件化重构完成后，<strong>达成以下目标</strong></p>
+<ul>
+<li><strong>减少开发构建时间和测试回归成本，工程各业务组件</strong><ul>
+<li>可独立运行</li>
+<li>可独立迭代</li>
+<li>可独立测试</li>
+</ul>
+</li>
+<li><strong>减小维护成本，构建统一中间件，由中间件管理组件之间清晰的依赖关系</strong></li>
+<li><strong>完成基础服务下沉，各业务组件可横向依赖，重构完善现有组件库其中包括</strong><ul>
+<li>中台</li>
+<li>中学业务线</li>
+<li>教师&#x2F;入校业务线</li>
+</ul>
+</li>
+</ul>
+<h2 id="工程现状"><a href="#工程现状" class="headerlink" title="工程现状"></a>工程现状</h2><h3 id="CocoaPods-私有库依赖链"><a href="#CocoaPods-私有库依赖链" class="headerlink" title="CocoaPods 私有库依赖链"></a>CocoaPods 私有库依赖链</h3><blockquote>
+<p>下列所有数据均已脱敏</p>
+</blockquote>
+<h4 id="中台"><a href="#中台" class="headerlink" title="中台"></a>中台</h4><img src="/image/ios-moudle01.png">
+
+<h4 id="中学业务线"><a href="#中学业务线" class="headerlink" title="中学业务线"></a>中学业务线</h4><img src="/image/ios-moudle02.png">
+
+<h4 id="教师-x2F-入校业务线"><a href="#教师-x2F-入校业务线" class="headerlink" title="教师&#x2F;入校业务线"></a>教师&#x2F;入校业务线</h4><img src="/image/ios-moudle03.png">
+
+<h2 id="行业现状"><a href="#行业现状" class="headerlink" title="行业现状"></a>行业现状</h2><h3 id="业内主流组件化方案"><a href="#业内主流组件化方案" class="headerlink" title="业内主流组件化方案"></a>业内主流组件化方案</h3><h4 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h4><blockquote>
+<p>基于路由URL的UI页面统跳管理</p>
+</blockquote>
+<p>一般用法</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// kRouteGoodsDetail = @&quot;/goods/goods_detail&quot;</span></span><br><span class="line"><span class="built_in">UIViewController</span> * vc = [Router handleURL:kRouteGoodsDetail];</span><br><span class="line"><span class="keyword">if</span> (vc) [<span class="keyword">self</span>.navigationController pushViewController:vc animated:<span class="literal">YES</span>];</span><br></pre></td></tr></table></figure>
+
+<p>传参的情况</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//kRouteGoodsDetails = @“//goods/goods_detail?goods_id=%d”</span></span><br><span class="line"><span class="built_in">NSString</span> *urlStr = [<span class="built_in">NSString</span> stringWithFormat:kRouteGoodsDetails, <span class="number">123</span>];  </span><br><span class="line"><span class="built_in">UIViewController</span> *vc = [Router handleURL:urlStr];  </span><br><span class="line"><span class="keyword">if</span>(vc) &#123;  </span><br><span class="line">   [<span class="keyword">self</span>.navigationController pushViewController:vc animated:<span class="literal">YES</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复杂的参数类型</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="keyword">nullable</span> <span class="type">id</span>)handleURL:(<span class="keyword">nonnull</span> <span class="built_in">NSString</span> *)urlStr</span><br><span class="line">           complexParams:(<span class="keyword">nullable</span> <span class="built_in">NSDictionary</span>*)complexParams</span><br><span class="line">              completion:(<span class="keyword">nullable</span> RouteCompletion)completion;</span><br></pre></td></tr></table></figure>
+
+<p>从接口上可以看出来，通过<code>@&quot;/goods/goods_detail&quot;</code>字符串，我们可以拿到需要交互的模块，来进行操作。在需要路由服务的页面，通过<code>bindURL</code>的形式，完成<code>字符串</code>与<code>路由</code>的绑定。</p>
+<p>其基本流程是：</p>
+<ul>
+<li>App启动时实例化各组件模块，然后这些组件向ModuleManager注册Url，有些时候不需要实例化，使用class注册。</li>
+<li>当组件A需要调用组件B时，向ModuleManager传递URL，参数跟随URL以GET方式传递，类似openURL。然后由ModuleManager负责调度组件B，最后完成任务。</li>
+</ul>
+<p>该方案的缺陷如下：</p>
+<ul>
+<li>URL注册对于实施组件化方案是完全不必要的，且通过URL注册的方式形成的组件化方案，拓展性和可维护性都会被打折。因为在组件化的过程中，注册URL并不是充分必要条件，组件是不需要向组件管理器注册Url的。而且<strong>注册</strong>了 Url之后，<strong>会造成不必要的内存常驻</strong> ，如果只是注册Class，内存常驻量就小一点，如果是注册实例，内存常驻量就大了。而且对路由表的维护也是个不必要成本，还会增加工程师维护时的负担。</li>
+<li>路由的绑定放到<code>load</code>方法中，会对项目的冷启动有一定的影响</li>
+<li>对业务代码存在侵入性</li>
+</ul>
+<h4 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h4><blockquote>
+<p>基于面向协议 （POP）思想的服务注册方案</p>
+</blockquote>
+<p>每个模块提供自己的服务协议，然后将此协议声明注册到中间层。调用方能从中间层看到有哪些服务的接口，然后直接调用即可。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在中间件中完成协议的声明，方便所有模块调用和查阅@protocol GoodsModuleService</span></span><br><span class="line">- (<span class="built_in">NSArray</span>*)getGoodsList;</span><br><span class="line">- (<span class="built_in">NSInteger</span>)getGoodsCount;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">@end</span><span class="comment">// 在模块的load方法中，注册协议。并且让该模块实现协议中的方法@interface GoodsModule : NSObject&lt;GoodsModuleService&gt;@end@implementation GoodsModule </span></span><br><span class="line">+ (<span class="type">void</span>)load &#123;</span><br><span class="line">    [ServiceManager registerService:<span class="class"><span class="keyword">@protocol</span>(<span class="title">GoodsModuleService</span>) <span class="title">withModule</span>:<span class="title">self</span>.<span class="title">class</span>]</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//提供具体实现</span></span><br><span class="line">- (<span class="built_in">NSArray</span>*)getGoodsList &#123;...&#125;</span><br><span class="line">- (<span class="built_in">NSInteger</span>)getGoodsCount &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在其他模块中调用id&lt;GoodsModuleService&gt; goodsModule = [ServiceManager objByService:@protocol(GoodsModuleService)];NSArray *list = [goodsModule getGoodsList];</span></span><br></pre></td></tr></table></figure>
+
+<p>面向协议编程，看起来是比较酷的，而且也不需要写反射代码。</p>
+<p>该方案缺陷如下：</p>
+<ul>
+<li>把协议的内容放到公共的地方，一旦发生改变，意味着用到协议的地方都要改一遍</li>
+<li><code>load</code>方法中进行协议绑定，还是会有老毛病存在</li>
+<li>对业务代码存在侵入性</li>
+</ul>
+<h4 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h4><blockquote>
+<p>基于 Objective-C Runtime 反射的接口调用封装</p>
+</blockquote>
+<p>大家知道 OC 是支持反射的，Swift 拥有独立的 Runtime 所以也是可以的，比如:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class className = <span class="built_in">NSClassFromString</span>(<span class="string">@&quot;Person&quot;</span>);</span><br><span class="line">SEL sel = <span class="built_in">NSSelectorFromString</span>(<span class="string">@&quot;getPersonName:&quot;</span>);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>然后可以通过<code>- (id)performSelector:(SEL)aSelector</code>来完成消息的发送。</p>
+<p>但是这种方式会存在大量的硬编码，也无法触发编译器的自动补全，同时，只有在运行时才可以发现一些未知的错误。除此之外，无法实现多参数传值和方法返回值的获取的问题。所以这里选择<code>NSInvocation</code>更合适。</p>
+<p>这里的一个思路是业界比较知名的 CTMediator，它是基于<code>Mediator</code>模式和<code>Target-Action</code>模式来完成的 。</p>
+<p>先说调用方法：（住：本次只讨论本地模块之间的调用，不考虑远程调用）</p>
+<ol>
+<li>本地组件A在某处调用<code>[[CTMediator sharedInstance] performTarget:targetName action:actionName params:@&#123;...&#125;]</code>向<code>CTMediator</code>发起跨组件调用</li>
+<li><code>CTMediator</code>根据获得的<code>target和action信息</code>，通过 <code>oc/swift</code> 的<code>runtime</code>转化生成<code>target</code>实例以及对应的<code>action</code>选择项</li>
+<li>然后最终调用到目标业务提供的逻辑，完成需求。</li>
+</ol>
+<p>组件仅需要通过<code>Action</code>暴露可调用的接口即可。所有组件都通过组件自带的<code>Target-Action</code>来响应，也就是说，模块与模块之间的接口被固化在了<code>Target-Action</code>这一层，<strong>避免了实施组件化的改造过程中，对</strong>**<code>Business</code>**<strong>的侵入</strong> ，同时也提高了组件化接口的可维护性。</p>
+<p>最后，调用者通过响应者给 <code>CTMediator</code> 做的 <code>category</code> 或者 <code>extension</code> 来发起调用，来避免使用字符串调用出现的不友好。</p>
+<p>代码大家可以看下，可以说非常简洁了。考虑的也非常全面。</p>
+<p>简化下代码如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Mediator提供基于NSInvocation的接口调用方法的统一入口</span></span><br><span class="line">- (<span class="type">id</span>)performTarget:(<span class="built_in">NSString</span> *)targetName action:(<span class="built_in">NSString</span> *)actionName params:(<span class="built_in">NSDictionary</span> *)params;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 业务模块对外提供的方法封装到Category中@interface CTMediator (Goods)</span></span><br><span class="line">- (<span class="built_in">NSArray</span> *)goods_getGoodsList;</span><br><span class="line">- (<span class="type">void</span>)goods_gotoGoodsDetail:(<span class="built_in">NSString</span> *)<span class="type">id</span>;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line">@impletation <span class="built_in">CTMediator</span>(Goods)</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSArray</span> *)goods_getGoodsList&#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> performTarget:@“Target_Goods” action:<span class="string">@&quot;getGoodsList&quot;</span> params:<span class="literal">nil</span>];</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="type">void</span> *)goods_gotoGoodsDetail:(<span class="built_in">NSString</span> *)<span class="type">id</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> performTarget:@“Target_Goods” action:<span class="string">@&quot;gotoGoodsDetail&quot;</span> params:&#123;<span class="string">@&quot;id&quot;</span>:<span class="type">id</span>&#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Target_Goods</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSArray</span> *)getGoodsList;</span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)gotoGoodsDetail:(<span class="built_in">NSString</span> *)<span class="type">id</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="广播通知"><a href="#广播通知" class="headerlink" title="广播通知"></a>广播通知</h4><blockquote>
+<p>基于通知的广播方案</p>
+</blockquote>
+<p>基于通知的模块间通讯的方案，实现起来是最简单的，直接基于系统提供的<code>NSNotificationCenter</code>即可。适合一对多的通讯场景。但是劣势也特别明显。复杂的数据传输，同步调用等方式都不太方便。通常用来作为以上几种方案的补充。</p>
+<h3 id="我们怎么做"><a href="#我们怎么做" class="headerlink" title="我们怎么做"></a>我们怎么做</h3><ol>
+<li>梳理职能范围，确定基础库和业务库</li>
+<li>进行改造抽离，确保职责单一高内聚，保持单向链路依赖<ol>
+<li>重构基本原则：<ol>
+<li>基础服务全部下沉至中台（如网络、AMP、日志）</li>
+<li>通用服务交由中台维护向下依赖基础服务（如支付、视频播放器、分享、跳转路由等），跨端复用组件必须下沉至中台通用服务层来维护</li>
+<li>抽离真正可复用的基础业务组件独立成库（如可复用的模板UI、客服等），其余独立业务组件糅合进各业务模块（如各端独立的登录注册体系），所有业务组件统一上提至各业务线维护，不再相互糅合</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>基础服务下沉，横向业务依赖</li>
+<li>配套工具开发，统一库的迭代流程和方式（H5 发版工具等）</li>
+<li>Rust 编写双端统一的协议中间件，利用 ffi 抛出给 Kotlin&#x2F;Java 和 Swift&#x2F;Objective-C 使用，统一移动端端中间件</li>
+</ol>
+<h4 id="基础架构"><a href="#基础架构" class="headerlink" title="基础架构"></a>基础架构</h4><img src="/image/ios-moudle04.png">
+
+<h4 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h4><ul>
+<li>中间件的方案，产出完整调度能力的中间件Demo，包含下沉依赖关系演示</li>
+<li>列出现有功能的基于中间件改造成本</li>
+<li>如何梳理职能范围，拆分力度如何确认（依赖链是否保持单一）</li>
+<li>与 Android 对齐方向和内容，架构思路，<strong>双端都需要保证基于组件的独立运行单元测试、运行、迭代</strong></li>
+<li>Jenkins 基于独立工程改造（能设置指定工程路径）<code>以分支切换的形式</code></li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-short-video-fast/" title="iOS 短视频播放列表优化策略">iOS 短视频播放列表优化策略</a></h2>
+                <p class="excerpt">
+                
+                基于洋葱学院短视频播放器进行优化改造，以下是优化策略图
+三播放器加载策略
+
+
+业务流程优化
+
+
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-12-18T07:04:22.000Z" class="post-list__meta--date date">2023-12-18</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E4%BC%98%E5%8C%96/" rel="tag">优化</a>, <a class="-none-link" href="/tags/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8/" rel="tag">视频播放器</a>
+</span><a class="btn-border-small" href="/ios-short-video-fast/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-macCatalyst/" title="iOS &amp; macCatalyst 混编应用实践">iOS &amp; macCatalyst 混编应用实践</a></h2>
+                <p class="excerpt">
+                
+                
+
+背景需求开发一款通用的 macAPP 来辅助 DSL 项目的快速调试，要求拥有与移动端完全相同的渲染效果，所以需要从 iOS 端移植 DSL 渲染引擎的代码到 macOS 系统上运行
+项目搭建搭建的总体流程与创建一个 iOS 别无二致，需要选择 macCatalyst 模式运行（M1设备选择Ro
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-02-22T11:58:28.000Z" class="post-list__meta--date date">2022-02-22</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/macCatalyst/" rel="tag">macCatalyst</a>, <a class="-none-link" href="/tags/macOS/" rel="tag">macOS</a>
+</span><a class="btn-border-small" href="/ios-macCatalyst/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-moudle-01/';
+  var disqus_title = '洋葱学园 iOS 端组件化重构之路[一]-现状梳理';
+  var disqus_url = 'http://shevakuilin.com/ios-moudle-01/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
