@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>洋葱学园 iOS 端组件化重构之路[三]-重构完成 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="洋葱学园 iOS 端组件化重构之路[三]-重构完成 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="洋葱学园 iOS 端组件化重构之路[三]-重构完成 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-moudle-end/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2023-09-05T08:45:13.000Z" class="post-list__meta--date date">2023-09-05</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>, <a class="-none-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">洋葱学园 iOS 端组件化重构之路[三]-重构完成</h1>
+  </header>
+
+  <section class="post">
+    <img src="/image/ios-moudle-end01.png">
+
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>当前，洋葱学园移动端工程的组件化完成度较低，在影响工程师开发效率的同时，又难以兜住持续集成的影响范围，不利于整体工程的高质量建设，已无法满足日益增长的工程预期与精细化控制的需求，更是掣肘了对公司业务快速扩展的响应速度。</p>
+<h4 id="当前问题"><a href="#当前问题" class="headerlink" title="当前问题"></a>当前问题</h4><h5 id="业务侧影响"><a href="#业务侧影响" class="headerlink" title="业务侧影响"></a>业务侧影响</h5><ul>
+<li>业务组件独立度的低，难以快速部署到其他业务线，<strong>影响交付周期</strong> 。</li>
+<li>为兼容业务特性所残留的冗余代码等问题，造成了组件在不同业务上的表现分歧，增加了 PM 等产品同学的梳理和理解成本，从而<strong>影响产品的在迭代过程中的表现统一性</strong> 。</li>
+</ul>
+<h5 id="技术侧影响"><a href="#技术侧影响" class="headerlink" title="技术侧影响"></a>技术侧影响</h5><p>以 iOS 端为例，现存主要问题如下：</p>
+<ul>
+<li><strong>缺乏组件必要的独立运作能力</strong>，难以快速部署到其他业务场景。</li>
+<li><strong>缺乏统一中间件进行调度</strong>，组件间必须进行强依赖才可以使用，这也是难以进行快速部署的痛点之一。</li>
+<li>由于以上两点，导致<strong>无法进行单元测试，回归测试成本居高不下。</strong></li>
+<li>现存组件间依赖链紊乱，<strong>维护成本高。</strong></li>
+<li>组件化颗粒度过粗，服务下沉不达标，<strong>多端引用成本高。</strong></li>
+</ul>
+<h2 id="项目目标"><a href="#项目目标" class="headerlink" title="项目目标"></a>项目目标</h2><p>我们期望组件化重构完成后，达成以下目标</p>
+<ul>
+<li>解决实现<strong>单元集成</strong>的各项阻碍<ul>
+<li>工程各业务组件可<strong>独立运行</strong></li>
+<li>工程各业务组件可<strong>独立迭代</strong></li>
+<li>工程各业务组件可<strong>独立测试</strong></li>
+</ul>
+</li>
+<li>各业务组件通过中间件调度解除横向依赖，达成横向业务完全脱钩解耦，纵向依赖垂直下沉<ul>
+<li>完成<strong>垂直依赖</strong>下沉</li>
+<li><strong>构建统一中间件</strong>，补充组件化缺失的关键调度环节</li>
+</ul>
+</li>
+<li>主工程壳化</li>
+</ul>
+<h2 id="产出-x2F-收益"><a href="#产出-x2F-收益" class="headerlink" title="产出 &#x2F; 收益"></a>产出 &#x2F; 收益</h2><blockquote>
+<p>项目预期收益已全部达成 🎊</p>
+</blockquote>
+<ul>
+<li>迭代周期内的工程平均 <strong>构建编译时间预期减少 80%</strong> 以上。 ✅ 已达成</li>
+<li>组件之间的<strong>横向依赖完全解耦</strong>，纵向依赖垂直下沉，<strong>依赖链维护复杂度由 (2^n) 降为 O(1)。 ✅</strong> <strong>已达成</strong></li>
+<li>各组件<strong>支持独立测试，100% 阻绝</strong>非迭代代码的测试边界干扰，<strong>降低测试成本</strong>，<strong>保证非迭代代码的稳定性。✅</strong> <strong>已达成</strong></li>
+<li>各组件<strong>支持单元集成</strong>，能够显著提高业务的<strong>快速部署</strong>和<strong>响应速度</strong>，预期 <strong>Jenkins 打包速度提升 50 %<strong>，提升</strong>测试效能。✅</strong> <strong>已达成</strong></li>
+<li>各组件<strong>支持独立迭代</strong>，能够完成独立的<strong>版本追踪</strong>，进行更详细的<strong>质量监控</strong>，以及为各业务线提供<strong>差异化配置</strong>。✅ 已达成</li>
+<li><strong>壳工程基建完成，</strong>业务代码将在组件下沉过程中被完全解耦。✅ 已达成</li>
+</ul>
+<h3 id="升级后的架构"><a href="#升级后的架构" class="headerlink" title="升级后的架构"></a>升级后的架构</h3><h4 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h4><p>架构图</p>
+<img src="/image/ios-moudle-end02.png">
+
+<h4 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h4><img src="/image/ios-moudle-end03.png">
+
+<h3 id="NewFlow"><a href="#NewFlow" class="headerlink" title="NewFlow"></a>NewFlow</h3><blockquote>
+<p>经过升级的工程架构，双端（iOS &amp; Android）都需要一套全新的架构规范，从而衍生出一套新的工作流来使团队工程师适应和学习过渡</p>
+</blockquote>
+<h4 id="iOS-1"><a href="#iOS-1" class="headerlink" title="iOS"></a>iOS</h4><h5 id="构建全新-Pod-库流程"><a href="#构建全新-Pod-库流程" class="headerlink" title="构建全新 Pod 库流程"></a>构建全新 Pod 库流程</h5><p>构建流程图</p>
+<img src="/image/ios-moudle-end04.png">
+
+<p><strong>如上图所示，经过架构升级后的 iOS 端构建新 Pod 库时的工作流如下：</strong></p>
+<h5 id="开发-Flow"><a href="#开发-Flow" class="headerlink" title="开发 Flow"></a>开发 Flow</h5><ol>
+<li>从单元测试工程 <strong>Unit-Test</strong> 远程仓库 <strong>main</strong> 分支 check 出基于开发的<strong>新分支</strong>（以下简称 new branch） </li>
+<li>将 new branch 拉到本地，<strong>编写 podfile</strong>，处理基本定制化环境配置（非必要）</li>
+<li>将 <strong>新库</strong> 及 <strong>对应库配套的 YCMediator 分类库</strong> 通过 <code>pod install</code> 命令载入到单元测试工程</li>
+<li>进行库<strong>开发</strong></li>
+<li>开发、测试完毕后，分别 <strong>push</strong> 到各自库的远程仓库中</li>
+<li>在发版&#x2F;部署平台升级 <strong>pod 库版本号</strong>并进行<strong>部署</strong></li>
+<li><strong>修改主工程 podfile 文件</strong>，执行 <code>pod install</code> 命令，部署至主工程</li>
+<li><strong>主工程测试回归完毕</strong>后，<strong>改动库</strong>合入其 <code>master</code> 分支（新构建的库无需此环节）</li>
+</ol>
+<h5 id="测试-Flow"><a href="#测试-Flow" class="headerlink" title="测试 Flow"></a>测试 Flow</h5><ol>
+<li>基于 UnitTest-iOS Job 进行打包测试，测试环境（平时开发测试均使用该环境）使用 <strong>Test</strong> Job，线上环境（仅对线上问题做单元回归排查使用，不做测试用）使用 <strong>Online</strong> Job。</li>
+<li>打包完成后，可根据单元测试工程 App 内置的环境监测<strong>对测试内容进行校验</strong>，<strong>确认无误</strong>后进行测试（防止环境污染）。</li>
+<li><strong>单元测试完毕后，功能即可算测试验收通过</strong>，开发合入主工程后，进行一次<strong>主工程回归测试</strong>即可。</li>
+<li>单元测试期间，所有代码被限制在测试范围内，仅针对<strong>单元工程中存在的测试内容项</strong>进行测试，<strong>禁止</strong>提出与该次单元测试内容无关 bug 或要求问题排查（严重影响测试和开发效率）。</li>
+</ol>
+<h4 id="Android-1"><a href="#Android-1" class="headerlink" title="Android"></a>Android</h4><p>构建流程图</p>
+<img src="/image/ios-moudle-end05.png">
+
+<h5 id="开发-Flow-1"><a href="#开发-Flow-1" class="headerlink" title="开发 Flow"></a>开发 Flow</h5><ol>
+<li>找到对应需要开发的库，拉取最新代码，创建到新分支进行需求开发。</li>
+<li>在单元测试工程中从Main分支切换新分支，引入开发的snapshot库，增加测试所需要的环境。</li>
+<li>在测试工程中打包提交给测试。</li>
+<li>测试过程有问题，重复1,2步操作，直到没有新bug出现。</li>
+<li>开发、测试完毕后，在主工程内，将改动的库升级到最新版本，提供回归测试</li>
+<li>回归测试完成之后，在发版前，所有库打正式版本且合入主分支。</li>
+</ol>
+<h5 id="测试-Flow-1"><a href="#测试-Flow-1" class="headerlink" title="测试 Flow"></a>测试 Flow</h5><ol>
+<li>在测试工程中，选择对应环境，名称及版本，进行打包。</li>
+<li>测试过程中有问题，提交给开发，重复第1步。</li>
+<li>单元功能测试通过后，等待开发合入主工程后，进行一次<strong>主工程回归测试</strong>。</li>
+<li>单元测试期间，所有代码被限制在测试范围内，仅针对<strong>单元工程中存在的测试内容项</strong>进行测试，<strong>禁止</strong>提出与该次单元测试内容无关 bug 或要求问题排查（严重影响测试和开发效率）。</li>
+</ol>
+<h2 id="性能指标"><a href="#性能指标" class="headerlink" title="性能指标"></a>性能指标</h2><h3 id="iOS-2"><a href="#iOS-2" class="headerlink" title="iOS"></a>iOS</h3><img src="/image/ios-moudle-end06.png">
+
+<ul>
+<li>全量编译时间缩短 <strong>64.92%<strong>，</strong>开发效率提升 2.35 倍</strong></li>
+<li>增量编译时间缩短 **80.02%**，开发效率提升 <strong>5</strong> 倍</li>
+<li>应用冷启动时间缩短 **99.87%**，开发效率提升 <strong>814.7</strong> 倍</li>
+<li>业务目标落地页触达时间缩短 **45.01%**，测试效率提升 <strong>1.82</strong> 倍</li>
+</ul>
+<img src="/image/ios-moudle-end07.png">
+
+<ul>
+<li>Jenkins 打包耗时缩短 <strong>58.84%<strong>，</strong>测试效率提升 2.43 倍</strong></li>
+</ul>
+<h3 id="Android-2"><a href="#Android-2" class="headerlink" title="Android"></a>Android</h3><img src="/image/ios-moudle-end08.png">
+
+<ul>
+<li>全量编译时间缩短 <strong>65.77%<strong>，</strong>开发效率提升 2.92 倍</strong></li>
+<li>增量编译时间缩短 **88.86%**，开发效率提升 <strong>8.98</strong> 倍</li>
+<li>应用冷启动时间缩短 **58.17%**，开发效率提升 <strong>2.39</strong> 倍</li>
+<li>业务目标落地页触达时间缩短 **62.77%**，测试效率提升 <strong>2.69</strong> 倍</li>
+</ul>
+<img src="/image/ios-moudle-end09.png">
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>关键词：<strong>显著提效</strong>、<strong>质量稳定</strong>、<strong>成果突出</strong></p>
+</blockquote>
+<ul>
+<li>移动端工程架构进行了一次彻底的升级，解决了长久以来困扰研发工程师的依赖链问题。</li>
+<li>极大的提升了开发效率，使单位开发时间得以成倍缩短。</li>
+<li>稳固了测试边界，保障了测试的安全性和稳定性，同样对测试的单位时间内效率提升十分显著。</li>
+<li>移动端借此契机解决了诸多历史遗留工程性问题，并突破性的解决了一系列工程性的老大难问题。</li>
+<li>本次架构升级各项性能数据指标超额完成，非常优异。</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-short-video-fast/" title="iOS 短视频播放列表优化策略">iOS 短视频播放列表优化策略</a></h2>
+                <p class="excerpt">
+                
+                基于洋葱学院短视频播放器进行优化改造，以下是优化策略图
+三播放器加载策略
+
+业务流程优化
+
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-12-18T07:04:22.000Z" class="post-list__meta--date date">2023-12-18</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E4%BC%98%E5%8C%96/" rel="tag">优化</a>, <a class="-none-link" href="/tags/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8/" rel="tag">视频播放器</a>
+</span><a class="btn-border-small" href="/ios-short-video-fast/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-moudle-02/" title="洋葱学园 iOS 端组件化重构之路[二]-实施方案">洋葱学园 iOS 端组件化重构之路[二]-实施方案</a></h2>
+                <p class="excerpt">
+                
+                
+
+背景基于洋葱学园 iOS 端组件化重构之路[一]-现状梳理 得出的结论与方案，需要验证方案的可行性及实施成本，设计完整架构图和演示工程，包括后续持续集成的改造思路等。
+实施目标
+中间件的方案，产出完整调度能力的中间件Demo，包含下沉依赖关系演示
+列出现有功能的基于中间件改造成本
+如何梳理职能范
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-11-01T02:41:50.000Z" class="post-list__meta--date date">2022-11-01</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>, <a class="-none-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a>
+</span><a class="btn-border-small" href="/ios-moudle-02/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-moudle-end/';
+  var disqus_title = '洋葱学园 iOS 端组件化重构之路[三]-重构完成';
+  var disqus_url = 'http://shevakuilin.com/ios-moudle-end/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
