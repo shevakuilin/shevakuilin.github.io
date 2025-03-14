@@ -475,20 +475,46 @@
 <img src ="/image/client-ai-02-22.png">
 
 <p>以矩阵展示的注意力权重表现了<strong>网络如何根据上下文调整其关注点</strong>。</p>
-<img src ="/image/client-ai-02-23.png">
-
+<table>
+<thead>
+<tr>
+<th></th>
+<th>I</th>
+<th>love</th>
+<th>you</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>je</td>
+<td>0.94</td>
+<td>0.02</td>
+<td>0.04</td>
+</tr>
+<tr>
+<td>t’</td>
+<td>0.11</td>
+<td>0.01</td>
+<td>0.88</td>
+</tr>
+<tr>
+<td>aime</td>
+<td>0.03</td>
+<td>0.95</td>
+<td>0.02</td>
+</tr>
+</tbody></table>
 <p> 对<strong>注意力权重</strong>的这种展现方式回应了人们经常用来批评神经网络的<strong>可解释性****（</strong>Explainable AI，缩写为<strong>XAI，</strong>指的是让专家能够理解人工智能之成果的方法与技术。它相对于黑箱式的机器学习，因为黑箱式的机器学习的设计者本身也无法解释为什么人工智能能达到某些成果。可解释人工智能被认为是“要求解释的权利”（right to explanation）的一种实践。<strong>）</strong>问题。对于一个只作逐字翻译而不考虑词序的网络，其注意力权重矩阵会是一个对角占优矩阵（<strong>指一矩阵的每一横行，对角线上元素的大小大于或等于同一横行其他元素大小的和</strong>）<strong>。这里</strong>非对角占优<strong>的特性表明</strong>注意力机制能捕捉到更为细微的特征**。在第一次通过解码器时，94%的注意力权重在第一个英文单词“I”上，因此网络的输出为对应的法语单词“je”（我）。而在第二次通过解码器时，此时88%的注意力权重在第三个英文单词“you”上，因此网络输出了对应的法语“t’”（你）。最后一遍时，95%的注意力权重在第二个英文单词“love”上，所以网络最后输出的是法语单词“aime”（爱）。</p>
 <h2 id="客户端基于端智能对-NLP-和-OCR-的应用"><a href="#客户端基于端智能对-NLP-和-OCR-的应用" class="headerlink" title="客户端基于端智能对 NLP 和 OCR 的应用"></a>客户端基于端智能对 NLP 和 OCR 的应用</h2><h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><p>Android 基于 Google 生态拥有非常完善且丰富的机器学习使用路径，其中最著名的便是 Google 的 <strong>Firebase</strong> 所提供的 <strong>MLKit</strong>。</p>
-<img src ="/image/client-ai-02-24.png">
+<img src ="/image/client-ai-02-23.png">
 
 <h4 id="MLKit"><a href="#MLKit" class="headerlink" title="MLKit"></a>MLKit</h4><p><strong>MLKit</strong> 是一个客户端机器学习套件 SDK，它通过一个强大且易用的软件包将 Google 的机器学习专业技术融入到 Android 和 iOS 应用中。无论你是刚开始接触机器学习，还是拥有丰富的相关经验，只需几行代码即可实现所需的功能。你无需具备丰富的神经网络或模型优化知识即可开始使用该套件。另一方面，如果你是一名经验丰富的机器学习开发者，机器学习套件提供了便捷的 API，可帮助您在移动应用中使用自定义 <strong>TensorFlow Lite</strong> 模型。</p>
 <p>篇幅所限，这里不多做介绍，感兴趣的同学可以参照 Firebase 官方文档说明进行了解。</p>
 <p><a target="_blank" rel="noopener" href="https://firebase.google.com/docs/ml-kit/android/recognize-text?hl=zh-cn">使用机器学习套件识别图片中的文本 (Android)</a></p>
 <h3 id="Apple"><a href="#Apple" class="headerlink" title="Apple"></a>Apple</h3><p>苹果的整体生态链从硬件到软件层面，都拥有着一套更为强大且高性能的机器学习支撑能力，其中最亮眼的便是 <strong>CoreML</strong> 与 <strong>Vision</strong> 两大框架。</p>
-<h4 id="CoreML"><a href="#CoreML" class="headerlink" title="CoreML"></a>CoreML</h4><img src ="/image/client-ai-02-25.png">
+<h4 id="CoreML"><a href="#CoreML" class="headerlink" title="CoreML"></a>CoreML</h4><img src ="/image/client-ai-02-24.png">
 
 <p>上一期已经介绍过，这里不再赘述，详情见<a target="_blank" rel="noopener" href="https://guanghe.feishu.cn/docx/UpHHdCnL0oVI5Rx9Fxac8FZWnxd">端智能 01 期 - 神经网络&#x2F;机器学习在 iOS 端的应用与场景落地</a> </p>
-<h4 id="Vision"><a href="#Vision" class="headerlink" title="Vision"></a>Vision</h4><img src ="/image/client-ai-02-26.png">
+<h4 id="Vision"><a href="#Vision" class="headerlink" title="Vision"></a>Vision</h4><img src ="/image/client-ai-02-25.png">
 
 <p><strong>Vision</strong> 是 Apple 基于机器学习所研发的一款强大的<strong>图像识别框架</strong>。它能够应用<strong>计算机视觉算法</strong>对输入<strong>图像</strong>和<strong>视频</strong>执行各种任务。<strong>Vision</strong> 框架不仅能够执行<strong>人脸</strong>和<strong>人脸标志检测</strong>、<strong>文本检测</strong>、<strong>条形码识别</strong>、<strong>图像配准</strong>和<strong>一般特征跟踪</strong>。<strong>Vision</strong> 还允许使用<strong>自定义 Core ML 模型</strong>来执行<strong>分类</strong>或<strong>对象检测</strong>等任务。</p>
 <p>本期我们重点要介绍的是其中的<strong>识别图像文本</strong>能力，即使用 <strong>Vision</strong> 框架向应用程序添加文本识别功能。</p>
@@ -507,7 +533,7 @@
 </li>
 </ul>
 <p>使用任一路径，您都可以选择应用基于<strong>自然语言处理 (NLP)</strong> 的<strong>语言校正</strong>阶段，以最大程度地减少误读的可能性。</p>
-<img src ="/image/client-ai-02-27.png">
+<img src ="/image/client-ai-02-26.png">
 
 <h3 id="使用-Vision-amp-CoreML-实现对从图像中查找并突出显示关键字"><a href="#使用-Vision-amp-CoreML-实现对从图像中查找并突出显示关键字" class="headerlink" title="使用 Vision &amp; CoreML 实现对从图像中查找并突出显示关键字"></a>使用 Vision &amp; CoreML 实现对从图像中查找并突出显示关键字</h3><h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>我们今天的目标是构建一个识别静态图像中文本的 iOS 应用程序。</p>
 <p>就像你平时使用搜索关键字时一样，<code>cmd + F</code> 所有匹配的字符串都会在屏幕上突出显示，我们将突出显示图像中的一些选定的字符串。</p>
@@ -519,7 +545,7 @@
 <li>在某些关键字上绘制边界框</li>
 </ul>
 <h3 id="我们想要实现什么"><a href="#我们想要实现什么" class="headerlink" title="我们想要实现什么"></a>我们想要实现什么</h3><p>我们希望在从相机&#x2F;图库捕获的图像中识别出一些检测到的文本的名称后，突出显示这些文本，如下所示：</p>
-<img src ="/image/client-ai-02-28.png">
+<img src ="/image/client-ai-02-27.png">
 
 <h3 id="图像选择器控制器"><a href="#图像选择器控制器" class="headerlink" title="图像选择器控制器"></a>图像选择器控制器</h3><p>它非常基本（只有一个 UIImage 和一个 Button）。我们需要的只是从照片库上传包含文本的图像或直接通过摄像头拍摄。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="type">UIImagePickerController</span>.isSourceTypeAvailable(.camera) <span class="keyword">else</span> &#123;</span><br><span class="line">      presentPhotoPicker(sourceType: .photoLibrary)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> photoSourcePicker <span class="operator">=</span> <span class="type">UIAlertController</span>()</span><br><span class="line"><span class="keyword">let</span> takePhoto <span class="operator">=</span> <span class="type">UIAlertAction</span>(title: <span class="string">&quot;Camera&quot;</span>, style: .default) &#123; [<span class="keyword">unowned</span> <span class="keyword">self</span>] <span class="keyword">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>.presentPhotoPicker(sourceType: .camera)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> choosePhoto <span class="operator">=</span> <span class="type">UIAlertAction</span>(title: <span class="string">&quot;Photos Library&quot;</span>, style: .default) &#123; [<span class="keyword">unowned</span> <span class="keyword">self</span>] <span class="keyword">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>.presentPhotoPicker(sourceType: .photoLibrary)</span><br><span class="line">&#125;</span><br><span class="line">photoSourcePicker.addAction(takePhoto)</span><br><span class="line">photoSourcePicker.addAction(choosePhoto)</span><br><span class="line">photoSourcePicker.addAction(<span class="type">UIAlertAction</span>(title: <span class="string">&quot;Cancel&quot;</span>, style: .cancel, handler: <span class="literal">nil</span>))</span><br><span class="line">        </span><br><span class="line">present(photoSourcePicker, animated: <span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
