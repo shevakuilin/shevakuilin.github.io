@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR) | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR) | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR) | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/client-ai-02/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-01-07T07:52:57.000Z" class="post-list__meta--date date">2024-01-07</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/CoreML/" rel="tag">CoreML</a>, <a class="-none-link" href="/tags/NLP/" rel="tag">NLP</a>, <a class="-none-link" href="/tags/OCR/" rel="tag">OCR</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/client-ai-02.png" style="width: 1200px; height: 520px; object-fit: cover; object-position: top;">
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本期将会向大家介绍人工智能领域的一大重要分支：<strong>自然语言处理（NLP），</strong>与由 <strong>卷积神经网络</strong>、<strong>循环神经网络</strong> 以及<strong>《用于基于图像的序列识别的端到端可训练神经网络及其在场景文本识别中的应用》论文算法</strong> 等相关算法组成的<strong>光学字符识别（OCR）</strong>相结合在<strong>端智能</strong>领域的实践与应用，并展示客户端基于强大的<strong>机器学习</strong>能力来进行的实际效果的演示以及背后运行原理的分析。受限于篇幅，本文的客户端代码将全部由 iOS 平台 <strong>CoreML 机器学习框架</strong> 与 <strong>Vision 图像识别框架</strong> 来构成和演示。</p>
+<p>希望大家在本期分享之后能够对人工智能的发展以及端智能应用场景的落地，有一个更深一步的思考和认知，有助于更深层次的为我们今后的业务进行赋能。</p>
+<p><strong>参加本次分享你将收获</strong>：</p>
+<ul>
+<li>对<strong>人工智能</strong>在<strong>端智能</strong>发展上的进一步深入了解。</li>
+<li><strong>自然语言处理</strong>学科及其分支领域的基础概念、实现原理、区别差异以及相关的场景应用。</li>
+<li><strong>光学字符识别</strong>的基本原理与实现过程，相关的场景应用。</li>
+<li><strong>卷积神经网络</strong>的基本原理与相关知识结构。</li>
+<li><strong>循环神经网络</strong>的基本原理与相关知识结构。</li>
+<li>如何在 iOS 平台上基于 <strong>CoreML</strong> &amp; <strong>Vision</strong> 实现一套高性能的<strong>图像文字识别</strong>功能。</li>
+</ul>
+<img src ="/image/client-ai-02-01.png">
+
+<h2 id="什么是自然语言处理-NLP-？"><a href="#什么是自然语言处理-NLP-？" class="headerlink" title="什么是自然语言处理 (NLP) ？"></a>什么是自然语言处理 (NLP) ？</h2><p><strong>自然语言处理 (NLP)</strong> 是计算机科学的一个分支，更具体地说，是<strong>人工智能 (AI)</strong> 的分支，旨在让计算机能够以与人类大致相同的方式理解文本和语音。</p>
+<p>自然语言处理 (NLP)  将计算语言学（基于规则的人类语言建模）与统计、机器学习和深度学习模型相结合。 这些技术共同让计算机能够以文本或语音数据的形式处理人类语言，“理解”语言的完整含义，感知书写者或说话者的情绪并满足他们的意图。</p>
+<p>自然语言处理 (NLP) 驱动计算机程序将文本从一种语言翻译成另一种语言，响应语音命令，以及快速甚至实时总结大量文本。 在日常生活中，你有可能与多种形式的自然语言处理 (NLP) 互动，包括 GPS 语音系统、数字助手、语音到文本听写软件、客服聊天机器人以及其他为消费者提供便利的系统。 此外，自然语言处理 (NLP) 在企业解决方案中也发挥着越来越大的作用，有助于精简业务运营，提高员工生产力以及简化任务关键型业务流程。</p>
+<h3 id="自然语言处理-NLP-任务"><a href="#自然语言处理-NLP-任务" class="headerlink" title="自然语言处理 (NLP) 任务"></a>自然语言处理 (NLP) 任务</h3><p>人们说的话往往含混不清、模棱两可，因此要开发出能够准确确定文本或语音数据中预期含义的软件，是件非常困难的事情。 同音异形词、同音异议词、讽刺、习语、隐喻、语法与用法例外、句子结构的变化等等，这些只是人类语言中不规则现象的一些例子，我们需要很多年的时间才能掌握，但如果想让自然语言驱动的应用发挥作用，程序员必须让这些应用从一开始就能准确地识别和理解人类语言。</p>
+<p>一些自然语言处理 (NLP) 任务通过分解<strong>人类文本</strong>和<strong>语音数据</strong>，帮助计算机理解所采集的内容。 这些任务包括：</p>
+<ul>
+<li><strong>语音识别</strong>，也称为<strong>语音转文本</strong>，用于将语音数据以可靠的方式转换为文本数据。 任何遵循语音命令或回答口述问题的应用都需要语音识别功能。 语音识别的挑战性在于人们的说话方式 — 语速快，含糊不清，各种重音、语调和口音，以及语法常常不正确。</li>
+<li><strong>词性标注</strong>，也称<strong>语法标注</strong>，这个过程按照用法和上下文确定特定单词或文本片段的词性。 “I can make a paper plane” 中 “make” 的词性为动词，”What make of car do you own?” 中 “make” 为名词。</li>
+<li><strong>词义消歧</strong>，用于对<strong>多义单词选择含义</strong>，通过语义分析过程确定单词在特定上下文中最准确的意思。  例如，词义消歧可帮助区分动词  “make” 在 “make the grade”（达到）和 “make a bet”（做出）中的含义。</li>
+<li><strong>命名实体识别</strong> ，简称 <strong>NEM</strong>，用于将单词或短语识别为有意义的实体。 NEM 将”Kentucky”识别为地点，将 “Fred” 识别为男性的名字。</li>
+<li><strong>指代消解</strong>，用于<strong>确定两个单词是否以及何时指代同一实体</strong>。 最常见的例子是确定某个代词所指的人或物体（例如，”她”指玛丽），但也可能涉及识别文本中的隐喻或习语（例如，”熊”有时并不表示动物，而是指体型魁梧、体毛较多的人）。  </li>
+<li><strong>情绪分析</strong>，尝试<strong>从文本中提取主观特质</strong>，例如，态度、情绪、讽刺、困惑和怀疑。 </li>
+<li><strong>自然语言生成</strong>，有时被视为语音识别或语音转文本的逆操作；该任务用于<strong>将结构化信息转化为人类语言</strong>。</li>
+</ul>
+<h3 id="NLP、NLU-与-NLG：三个自然语言处理概念之间的差异"><a href="#NLP、NLU-与-NLG：三个自然语言处理概念之间的差异" class="headerlink" title="NLP、NLU 与 NLG：三个自然语言处理概念之间的差异"></a>NLP、NLU 与 NLG：三个自然语言处理概念之间的差异</h3><img src ="/image/client-ai-02-02.png">
+
+<p>虽然<strong>自然语言处理 (NLP)<strong>、</strong>自然语言理解 (NLU)</strong> 和<strong>自然语言生成 (NLG)</strong> 都是相关主题，但它们是不同的主题。从较高的层面来看，NLU 和 NLG 只是 NLP 的组成部分。考虑到它们的交叉方式，它们在对话中通常会被混淆，但在这篇文章中，我们将单独定义每个术语并总结它们的差异以澄清任何歧义。</p>
+<img src ="/image/client-ai-02-03.png">
+
+<h4 id="什么是自然语言处理？"><a href="#什么是自然语言处理？" class="headerlink" title="什么是自然语言处理？"></a>什么是自然语言处理？</h4><p><strong>自然语言处理****（NLP）</strong>从计算语言学发展而来，利用计算机科学、人工智能、语言学和数据科学等不同学科的方法，使计算机能够理解人类书面和口头形式的语言。虽然计算语言学更关注语言的各个方面，但自然语言处理强调使用机器学习和深度学习技术来完成任务，例如语言翻译或问答。自然语言处理的工作原理是获取非结构化数据并将其转换为结构化数据格式。它通过识别命名实体（称为命名实体识别的过程）和识别单词模式来实现这一点，使用标记化、词干提取和词形还原等方法来检查单词的词根形式。例如，单词上的后缀 -ed（如 Called）表示过去时态，但它与现在时态动词 Calling 具有相同的基本不定式（to call）。</p>
+<p>虽然存在多种 NLP 算法，但不同的方法往往用于不同类型的语言任务。例如，<strong>隐马尔可夫链</strong>往往用于词性标记。循环神经网络有助于生成适当的文本序列。<strong>N 元语法</strong>是一种简单语言模型 (LM)，它为句子或短语分配概率以预测响应的准确性。这些技术共同支持聊天机器人等流行技术，或亚马逊 Alexa 或苹果 Siri 等语音识别产品。然而，它的应用范围远不止于此，影响了教育和医疗保健等其他行业。</p>
+<h4 id="什么是自然语言理解？"><a href="#什么是自然语言理解？" class="headerlink" title="什么是自然语言理解？"></a>什么是自然语言理解？</h4><p><strong>自然语言理解****（NLU）</strong>是自然语言处理的一个子集，它使用文本和语音的句法和语义分析来确定句子的含义。句法是指句子的语法结构，而语义是指其预期含义。NLU 还建立了相关的本体：指定单词和短语之间关系的数据结构。虽然人类在对话中自然会这样做，但机器需要结合这些分析来理解不同文本的预期含义。 我们区分同音异义词和同音异义词的能力很好地说明了语言的细微差别。例如，我们来看以下两个句子：</p>
+<ol>
+<li>Alice is swimming against the current.（爱丽丝正在逆流游泳）</li>
+<li>The current version of the report is in the folder.（报告的当前版本位于该文件夹中）</li>
+</ol>
+<p>在第一句中，”current”一词是一个名词。它前面的动词”swimming”为读者提供了额外的上下文，使我们能够得出结论：我们指的是海洋&#x2F;河流中的水流。第二句话使用”current”一词，但作为形容词。它所描述的名词”version”表示报告的多次迭代，使我们能够确定我们所指的是文件的最新状态。</p>
+<p>这些方法也常用于数据挖掘以了解消费者态度。特别是，情绪分析使品牌能够更密切地监控客户反馈，从而使他们能够聚集积极和消极的社交媒体评论并跟踪净推荐分数。通过审查负面情绪评论，公司能够更快地识别和解决其产品或服务中的潜在问题领域。</p>
+<h4 id="什么是自然语言生成？"><a href="#什么是自然语言生成？" class="headerlink" title="什么是自然语言生成？"></a>什么是自然语言生成？</h4><p><strong>自然语言生成（NLG）</strong>是自然语言处理的另一个子集。自然语言理解侧重于计算机阅读理解，而自然语言生成则使计算机能够写作。NLG 是根据某些数据输入生成人类语言文本响应的过程。该文本还可以通过文本转语音服务转换为语音格式。</p>
+<p>NLG 还包括了文本摘要功能，该功能能够从输入文档生成摘要，同时保持信息的完整性。这种提取式摘要属于让人工智能的创新。</p>
+<p>最初，NLG 系统使用模板来生成文本。基于一些数据或查询，NLG 系统会填补空白，就像 Mad Libs 游戏一样。但随着时间的推移，自然语言生成系统随着隐马尔可夫链、循环神经网络和变压器的应用而不断发展，从而能够实时生成更动态的文本。</p>
+<p>与 NLU 一样，NLG 应用程序需要考虑基于词法、词典、语法和语义的语言规则，以选择如何适当地表达响应。他们分三个阶段解决这个问题：</p>
+<ul>
+<li><strong>文本规划</strong>：在此阶段，以逻辑方式<strong>制定</strong>和<strong>排序</strong>总体内容。</li>
+<li><strong>句子规划</strong>：此阶段考虑<strong>标点符号</strong>和<strong>文本流</strong>，将内容分解为段落和句子，并在适当的情况下合并代词或连词。</li>
+<li><strong>实现</strong>：此阶段考虑<strong>语法准确性</strong>，确保遵循标点符号和词形变化的规则。例如，动词<em>run</em>的过去式是<em>ran</em>，而不是<em>runned</em>。</li>
+</ul>
+<h3 id="NLP、NLU、NLG-总结"><a href="#NLP、NLU、NLG-总结" class="headerlink" title="NLP、NLU、NLG 总结"></a>NLP、NLU、NLG 总结</h3><ul>
+<li><strong>自然语言处理 (NLP)</strong> 旨在将非结构化语言数据转换为结构化数据格式，使机器能够理解语音和文本并制定相关的上下文响应。其子主题包括自然语言处理和自然语言生成。</li>
+<li><strong>自然语言理解（NLU）</strong>侧重于通过语法和上下文进行机器阅读理解，使其能够确定句子的预期含义。</li>
+<li><strong>自然语言生成（NLG）</strong>专注于文本生成，或者由机器基于给定数据集构建英语或其他语言的文本。</li>
+</ul>
+<h2 id="什么是光学字符识别-OCR-？"><a href="#什么是光学字符识别-OCR-？" class="headerlink" title="什么是光学字符识别 (OCR) ？"></a>什么是光学字符识别 (OCR) ？</h2><p><strong>光学字符识别</strong>（<strong>Optical Character Recognition</strong>，缩写：<strong>OCR</strong>）是指对包含文本内容的图像或视频进行处理和识别，并提取其中所包含的文字及排版信息的过程。例如，一个常见的应用是将包含文档图像的不可编辑状态的 PDF 文档通过 OCR 技术识别后，转换为可编辑状态的 Word 格式文档。</p>
+<p>通常来说，根据不同文本内容的特性而言，OCR 技术的应用场景大致可分为以下几类：</p>
+<ul>
+<li><strong>印刷文本识别</strong>：印刷文本通常指报刊、杂志、文档、小票等使用现代计算机字体编排并印刷的文本内容。这类文本内容通常具有清晰一致的字体、间距等，因此识别技术相对成熟，并被广泛应用于纸质文件、报刊的数字化上。</li>
+<li><strong>手写文本识别</strong>：相较于具有固定字体的印刷文本而言，手写文本往往根据不同的书写者以及书写工具会具有极大的变化，因此其识别难度相较于印刷文本而言要更高。手写体识别可以帮助用户快速将手写的笔记内容数字化输入到计算机中，也被用在一些电子备忘录中来对用户的手写笔记内容进行检索。此外，由手写文本识别进一步派生的一个应用则是签名笔迹认证，这类方法用于比对签名的真实性。</li>
+<li><strong>公式文本识别</strong>：数学公式通常由大量符号及数字组成，由于根式，分式等规则的存在，数学公式往往存在二维结构，即并不能保证识别的顺序一定符合固定的阅读顺序。因此，数学公式的 OCR 模型往往显著有别于常规的自然语言文本 OCR 处理技术。通常来说，数学公式的 OCR 识别需要借助使用 LaTeX 等结构化的文档标记语言来实现，即，OCR 给出的输出是一组 LaTeX 标记符号。</li>
+<li><strong>场景文本识别：</strong>场景文本识别，有时也被称作通用文本识别技术。这类识别技术能够对任意场景下的图片中包含的任意形式的文本进行识别，包括但不仅限于：街边商铺的招牌、超市内商品中的文本、合影中人物衣着上的文本、城市建筑上的商标名称等等。这类技术已经被应用到了许多应用中，例如智能手机中允许搜索或提取相册中带有文本内容的图像，聊天软件中允许直接复制对方发送图片中的文本内容等。</li>
+<li><strong>古籍文本识别</strong>：古籍文档与现代印刷的排版和布局通常具有很大的差别，例如，阅读顺序可能自上而下，自右向左等。因此，使用基于现代文档数据开发的 OCR 技术和模型在包含这些内容的图像上的识别效果往往不够好。因此，在对大量古籍进行数字化保护的过程中，催生了专门针对该类型文档内容进行识别的 OCR 技术。</li>
+</ul>
+<h3 id="发展历史"><a href="#发展历史" class="headerlink" title="发展历史"></a>发展历史</h3><p>OCR 的概念是在1929年由德国科学家Tausheck最先提出来，并申请了专利。后来美国科学家Handel也提出了利用技术对文字进行识别的想法。中国最早的  OCR商业应用是由科学家王庆人教授在南开大学开发出来的，并在美国市场投入商业使用。日本在20世纪60年代开始研究 OCR 理论，开发了邮政编码识别系统。</p>
+<h3 id="基本处理过程"><a href="#基本处理过程" class="headerlink" title="基本处理过程"></a>基本处理过程</h3><p>OCR 的处理过程大体分为<strong>图像输入</strong>、<strong>前期处理</strong>、<strong>中期处理</strong>、<strong>后期处理</strong>和<strong>文本输出</strong>这 5 个步骤。具体流程如下：</p>
+<h4 id="图像输入"><a href="#图像输入" class="headerlink" title="图像输入"></a>图像输入</h4><p>对于不同的图像格式，有着不同的存储格式、不同的压缩方式，目前有OpenCV、CxImage等。</p>
+<h4 id="前期处理"><a href="#前期处理" class="headerlink" title="前期处理"></a><strong>前期处理</strong></h4><h5 id="二值化"><a href="#二值化" class="headerlink" title="二值化"></a><strong>二值化</strong></h5><p>如今数字摄像头拍摄的图片，大多数是彩色图像，彩色图像所含信息量巨大，较为不适用于OCR技术。</p>
+<p>对于图片的内容，我们可以简单的分为前景与背景，为了让计算机更快的、更好地进行OCR相关计算，我们需要先对彩色图进行处理，使图片只剩下前景信息与背景信息。二值化也可以简单地将其理解为“黑白化”。</p>
+<h5 id="图像降噪"><a href="#图像降噪" class="headerlink" title="图像降噪"></a><strong>图像降噪</strong></h5><p>对于不同的图像，噪点的定义可能不同，根据噪点的特征进行去噪的过程，称为降噪。</p>
+<h5 id="倾斜校正"><a href="#倾斜校正" class="headerlink" title="倾斜校正"></a><strong>倾斜校正</strong></h5><p>由于一般用户，在拍照文档时，难以拍摄得完全符合水平平齐与竖直平齐，因此拍照出来的图片不可避免的产生倾斜，这就需要图像处理软件进行校正。</p>
+<h4 id="中期处理"><a href="#中期处理" class="headerlink" title="中期处理"></a><strong>中期处理</strong></h4><h5 id="版面分析"><a href="#版面分析" class="headerlink" title="版面分析"></a><strong>版面分析</strong></h5><p>将文档图片分段落，分行的过程称为版面分析，由于实际文档的多样性、复杂性，此步骤目前仍待优化。</p>
+<h5 id="字符切割"><a href="#字符切割" class="headerlink" title="字符切割"></a><strong>字符切割</strong></h5><p>由于拍照、书写条件的限制，经常造成字符粘连、断笔，直接使用此类图像进行OCR分析将会极大限制OCR性能。因此需要进行字符切割，即：将不同字符之间分割开。</p>
+<h5 id="字符识别"><a href="#字符识别" class="headerlink" title="字符识别"></a><strong>字符识别</strong></h5><p>早期以模板匹配为主，后期以特征提取为主。由于文字的位移、笔画的粗细、断笔、粘连、旋转等因素的影响，极大地影响特征提取难度。</p>
+<h5 id="版面还原"><a href="#版面还原" class="headerlink" title="版面还原"></a><strong>版面还原</strong></h5><p>人们希望识别后的文字，仍然像原始文档图片那样排列，段落、位置、顺序不变地输出到Word文档、PDF文档等，这一过程称为版面还原。</p>
+<h4 id="后期处理"><a href="#后期处理" class="headerlink" title="后期处理"></a><strong>后期处理</strong></h4><p>根据特定的语言上下文的关系，对识别结果进行校正。</p>
+<h4 id="文本输出"><a href="#文本输出" class="headerlink" title="文本输出"></a>文本<strong>输出</strong></h4><p>将识别出的字符以某一格式的文本输出。</p>
+<h3 id="主流实现"><a href="#主流实现" class="headerlink" title="主流实现"></a>主流实现</h3><h4 id="CNN-RNN-CTC"><a href="#CNN-RNN-CTC" class="headerlink" title="CNN + RNN + CTC"></a>CNN + RNN + CTC</h4><ul>
+<li><p><strong>卷积神经网络（CNN）</strong></p>
+<img src ="/image/client-ai-02-04.png">
+
+<img src ="/image/client-ai-02-05.png">
+
+<img src ="/image/client-ai-02-06.png"></li>
+</ul>
+<p> <strong>卷积神经网络</strong>（convolutional neural network，缩写：<strong>CNN</strong>）是一种<strong>前馈神经网络****（FCNN）</strong>，它的人工神经元可以响应一部分覆盖范围内的周围单元，对于大型图像处理有出色表现。</p>
+<p> 卷积神经网络<strong>由一个或多个卷积层和顶端的全连通层（对应经典的神经网络）组成</strong>，同时也包括<strong>关联权重</strong>和<strong>池化层（pooling layer）</strong>。这一结构使得卷积神经网络能够利用输入数据的二维结构。与其他<strong>深度学习</strong>结构相比，卷积神经网络在<strong>图像</strong>和<strong>语音识别</strong>方面能够给出更好的结果。这一模型也可以使用<strong>反向传播算法</strong>进行训练。相比较其他深度、前馈神经网络，卷积神经网络需要考量的参数更少，使之成为一种颇具吸引力的深度学习结构。</p>
+<p> 卷积神经网络的灵感来自于动物视觉皮层组织的神经连接方式。单个神经元只对有限区域内的刺激作出反应，不同神经元的感知区域相互重叠从而覆盖整个视野。</p>
+<p> 卷积神经网络是人工神经网络的一种特殊类型，在其至少一层中使用称为<strong>卷积的数学运算代替通用矩阵乘法</strong>。它们<strong>专门设计用于处理像素数据，并用于图像识别和处理</strong>。</p>
+<p> CNN是根据生物的视觉处理过程来进行设计的。</p>
+<p> <strong>大脑中视觉皮层接收视觉信号的过程</strong></p>
+<p> <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=Hubel&action=edit&redlink=1">Hubel</a>和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=Wiesel&action=edit&redlink=1">Wiesel</a>在20世纪50年代到20世纪60年代的研究发现，猫和猴子的视觉皮层中包含着能分别对某一小块视觉区域进行回应的神经元。当眼睛不动的时候，在一定区域内的视觉刺激能使单个神经元兴奋，那这个区域就称为这个神经元的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%84%9F%E5%8F%97%E9%87%8E">感受野</a>。相邻的细胞具有相似且重叠的感受野。为了形成一张完整的视觉图像，整个视觉皮层上的神经元的感受野的大小和位置呈现系统性的变化。左脑和右脑分别对应其对侧的视野。他们在其1968年的一篇论文中确定了大脑中有两种不同的基本视觉细胞：</p>
+<ul>
+<li>简单细胞</li>
+<li>复杂细胞</li>
+</ul>
+<p> Hubel和Wiesel还提出了这两种细胞用于模式识别任务的级联模型。</p>
+<p> <strong>结构上</strong>，卷积神经网络由<strong>输入层</strong>、<strong>隐藏层（</strong>卷积层、线性整流层(ReLU)、池化层<strong>）</strong>和<strong>输出层（</strong>完全连接层<strong>）</strong>组成。</p>
+<p> <strong>输入层</strong></p>
+<p> 在卷积神经网络中，输入层是网络的第一层，负责接收原始数据。对于图像处理任务，输入层通常<strong>接收原始像素数</strong>据，例如一个图像的高度、宽度和颜色通道（对于彩色图像通常是RGB三个通道）。输入层<strong>不进行任何计算，只是将数据传递给后续的隐藏层进行处理</strong>。</p>
+<p> <strong>卷积层</strong></p>
+<p> 卷积层可以产生一组平行的特征图（feature map），它通过在<strong>输入图像上滑动不同的卷积核并执行一定的运算</strong>而组成。此外，在每一个滑动的位置上，卷积核与输入图像之间会执行一个元素对应乘积并求和的运算以将感受野内的信息投影到特征图中的一个元素。这一滑动的过程可称为步幅 Z_s，步幅 Z_s 是控制输出特征图尺寸的一个因素。卷积核的尺寸要比输入图像小得多，且重叠或平行地作用于输入图像中，一张特征图中的所有元素都是通过一个卷积核计算得出的，也即一张特征图共享了相同的权重和偏置项。</p>
+<p> <strong>线性整流层</strong></p>
+<p> 线性整流层（Rectified Linear Units layer, ReLU layer）使用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BA%BF%E6%80%A7%E6%95%B4%E6%B5%81%E5%87%BD%E6%95%B0">线性整流</a>（Rectified Linear Units, <strong>ReLU</strong>）</p>
+<img src ="/image/client-ai-02-07.png">
+
+<img src ="/image/client-ai-02-07-fx.png">
+
+<p> 作为这一层神经的激励函数（Activation function）。它可以增强判定函数和整个神经网络的非线性特性，而本身并不会改变卷积层。</p>
+<p> 事实上，其他的一些函数也可以用于增强网络的非线性特性，如<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8F%8C%E6%9B%B2%E6%AD%A3%E5%88%87%E5%87%BD%E6%95%B0">双曲正切函数</a>，</p>
+<img src ="/image/client-ai-02-08.png">
+
+<img src ="/image/client-ai-02-08-fx.png">
+
+<p>或者<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/S%E5%87%BD%E6%95%B0">Sigmoid函数</a>。</p>
+<img src ="/image/client-ai-02-09.png">
+
+<img src ="/image/client-ai-02-09-fx.png">
+
+<p> 相比其它函数来说，<strong>ReLU 函数更受青睐</strong>，这是因为它可以将神经网络的训练速度提升数倍，而并不会对模型的泛化准确度造成显著影响。</p>
+<p> <strong>池化层</strong></p>
+<p> 池化层是基于 Fast-RCNN 架构的卷积神经网络的一个重要组成部分。</p>
+<p> 池化（Pooling）是卷积神经网络中另一个重要的概念，它实际上是一种<strong>非线性形式的降采样</strong>。有多种不同形式的非线性池化函数，而其中“最大池化（Max pooling）”是最为常见的。它是<strong>将输入的图像划分为若干个矩形区域，对每个子区域输出最大值</strong>。</p>
+<p> 直觉上，这种机制能够有效地原因在于，一个特征的精确位置远不及它相对于其他特征的粗略位置重要。池化层会不断地减小数据的空间大小，因此参数的数量和计算量也会下降，这在一定程度上也控制了<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BF%87%E6%8B%9F%E5%90%88">过拟合</a>。通常来说，CNN 的网络结构中的卷积层之间都会周期性地插入池化层。池化操作提供了另一种形式的平移不变性。因为卷积核是一种特征发现器，我们通过卷积层可以很容易地发现图像中的各种边缘。但是卷积层发现的特征往往过于精确，我们即使高速连拍拍摄一个物体，照片中的物体的边缘像素位置也不大可能完全一致，通过池化层我们可以降低卷积层对边缘的敏感性。</p>
+<p> 池化层每次在一个池化窗口（depth slice）上计算输出，然后根据步幅移动池化窗口。下图是目前最常用的池化层，步幅为2，池化窗口为 2x2 的二维最大池化层。每隔2个元素从图像划分出 2x2 的区块，然后对每个区块中的4个数取最大值。这将会减少75%的数据量。</p>
+<img src ="/image/client-ai-02-10.png">
+
+<img src ="/image/client-ai-02-10-fx.png">
+
+<p> 除了最大池化之外，池化层也可以使用其他池化函数，例如“平均池化”甚至“<strong>L2-范数****池化</strong>”等。过去，平均池化的使用曾经较为广泛，但是最近由于<strong>最大池化在实践中的表现更好</strong>，平均池化已经不太常用。</p>
+<p> RoI池化(Region of Interest)是最大池化的变体，其中输出大小是固定的，输入矩形是一个参数。</p>
+<p> <strong>由于池化层过快地减少了数据的大小，目前文献中的趋势是使用较小的池化滤镜，甚至不再使用池化层。</strong></p>
+<p> <strong>完全连接层</strong></p>
+<p> 最后，<strong>在经过几个卷积和最大池化层之后，神经网络中的高级推理通过完全连接层来完成</strong>。就和常规的非卷积人工神经网络中一样，完全连接层中的神经元与前一层中的所有激活都有联系。因此，它们的激活可以作为<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2">仿射变换</a>来计算，也就是先乘以一个矩阵然后加上一个偏差(bias)偏移量(向量加上一个固定的或者学习来的偏差量)。</p>
+<p> 下图为一个使用仿射变换所制造有<strong>自相似****性</strong>（数学分支分形几何中，如果一个物体自我相似（Self-similarity），表示它和它本身的一部分完全或是几乎相似。若说一个曲线自我相似，即每部分的曲线有一小块和它相似。自然界中有很多东西有自我相似性质，例如海岸线。）的<strong>分形</strong>（又称碎形、残形，通常被定义为“一个粗糙或零碎的几何形状，可以分成数个部分，且每一部分都（至少近似地）是整体缩小后的形状”，即具有自相似的性质。）:</p>
+<img src ="/image/client-ai-02-11.png">
+
+<p> <strong>卷积神经网络的应用</strong></p>
+<p> <strong>影像识别</strong></p>
+<p> 卷积神经网络通常在影像识别系统中使用。</p>
+<p> <strong>视频分析</strong></p>
+<p> 相比影像识别问题，视频分析要难许多。CNN也常被用于这类问题。</p>
+<p> <strong>自然语言处理</strong></p>
+<p> 卷积神经网络也常被用于自然语言处理。 CNN的模型被证明可以有效的处理各种自然语言处理的问题，如语义分析、搜索结果提取、句子建模 、分类、预测、和其他传统的NLP任务等。</p>
+<p> <strong>药物发现</strong></p>
+<p> 卷积神经网络已在药物发现中使用。卷积神经网络被用来预测的分子与蛋白质之间的相互作用，以此来寻找靶向位点，寻找出更可能安全和有效的潜在治疗方法。</p>
+<p> <strong>围棋</strong></p>
+<p> 卷积神经网络在计算机围棋领域也被使用。2016年3月，AlphaGo对战李世乭的比赛，展示了深度学习在围棋领域的重大突破。</p>
+<p> <strong>微调（fine-tuning）</strong></p>
+<p> 卷积神经网络（例如Alexnet、VGG网络）在网络的最后通常为<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Softmax">softmax</a>（在数学，尤其是概率论和相关领域中，Softmax函数，或称归一化指数函数，是逻辑斯谛函数的一种推广。它能将一个含任意实数的K维向量z “压缩”到另一个K维实向量σ(z)中，使得每一个元素的范围都在(0, 1)之间，并且所有元素的和为1）分类器。微调一般用来调整softmax分类器的分类数。例如原网络可以分类出2种图像，需要增加1个新的分类从而使网络可以分类出3种图像。微调（fine-tuning）可以留用之前训练的大多数参数，从而达到快速训练收敛的效果。例如保留各个卷积层，只重构卷积层后的全连接层与softmax层即可。</p>
+<p> <strong>经典模型</strong></p>
+<ul>
+<li><p>LeNet</p>
+</li>
+<li><p>AlexNet</p>
+</li>
+<li><p>VGG</p>
+</li>
+<li><p>GoogLeNet</p>
+</li>
+<li><p>ResNet</p>
+</li>
+<li><p>DenseNet</p>
+</li>
+<li><p><strong>循环神经网络（RNN）</strong></p>
+</li>
+</ul>
+<img src ="/image/client-ai-02-12.png">
+
+<p> <strong>循环神经网络 (RNN)</strong> 是一种使用序列数据或时序数据的人工神经网络。 这些深度学习算法常用于<strong>顺序</strong>或<strong>时间问题</strong>，如语言翻译、自然语言处理 (nlp)、语音识别、图像字幕等；它们包含在一些流行的应用中，比如 Siri、语音搜索和 Google Translate。 与<strong>前馈神经网络（Feedforward Neural Network</strong>，为人工智能领域中，最早发明的简单人工神经网络类型。在它内部，参数从输入层向输出层单向传播。有异于循环神经网络，它的内部不会构成有向环<strong>）</strong>和<strong>卷积神经网络 (CNN)</strong> 一样，循环神经网络利用训练数据进行学习。 区别在于“记忆”，因为它从先前的输入中获取信息，以影响当前的输入和输出。 虽然传统的深度神经网络假设输入和输出相互独立的，但<strong>循环神经网络的输出依赖于序列中先前的元素</strong>。 尽管未来的活动也可能有助于确定特定序列的输出，但是单向循环神经网络无法在预测中说明这些事件。</p>
+<p> <strong>时间循环神经网络</strong>可以描述动态时间行为，因为和<strong>前馈神经网络</strong>（feedforward neural network）接受较特定结构的输入不同，RNN将状态在自身网络中循环传递，因此可以接受更广泛的<strong>时间序列</strong>结构输入。</p>
+<p> <strong>手写识别</strong>是最早成功利用RNN的研究结果。</p>
+<p> <strong>循环神经网络 (RNN) 的类型</strong></p>
+<img src ="/image/client-ai-02-13.png">
+
+<p> <strong>前馈神经网络（FNN）</strong>将一个输入映射到一个输出，我们在上面的示意图中以这种方式展示了<strong>循环神经网络 (RNN)</strong> ，但实际上它们并没有这种约束。 相反，它们的输入和输出的长度可变，不同类型的<strong>循环神经网络 (RNN)</strong> 有着不同的用例，例如音乐生成、观点分类和机器翻译。</p>
+<img src ="/image/client-ai-02-14.png">
+
+<p> <strong>循环神经网络 (RNN) 常用激活函数</strong></p>
+<p> 正如有关神经网络的学习文章中所讨论的那样，激活函数决定了神经元是否应该被激活。 这种非线性函数通常将特定神经元的输出转换为 0 到 1 或 -1 到 1 之间的值。 </p>
+<img src ="/image/client-ai-02-15.png">
+
+<p> 我们举个惯用语的例子来帮助解释循环神经网络 (RNN)：</p>
+<p> “you’ll never walk alone”（你永远不会独行），这通常是指表达鼓励与安慰。 为了体现出这个惯用语的意思，必须按这个特定顺序进行表达。 因此，循环神经网络需要考虑到该惯用语中每个单词的位置，并使用这些信息来预测序列中的下一个单词。</p>
+<p> <strong>循环神经网络 (RNN)</strong> 的另一个显著特征是它们<strong>在每个网络层中共享参数</strong>。 虽然前馈网络的每个节点都有不同的权重，但循环神经网络在每个网络层都共享相同的权重参数。 尽管如此，这些权重仍可通过反向传播和梯度下降过程进行调整，以促进强化学习。</p>
+<p> <strong>循环神经网络 (RNN)</strong> 利用随时间推移的反向传播 (BPTT) 算法来确定梯度，这与传统的反向传播略有不同，因为它特定于序列数据。 BPTT 的原理与传统的反向传播相同，模型通过计算输出层与输入层之间的误差来训练自身。 这些计算帮助我们适当地调整和拟合模型的参数。 BPTT 与传统方法的不同之处在于，BPTT 会在每个时间步长对误差求和，而前馈网络则不需要对误差求和，因为它们不会在每层共享参数。</p>
+<p> 通过这个过程，循环神经网络 (RNN) 往往会产生两个问题，即<strong>梯度爆炸</strong>和<strong>梯度消失</strong>。 这些问题由梯度的大小定义，也就是损失函数沿着错误曲线的斜率。 如果梯度过小，它会更新权重参数，让梯度继续变小，直到变得可以忽略，即为 0。 发生这种情况时，算法就不再学习。 如果梯度过大，就会发生梯度爆炸，这会导致模型不稳定。 在这种情况下，模型权重会变得太大，并最终被表示为 NaN。 这些问题的一种解决方案就是减少神经网络中隐藏层的数量，以便消除循环神经网络 (RNN) 模型中的一些复杂性。</p>
+<p> 所以，单纯的RNN因为无法处理随着递归，<strong>权重指数级爆炸</strong>或<strong>梯度消失问题</strong>，难以捕捉长期时间关联；而结合不同的 <strong>LSTM</strong> 可以很好解决这个问题。</p>
+<p> <strong>循环神经网络 (RNN) 的架构变体</strong></p>
+<p> <strong>LSTM</strong></p>
+<p> <strong>长短期记忆</strong>（Long Short-Term Memory，LSTM）是一种<strong>时间循环神经网络（RNN）</strong>，其本质上是循环神经网络架构上的一种变体。LSTM的表现通常比时间循环神经网络及隐马尔科夫模型（HMM）更好，比如用在<strong>不分段连续手写识别</strong>上。</p>
+<p> Hochreiter和Schmidhuber于1997年提出了<strong>长短期记忆 (LSTM)</strong> 网络，并在多个应用领域创造了精确度记录。</p>
+<ul>
+<li>2007年，LSTM开始革新语音识别领域，在某些语音应用中胜过传统模型。</li>
+<li>2009年，一个由 <strong>CTC</strong>（Connectionist temporal classification，是一种常用在<strong>语音识别</strong>、<strong>文本识别</strong>等领域的算法，<strong>用来解决输入和输出序列长度不一、无法对齐的问题</strong>。） 训练的LSTM 网络赢得了多项连笔手写识别竞赛，成为第一个赢得模式识别竞赛的RNN。</li>
+<li>2014年，百度在不使用任何传统语音处理方法的情况下，使用经过CTC训练的RNNs打破了Switchboard Hub5’00 语音识别基准。</li>
+<li>LSTM还改进了<strong>大词汇量语音识别</strong>和<strong>文本到语音合成</strong>并在谷歌 Android 系统中使用。据报道，2015年，谷歌语音识别通过接受过CTC训练的LSTM(谷歌语音搜索使用的)实现了49%的引用量的大幅提升。</li>
+<li>LSTM打破了改进<strong>机器翻译</strong>、<strong>语言建模</strong>和<strong>多语言处理</strong>的记录。 </li>
+<li>LSTM 结合卷积神经网络改进了<strong>图像自动标注</strong> 。</li>
+</ul>
+<p> <strong>BRNN</strong></p>
+<p> <strong>双向循环神经网络</strong>（BRNN)：这是循环神经网络 (RNN) 的网络架构变体。 <strong>单向循环神经网络 (RNN) 只能从先前输入中抽取数据，做出有关当前状态的预测；而双向循环神经网络 (RNN) 还可以拉取未来的数据，从而提高预测的精度</strong>。 回到前面那个“you’ll never walk alone”的例子，如果模型知道该序列中的最后一个单词是”alone”，就更有可能预测该词组中的第二个单词是”walk”。</p>
+<p> <strong>GRU</strong></p>
+<p> <strong>门控循环单元</strong> (GRU)：这种循环神经网络 (RNN) 变体类似于 LSTM，因为它也旨在解决 RNN 模型的短期记忆问题。 但它不使用”<strong>元胞状态</strong> (是一种时间、空间、状态都离散，空间相互作用和时间因果关系为局部的网格动力学模型，具有模拟复杂系统时空演化过程的能力) “来调节信息，而是使用”隐藏状态”；它不使用三个门，而是两个：<strong>一个重置门和一个更新门</strong>。 类似于 LSTM 中的门，重置门和更新门控制要保留哪些信息以及保留多少信息。</p>
+<p> <strong>如何快速理解 RNN？</strong></p>
+<p> <strong>结构上</strong>，与<strong>卷积神经网络（CNN）</strong>类似，首先看一个简单的循环神经网络，它由<strong>输入层</strong>、一个<strong>隐藏层</strong>和一个<strong>输出层</strong>组成，</p>
+<img src ="/image/client-ai-02-16.png">
+
+<p> 我们可以这样来理解，如果把上面有$$W$$的那个带箭头的圈去掉，它就变成了最普通的 <strong>全连接神经网络（FCNN）</strong>。$$X$$是一个向量，它表示<strong>输入层的值</strong>（这里忽略了表示神经元节点的圆圈）； $$S$$是一个向量，它表示<strong>隐藏层的值</strong>（$$S$$外部的圆表示一个节点，通常情况下这一层会拥有多个节点，节点数与向量$$S$$的维度相同）；</p>
+<p> $$U$$ 是<strong>输入层</strong>到<strong>隐藏层</strong>的<strong>权重矩阵</strong>， $$O$$也是一个向量，它表示<strong>输出层的值</strong>；$$V$$是<strong>隐藏层</strong>到<strong>输出层</strong>的<strong>权重矩阵</strong>。</p>
+<p> 那么，现在我们来看看$$W$$是什么。循环神经网络的隐藏层的值 $$S$$不仅仅取决于当前这次的输入$$X$$，还取决于上一次隐藏层的值$$S$$ 。权重矩阵$$W$$就是隐藏层上一次的值作为这一次的输入的权重。</p>
+<p> 我们给这个抽象对应的具体图：</p>
+<img src ="/image/client-ai-02-17.png">
+
+<p> 我们从上图就能够很清楚的看到，<strong>上一时刻的隐藏层是如何影响当前时刻的隐藏层</strong>的。</p>
+<p> 如果我们把上面的图展开，循环神经网络也可以画成下面这个样子：</p>
+<img src ="/image/client-ai-02-18.png">
+
+<p> 现在看上去就比较清楚了，这个网络在 $$t$$ 时刻接收到输入 $$X_t$$ 之后，隐藏层的值是 $$X_t$$，输出值是 $$O_t$$，关键一点是： $$S_t $$ 的值不仅仅取决于 $$X_t$$，还取决于 $$S_{t - 1}$$</p>
+<img src ="/image/client-ai-02-19.png">
+
+<p> 最后给出 <strong>RNN</strong> 的总括图</p>
+<img src ="/image/client-ai-02-20.png">
+
+<ul>
+<li><strong>用于基于图像的序列识别的端到端可训练神经网络及其在场景文本识别中的应用（CTC）</strong><ul>
+<li>这是一种在计算机科学的<strong>计算机视觉与模式识别</strong>领域诞生的算法，最早发表于<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1507.05717">《用于基于图像的序列识别的端到端可训练神经网络及其在场景文本识别中的应用》</a>这篇文论当中。</li>
+<li>基于图像的序列识别一直是计算机视觉领域的一个长期研究课题。在本文中，我们研究了场景文本识别问题，这是基于图像的序列识别中最重要和最具挑战性的任务之一。提出了一种新颖的神经网络架构，它将特征提取、序列建模和转录集成到一个统一的框架中。与之前的场景文本识别系统相比，所提出的架构具有四个独特的特性：（1）它是端到端可训练的，而大多数现有算法的组件是单独训练和调整的。(2) 它自然地处理任意长度的序列，不涉及字符分割或水平尺度标准化。（3）它不局限于任何预定义的词典，在无词典和基于词典的场景文本识别任务中都取得了显着的性能。(4)它生成了一个有效但小得多的模型，对于现实应用场景更实用。在标准基准（包括 IIIT-5K、街景文本和 ICDAR 数据集）上的实验证明了所提出的算法相对于现有技术的优越性。此外，所提出的算法在基于图像的乐谱识别任务中表现良好，这显然验证了其通用性。</li>
+</ul>
+</li>
+</ul>
+<h4 id="CNN-RNN-基于-Attention-的方法"><a href="#CNN-RNN-基于-Attention-的方法" class="headerlink" title="CNN + RNN 基于 Attention 的方法"></a>CNN + RNN 基于 Attention 的方法</h4><p> <strong>卷积神经网络（CNN）</strong>和<strong>循环神经网络（RNN）</strong>前文已有介绍，这里不再赘述。</p>
+<p> <strong>注意力机制（Attention）</strong></p>
+<p> <strong>注意力机制</strong>（Attention）是人工神经网络中一种<strong>模仿****认知注意力</strong>的技术。这种机制可以<strong>增强神经网络输入数据中某些部分的权重，同时减弱其他部分的权重</strong>，以此将网络的关注点聚焦于数据中最重要的一小部分。数据中哪些部分比其他部分更重要取决于上下文。可以通过<strong>梯度下降法</strong>对注意力机制进行训练。</p>
+<p> 类似于注意力机制的架构最早于1990年代提出，当时提出的名称包括乘法模块（multiplicative module）、sigma pi单元、超网络（hypernetwork）等。注意力机制的灵活性来自于它的“软权重”特性，即<strong>这种权重是可以在运行时改变的，而非像通常的权重一样必须在运行时保持固定</strong>。</p>
+<p> <strong>注意力机制</strong>的<strong>用途</strong>包括 ：</p>
+<ul>
+<li><strong>神经图灵机</strong>中的记忆功能</li>
+<li><strong>可微分神经计算机</strong>中的推理任务</li>
+<li><strong>Transformer 模型</strong>中的语言处理</li>
+<li><strong>Perceiver（感知器）模型</strong>中的多模态数据处理（声音、图像、视频和文本）。</li>
+</ul>
+<p> 假设我们有一个以索引  $$i$$ 排列的标记（token）序列。对于每一个标记  $$i$$，神经网络计算出一个相应的满足 $$\sum_{i} W_i  &#x3D; 1$$的非负软权重 $$Wi$$，每个标记都对应一个由词嵌入得到的向量 $$Vi$$，加权平均 $$\sum_{i} W_iV_i$$即是注意力机制的<strong>输出结果</strong>。</p>
+<p> 可以使用<strong>查询-键机制</strong>（query-key mechanism）计算<strong>软权重</strong>。从每个标记的词嵌入，我们计算其对应的查询向量 $$Qi$$ 和键向量 $$Kj$$，再计算点积 $$QiKj$$的<strong>softmax函数</strong>便可以得到对应的权重，其中 $$i$$代表当前标记、 $$j$$表示与当前标记产生注意力关系的标记。</p>
+<p> 某些架构中会采用多头注意力机制（multi-head attention），其中每一部分都有独立的查询（query）、键（key）和值（value）。</p>
+<p> <strong>语言翻译示例</strong></p>
+<p> 下图展示了将英语翻译成法语的机器，其基本架构为编码器-解码器结构，另外再加上了一个注意力单元。在图示的简单情况下，<strong>注意力单元只是循环层状态的点积计算，并不需要训练</strong>。但在实践中，注意力单元由需要训练的三个完全连接的神经网络层组成。这三层分别被称为<strong>查询</strong>（query）、<strong>键</strong>（key）和<strong>值</strong>（value）。</p>
+<img src ="/image/client-ai-02-21.png">
+
+<p> 上图为加入注意力机制的编码器-解码器架构。图中使用具体的数值表示向量的大小，使其更为直观。左侧黑色箭头表示的是<strong>编码器-解码器</strong>，中间橘色箭头表示的是<strong>注意力单元</strong>，右侧灰色与彩色方块表示的是计算的<strong>数据</strong>。矩阵$$H$$与向量$$w$$中的灰色区域表示<strong>零值</strong>。数值下标表示<strong>向量大小</strong>。字母下标 $$i$$与 $$i-1$$表示<strong>计算步</strong>。</p>
+<p> <strong>图例</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>标签</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100</td>
+<td>语句最大长度</td>
+</tr>
+<tr>
+<td>300</td>
+<td>嵌入尺寸（词维度）</td>
+</tr>
+<tr>
+<td>500</td>
+<td>隐向量长度</td>
+</tr>
+<tr>
+<td>9k, 10k</td>
+<td>输入、输出语言的词典大小</td>
+</tr>
+<tr>
+<td>x, Y</td>
+<td>大小为9k与10k的独热词典向量。x → x以查找表实现。Y是解码器D线性输出的argmax值。</td>
+</tr>
+<tr>
+<td>x</td>
+<td>大小为300的词嵌入向量，通常使用GloVe或word2vec等模型预先计算得到的结果。</td>
+</tr>
+<tr>
+<td>h</td>
+<td>大小为500的编码器隐向量。对于每一计算步，该向量包含了之前所有出现过的词语的信息。最终得到的h可以被看作是一个“句”向量，杰弗里·辛顿则称之为“思维向量”（thought vector）。</td>
+</tr>
+<tr>
+<td>s</td>
+<td>大小为500的解码器隐向量。</td>
+</tr>
+<tr>
+<td>E</td>
+<td>500个神经元的循环神经网络编码器。输出大小为500。输入大小为800，其中300为词嵌入维度，500为循环连接。编码器仅在初始化时直接连接到解码器，故箭头以淡灰色表示。</td>
+</tr>
+<tr>
+<td>D</td>
+<td>两层解码器。循环层有500个神经元，线性全连接层则有10k个神经元（目标词典大小）。单线性层就包含500万（500×10k）个参数，约为循环层参数的10倍。</td>
+</tr>
+<tr>
+<td>score</td>
+<td>大小为100的对准分数</td>
+</tr>
+<tr>
+<td>w</td>
+<td>大小为100的注意力权重向量。这些权重为“软”权重，即可以在前向传播时改变，而非只在训练阶段改变的神经元权重。</td>
+</tr>
+<tr>
+<td>A</td>
+<td>注意力模块，可以是循环状态的点积，也可以是查询-键-值全连接层。输出是大小为100的向量w。</td>
+</tr>
+<tr>
+<td>H</td>
+<td>500×100的矩阵，即100个隐向量h连接而成的矩阵。</td>
+</tr>
+<tr>
+<td>c</td>
+<td>大小为500的上下文向量 &#x3D; H * w，即以w对所有h向量取加权平均。</td>
+</tr>
+</tbody></table>
+<p> 下表是每一步计算的示例。为清楚起见，表中使用了<strong>具体的数值</strong>或<strong>图形</strong>而非字母表示向量与矩阵。嵌套的图形代表了每个 h 都包含之前所有单词的历史记录。在这里，我们引入<strong>注意力分数</strong>以得到所需的<strong>注意力权重</strong>。</p>
+<img src ="/image/client-ai-02-22.png">
+
+<p>以矩阵展示的注意力权重表现了<strong>网络如何根据上下文调整其关注点</strong>。</p>
+<img src ="/image/client-ai-02-23.png">
+
+<p> 对<strong>注意力权重</strong>的这种展现方式回应了人们经常用来批评神经网络的<strong>可解释性****（</strong>Explainable AI，缩写为<strong>XAI，</strong>指的是让专家能够理解人工智能之成果的方法与技术。它相对于黑箱式的机器学习，因为黑箱式的机器学习的设计者本身也无法解释为什么人工智能能达到某些成果。可解释人工智能被认为是“要求解释的权利”（right to explanation）的一种实践。<strong>）</strong>问题。对于一个只作逐字翻译而不考虑词序的网络，其注意力权重矩阵会是一个对角占优矩阵（<strong>指一矩阵的每一横行，对角线上元素的大小大于或等于同一横行其他元素大小的和</strong>）<strong>。这里</strong>非对角占优<strong>的特性表明</strong>注意力机制能捕捉到更为细微的特征**。在第一次通过解码器时，94%的注意力权重在第一个英文单词“I”上，因此网络的输出为对应的法语单词“je”（我）。而在第二次通过解码器时，此时88%的注意力权重在第三个英文单词“you”上，因此网络输出了对应的法语“t’”（你）。最后一遍时，95%的注意力权重在第二个英文单词“love”上，所以网络最后输出的是法语单词“aime”（爱）。</p>
+<h2 id="客户端基于端智能对-NLP-和-OCR-的应用"><a href="#客户端基于端智能对-NLP-和-OCR-的应用" class="headerlink" title="客户端基于端智能对 NLP 和 OCR 的应用"></a>客户端基于端智能对 NLP 和 OCR 的应用</h2><h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><p>Android 基于 Google 生态拥有非常完善且丰富的机器学习使用路径，其中最著名的便是 Google 的 <strong>Firebase</strong> 所提供的 <strong>MLKit</strong>。</p>
+<img src ="/image/client-ai-02-24.png">
+
+<h4 id="MLKit"><a href="#MLKit" class="headerlink" title="MLKit"></a>MLKit</h4><p><strong>MLKit</strong> 是一个客户端机器学习套件 SDK，它通过一个强大且易用的软件包将 Google 的机器学习专业技术融入到 Android 和 iOS 应用中。无论你是刚开始接触机器学习，还是拥有丰富的相关经验，只需几行代码即可实现所需的功能。你无需具备丰富的神经网络或模型优化知识即可开始使用该套件。另一方面，如果你是一名经验丰富的机器学习开发者，机器学习套件提供了便捷的 API，可帮助您在移动应用中使用自定义 <strong>TensorFlow Lite</strong> 模型。</p>
+<p>篇幅所限，这里不多做介绍，感兴趣的同学可以参照 Firebase 官方文档说明进行了解。</p>
+<p><a target="_blank" rel="noopener" href="https://firebase.google.com/docs/ml-kit/android/recognize-text?hl=zh-cn">使用机器学习套件识别图片中的文本 (Android)</a></p>
+<h3 id="Apple"><a href="#Apple" class="headerlink" title="Apple"></a>Apple</h3><p>苹果的整体生态链从硬件到软件层面，都拥有着一套更为强大且高性能的机器学习支撑能力，其中最亮眼的便是 <strong>CoreML</strong> 与 <strong>Vision</strong> 两大框架。</p>
+<h4 id="CoreML"><a href="#CoreML" class="headerlink" title="CoreML"></a>CoreML</h4><img src ="/image/client-ai-02-25.png">
+
+<p>上一期已经介绍过，这里不再赘述，详情见<a target="_blank" rel="noopener" href="https://guanghe.feishu.cn/docx/UpHHdCnL0oVI5Rx9Fxac8FZWnxd">端智能 01 期 - 神经网络&#x2F;机器学习在 iOS 端的应用与场景落地</a> </p>
+<h4 id="Vision"><a href="#Vision" class="headerlink" title="Vision"></a>Vision</h4><img src ="/image/client-ai-02-26.png">
+
+<p><strong>Vision</strong> 是 Apple 基于机器学习所研发的一款强大的<strong>图像识别框架</strong>。它能够应用<strong>计算机视觉算法</strong>对输入<strong>图像</strong>和<strong>视频</strong>执行各种任务。<strong>Vision</strong> 框架不仅能够执行<strong>人脸</strong>和<strong>人脸标志检测</strong>、<strong>文本检测</strong>、<strong>条形码识别</strong>、<strong>图像配准</strong>和<strong>一般特征跟踪</strong>。<strong>Vision</strong> 还允许使用<strong>自定义 Core ML 模型</strong>来执行<strong>分类</strong>或<strong>对象检测</strong>等任务。</p>
+<p>本期我们重点要介绍的是其中的<strong>识别图像文本</strong>能力，即使用 <strong>Vision</strong> 框架向应用程序添加文本识别功能。</p>
+<h5 id="识别图像中的文本"><a href="#识别图像中的文本" class="headerlink" title="识别图像中的文本"></a><strong>识别图像中的文本</strong></h5><p><strong>Vision</strong> 的众多强大功能之一是它能够检测和识别图像中的多语言文本。你可以在自己的应用程序中使用此功能来处理<strong>实时</strong>和<strong>离线</strong>用例。在所有情况下，<strong>Vision</strong> 的所有处理都发生在用户的设备上，以增强性能和用户隐私。</p>
+<p><strong>Vision</strong> 的文本识别功能使用以下路径之一进行操作：</p>
+<ul>
+<li><strong>快速路径</strong><ul>
+<li><strong>快速路径</strong>使用框架的<strong>字符检测</strong>功能来查找<strong>单个字符</strong>，然后使用<strong>小型机器学习模型</strong>来识别<strong>单个字符</strong>和<strong>单词</strong>。这种方法类似于传统的**光学字符识别 (OCR)**。</li>
+<li>有关使用快速路径的示例代码，请见<strong>从图像中的文本中提取电话号码</strong> Demo 演示。</li>
+</ul>
+</li>
+<li><strong>准确路径</strong><ul>
+<li><strong>准确路径</strong>使用<strong>神经网络</strong>以<strong>字符串</strong>和<strong>行</strong>的形式查找<strong>文本</strong>，然后进行进一步分析以查找<strong>单个单词</strong>和<strong>句子</strong>。这种方法更符合人类阅读文本的方式。</li>
+<li>有关使用准确路径的示例代码，请见<strong>在文档上构建已识别文本的结构</strong> Demo 演示。</li>
+</ul>
+</li>
+</ul>
+<p>使用任一路径，您都可以选择应用基于<strong>自然语言处理 (NLP)</strong> 的<strong>语言校正</strong>阶段，以最大程度地减少误读的可能性。</p>
+<img src ="/image/client-ai-02-27.png">
+
+<h3 id="使用-Vision-amp-CoreML-实现对从图像中查找并突出显示关键字"><a href="#使用-Vision-amp-CoreML-实现对从图像中查找并突出显示关键字" class="headerlink" title="使用 Vision &amp; CoreML 实现对从图像中查找并突出显示关键字"></a>使用 Vision &amp; CoreML 实现对从图像中查找并突出显示关键字</h3><h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>我们今天的目标是构建一个识别静态图像中文本的 iOS 应用程序。</p>
+<p>就像你平时使用搜索关键字时一样，<code>cmd + F</code> 所有匹配的字符串都会在屏幕上突出显示，我们将突出显示图像中的一些选定的字符串。</p>
+<h3 id="涵盖的主题"><a href="#涵盖的主题" class="headerlink" title="涵盖的主题"></a>涵盖的主题</h3><p>在开始讨论实现之前，让我们先简单介绍一下我们将会涉及到的内容：</p>
+<ul>
+<li>使用相机或图库捕获图像</li>
+<li>使用 Vision 检测文本</li>
+<li>使用 Core ML 进行文本识别</li>
+<li>在某些关键字上绘制边界框</li>
+</ul>
+<h3 id="我们想要实现什么"><a href="#我们想要实现什么" class="headerlink" title="我们想要实现什么"></a>我们想要实现什么</h3><p>我们希望在从相机&#x2F;图库捕获的图像中识别出一些检测到的文本的名称后，突出显示这些文本，如下所示：</p>
+<img src ="/image/client-ai-02-28.png">
+
+<h3 id="图像选择器控制器"><a href="#图像选择器控制器" class="headerlink" title="图像选择器控制器"></a>图像选择器控制器</h3><p>它非常基本（只有一个 UIImage 和一个 Button）。我们需要的只是从照片库上传包含文本的图像或直接通过摄像头拍摄。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="type">UIImagePickerController</span>.isSourceTypeAvailable(.camera) <span class="keyword">else</span> &#123;</span><br><span class="line">      presentPhotoPicker(sourceType: .photoLibrary)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> photoSourcePicker <span class="operator">=</span> <span class="type">UIAlertController</span>()</span><br><span class="line"><span class="keyword">let</span> takePhoto <span class="operator">=</span> <span class="type">UIAlertAction</span>(title: <span class="string">&quot;Camera&quot;</span>, style: .default) &#123; [<span class="keyword">unowned</span> <span class="keyword">self</span>] <span class="keyword">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>.presentPhotoPicker(sourceType: .camera)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> choosePhoto <span class="operator">=</span> <span class="type">UIAlertAction</span>(title: <span class="string">&quot;Photos Library&quot;</span>, style: .default) &#123; [<span class="keyword">unowned</span> <span class="keyword">self</span>] <span class="keyword">_</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">self</span>.presentPhotoPicker(sourceType: .photoLibrary)</span><br><span class="line">&#125;</span><br><span class="line">photoSourcePicker.addAction(takePhoto)</span><br><span class="line">photoSourcePicker.addAction(choosePhoto)</span><br><span class="line">photoSourcePicker.addAction(<span class="type">UIAlertAction</span>(title: <span class="string">&quot;Cancel&quot;</span>, style: .cancel, handler: <span class="literal">nil</span>))</span><br><span class="line">        </span><br><span class="line">present(photoSourcePicker, animated: <span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>presentPhotoPicker</code> 用于启动适当的应用程序（图库 &#x2F; 摄像头）。单击图像后，我们启动 <code>Vision Request</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">ViewController</span>: <span class="title class_ inherited__">UIImagePickerControllerDelegate</span>, <span class="title class_ inherited__">UINavigationControllerDelegate</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">imagePickerController</span>(<span class="keyword">_</span> <span class="params">picker</span>: <span class="type">UIImagePickerController</span>, <span class="params">didFinishPickingMediaWithInfo</span> <span class="params">info</span>: [<span class="type">UIImagePickerController</span>.<span class="params">InfoKey</span>: <span class="keyword">Any</span>]) &#123;</span><br><span class="line">        picker.dismiss(animated: <span class="literal">true</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> uiImage <span class="operator">=</span> info[<span class="type">UIImagePickerController</span>.<span class="type">InfoKey</span>.originalImage] <span class="keyword">as?</span> <span class="type">UIImage</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">&quot;Error!&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        imageView.image <span class="operator">=</span> uiImage</span><br><span class="line">        createVisionRequest(image: uiImage)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">presentPhotoPicker</span>(<span class="params">sourceType</span>: <span class="type">UIImagePickerController</span>.<span class="type">SourceType</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> picker <span class="operator">=</span> <span class="type">UIImagePickerController</span>()</span><br><span class="line">        picker.delegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">        picker.sourceType <span class="operator">=</span> sourceType</span><br><span class="line">        present(picker, animated: <span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Vision-框架的使用"><a href="#Vision-框架的使用" class="headerlink" title="Vision 框架的使用"></a>Vision 框架的使用</h3><p>Vision 框架 是在 iOS 11 中推出的。它带来了图像识别和分析算法，根据 Apple 的说法，这些算法比 CoreImage Framework 更准确。对此的一个重要贡献是机器学习、深度学习和计算机视觉的底层使用。</p>
+<h4 id="该框架的实施包括三个重要的用例："><a href="#该框架的实施包括三个重要的用例：" class="headerlink" title="该框架的实施包括三个重要的用例："></a>该框架的实施包括三个重要的用例：</h4><ul>
+<li><code>Request</code>创建一个请求来检测对象的类型。你可以设置多种要检测的类型。</li>
+<li><code>Request Handler</code>这用于处理从请求获得的结果。</li>
+<li><code>Observation</code>结果以观察的形式存储。</li>
+</ul>
+<h4 id="Vision-框架中的一些重要类包括："><a href="#Vision-框架中的一些重要类包括：" class="headerlink" title="Vision 框架中的一些重要类包括："></a>Vision 框架中的一些重要类包括：</h4><ul>
+<li><code>VNRequest</code>它由一系列用于图像处理的请求组成。</li>
+<li><code>VNObservation</code>这给了我们结果的输出。</li>
+<li><code>VNImageRequestHandler</code>处理<code>VNRequest</code>给定图像上的一个或多个。</li>
+</ul>
+<h4 id="创建-Vision-Image-Request-Handler"><a href="#创建-Vision-Image-Request-Handler" class="headerlink" title="创建 Vision Image Request Handler"></a>创建 <strong>Vision Image Request Handler</strong></h4><p>以下代码片段展示了如何创建 <strong>Vision Image Request Handler</strong>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">createVisionRequest</span>(<span class="params">image</span>: <span class="type">UIImage</span>)&#123;</span><br><span class="line">        </span><br><span class="line">        currentImage <span class="operator">=</span> image</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> cgImage <span class="operator">=</span> image.cgImage <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">let</span> requestHandler <span class="operator">=</span> <span class="type">VNImageRequestHandler</span>(cgImage: cgImage, orientation: image.cgImageOrientation, options: [:])</span><br><span class="line">        <span class="keyword">let</span> vnRequests <span class="operator">=</span> [vnTextDetectionRequest]</span><br><span class="line">        </span><br><span class="line">        <span class="type">DispatchQueue</span>.global(qos: .background).async &#123;</span><br><span class="line">            <span class="keyword">do</span>&#123;</span><br><span class="line">                <span class="keyword">try</span> requestHandler.perform(vnRequests)</span><br><span class="line">            &#125;<span class="keyword">catch</span> <span class="keyword">let</span> error <span class="keyword">as</span> <span class="type">NSError</span> &#123;</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;Error in performing Image request: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以传递<strong>多个请求</strong>，但本文的目标是<strong>文本检测</strong>和<strong>识别</strong>。</p>
+<p><code>vnTextDetectionRequest</code> 在下面的代码中定义：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vnTextDetectionRequest : <span class="type">VNDetectTextRectanglesRequest</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> request <span class="operator">=</span> <span class="type">VNDetectTextRectanglesRequest</span> &#123; (request,error) <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> error <span class="operator">=</span> error <span class="keyword">as</span> <span class="type">NSError</span>? &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Error in detecting - <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">guard</span> <span class="keyword">let</span> observations <span class="operator">=</span> request.results <span class="keyword">as?</span> [<span class="type">VNTextObservation</span>]</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">                </span><br><span class="line">            <span class="keyword">var</span> numberOfWords <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> textObservation <span class="keyword">in</span> observations &#123;</span><br><span class="line">                <span class="keyword">var</span> numberOfCharacters <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">                <span class="keyword">for</span> rectangleObservation <span class="keyword">in</span> textObservation.characterBoxes<span class="operator">!</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> croppedImage <span class="operator">=</span> crop(image: <span class="keyword">self</span>.currentImage, rectangle: rectangleObservation)</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">let</span> croppedImage <span class="operator">=</span> croppedImage &#123;</span><br><span class="line">                        <span class="keyword">let</span> processedImage <span class="operator">=</span> preProcess(image: croppedImage)</span><br><span class="line">                        <span class="keyword">self</span>.imageClassifier(image: processedImage,</span><br><span class="line">                                             wordNumber: numberOfWords,</span><br><span class="line">                                             characterNumber: numberOfCharacters, currentObservation: textObservation)</span><br><span class="line">                        numberOfCharacters <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                numberOfWords <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">                </span><br><span class="line">            <span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() <span class="operator">+</span> <span class="number">3</span>, execute: &#123;</span><br><span class="line">                <span class="keyword">self</span>.drawRectanglesOnObservations(observations: observations)</span><br><span class="line">            &#125;)</span><br><span class="line">                </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    request.reportCharacterBoxes <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> request</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码片段中有很多内容。让我们来分析一下。</p>
+<ul>
+<li>观察结果是<strong>请求返回的结果</strong>。</li>
+<li>我们的目标是<strong>用边界框突出显示检测到的文本</strong>，因此我们将观察结果类型转换为<code>VNTextObservation</code>.</li>
+<li>我们<strong>裁剪图像中检测到的文本部分</strong>。这些裁剪后的图像充当我们的 ML 模型的<strong>微输入</strong>（micro-inputs）。</li>
+<li>我们将这些图像调整到所需的输入大小后，将其<strong>输入 Core ML 模型进行分类</strong>。</li>
+</ul>
+<p>其中裁剪和预处理的代码可在 Demo 工程的<code>ImageUtils.swift</code>中找到。</p>
+<h4 id="绘制边界框"><a href="#绘制边界框" class="headerlink" title="绘制边界框"></a>绘制边界框</h4><p>现在我们知道了 <strong>Vision</strong> 中检测到的文本<code>VNTextObservations</code>。每个观察都有一个边界框属性。每个观察结果的标签都将由 <strong>Core ML</strong> 的图像分类器进行预测处理。</p>
+<p>所以我们可以简单地在文本上绘制矩形。下面的方法为我们实现了该实现，并突出显示了图像中的“Vision”和“Core ML”一词。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">drawRectanglesOnObservations</span>(<span class="params">observations</span> : [<span class="type">VNDetectedObjectObservation</span>])&#123;</span><br><span class="line">     <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">         <span class="keyword">guard</span> <span class="keyword">let</span> image <span class="operator">=</span> <span class="keyword">self</span>.imageView.image</span><br><span class="line">             <span class="keyword">else</span>&#123;</span><br><span class="line">                 <span class="built_in">print</span>(<span class="string">&quot;Failure in retrieving image&quot;</span>)</span><br><span class="line">                 <span class="keyword">return</span></span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">let</span> imageSize <span class="operator">=</span> image.size</span><br><span class="line">         <span class="keyword">var</span> imageTransform <span class="operator">=</span> <span class="type">CGAffineTransform</span>.identity.scaledBy(x: <span class="number">1</span>, y: <span class="operator">-</span><span class="number">1</span>).translatedBy(x: <span class="number">0</span>, y: <span class="operator">-</span>imageSize.height)</span><br><span class="line">         imageTransform <span class="operator">=</span> imageTransform.scaledBy(x: imageSize.width, y: imageSize.height)</span><br><span class="line">         <span class="type">UIGraphicsBeginImageContextWithOptions</span>(imageSize, <span class="literal">true</span>, <span class="number">0</span>)</span><br><span class="line">         <span class="keyword">let</span> graphicsContext <span class="operator">=</span> <span class="type">UIGraphicsGetCurrentContext</span>()</span><br><span class="line">         image.draw(in: <span class="type">CGRect</span>(origin: .zero, size: imageSize))</span><br><span class="line">            </span><br><span class="line">         graphicsContext<span class="operator">?</span>.saveGState()</span><br><span class="line">         graphicsContext<span class="operator">?</span>.setLineJoin(.round)</span><br><span class="line">         graphicsContext<span class="operator">?</span>.setLineWidth(<span class="number">8.0</span>)</span><br><span class="line">            </span><br><span class="line">         graphicsContext<span class="operator">?</span>.setFillColor(red: <span class="number">0</span>, green: <span class="number">1</span>, blue: <span class="number">0</span>, alpha: <span class="number">0.3</span>)</span><br><span class="line">         graphicsContext<span class="operator">?</span>.setStrokeColor(<span class="type">UIColor</span>.green.cgColor)</span><br><span class="line">         </span><br><span class="line">         <span class="keyword">var</span> previousString <span class="operator">=</span> <span class="string">&quot;&quot;</span></span><br><span class="line">         <span class="keyword">let</span> elements <span class="operator">=</span> [<span class="string">&quot;VISION&quot;</span>,<span class="string">&quot;COREML&quot;</span>]</span><br><span class="line">            </span><br><span class="line">         observations.forEach &#123; (observation) <span class="keyword">in</span></span><br><span class="line">             <span class="keyword">var</span> string <span class="operator">=</span> observationStringLookup[observation <span class="keyword">as!</span> <span class="type">VNTextObservation</span>] <span class="operator">??</span> <span class="string">&quot;&quot;</span></span><br><span class="line">             <span class="keyword">let</span> tempString <span class="operator">=</span> string</span><br><span class="line">             string <span class="operator">=</span> string.replacingOccurrences(of: previousString, with: <span class="string">&quot;&quot;</span>)</span><br><span class="line">             string <span class="operator">=</span> string.trim()</span><br><span class="line">             previousString <span class="operator">=</span> tempString</span><br><span class="line">                </span><br><span class="line">             <span class="keyword">if</span> elements.contains(where: string.contains)&#123;</span><br><span class="line">                    </span><br><span class="line">                 <span class="keyword">let</span> observationBounds <span class="operator">=</span> observation.boundingBox.applying(imageTransform)</span><br><span class="line">                    graphicsContext<span class="operator">?</span>.addRect(observationBounds)</span><br><span class="line">             &#125;  </span><br><span class="line">         &#125;</span><br><span class="line">         graphicsContext<span class="operator">?</span>.drawPath(using: <span class="type">CGPathDrawingMode</span>.fillStroke)</span><br><span class="line">         graphicsContext<span class="operator">?</span>.restoreGState()</span><br><span class="line">            </span><br><span class="line">         <span class="keyword">let</span> drawnImage <span class="operator">=</span> <span class="type">UIGraphicsGetImageFromCurrentImageContext</span>()</span><br><span class="line">         <span class="type">UIGraphicsEndImageContext</span>()</span><br><span class="line">         <span class="keyword">self</span>.imageView.image <span class="operator">=</span> drawnImage </span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，让我们看看如何与 <strong>CoreML</strong> 框架结合起来，完成我们最终的功能。</p>
+<h3 id="CoreML-框架的使用"><a href="#CoreML-框架的使用" class="headerlink" title="CoreML 框架的使用"></a>CoreML 框架的使用</h3><p>Core ML 框架可以让开发人员在其应用程序中轻松使用 ML 模型。借助该框架，可以处理输入数据以返回所需的输出。</p>
+<p>在本文中，我们使用<code>alphanum_28X28</code>机器学习模型。该模型需要输入尺寸为28*28的图像并返回检测到的文本。</p>
+<p>其中，调整图像大小的时机，发生在我们之前看到的<strong>预处理函数</strong>中。<code>observationStringLookup</code>是一个查找字典，它将每个观察结果绑定到 Core ML 模型中来预测文本。</p>
+<p>为了判定文本内容，我们构建了一个名为 <code>imageClassifier(image: wordNumber: characterNumber: currentObservation :)</code> 的图像分类器函数，该函数对调整尺寸后的图片输入进行处理：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">imageClassifier</span>(<span class="params">image</span>: <span class="type">UIImage</span>, <span class="params">wordNumber</span>: <span class="type">Int</span>, <span class="params">characterNumber</span>: <span class="type">Int</span>, <span class="params">currentObservation</span> : <span class="type">VNTextObservation</span>)&#123;</span><br><span class="line">     <span class="keyword">let</span> request <span class="operator">=</span> <span class="type">VNCoreMLRequest</span>(model: model) &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] request, error <span class="keyword">in</span></span><br><span class="line">         <span class="keyword">guard</span> <span class="keyword">let</span> results <span class="operator">=</span> request.results <span class="keyword">as?</span> [<span class="type">VNClassificationObservation</span>],</span><br><span class="line">             <span class="keyword">let</span> topResult <span class="operator">=</span> results.first <span class="keyword">else</span> &#123;</span><br><span class="line">                 <span class="built_in">fatalError</span>(<span class="string">&quot;Unexpected result type from VNCoreMLRequest&quot;</span>)</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">let</span> result <span class="operator">=</span> topResult.identifier</span><br><span class="line">         <span class="keyword">let</span> classificationInfo: [<span class="type">String</span>: <span class="keyword">Any</span>] <span class="operator">=</span> [<span class="string">&quot;wordNumber&quot;</span> : wordNumber,</span><br><span class="line">                                                  <span class="string">&quot;characterNumber&quot;</span> : characterNumber,</span><br><span class="line">                                                  <span class="string">&quot;class&quot;</span> : result]</span><br><span class="line">         <span class="keyword">self</span><span class="operator">?</span>.handleResult(classificationInfo, currentObservation: currentObservation)</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">guard</span> <span class="keyword">let</span> ciImage <span class="operator">=</span> <span class="type">CIImage</span>(image: image) <span class="keyword">else</span> &#123;</span><br><span class="line">         <span class="built_in">fatalError</span>(<span class="string">&quot;Could not convert UIImage to CIImage :(&quot;</span>)</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">let</span> handler <span class="operator">=</span> <span class="type">VNImageRequestHandler</span>(ciImage: ciImage)</span><br><span class="line">     <span class="type">DispatchQueue</span>.global(qos: .userInteractive).async &#123;</span><br><span class="line">         <span class="keyword">do</span> &#123;</span><br><span class="line">             <span class="keyword">try</span> handler.perform([request])</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">catch</span> &#123;</span><br><span class="line">             <span class="built_in">print</span>(error)</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">handleResult</span>(<span class="keyword">_</span> <span class="params">result</span>: [<span class="params">String</span>: <span class="keyword">Any</span>], <span class="params">currentObservation</span> : <span class="type">VNTextObservation</span>) &#123;</span><br><span class="line">     objc_sync_enter(<span class="keyword">self</span>)</span><br><span class="line">     <span class="keyword">guard</span> <span class="keyword">let</span> wordNumber <span class="operator">=</span> result[<span class="string">&quot;wordNumber&quot;</span>] <span class="keyword">as?</span> <span class="type">Int</span> <span class="keyword">else</span> &#123;</span><br><span class="line">         <span class="keyword">return</span></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">guard</span> <span class="keyword">let</span> characterNumber <span class="operator">=</span> result[<span class="string">&quot;characterNumber&quot;</span>] <span class="keyword">as?</span> <span class="type">Int</span> <span class="keyword">else</span> &#123;</span><br><span class="line">         <span class="keyword">return</span></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">guard</span> <span class="keyword">let</span> characterClass <span class="operator">=</span> result[<span class="string">&quot;class&quot;</span>] <span class="keyword">as?</span> <span class="type">String</span> <span class="keyword">else</span> &#123;</span><br><span class="line">         <span class="keyword">return</span></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> (textMetadata[wordNumber] <span class="operator">==</span> <span class="literal">nil</span>) &#123;</span><br><span class="line">         <span class="keyword">let</span> tmp: [<span class="type">Int</span>: <span class="type">String</span>] <span class="operator">=</span> [characterNumber: characterClass]</span><br><span class="line">         textMetadata[wordNumber] <span class="operator">=</span> tmp</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">         <span class="keyword">var</span> tmp <span class="operator">=</span> textMetadata[wordNumber]<span class="operator">!</span></span><br><span class="line">         tmp[characterNumber] <span class="operator">=</span> characterClass</span><br><span class="line">         textMetadata[wordNumber] <span class="operator">=</span> tmp</span><br><span class="line">     &#125;</span><br><span class="line">     objc_sync_exit(<span class="keyword">self</span>)</span><br><span class="line">     <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">         <span class="keyword">self</span>.doTextDetection(currentObservation: currentObservation)</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">func</span> <span class="title function_">doTextDetection</span>(<span class="params">currentObservation</span> : <span class="type">VNTextObservation</span>) &#123;</span><br><span class="line">     <span class="keyword">var</span> result: <span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span></span><br><span class="line">     <span class="keyword">if</span> (textMetadata.isEmpty) &#123;</span><br><span class="line">         <span class="built_in">print</span>(<span class="string">&quot;The image does not contain any text.&quot;</span>)</span><br><span class="line">         <span class="keyword">return</span></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">let</span> sortedKeys <span class="operator">=</span> textMetadata.keys.sorted()</span><br><span class="line">     <span class="keyword">for</span> sortedKey <span class="keyword">in</span> sortedKeys &#123;</span><br><span class="line">         result <span class="operator">+=</span>  word(fromDictionary: textMetadata[sortedKey]<span class="operator">!</span>) <span class="operator">+</span> <span class="string">&quot; &quot;</span>   </span><br><span class="line">     &#125;</span><br><span class="line">        </span><br><span class="line">     observationStringLookup[currentObservation] <span class="operator">=</span> result   </span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">func</span> <span class="title function_">word</span>(<span class="params">fromDictionary</span> <span class="params">dictionary</span>: [<span class="params">Int</span> : <span class="type">String</span>]) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">     <span class="keyword">let</span> sortedKeys <span class="operator">=</span> dictionary.keys.sorted()</span><br><span class="line">     <span class="keyword">var</span> word: <span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span></span><br><span class="line">     <span class="keyword">for</span> sortedKey <span class="keyword">in</span> sortedKeys &#123;</span><br><span class="line">         <span class="keyword">let</span> char: <span class="type">String</span> <span class="operator">=</span> dictionary[sortedKey]<span class="operator">!</span></span><br><span class="line">         word <span class="operator">+=</span> char</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> word</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中的 <code>textMetadata</code>用于存储所有预测的单词（在 iOS13 及以上系统版本的 <strong>Vision</strong> 框架中，<strong>Vision</strong> 将识别的文本存储在 Observation 实例本身当中），并且<code>observationStringLookup</code>也是提前创建好的，现在，我们就可以突出显示选定的观察结果了（如同我们在本文开头看到的那样，最终输出中突出显示了“vision”、“core ml”等词）。</p>
+<p>需要注意的是：取决于<strong>训练数据样本</strong>及<strong>模型精度</strong>的因素，<strong>Core ML</strong> 模型可能无法对不同字体的文本给出正确的预测结果。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>感谢各位认真聆听到了这里，我们不妨对今天学习和了解的内容做一个总结</p>
+<ul>
+<li><strong>自然语言处理（NLP）</strong>是计算机科学或者说是人工智能的一个分支，它是由<strong>自然语言理解（NLU）</strong>和<strong>自然语言生成（NLG）组成的</strong>，它们之间的关系既关联又相互课题独立。</li>
+<li><strong>光学字符识别（OCR）</strong> 的处理过程大体分为<strong>图像输入</strong>、<strong>前期处理</strong>、<strong>中期处理</strong>、<strong>后期处理</strong>和<strong>文本输出</strong>这 5 个步骤。</li>
+<li><strong>卷积神经网络（CNN）</strong>和<strong>循环神经网络（RNN）</strong>是当今实现<strong>光学字符识别（OCR）</strong>的核心主流方案。</li>
+<li><strong>Android</strong> 和 <strong>iOS</strong> 客户端均拥有强大的机器学习能力与硬件支持，可以将诸如图像文本识别等在内的<strong>端智能</strong>轻松实现。</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-wkwebview-cache-test/" title="WKWebView缓存协议验证">WKWebView缓存协议验证</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言本次我们基于 URLRequest.CachePolicy 协议进行 WKWebView 缓存能力的验证，主要验证方向为网页页面及相应资源的内容缓存。
+API 如下
+1234567891011public struct URLRequest : ReferenceConvertible, E
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-08-24T06:34:35.000Z" class="post-list__meta--date date">2024-08-24</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/WKWebview/" rel="tag">WKWebview</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a>
+</span><a class="btn-border-small" href="/ios-wkwebview-cache-test/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-short-video-fast/" title="iOS 短视频播放列表优化策略">iOS 短视频播放列表优化策略</a></h2>
+                <p class="excerpt">
+                
+                基于洋葱学院短视频播放器进行优化改造，以下是优化策略图
+三播放器加载策略
+
+业务流程优化
+
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-12-18T07:04:22.000Z" class="post-list__meta--date date">2023-12-18</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E4%BC%98%E5%8C%96/" rel="tag">优化</a>, <a class="-none-link" href="/tags/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8/" rel="tag">视频播放器</a>
+</span><a class="btn-border-small" href="/ios-short-video-fast/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/client-ai-02/';
+  var disqus_title = '「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)';
+  var disqus_url = 'http://shevakuilin.com/client-ai-02/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>

@@ -140,6 +140,51 @@
   
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/clang-xcode/" title="link to post.title">基于 Clang 的 Xcode 编译器插件开发</a></h2>
+      <p class="excerpt">
+    
+      LLVM &amp;amp; Clang
+
+官方文档
+Clang 是作为常规 LLVM 版本的一部分发布的，你可以从 https://LLVM.org/releases/下载版本。
+1.下载LLVM工程1git clone git@github.com:llvm/llvm-project.git
+
+其中包含
+
+LLVM (release notes)
+Clang (release notes)
+clang
+    &hellip;
+      </p>
+      <div class="post-list__meta"><time datetime="2021-03-13T15:45:09.000Z" class="post-list__meta--date date">2021-03-13</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Clang/" rel="tag">Clang</a>, <a class="-none-link" href="/tags/IDE-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag">IDE 插件开发</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+</span><a class="btn-border-small" href="/clang-xcode/">开始阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+  
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/ios-launch-black/" title="link to post.title">iOS 端启动页黑屏解决方案</a></h2>
+      <p class="excerpt">
+    
+      
+
+问题背景目前 iOS 端应用在安装后概率性会出现黑屏问题，主要表现为某次安装（有些设备是100%必现）后，每次启动时，在出现启动图之前都会出现一段持续 1 ~ 2s 的黑屏现象。这种现象并不是每个用户都会遇到，但是一旦在某次安装时出现，那么在未卸载的这段时间内，每次启动都会遇到该问题
+分析报告出现黑屏的原因猜测
+启动阶段耗时任务导致阻塞了UI线程的加载
+系统对启动图片缓存导致
+启动图尺寸问题
+
+    &hellip;
+      </p>
+      <div class="post-list__meta"><time datetime="2021-03-03T09:25:27.000Z" class="post-list__meta--date date">2021-03-03</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%90%AF%E5%8A%A8%E9%BB%91%E5%B1%8F/" rel="tag">启动黑屏</a>, <a class="-none-link" href="/tags/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="tag">问题排查</a>
+</span><a class="btn-border-small" href="/ios-launch-black/">开始阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+  
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/reactivecocoa-timer-extension/" title="link to post.title">为 ReactiveCocoa 提供可独立区分延迟执行和间隔执行时间的定时器扩展</a></h2>
       <p class="excerpt">
     
@@ -248,34 +293,6 @@
       <div class="post-list__meta"><time datetime="2019-01-25T10:04:39.000Z" class="post-list__meta--date date">2019-01-25</time> &#8226; <span class="post-list__meta--tags tags">于 
   <a class="-none-link" href="/tags/CFArray/" rel="tag">CFArray</a>, <a class="-none-link" href="/tags/NSArray/" rel="tag">NSArray</a>, <a class="-none-link" href="/tags/NSMutableArray/" rel="tag">NSMutableArray</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E6%9C%AD%E8%AE%B0/" rel="tag">札记</a>
 </span><a class="btn-border-small" href="/nsmutablearray-note/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/ios-componentization-02/" title="link to post.title">iOS 组件化之路（二）----- 私有库podspec文件编写 &amp; 验证的踩坑记录</a></h2>
-      <p class="excerpt">
-    
-      私有组件库验证发版采坑总结。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2018-11-08T02:23:33.000Z" class="post-list__meta--date date">2018-11-08</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%A7%81%E6%9C%89%E5%BA%93/" rel="tag">私有库</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>
-</span><a class="btn-border-small" href="/ios-componentization-02/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/ios-componentization-01/" title="link to post.title">iOS 组件化之路（一）CocoaPods私有库的创建</a></h2>
-      <p class="excerpt">
-    
-      本文将介绍创建一个 CocoaPods 私有库的基本流程。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2018-08-20T06:21:28.000Z" class="post-list__meta--date date">2018-08-20</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%A7%81%E6%9C%89%E5%BA%93/" rel="tag">私有库</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>
-</span><a class="btn-border-small" href="/ios-componentization-01/">开始阅读</a></div>
       <hr class="post-list__divider" />
     </li>
   
