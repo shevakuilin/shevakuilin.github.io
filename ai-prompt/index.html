@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>AI 工具的使用艺术之 Prompt | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="AI 工具的使用艺术之 Prompt | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AI 工具的使用艺术之 Prompt | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ai-prompt/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-11-27T13:43:03.000Z" class="post-list__meta--date date">2024-11-27</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/Midjourney/" rel="tag">Midjourney</a>, <a class="-none-link" href="/tags/Prompt/" rel="tag">Prompt</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">AI 工具的使用艺术之 Prompt</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/ai-prompt.png"  style="width: 1200px; height: 560px; object-fit: cover; object-position: top;">
+
+<ol>
+<li><h2 id="什么是提示词和提示词工程"><a href="#什么是提示词和提示词工程" class="headerlink" title="什么是提示词和提示词工程"></a>什么是提示词和提示词工程</h2><h3 id="1-1-提示词（Prompt）"><a href="#1-1-提示词（Prompt）" class="headerlink" title="1.1 提示词（Prompt）"></a>1.1 提示词（<strong>Prompt）</strong></h3></li>
+</ol>
+<p><strong>提示词，英文名叫 Prompt。</strong></p>
+<p><strong>是用户发送给大语言模型的问题、指令或请求，</strong>用来<strong>明确地</strong>告诉模型用户想要解决的问题或完成的任务，是大语言模型<strong>理解用户需求</strong>并据此生成相关、准确回答或内容的基础。</p>
+<p>对于大语言模型来说，提示词就是用户输入给大语言模型的文本信息。</p>
+<p>通俗点就是你向AI输入的内容，可以是问题，也可以是要求。</p>
+<img src="/image/ai-prompt-01.png">
+
+<p>下面先看一个简单的例子：</p>
+<p><strong>假设你问AI：</strong></p>
+<p>评价一下最近刚上映的电影。</p>
+<p>这个提问就是提示词。</p>
+<p><strong>AI接收到你的问题后回复</strong>：</p>
+<p>我无法完成这项任务，因为我目前无法访问实时数据或外部信息，包括最近上映的电影评价。如果你能提供具体的电影名称，我可以尝试根据我最后更新时的知识库提供一般性的电影分析或讨论电影评价的角度。</p>
+<p>可以看出，AI的回复并不是你需要的答案。</p>
+<p>出现这种问题原因是什么？</p>
+<p>上面这个例子中，导致大语言模型无法顺利完成任务的原因是我们没有能够让AI理解到底要<strong>评价哪部电影。</strong></p>
+<p>尽管大语言模型经过了海量数据的预训练，并获得了理解和生成文本的能力。但不同于人类交流时，能够通过语气、非语言线索和背景知识来理解对方的意图。</p>
+<p><strong>大语言模型仅能够根据输入的文本提示进行操作，如果文本的信息不足以让他理解你的意图，AI将没办法正确回答你的问题</strong>。</p>
+<hr>
+<h3 id="1-2-提示词工程（Prompt-Engineering）"><a href="#1-2-提示词工程（Prompt-Engineering）" class="headerlink" title="1.2 提示词工程（Prompt Engineering）"></a>1.2 提示词工程（<strong>Prompt Engineering）</strong></h3><p>接着这个案例，我们对提示词进行一些优化：</p>
+<p>比如<strong>提问：</strong></p>
+<p>请结合《猩球崛起》整个系列评价最近刚刚上映的电影《猩球崛起：新世界》</p>
+<p><strong>AI回答：</strong></p>
+<p>《猩球崛起：新世界》作为《星球崛起》系列的最新篇章，延续了这一科幻经典IP的传奇，尽管它……</p>
+<p>在角色刻画上，《猩球崛起：新世界》似乎得到了积极的反馈，尤其是对于反派和配角的描绘……</p>
+<p>对于老粉丝而言，这部电影可能没有提供必须观看的新鲜理由，但对于新加入的观众……</p>
+<p>总体而言，《猩球崛起：新世界》在保持系列精髓的同时，尝试了某种程度的软重启，为新老观众都提供了值得一看的科幻体验。虽然可能在创新性上有所欠缺，但它在情感深度、视觉震撼以及对未来叙事线索的铺设上都交出了满意的答卷。</p>
+<p>通过对比可以发现，经过优化的提示词更符合我们对结果的预期。<strong>精心设计和优化后的提示词，使大语言模型输出的结果更符合用户预期，这一过程就称之为『提示词工程，英文名：Prompt Engineering』。</strong></p>
+<p>这个过程包括以下关键步骤：</p>
+<img src="/image/ai-prompt-02.png">
+
+<p><strong>1.理解任务需求；</strong></p>
+<p><strong>2.构建有效提示词；</strong></p>
+<p><strong>3.评估提示词效果；</strong></p>
+<p><strong>4.持续迭代改进；</strong></p>
+<p>通过上述4个步骤，优化后的提示词，将对AI对问题的处理能力大大提高。</p>
+<p>基于AI的蓬勃发展，提示词工程师也随着AI的兴起孕育而生，有些企业开设了提示词工程师的岗位需求。</p>
+<p>通过上述内容可以看出，<strong>提示词的有效性会直接影响大语言模型的输出质量</strong>。接下来我们可以一起来学习构建有效提示词的技巧。</p>
+<h2 id="2-提示词技巧"><a href="#2-提示词技巧" class="headerlink" title="2. 提示词技巧"></a>2. 提示词技巧</h2><h3 id="2-1-技巧一：直接提问法"><a href="#2-1-技巧一：直接提问法" class="headerlink" title="2.1 技巧一：直接提问法"></a>2.1 技巧一：直接提问法</h3><p>直接提问，也称为<strong>零样本提示（Zero-Shot Prompting），</strong>即不给大语言模型提供案例，完全依靠AI自身的理解和处理能力完成任务。前文给的提示词例子，都属于直接提问。</p>
+<p>目前大部分开源和商用的大语言模型已经经过了大量的训练和指令调试，能够很好的理解并响应用户的直接提问。</p>
+<p>这种方法适用于<strong>目标明确、问题简单、答案确定且唯一的</strong>场景。</p>
+<p>直接提问时，大家可以遵循以下原则：</p>
+<ul>
+<li><strong>简洁</strong>：尽量用最简短的方式表达问题。过于冗长的问题可能包含多余的信息，导致模型理解错误或答非所问。</li>
+<li><strong>具体</strong>：避免抽象的问题，确保问题是具体的，不含糊。</li>
+<li><strong>详细上下文</strong>：如果问题涉及特定上下文或背景信息，要提供足够的详情以帮助模型理解，即使是直接提问也不例外。</li>
+<li><strong>避免歧义</strong>：如果一个词或短语可能有多重含义，要么明确其含义，要么重新表述以消除歧义。</li>
+<li><strong>逻辑清晰</strong>：提问题时，应该逻辑连贯，避免出现逻辑上的混淆或矛盾，这样才能促使模型提供有意义的回答。</li>
+</ul>
+<p>为了大家更好的理解，例举以下提示词例子，大家对比答案就能感受到不同提示词对结果的影响。</p>
+<img src="/image/ai-prompt-03.png">
+
+<p><strong>不好的提示词</strong>，比如：苹果好看吗？</p>
+<p>AI回答：不好意思，我不清楚你所指的“苹果”具体指的是什么，水果还是电子设备。</p>
+<p>这个提示词并没有明确对“苹果”进行明确描述，因此导致AI无法理解苹果的真实含义。</p>
+<p><strong>好的提示词</strong>，比如：这批红色的苹果水果外观怎么样，新鲜吗？</p>
+<p>AI回答：新鲜。</p>
+<p>通过上述案例对比，可以看到表达清晰度对结果的影响还是很大的。</p>
+<p>然而，<strong>直接提问效果在很大程度上取决于所使用模型的理解能力和泛化能力</strong>。</p>
+<p>AI无法很好地处理<strong>复杂、模糊或多义性</strong>的问题，当需要较深入的背景知识或分析时，可能无法准确了解用户的真正意图。</p>
+<p>我们可以尝试在提示词中<strong>增加示例样本</strong>、<strong>分配角色</strong>、<strong>提示写作风格</strong>、<strong>输出格式</strong>或<strong>构建思维链</strong>和<strong>思维树拆解复杂任务</strong>等方式来弥补AI能力上的不足。</p>
+<hr>
+<h3 id="2-2-技巧二：增加提示"><a href="#2-2-技巧二：增加提示" class="headerlink" title="2.2 技巧二：增加提示"></a>2.2 技巧二：增加提示</h3><p>在提示词中提供少量提示，通常几个或几十个具有标签的示例，也称为<strong>少样本提示（Few-Shot Prompting）</strong>，用来帮助大模型更好地理解任务要求，从而获得更高质量的答案。比如:</p>
+<ul>
+<li>让大模型跟随我们所要求的<strong>规范</strong>、<strong>格式</strong>、<strong>概念</strong>、<strong>文本结构</strong>和<strong>语气</strong>进行回答。</li>
+<li>又或者<strong>提供进一步推理</strong>的参考，比如让大模型学会<strong>数学运算</strong>或<strong>按照示例方式进行逻辑推理</strong>。</li>
+</ul>
+<p>下面，例举提示词中增加示例和不增加示例的方式询问大模型，看看大模型分别给出的答案有什么差别：</p>
+<img src="/image/ai-prompt-04.png">
+
+<p><strong>不增加示例的效果</strong>，比如：请根据以下电影评论，判断其情感属于正面、负面或中性中的哪一类。</p>
+<p>以下是电影评论内容：这部电影音乐动人，但剧情略显平淡，请你根据这个内容进行评价。</p>
+<p>AI回答：中性。</p>
+<p>虽然AI对评论进行了判断，但是并没有给出相关理由和解释，因此这个判断参考价值不高。</p>
+<p>同样，我们采用<strong>增加示例</strong>的方式进行提问，看看AI的回答。</p>
+<p>比如：请根据以下电影评论，判断其情感属于正面、负面或中性中的哪一类。 以下是我提供的示例参考。</p>
+<ul>
+<li>示例1：这部电影剧情引人入胜，但特效炸裂。情感评价：正面</li>
+<li>示例2：虽然这部电影剧情单调，但特效却非常炸裂。情感评价：负面+正面</li>
+<li>示例3：这部电影不好不坏。情感评价：中性</li>
+</ul>
+<p>以下是电影评论内容：这部电影音乐动人，但剧情略显平淡，请你根据这个内容进行评价。</p>
+<p>AI回答：</p>
+<p>情感评价为正面+负面。</p>
+<p>AI给出的解释是：评论中提到“音乐动人”属于正面评价，表明了对电影音乐部分的喜爱和赞赏。然而，紧接着的“但剧情略显平淡”则为负面评价，表达了对电影剧情的不满或失望。因此，整体评价是正面和负面情感的混合。</p>
+<p>很显然，增加了示例后，AI能够学习示例中的回复技巧，并进行模仿，这种回答质量会更高。同时更有利于我们判断AI的回答是否正确。</p>
+<hr>
+<p>另外在日常工作中，让AI帮忙翻译是常有的事，但是很多专业性文档的翻译，会涉及大量的专属名词或者缩写。</p>
+<p>在这种情况下，让AI进行翻译工作，我们就需要提供一些缩写翻译示例给AI，然后让AI根据示例进行翻译，这样能够极大提高翻译的准确性和质量，如图所示：</p>
+<img src="/image/ai-prompt-05.png">
+
+<p>当然，上述案例只适合文本量较少的翻译工作，如果是非常专业且数量庞大的专业性翻译，上述方法显然AI是不能完成这项翻译工作。</p>
+<p>这时，我们可以让大语言模型<strong>接入专业的术语库</strong>，也就是把涉及到的专业词汇整理成知识库，让AI能够检索知识库里面的专业知识，这样就能增强大语言模型的能力，这种方式也称之为“<strong>检索增强生成</strong>”，简称<strong>RAG</strong>，这方面的知识，后面会跟大家单独分享。</p>
+<p>另外很多企业想要训练私有AI客服，搭建了Agent后发现，回复的质量并不高。主要原因就是没有做RAG优化，因此想要搭建一个高质量的AI客服，RAG是必须懂的知识。</p>
+<p>回到正题，给AI<strong>提供的示例的质量和数量会直接影响AI回答的结果</strong>，增加示例时可参考以下技巧：</p>
+<ol>
+<li><strong>精选代表性样本</strong>：选择具有代表性的示例，覆盖任务的各种情况和边缘案例，确保模型能从有限的数据中学习到任务的核心特征。</li>
+<li><strong>保证示例的多样性</strong>：尽可能覆盖任务的各种角度和情景，包括正常情况和特殊边缘案例，确保模型能从有限的数据中学习到任务的核心特征。</li>
+<li><strong>使用相似的格式和结构</strong>：使模型能够清晰识别输入与输出的关系。</li>
+<li><strong>让大语言模型生成示例</strong>：实践时，我们还可以先让 LLM 按照提示生成一些示例，再进行筛选或人工调整，以提高示例质量和针对性。</li>
+</ol>
+<hr>
+<h3 id="2-3-技巧三：分配角色"><a href="#2-3-技巧三：分配角色" class="headerlink" title="2.3 技巧三：分配角色"></a>2.3 技巧三：分配角色</h3><p>赋予模型一个具体的角色或身份，比如告诉AI“假设你是一名经验丰富的短视频专家”，通过角色设定，引导模型在特定角色视角下回答问题。</p>
+<p>下面一起看看分配角色适用哪些场景：</p>
+<ol>
+<li>需要专业知识或特定视角的问题解答。例如，模拟老师、医生、律师等回答相关领域的问题。</li>
+<li>模拟特定人物或角色的语言风格。例如，模仿某个著名人物，例如历史人物或文学角色，让AI模仿他们的语言风格生成文本时需要用到。</li>
+<li>进行角色扮演游戏或创作时。在创意写作或角色扮演游戏中扮演指定的角色，让AI与用户进行互动。</li>
+<li>在特定行业内进行决策模拟。例如让AI模拟一个管理咨询师，帮助分析商业案例或提供商业建议。</li>
+</ol>
+<p>以上几点，都是需要用到角色分配的场景。</p>
+<p>下面，列举几个不同风格角色的AI，让他对同一个酒店评论进行评价，一起看看不同角色在回复的时候风格的区别：</p>
+<img src="/image/ai-prompt-06.png">
+
+<p>通过表中示例可以看出，不同角色的AI在回答同一个问题时，语气、风格、态度都有所不同。</p>
+<p>AI在前期训练时，研发人员会给AI投喂不同专业的数据让其学习，如果使用的AI之前学习过相关角色的数据，当我们给AI赋予相应角色时，AI就能很好的模拟特定角色的风格和表达方式。</p>
+<p>一般来说，通用大模型学习的知识都会比较全面，所以平时大家用AI的时候，让AI模仿任何角色他都能很好的模仿出来！当然，如果你选定的角色比较独特，也不排除AI在之前的训练数据中没有的角色风格，最后的结果就是模仿的效果并不理想。</p>
+<p>另外使用过不同企业推出的大模型的伙伴，应该都感觉到不同企业的大模型，风格和能力会有所区别，这也是由于训练数据质量和数量差距导致的结果。</p>
+<p>根据上述分配角色技巧的案例，下面小侠针对角色分配的方法给出以下技巧：</p>
+<ol>
+<li><strong>明确角色身份与特性</strong><ol>
+<li>确定角色的基本属性，如年龄、性别、职业、性格、技能、价值观等。</li>
+<li>赋予角色相关领域的专业知识或特殊背景，如专家、学者、历史人物、虚构角色等。</li>
+</ol>
+</li>
+<li><strong>设定角色目标与动机</strong><ol>
+<li>为角色设定对话的目标，如寻求信息、说服他人、解决问题、分享观点等。</li>
+<li>揭示角色的内在动机，如个人利益、道德信念、情感需求等，有助于塑造角色的真实性和深度。</li>
+</ol>
+</li>
+<li><strong>设定角色语言风格</strong>：<ol>
+<li>根据角色性格、教育水平、文化背景等设定其语言习惯、用词选择、句式结构、口头禅等。</li>
+<li>规定角色在对话中的情绪状态，如冷静理智、激动愤怒、悲伤失落、幽默风趣等，影响其表达方式。</li>
+</ol>
+</li>
+<li><strong>设定角色规则约束</strong>：<ol>
+<li>规定角色在对话中的行为约束，如不能人身攻击、保持礼貌尊重、遵守讨论主题等。</li>
+</ol>
+</li>
+<li><strong>动态调整角色设定</strong>：<ol>
+<li>随着对话深入，适时调整角色设定以适应新的情景和话题，如角色态度转变、关系演变、目标更新等。</li>
+<li>向模型反馈角色表现，如偏离设定、缺乏个性、对话僵化等，及时修正角色设定并引导模型调整。</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="3-参数式提示词"><a href="#3-参数式提示词" class="headerlink" title="3. 参数式提示词"></a>3. 参数式提示词</h2><p>除了常规问答式的提示词 AI 会话外，还有一类专业性的 AI 模型，高质量图像 &#x2F; 视频生成等等都属于这一类。想要他们输出期望的结果，需要参照特定的 prompt 文档，按规范参数设置 value 来进行输入，比如著名的 <strong>Midjourney。</strong></p>
+<img src="/image/ai-prompt-07.png">
+
+<h3 id="3-1-访问官方文档"><a href="#3-1-访问官方文档" class="headerlink" title="3.1 访问官方文档"></a>3.1 访问官方文档</h3><p>对于这类 AI 模型来说，官方会提供一份标准的参数文档来供使用者参考，里面会有详细的介绍和示例教程，我们需要做的就是学习并理解这些不同参数的独立含义，以及组合效果，结合使用最终达到我们的预期。</p>
+<img src="/image/ai-prompt-08.png">
+
+<p>上图展示了 Midjourney 的官方 Prompts 文档，我们以此为例对其各项参数的含义做介绍：</p>
+<h4 id="3-1-1-Prompts"><a href="#3-1-1-Prompts" class="headerlink" title="3.1.1 Prompts"></a>3.1.1 Prompts</h4><p>首先，他们对 Prompts 之于 Midjourney 的意义，以及其工作的基本原理进行了阐述：</p>
+<blockquote>
+<p>Prompts 是 Midjourney Bot 解释以生成图像的短文本短语。Midjourney Bot 将提示中的单词和短语分解成更小的部分（称为标记），并将其与训练数据进行比较，然后用于生成图像。精心制作的提示可以帮助制作独特而令人兴奋的图像。</p>
+</blockquote>
+<p>可以看到，Midjourney 官方特别强调了『精心制作的提示』对最终输出的结果的重要性。</p>
+<hr>
+<h4 id="3-1-2-Basic-Prompts"><a href="#3-1-2-Basic-Prompts" class="headerlink" title="3.1.2 Basic Prompts"></a>3.1.2 Basic Prompts</h4><p><strong>基本提示词</strong>，基本提示可以简单到一个单词、短语或表情符号😊。</p>
+<img src="/image/ai-prompt-09.png">
+
+<p>上图是 Midjourney 的参数输入框，当你输入了 <code>/imagine</code> 后，就可以开始输入 prompt 内容了，你可以输入任何文本信息，比如”苹果”或”🍎”，这样当你提交请求参数后，就会给你输出一个苹果。当然，此时输出的苹果可能是任何风格、任何成熟度或是品种的，如果你想要一个与心中预想相同的苹果，那么你就需要完善你的 prompt 内容，使用更丰富的<strong>高级提示</strong>。</p>
+<p>在这里，官方给出了一个小 tips:</p>
+<blockquote>
+<p>Midjourney Bot 最适合使用简单、简短的短语来描述你想要看到的内容。避免使用长列表的请求和说明。不要：给我看一张盛开的加州罂粟花的照片，把它们画成明亮、鲜艳的橙色，然后用彩色铅笔以插画风格画出来。尝试：用彩色铅笔画出明亮的橙色加州罂粟花</p>
+</blockquote>
+<hr>
+<h4 id="3-1-3-Advanced-Prompts"><a href="#3-1-3-Advanced-Prompts" class="headerlink" title="3.1.3 Advanced Prompts"></a>3.1.3 Advanced Prompts</h4><p><strong>高级提示</strong>，更高级的提示可以包括一个或多个图片 URL、多个文本短语以及一个或多个参数。这里我们可以看到，Midjourney Bot 所采用的 Prompts 结构是 Image Prompts + Text Prompt + Parameters 这个顺序。</p>
+<img src="/image/ai-prompt-10.png">
+
+<p>你可以将图像 URL 添加到提示中，以影响最终结果的样式和内容。图像 URL 始终位于提示的最前面。</p>
+<blockquote>
+<p>你可以将图像用作提示的一部分来影响作业的构图、样式和颜色。图像提示可以单独使用，也可以与文本提示一起使用——尝试将不同样式的图像组合在一起以获得最令人兴奋的结果。</p>
+</blockquote>
+<p>想要将图像添加到提示，需要手动输入或粘贴在线存储图像的网址，也就是说必须是一个在线的 URL 图片。并且<strong>该地址必须以 .png、.gif 或 .jpg 等扩展名结尾</strong>。</p>
+<p>添加图像地址后，添加任何其他文本和参数以完成提示。</p>
+<blockquote>
+<p>要将图片合并到提示中，你需要一个以 .png、.gif、.webp、.jpg 或 .jpeg 结尾的直接图片链接。如果图片在你的计算机或手机上，你可以先将其作为消息发送到 Midjourney Bot 以生成链接。</p>
+</blockquote>
+<p>这里官方给出了几个需要注意的点：</p>
+<ol>
+<li><strong>提示必须有多个图像提示或单个图像提示和一个文本提示才能起作用。</strong></li>
+<li><strong>图像 URL 必须是指向在线图像的直接链接。</strong></li>
+<li><strong>你的文件应以 .png、.gif、.webp、.jpg 或 .jpeg 结尾。</strong></li>
+<li><strong>在大多数浏览器中，右键单击或长按图像并选择复制图像地址以获取 URL。</strong></li>
+<li><code>/blend</code> <strong>命令是一种针对移动用户优化的简化图像提示过程。</strong></li>
+<li><strong>你还可以将图像 URL 用作样式引用或字符引用</strong>。</li>
+</ol>
+<p>由于 Midjourney Bot 的运转机制类似于聊天室，所有加入该聊天室的用户都可以看到你上传的图片以及 promots 信息，所以最好参照官方的隐私说明的指导来使用，避免敏感隐私问题被泄露。</p>
+<blockquote>
+<p>隐私说明</p>
+<p>使用 Midjourney Bot 在你的直接消息中上传图片，以防止其他服务器用户看到图片。</p>
+<p>除非你以隐身模式生成，否则图片提示和参考资料在 Midjourney 网站上可见。</p>
+</blockquote>
+<h6 id="3-1-3-1-1-如何在提示中使用图像"><a href="#3-1-3-1-1-如何在提示中使用图像" class="headerlink" title="3.1.3.1.1 如何在提示中使用图像"></a>3.1.3.1.1 如何在提示中使用图像</h6><p>将图片上传至 Discord</p>
+<p>由于 Midjourney 的账号体系是基于 Discord 的，所以上传的图片都会进入到 Discord 的服务器。</p>
+<blockquote>
+<p>Discord 是一个流行的通信平台，主要用于实时聊天、语音通话和视频通话。它最初是为游戏玩家设计的，但现在已经被广泛应用于各种社区。</p>
+</blockquote>
+<p>可以将 GIF 或图像 URL 复制并粘贴到聊天中，链接预览将显示该图像。</p>
+<p>拖拽上传</p>
+<p>将图像上传到 Discord 的第一种方法很简单 - 只需将图像或 GIF 从其他来源拖放到 Discord 窗口中即可。这可以在浏览器或桌面应用程序上完成。</p>
+<img src="/image/ai-prompt-11.gif">
+
+<p>从文件上传</p>
+<p>要手动上传文件，你可以选择文本框旁边的小箭头框。</p>
+<p>然后浏览文件夹，直到找到你要查找的图像，双击或选择并点击打开。</p>
+<img src="/image/ai-prompt-12.gif">
+
+<h6 id="3-1-3-1-2-拷贝你的图片-URL"><a href="#3-1-3-1-2-拷贝你的图片-URL" class="headerlink" title="3.1.3.1.2 拷贝你的图片 URL"></a>3.1.3.1.2 拷贝你的图片 URL</h6><p>想要将前面上传的图片的 URL 地址拷贝出来并用于后续的 prompt，可以按照如下方法操作：</p>
+<ul>
+<li>Discord 桌面应用程序：右键单击图片并选择复制链接（不是“复制消息链接”）。</li>
+<li>Discord Web 应用程序：单击以展开图片，然后右键单击并选择“复制图片地址”。</li>
+<li>Discord 移动应用程序：点击并按住图片，然后选择“复制媒体链接”。</li>
+</ul>
+<p>如果这些方法都不起作用，你可以单击以展开图片，然后在底部选择“在浏览器中打开”，以便复制并粘贴图片的 URL。</p>
+<h6 id="3-1-3-1-3-向提示添加图片-URL"><a href="#3-1-3-1-3-向提示添加图片-URL" class="headerlink" title="3.1.3.1.3 向提示添加图片 URL"></a>3.1.3.1.3 向提示添加图片 URL</h6><p>要向提示添加图片，你可以像往常一样开始输入 <code>/imagine</code>。提示框出现后，将图片文件拖到提示框中以添加图片的 URL，或者右键单击并粘贴提示框内的链接。</p>
+<img src="/image/ai-prompt-13.gif">
+
+<p>效果示例</p>
+<blockquote>
+<p>长宽比提示</p>
+<p>将图像裁剪为与最终图像相同的长宽比以获得最佳效果。</p>
+</blockquote>
+<img src="/image/ai-prompt-14.png">
+
+<h6 id="3-1-3-1-4-图片权重参数"><a href="#3-1-3-1-4-图片权重参数" class="headerlink" title="3.1.3.1.4 图片权重参数"></a>3.1.3.1.4 图片权重参数</h6><p>使用图片权重参数 <code>--iw</code> 调整提示中图片与文本部分的重要性。</p>
+<p>未指定 <code>--iw</code> 时使用<strong>默认值</strong>。<code>--iw</code> 值越高，图片提示对完成的作业的影响就越大。</p>
+<p>有关提示各部分之间相对重要性的更多信息，下面会介绍，这里略过。</p>
+<p>不同的 Midjourney 版本模型具有不同的图片权重范围，下图是具体范围表：</p>
+<img src="/image/ai-prompt-15.png">
+
+<p>Prompt 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/imagine prompt flowers.jpg birthday cake --iw .5</span><br></pre></td></tr></table></figure>
+
+<img src="/image/ai-prompt-16.png">
+
+<h5 id="3-1-3-2-Multi-Prompts"><a href="#3-1-3-2-Multi-Prompts" class="headerlink" title="3.1.3.2 Multi Prompts"></a>3.1.3.2 Multi Prompts</h5><p>Midjourney Bot 可以使用<code>::</code>  作为分隔符来混合多个概念。使用<strong>多提示</strong>允许你为提示中的概念分配相对重要性，从而帮助你控制它们的混合方式。</p>
+<h6 id="3-1-3-2-1-Multi-Prompt-Basics"><a href="#3-1-3-2-1-Multi-Prompt-Basics" class="headerlink" title="3.1.3.2.1 Multi-Prompt Basics"></a>3.1.3.2.1 <strong>Multi-Prompt Basics</strong></h6><p>在提示中添加双冒号 <code>::</code> 表示 Midjourney Bot 应该单独考虑提示的每个部分。对于提示 <code>space ship</code>，两个词会一起考虑，Midjourney Bot 会生成科幻太空船的图像。如果将提示分成两部分，<code>space::ship</code>，则两个概念会分别考虑，然后混合在一起，形成一艘在太空中航行的帆船。</p>
+<blockquote>
+<p>⚠️注意：</p>
+<p>双冒号之间没有空格 ::</p>
+<p>多提示适用于模型版本 1、2、3、4、’5、niji 和 niji 5</p>
+<p>任何参数仍会添加到提示的最末尾。</p>
+</blockquote>
+<div style="display: flex; gap: 2%; padding: 20px 0;">
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-17.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">宇宙飞船被视为一个单一的想法</figcaption>
+  </figure>
+
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-18.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">宇宙和飞船被视为独立的想法</figcaption>
+  </figure></div>
+
+<div style="display: flex; gap: 2%; padding: 20px 0;">
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-19.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">将芝士蛋糕绘画结合在一起，制作出
+芝士蛋糕的彩绘图像</figcaption>
+  </figure>
+
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-20.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">将奶酪与蛋糕绘画分开考虑，产生由奶酪制成的彩绘蛋糕图像</figcaption>
+  </figure>
+
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-21.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">将奶酪、蛋糕和绘画分开考虑，制作出由奶酪制成的分层蛋糕，并带有常见的古典绘画构图和元素</figcaption>
+  </figure></div>
+
+<h6 id="3-1-3-2-2-Prompt-Weights"><a href="#3-1-3-2-2-Prompt-Weights" class="headerlink" title="3.1.3.2.2 Prompt Weights"></a>3.1.3.2.2 Prompt Weights</h6><p>当使用双冒号 <code>::</code> 将提示分隔成不同部分时，你可以在双冒号后立即添加一个数字，以指定提示该部分的相对重要性。</p>
+<p>在下面的例子中，提示 <code>space:: ship</code> 产生了一艘航行在太空中的帆船。将提示更改为 <code>space::2 ship</code> 会使单词 <code>space</code> 的重要性增加一倍，从而产生以船舶为支撑元素的太空图像。</p>
+<blockquote>
+<p>⚠️注意：</p>
+<p>[模型版本] 1、2、3 仅接受整数作为权重</p>
+<p>[模型版本] 4、niji 4、niji 5、5、5.1 和 5.2 可以接受小数作为权重</p>
+<p>未指定的权重默认为 1。</p>
+</blockquote>
+<div style="display: flex; gap: 2%; padding: 20px 0;">
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-22.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">空间和船舶被视为独立的想法</figcaption>
+  </figure>
+
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-23.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">空间比船舶重要两倍</figcaption>
+  </figure></div>
+
+<p><strong>权重已标准化：</strong></p>
+<ol>
+<li><code>space:: ship</code> 与 <code>space::1 ship</code>、<code>space:: ship::1</code>、<code>space::2 ship::2</code>、<code>space::100 ship::100</code> 等相同。</li>
+<li><code>cheese::2 cake</code> 与 <code>cheese::4 cake::2</code>、<code>cheese::100 cake::50</code> 等相同。</li>
+<li><code>cheese:: cake:: painting</code> 与 <code>cheese::1 cake::1 painting::1</code>、<code>cheese::1 cake:: painting::</code>、<code>cheese::2 cake::2 painting::2</code> 等相同。</li>
+</ol>
+<h6 id="3-1-2-3-3-Negative-Prompt-Weights"><a href="#3-1-2-3-3-Negative-Prompt-Weights" class="headerlink" title="3.1.2.3.3 Negative Prompt Weights"></a>3.1.2.3.3 Negative Prompt Weights</h6><p>我们可以将<strong>负权重</strong>添加到多提示的各个部分，以帮助删除不需要的元素。</p>
+<p><strong>所有权重的总和必须为正数</strong>。</p>
+<div style="display: flex; gap: 2%; padding: 20px 0;">
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-24.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">静物中出现了一系列物体</figcaption>
+  </figure>
+
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-25.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">由于负权重的影响，静物中水果较少</figcaption>
+  </figure></div>
+
+<h6 id="3-1-3-2-4-The-–no-Parameter"><a href="#3-1-3-2-4-The-–no-Parameter" class="headerlink" title="3.1.3.2.4 The –no Parameter"></a>3.1.3.2.4 The –no Parameter</h6><p><code>--no</code> 参数与将多提示的称重部分设置为<code>-.5</code>相同</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vibrant tulip fields:: red::-.5` 等价于 `vibrant tulip fields --no red</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="3-1-4-Prompting-Notes"><a href="#3-1-4-Prompting-Notes" class="headerlink" title="3.1.4 Prompting Notes"></a>3.1.4 Prompting Notes</h4><h5 id="3-1-4-1-词汇选择"><a href="#3-1-4-1-词汇选择" class="headerlink" title="3.1.4.1 词汇选择"></a>3.1.4.1 词汇选择</h5><p>词汇选择很重要。在许多情况下，更具体的同义词效果更好。不要使用 big，而要尝试 huge、gigantic、enlarge 或 incredible。</p>
+<h5 id="3-1-4-2-复数词和集合名词"><a href="#3-1-4-2-复数词和集合名词" class="headerlink" title="3.1.4.2 复数词和集合名词"></a>3.1.4.2 复数词和集合名词</h5><p>复数词有很多偶然性。尝试使用具体的数字。“三只猫”比“猫”更具体。集合名词也适用，“一群鸟”而不是“鸟”。</p>
+<h5 id="3-1-4-3-专注于你想要的东西"><a href="#3-1-4-3-专注于你想要的东西" class="headerlink" title="3.1.4.3 专注于你想要的东西"></a>3.1.4.3 专注于你想要的东西</h5><p>最好描述你想要的东西，而不是你不想要的东西。如果你要求举办一场“不带蛋糕”的派对，你的图片可能会包含一个蛋糕。为了确保最终图片中没有物体，请尝试使用 –no 参数进行高级提示。</p>
+<h5 id="3-1-4-4-提示长度和细节"><a href="#3-1-4-4-提示长度和细节" class="headerlink" title="3.1.4.4 提示长度和细节"></a>3.1.4.4 提示长度和细节</h5><p>提示可以很简单。一个单词或表情符号就可以了。但是，简短的提示依赖于 Midjourney 的默认样式，允许它创造性地填写任何未指定的细节。在你的提示中包含对你来说重要的任何元素。细节越少，多样性就越强，但控制力越弱。</p>
+<h5 id="3-1-4-5-尽量清楚说明对你来说重要的任何背景或细节。"><a href="#3-1-4-5-尽量清楚说明对你来说重要的任何背景或细节。" class="headerlink" title="3.1.4.5 尽量清楚说明对你来说重要的任何背景或细节。"></a>3.1.4.5 尽量清楚说明对你来说重要的任何背景或细节。</h5><ul>
+<li><p>主题：人、动物、角色、地点、物体</p>
+</li>
+<li><p>媒介：照片、绘画、插图、雕塑、涂鸦、挂毯</p>
+</li>
+<li><p>环境：室内、室外、月球上、水下、城市中</p>
+</li>
+<li><p>照明：柔和、环境光、阴天、霓虹灯、工作室灯光</p>
+</li>
+<li><p>颜色：鲜艳、柔和、明亮、单色，色彩鲜艳、黑白、柔和</p>
+</li>
+<li><p>情绪：沉稳、平静、喧闹、充满活力</p>
+</li>
+<li><p>构图：肖像、头像、特写、鸟瞰图</p>
+</li>
+</ul>
+<hr>
+<h4 id="3-1-5-Describe"><a href="#3-1-5-Describe" class="headerlink" title="3.1.5 Describe"></a>3.1.5 Describe</h4><p><code>/describe</code> 命令允许你上传图像并根据该图像生成四个可能的提示。</p>
+<blockquote>
+<p>描述功能会生成具有启发性和启发性的提示建议。它不能用于完全重新创建已上传的图像。</p>
+<p>Discord 和 Web 之间的描述略有不同。在 Discord 中使用 <code>/describe</code> 命令将生成完整的提示，而 Web 将提供单词和短语建议以帮助你构建自己的提示。</p>
+<p>再次“描述”同一张图片将提供不同的建议。</p>
+</blockquote>
+<h5 id="3-1-5-1-In-Discord"><a href="#3-1-5-1-In-Discord" class="headerlink" title="3.1.5.1 In Discord"></a>3.1.5.1 In Discord</h5><h6 id="3-1-5-1-1-使用-x2F-describe-命令"><a href="#3-1-5-1-1-使用-x2F-describe-命令" class="headerlink" title="3.1.5.1.1 使用 &#x2F;describe 命令"></a>3.1.5.1.1 使用 &#x2F;describe 命令</h6><p>在 Discord 中使用 Midjourney Bot 时，请使用 <code>/describe</code> 命令。你可以通过输入图像的 URL（选择链接选项；在此处查找有关在 Discord 中使用图像 URL 的更多信息）或选择存储在设备上的图像（使用图像选项）来提供要描述的图像。</p>
+<img src="/image/ai-prompt-26.png">
+
+<p>生成建议后，点击相应的编号按钮来 <code>/imagine</code>该提示。你将有机会在提交之前编辑文本。</p>
+<p>你还可以使用 🔄 按钮在同一张图片上再次运行 <code>/describe</code> 命令，或者使用<code>🎉 Imagine all</code>  按钮一次生成包含所有四个提示的图片（尽管你没有机会先编辑它们）。</p>
+<h6 id="3-1-5-1-2-使用示例"><a href="#3-1-5-1-2-使用示例" class="headerlink" title="3.1.5.1.2 使用示例"></a>3.1.5.1.2 使用示例</h6><p>如果你将 <code>/describe</code> 命令与下图结合使用，Midjourney Bot 将建议四个可能生成类似图像的提示：</p>
+<img src="/image/ai-prompt-27.png">
+
+<p>1️⃣ 用紫色圆珠笔在白色背景上画的波斯猫脸，紫色的皮毛，风格不明的艺术家。</p>
+<p>2️⃣ 用紫色铅笔画的波斯猫，白色背景，风格为 John Beastman。</p>
+<p>3️⃣ 用紫色铅笔画的可爱波斯猫，白色背景上线条简单，细节精致，构图优美，风格为超现实主义，边缘锐利，焦点清晰。</p>
+<p>4️⃣ 用紫色铅笔画的异国短毛猫，白色背景下的简单线条，细线条和柔和的色彩在这张特写肖像中营造出柔和细腻的氛围。素描风格将猫描绘得可爱而梦幻，正面的细线条展现出复杂的细节。水墨画技法使用低饱和度的深黑色调来打造艺术家的风格。</p>
+<blockquote>
+<p>⚠️注意：</p>
+<p>旧版 &#x2F;describe</p>
+<p>默认情况下，Discord &#x2F;describe 会生成最适合版本 6 的提示。</p>
+<p>如果你在 Discord 中将默认 Midjourney 版本设置为 5.0，&#x2F;describe 将生成更短的提示，更适合旧版本。</p>
+</blockquote>
+<h5 id="3-1-5-2-On-Web"><a href="#3-1-5-2-On-Web" class="headerlink" title="3.1.5.2 On Web"></a>3.1.5.2 On Web</h5><h6 id="3-1-5-2-1-Imagine-Bar"><a href="#3-1-5-2-1-Imagine-Bar" class="headerlink" title="3.1.5.2.1 Imagine Bar"></a>3.1.5.2.1 Imagine Bar</h6><p>单击 Imagine Bar 中的图标可访问网站上的图像参考选项。如果你想要描述的图像尚未出现，你可以从此视图上传。上传后，将鼠标悬停在图像上以显示图标，然后单击该图标以生成建议。</p>
+<img src="/image/ai-prompt-28.png">
+
+<p>该Web不会像 Discord 中的 <code>/describe</code> 那样生成完整的提示建议，而是会为你提供各种单词和短语供你使用。单击其中一个生成的短语会将其添加到当前提示的末尾。单击“重新滚动”按钮可生成新的描述，单击“返回”按钮可返回到图像选择工具。</p>
+<img src="/image/ai-prompt-29.png">
+
+<hr>
+<h4 id="3-1-6-No"><a href="#3-1-6-No" class="headerlink" title="3.1.6 No"></a>3.1.6 No</h4><p>No 参数告诉 Midjourney Bot 图像中不应包含哪些内容。</p>
+<blockquote>
+<p>–no 接受用逗号分隔的多个单词：–no item1, item2, item3, item4</p>
+</blockquote>
+<h5 id="3-1-6-1-–no-比较示例"><a href="#3-1-6-1-–no-比较示例" class="headerlink" title="3.1.6.1 –no 比较示例"></a>3.1.6.1 –no 比较示例</h5><div style="display: flex; gap: 2%; padding: 20px 0;">
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-30.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">静物中出现了一系列物体</figcaption>
+  </figure>
+
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-31.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">静物中不再包含水果</figcaption>
+  </figure></div>
+
+<h5 id="3-1-6-2-–no-vs-Don’t"><a href="#3-1-6-2-–no-vs-Don’t" class="headerlink" title="3.1.6.2 –no vs . Don’t"></a>3.1.6.2 –no vs . Don’t</h5><p>Midjourney Bot 将提示中的每个单词都视为图像的潜在元素。</p>
+<p>提示<code>still life gouache painting without any fruit</code>或<code>still life gouache painting, please dont add fruit!</code>更有可能生成包含水果的图片，因为 Midjourney Bot 不会像人类读者那样理解“没有”或“不”与“水果”之间的关系。为了改善结果，请将提示重点放在你希望在图像中看到的内容上，并使用<code>--no</code>参数指定你不想包含的概念。</p>
+<div style="display: flex; gap: 2%; padding: 20px 0;">
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-32.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">静物中出现了一系列物体</figcaption>
+  </figure>
+
+  <figure style="margin: 0; flex: 1;">
+    <img src="/image/ai-prompt-33.png" style="width:100%;">
+    <figcaption style="text-align:center; font-size:14px; color:#777;">最终的图像中出现了更多的水果</figcaption>
+  </figure></div>
+
+<h5 id="3-1-6-3-Multi-Prompting"><a href="#3-1-6-3-Multi-Prompting" class="headerlink" title="3.1.6.3 Multi Prompting"></a>3.1.6.3 Multi Prompting</h5><p><code>--no</code> 参数与将多重提示的称重部分设置为<code>-.5</code>相同，<code>still life gouache painting:: fruit::-.5</code> 与<code>still life gouache painting --no fruit</code>相同。</p>
+<h5 id="3-1-6-4-如何使用-No-参数"><a href="#3-1-6-4-如何使用-No-参数" class="headerlink" title="3.1.6.4 如何使用 No 参数"></a>3.1.6.4 如何使用 No 参数</h5><p>在提示的末尾添加 <code>--no item1, item2, item3</code>。</p>
+<img src="/image/ai-prompt-34.gif">
+
+<h4 id="3-1-7-Parameter-List"><a href="#3-1-7-Parameter-List" class="headerlink" title="3.1.7 Parameter List"></a>3.1.7 Parameter List</h4><p><strong>参数</strong>是添加到提示中的选项，用于更改图像的生成方式。参数可以更改图像的纵横比、在 Midjourney 模型版本之间切换、更改使用的 Upscaler 等等。</p>
+<p>参数始终添加到提示的末尾。你可以向每个提示添加多个参数。</p>
+<img src="/image/ai-prompt-38.png">
+
+<blockquote>
+<p>使用 Apple 设备？</p>
+<p>许多 Apple 设备会自动将双连字符 (–) 更改为破折号 (—)。Midjourney 可以兼容的接受这两种字符。👍🏻</p>
+</blockquote>
+<h5 id="3-1-7-1-Basic-Parameters"><a href="#3-1-7-1-Basic-Parameters" class="headerlink" title="3.1.7.1 Basic Parameters"></a>3.1.7.1 Basic Parameters</h5><p>由于文本篇幅有限，以下参数的具体使用与详细含义可以自行参考官方文档来学习，这里只做简单介绍。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.midjourney.com/docs/parameter-list">https://docs.midjourney.com/docs/parameter-list</a></p>
+</blockquote>
+<h6 id="Aspect-Ratios"><a href="#Aspect-Ratios" class="headerlink" title="Aspect Ratios"></a>Aspect Ratios</h6><p><code>--aspect</code>, 或 <code>--ar</code> 可以改变横纵比。</p>
+<h6 id="Chaos"><a href="#Chaos" class="headerlink" title="Chaos"></a>Chaos</h6><p><code>--chaos &lt;number 0–100&gt;</code>改变结果的变化程度。值越高，产生的生成结果就越不寻常和出乎意料。</p>
+<h6 id="Character-Reference"><a href="#Character-Reference" class="headerlink" title="Character Reference"></a>Character Reference</h6><p>在提示中使用图像作为字符引用，以在不同情况下创建同一字符的图像。</p>
+<h6 id="Fast"><a href="#Fast" class="headerlink" title="Fast"></a>Fast</h6><p><code>--fast</code> 覆盖当前设置并使用快速模式运行单个作业。</p>
+<h6 id="Image-Weight"><a href="#Image-Weight" class="headerlink" title="Image Weight"></a>Image Weight</h6><p><code>--iw &lt;0–3&gt;</code> 设置相对于文本权重的图像提示权重。默认值为 1。</p>
+<h6 id="No"><a href="#No" class="headerlink" title="No"></a>No</h6><p><code>--no</code> 负面提示, <code>--no plants</code> 会尝试从图像中移除植物。</p>
+<h6 id="Quality"><a href="#Quality" class="headerlink" title="Quality"></a>Quality</h6><p><code>--quality &lt;.25, .5, or 1&gt;</code>, 或 <code>--q &lt;.25, .5, or 1&gt;</code> 你希望花费多少渲染质量时间。默认值为 1。值越高，使用的 GPU 分钟数越多；值越低，使用的 GPU 分钟数越少。</p>
+<h6 id="Random"><a href="#Random" class="headerlink" title="Random"></a>Random</h6><p><code>--style random</code>, 将随机的 32 种基本样式 Style Tuner 代码添加到你的提示中。你还可以使用 <code>--style random-16</code>, <code>--style random-64</code> 或 <code>--style random-128</code> t使用其他长度的 Style Tuner 的随机结果。</p>
+<h6 id="Relax"><a href="#Relax" class="headerlink" title="Relax"></a>Relax</h6><p><code>--relax</code> 覆盖当前设置并使用 Relax 模式运行单个作业。</p>
+<h6 id="Repeat"><a href="#Repeat" class="headerlink" title="Repeat"></a>Repeat</h6><p><code>--repeat &lt;1–40&gt;</code>, 或 <code>--r &lt;1–40&gt;</code> 从单个提示创建多个作业。–repeat 对于快速多次重新运行作业很有用。</p>
+<h6 id="Seed"><a href="#Seed" class="headerlink" title="Seed"></a>Seed</h6><p><code>--seed &lt;integer between 0–4294967295&gt;</code> Midjourney 机器人使用种子号创建一个视觉噪声场（如电视静态图像），作为生成初始图像网格的起点。种子号是为每个图像随机生成的，但可以使用 <code>--seed</code> 或 <code>--sameseed</code> 参数指定。使用相同的种子号和提示将产生类似的最终图像。</p>
+<h6 id="Stop"><a href="#Stop" class="headerlink" title="Stop"></a>Stop</h6><p><code>--stop &lt;integer between 10–100&gt;</code> 使用 <code>--stop</code> 参数在流程中途完成作业。以较早的百分比停止作业可能会产生更模糊、更不详细的结果。</p>
+<h6 id="Style"><a href="#Style" class="headerlink" title="Style"></a>Style</h6><p><code>--style &lt;raw&gt;</code> 在 Midjourney 模型版本 5.1 和 5.2 之间切换。</p>
+<p><code>--style &lt;4a、4b 或 4c&gt;</code> 在 Midjourney 模型版本 4 之间切换。</p>
+<p><code>--style &lt;cute、expressive、original or scenery&gt;</code> 在 Niji 模型版本 5 之间切换。</p>
+<h6 id="Style-Reference"><a href="#Style-Reference" class="headerlink" title="Style Reference"></a>Style Reference</h6><p>在提示中使用图像作为样式参考，以影响你希望 Midjourney 制作的图像的样式或美感。</p>
+<h6 id="Stylize"><a href="#Stylize" class="headerlink" title="Stylize"></a>Stylize</h6><p><code>--stylize &lt;number&gt;</code>, 或 <code>--s &lt;number&gt;</code> 参数影响 Midjourney 默认美学风格应用于 Jobs 的强度。</p>
+<h6 id="Tile"><a href="#Tile" class="headerlink" title="Tile"></a>Tile</h6><p><code>--tile</code> 参数生成可用作重复图块以创建无缝图案的图像。</p>
+<h6 id="Turbo"><a href="#Turbo" class="headerlink" title="Turbo"></a>Turbo</h6><p><code>--turbo</code> 覆盖当前设置并使用 Turbo 模式运行单个作业。</p>
+<h6 id="Video"><a href="#Video" class="headerlink" title="Video"></a>Video</h6><p><code>--video</code> 保存正在生成的初始图像网格的进度视频。表情符号对完成的图像网格做出反应，使用 ✉️ 来触发发送到您的直接消息的视频。<code>--video</code> 在放大图像时不起作用。</p>
+<h6 id="Weird"><a href="#Weird" class="headerlink" title="Weird"></a>Weird</h6><p><code>--weird &lt;number 0–3000&gt;</code>, 或 <code>--w &lt;number 0–3000&gt;</code> 使用实验性的 <code>--weird</code> 参数探索不寻常的美学。</p>
+<h6 id="Default-Values-Model-Version-5-2"><a href="#Default-Values-Model-Version-5-2" class="headerlink" title="Default Values (Model Version 5.2)"></a>Default Values (Model Version 5.2)</h6><blockquote>
+<p>大于 2:1 的纵横比是实验性的，可能会产生不可预测的结果。</p>
+</blockquote>
+<img src="/image/ai-prompt-39.png">
+
+<h6 id="Default-Values-Model-Version-6"><a href="#Default-Values-Model-Version-6" class="headerlink" title="Default Values (Model Version 6)"></a>Default Values (Model Version 6)</h6><img src="/image/ai-prompt-40.png">
+
+<h5 id="3-1-7-2-Model-Version-Parameters"><a href="#3-1-7-2-Model-Version-Parameters" class="headerlink" title="3.1.7.2 Model Version Parameters"></a>3.1.7.2 Model Version Parameters</h5><p>Midjourney 定期发布新模型版本以提高效率、连贯性和质量。不同的模型擅长处理不同类型的图像。</p>
+<h6 id="Niji"><a href="#Niji" class="headerlink" title="Niji"></a>Niji</h6><p><code>--niji &lt;4, or 5&gt;</code> 专注于动漫风格图像的替代模型。</p>
+<h6 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h6><p><code>--version &lt;1, 2, 3, 4, 5.0, 5.1, 5.2, or 6&gt;</code> 或 <code>--v &lt;1, 2, 3, 4, 5.0, 5.1, 5.2, or 6&gt;</code> 使用不同版本的 Midjourney 算法。</p>
+<h5 id="3-1-7-3-Legacy-Parameters"><a href="#3-1-7-3-Legacy-Parameters" class="headerlink" title="3.1.7.3 Legacy Parameters"></a>3.1.7.3 Legacy Parameters</h5><p>一些参数仅适用于早期的 Midjourney 模型。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.midjourney.com/legacy/docs/parameter-list">在这里阅读有关遗留参数的更多信息。</a></p>
+<h6 id="3-1-7-4-Compatibility"><a href="#3-1-7-4-Compatibility" class="headerlink" title="3.1.7.4 Compatibility"></a>3.1.7.4 Compatibility</h6><p>模型版本和参数兼容性</p>
+<img src="/image/ai-prompt-41.png">
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-xcode-lldb-error/" title="Xcode lldb控制台打印 po 命令失效问题解决记录">Xcode lldb控制台打印 po 命令失效问题解决记录</a></h2>
+                <p class="excerpt">
+                
+                
+
+问题背景iOS开发中，使用Xcode
+开发时，有时候原本运行好好的项目，突然调试时，发现 po 命令无法正常显示变量的值，无论是清空编译目录，还是重装Xcode，都无法解决问题。
+问题原因自从 Xcode 13.3 到 Xcode 14 测试版之前，当尝试使用静态框架&amp;#x2F;库与 LLDB 
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-10-23T09:08:48.000Z" class="post-list__meta--date date">2024-10-23</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/CocoaPods/" rel="tag">CocoaPods</a>, <a class="-none-link" href="/tags/LLDB/" rel="tag">LLDB</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+</span><a class="btn-border-small" href="/ios-xcode-lldb-error/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ai-prompt/';
+  var disqus_title = 'AI 工具的使用艺术之 Prompt';
+  var disqus_url = 'http://shevakuilin.com/ai-prompt/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
