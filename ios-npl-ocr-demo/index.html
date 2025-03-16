@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>ios-npl-ocr-demo | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="ios-npl-ocr-demo | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ios-npl-ocr-demo | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-npl-ocr-demo/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-03-02T13:29:45.000Z" class="post-list__meta--date date">2024-03-02</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/NLP/" rel="tag">NLP</a>, <a class="-none-link" href="/tags/OCR/" rel="tag">OCR</a>, <a class="-none-link" href="/tags/Vision/" rel="tag">Vision</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">ios-npl-ocr-demo</h1>
+  </header>
+
+  <section class="post">
+    <img src ="https://github.com/shevakuilin/GhostPostsImages/raw/master/ios-nlp-ocr-demo.png" style="width: 1200px; height: 560px; object-fit: cover; object-position: top;">
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>阅读本文内容前，你可能需要了解的基础知识<a href="https://shevakuilin.com/client-ai-02/">「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)</a></p>
+</blockquote>
+<p>在最近的技术分享中，我们已经知道了实现<strong>「图像文字识别&amp;提取」</strong>这个功能所需的基本<strong>技术方案</strong>和<strong>原理</strong> ，这解决了我们实现这一功能当中 <strong>Why</strong> 和 <strong>What</strong> 的问题。但光知道 <strong>Why</strong> 和 <strong>What</strong> 还远远不够，我们还需要明确 <strong>How</strong> 的问题，也就是如何做。</p>
+<p><strong>注意：</strong>下文中所指的 <strong>NLP</strong> <strong>&#x2F; NaturalLanguage、CoreML</strong> 和 <strong>Vision</strong> 均是代指<strong>，其中****包含了大量需要手动编写代码实现的部分，这些框架只供给能力，并不能自动实现的</strong>，请不要混淆概念。</p>
+<h2 id="研发看这里"><a href="#研发看这里" class="headerlink" title="研发看这里"></a>研发看这里</h2><h3 id="理清职责"><a href="#理清职责" class="headerlink" title="理清职责"></a>理清职责</h3><p>首先，我们需要明确 <strong>NLP</strong> <strong>&#x2F; NaturalLanguage、</strong> <strong>CoreML</strong> 和 <strong>Vision</strong> 在这一过程中分别扮演了一个什么样的<strong>角色</strong>？</p>
+<p>只有弄清楚这一点，才能有的放矢的设计我们的整套流程，以及规划我们的调研方向从何入手。但想要搞清楚这一点，我们就必须知道，在这一功能点上，他们分别<strong>能做什么</strong>和<strong>不能做什么</strong>。</p>
+<h4 id="Vision"><a href="#Vision" class="headerlink" title="Vision"></a>Vision</h4><p>我们需要知道一点，那就是 <strong>Vision</strong> 框架的文本识别是语言无关的，所以它会尝试识别图像中出现的所有文本，不论是中文、英文还是其他语言。如果希望对识别出的文本进行甄别，就需要我们另寻出路。所以，仅仅依靠 <strong>Vision</strong> 是不足以支撑图像识别和取词的。</p>
+<h4 id="CoreML"><a href="#CoreML" class="headerlink" title="CoreML"></a>CoreML</h4><p>如果想要在识别结果中只获取英文并忽略其他语种或文字，那么我们就需要在识别过程完成后，对结果进行后处理。那谁又能做这件事呢？答案显而易见：<strong>CoreML</strong>。</p>
+<p>现在我们再来看看 <strong>CoreML</strong> 擅长做什么事情，我们知道 <strong>CoreML</strong> 本身只是一个机器学习模型的使用和训练框架，在应用层面上，他对我们的意义就是如何使用某一个已经训练好的<strong>模型</strong>。识别并进行分类正好是模型擅长做的事情，所以我们需要做的事情就很明朗了，<strong>找到或自己训练出符合我们要求的模型</strong>。</p>
+<p>模型表现是完全依赖训练效果的，而训练也是需要海量数据的成本，包括不同的字体、字号等等。开源免费的模型通常效果不佳，而精准模型又面临着使用成本和模型体积的问题。</p>
+<h4 id="NLP-x2F-NaturalLanguage"><a href="#NLP-x2F-NaturalLanguage" class="headerlink" title="NLP &#x2F; NaturalLanguage"></a>NLP &#x2F; NaturalLanguage</h4><p><strong>Vision</strong> 框架内置了一套 <strong>NLP</strong> 的神经网络，通过不同的识别请求配置，可以对语言进行基本的<strong>筛选区分</strong>以及<strong>矫正。</strong>但 <strong>Vision</strong> 存在一个显著的问题便是：其识别结果无法有效对文本进行分词等提炼，也无法精准识别每一个单词是属于什么语言。所以这时我们需要引入一个新的框架：<strong>NaturalLanguage</strong>。</p>
+<p><strong>NaturalLanguage</strong> 是比 <strong>Vision</strong> 更为底层的基础 <strong>NLP</strong> 神经网络框架，能够对识别文本做最细颗粒度的控制，包括但不限于与文本的切割处理方式、词性识别、语种、语法处理等等。我们需要的便是结合 <strong>Vision</strong> 和 <strong>NaturalLanguage</strong>，对识别结果做最精细的处理。</p>
+<p>明确了职责，让我们看一下基本的流程如何。</p>
+<h3 id="核心流程"><a href="#核心流程" class="headerlink" title="核心流程"></a>核心流程</h3><img src="/image/ios-nlp-ocr-demo-uml.png">
+
+<h2 id="对比看这里"><a href="#对比看这里" class="headerlink" title="对比看这里"></a>对比看这里</h2><p>经过调研和产出，我们使用自研能力与另外两家目前主流的翻译词典 APP：<strong>网易有道词典</strong>、<strong>欧路词典</strong>挑选了同一网页进行对比，具体效果如下：</p>
+<h3 id="对比案例-A"><a href="#对比案例-A" class="headerlink" title="对比案例 A"></a>对比案例 A</h3><p>多语种混合页面</p>
+<h4 id="网易有道词典"><a href="#网易有道词典" class="headerlink" title="网易有道词典"></a>网易有道词典</h4><p>可以看到，在<strong>多语种混合页面</strong>当中，有道词典无法对不同语言、阿拉伯数字等干扰信息进行有效筛除和过滤，将图像中的所有文本全部识别进来，目前效果是几家里表现最糟糕的。显而易见，他们只拥有最初级的识别能力。</p>
+<img src="/image/ios-nlp-ocr-demo-01.png">
+
+<h4 id="欧路词典"><a href="#欧路词典" class="headerlink" title="欧路词典"></a>欧路词典</h4><p>欧路词典的表现比有道词典略强，可以筛除一部分阿拉伯数字或中文等干扰信息，但表现也强差人意。欧陆在图像识别上花了一些功夫做了简单的语言甄别处理。</p>
+<img src="/image/ios-nlp-ocr-demo-02.png">
+
+<h4 id="洋葱"><a href="#洋葱" class="headerlink" title="洋葱"></a>洋葱</h4><p>我们的表现无疑是最好的，精细化的控制，精准的移除了非目标语言外一切干扰因素。</p>
+<img src="/image/ios-nlp-ocr-demo-03.png">
+
+<h3 id="对比案例-B"><a href="#对比案例-B" class="headerlink" title="对比案例 B"></a>对比案例 B</h3><p>英文主导页面，如英语试卷</p>
+<h4 id="网易有道词典-1"><a href="#网易有道词典-1" class="headerlink" title="网易有道词典"></a>网易有道词典</h4><p>案例 A 别无二致，囊括所有图像中的文案</p>
+<img src="/image/ios-nlp-ocr-demo-04.png">
+
+<h4 id="欧路词典-1"><a href="#欧路词典-1" class="headerlink" title="欧路词典"></a>欧路词典</h4><p>同样的，欧路依旧只能够做基础的甄别处理，过滤掉部分噪音。</p>
+<img src="/image/ios-nlp-ocr-demo-05.png">
+
+<h4 id="洋葱-1"><a href="#洋葱-1" class="headerlink" title="洋葱"></a>洋葱</h4><p>已无需多言。</p>
+<p>具体识别精细度，受到印刷体清晰度和拍摄像素而定。</p>
+<img src="/image/ios-nlp-ocr-demo-06.png">
+
+<h2 id="大家看过来"><a href="#大家看过来" class="headerlink" title="大家看过来"></a>大家看过来</h2><h3 id="功能限制"><a href="#功能限制" class="headerlink" title="功能限制"></a>功能限制</h3><p>目前有几点技术层面上的瓶颈，望周知：</p>
+<ul>
+<li>目前神经网络的科学发展水平无法做到100%精准识别，受硬件、拍摄水平、印刷水平等等因素限制。</li>
+<li>iOS 的识别准确率随版本的提升而提升，受制于硬件驱动及训练模型，目前最准确的版本需要至少保持 <strong>iOS 16</strong> 及以上系统才可生效，以下版本的准确率会略低于高版本。</li>
+<li>单词级别已是目前 NLP + OCR 识别的极限，不要妄想识别拼音等更细颗粒度的操作，这个层面需要神经网络方面的科学家介入。</li>
+</ul>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><ul>
+<li>iOS 纯自研能力的表现在业内已是首屈一指，无需额外购买第三方渠道 SDK，故没有使用成本限制。</li>
+<li>基于上一点，无额外包体积负担。</li>
+<li>目前展示为 Demo 级别代码实现，介入业务功能需要额外工作处理细节。</li>
+<li>需要开发的工作内容为<ul>
+<li>摄像头拍摄及拍摄后的相片内容展示</li>
+<li>Vision 识别处理、版本隔离等</li>
+<li>NaturalLanguage 分词、语种处理</li>
+<li>斜体矫正等边界细节处理</li>
+<li>渲染绘制处理</li>
+<li>手势处理&amp;响应</li>
+<li>服务器翻译请求</li>
+<li>翻译内容弹窗交互及响应逻辑等</li>
+<li>屏幕适配处理</li>
+<li>业务埋点</li>
+</ul>
+</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-wkwebview-cache-test/" title="WKWebView缓存协议验证">WKWebView缓存协议验证</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言本次我们基于 URLRequest.CachePolicy 协议进行 WKWebView 缓存能力的验证，主要验证方向为网页页面及相应资源的内容缓存。
+API 如下
+1234567891011public struct URLRequest : ReferenceConvertible, E
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-08-24T06:34:35.000Z" class="post-list__meta--date date">2024-08-24</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/WKWebview/" rel="tag">WKWebview</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a>
+</span><a class="btn-border-small" href="/ios-wkwebview-cache-test/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/client-ai-03/" title="「端智能」移动端当前的应用与发展现状">「端智能」移动端当前的应用与发展现状</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言在国内，阿里、腾讯等企业也先后进行了端智能的尝试。
+阿里在手淘中宝贝列表重排、智能刷新、跳失点预测、智能 Push、拍立淘（以图搜图）等多个场景实现了端智能的落地，并推出了 MNN 神经网络深度学习框架。
+腾讯则推出自研的 NCNN 框架，并在医疗、翻译、游戏、智能音箱等领域广泛应用端智能技
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-01-14T15:33:12.000Z" class="post-list__meta--date date">2024-01-14</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
+</span><a class="btn-border-small" href="/client-ai-03/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-npl-ocr-demo/';
+  var disqus_title = 'ios-npl-ocr-demo';
+  var disqus_url = 'http://shevakuilin.com/ios-npl-ocr-demo/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
