@@ -168,7 +168,7 @@
 <p>阅读本文内容前，你可能需要了解的基础知识<a href="https://shevakuilin.com/client-ai-02/">「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)</a></p>
 </blockquote>
 <p>在最近的技术分享中，我们已经知道了实现<strong>「图像文字识别&amp;提取」</strong>这个功能所需的基本<strong>技术方案</strong>和<strong>原理</strong> ，这解决了我们实现这一功能当中 <strong>Why</strong> 和 <strong>What</strong> 的问题。但光知道 <strong>Why</strong> 和 <strong>What</strong> 还远远不够，我们还需要明确 <strong>How</strong> 的问题，也就是如何做。</p>
-<p><strong>注意：</strong>下文中所指的 <strong>NLP</strong> <strong>&#x2F; NaturalLanguage、CoreML</strong> 和 <strong>Vision</strong> 均是代指<strong>，其中****包含了大量需要手动编写代码实现的部分，这些框架只供给能力，并不能自动实现的</strong>，请不要混淆概念。</p>
+<p><strong>注意：</strong>下文中所指的 <strong>NLP</strong> <strong>&#x2F; NaturalLanguage、CoreML</strong> 和 <strong>Vision</strong> 均是代指<strong>，其中包含了大量需要手动编写代码实现的部分，这些框架只供给能力，并不能自动实现的</strong>，请不要混淆概念。</p>
 <h2 id="研发看这里"><a href="#研发看这里" class="headerlink" title="研发看这里"></a>研发看这里</h2><h3 id="理清职责"><a href="#理清职责" class="headerlink" title="理清职责"></a>理清职责</h3><p>首先，我们需要明确 <strong>NLP</strong> <strong>&#x2F; NaturalLanguage、</strong> <strong>CoreML</strong> 和 <strong>Vision</strong> 在这一过程中分别扮演了一个什么样的<strong>角色</strong>？</p>
 <p>只有弄清楚这一点，才能有的放矢的设计我们的整套流程，以及规划我们的调研方向从何入手。但想要搞清楚这一点，我们就必须知道，在这一功能点上，他们分别<strong>能做什么</strong>和<strong>不能做什么</strong>。</p>
 <h4 id="Vision"><a href="#Vision" class="headerlink" title="Vision"></a>Vision</h4><p>我们需要知道一点，那就是 <strong>Vision</strong> 框架的文本识别是语言无关的，所以它会尝试识别图像中出现的所有文本，不论是中文、英文还是其他语言。如果希望对识别出的文本进行甄别，就需要我们另寻出路。所以，仅仅依靠 <strong>Vision</strong> 是不足以支撑图像识别和取词的。</p>
@@ -180,7 +180,7 @@
 <p>明确了职责，让我们看一下基本的流程如何。</p>
 <h3 id="核心流程"><a href="#核心流程" class="headerlink" title="核心流程"></a>核心流程</h3><img src="/image/ios-nlp-ocr-demo-uml.png">
 
-<h2 id="对比看这里"><a href="#对比看这里" class="headerlink" title="对比看这里"></a>对比看这里</h2><p>经过调研和产出，我们使用自研能力与另外两家目前主流的翻译词典 APP：<strong>网易有道词典</strong>、<strong>欧路词典</strong>挑选了同一网页进行对比，具体效果如下：</p>
+<h2 id="产品看这里"><a href="#产品看这里" class="headerlink" title="产品看这里"></a>产品看这里</h2><p>经过调研和产出，我们使用自研能力与另外两家目前主流的翻译词典 APP：<strong>网易有道词典</strong>、<strong>欧路词典</strong>挑选了同一网页进行对比，具体效果如下：</p>
 <h3 id="对比案例-A"><a href="#对比案例-A" class="headerlink" title="对比案例 A"></a>对比案例 A</h3><p>多语种混合页面</p>
 <h4 id="网易有道词典"><a href="#网易有道词典" class="headerlink" title="网易有道词典"></a>网易有道词典</h4><p>可以看到，在<strong>多语种混合页面</strong>当中，有道词典无法对不同语言、阿拉伯数字等干扰信息进行有效筛除和过滤，将图像中的所有文本全部识别进来，目前效果是几家里表现最糟糕的。显而易见，他们只拥有最初级的识别能力。</p>
 <img src="/image/ios-nlp-ocr-demo-01.png">
