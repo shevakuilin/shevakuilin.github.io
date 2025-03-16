@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>「端智能」当前应用与发展现状 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="「端智能」当前应用与发展现状 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="「端智能」当前应用与发展现状 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/client-ai-03/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-01-14T15:33:12.000Z" class="post-list__meta--date date">2024-01-14</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">「端智能」当前应用与发展现状</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/client-ai-03.png">
+
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在国内，阿里、腾讯等企业也先后进行了端智能的尝试。</p>
+<p><strong>阿里</strong>在手淘中<strong>宝贝列表重排</strong>、<strong>智能刷新</strong>、<strong>跳失点预测</strong>、<strong>智能 Push</strong>、<strong>拍立淘（以图搜图）</strong>等多个场景实现了端智能的落地，并推出了 <strong>MNN 神经网络深度学习框架</strong>。</p>
+<p><strong>腾讯</strong>则推出自研的 <strong>NCNN 框架</strong>，并在<strong>医疗</strong>、<strong>翻译</strong>、<strong>游戏</strong>、<strong>智能音箱</strong>等领域广泛应用端智能技术。</p>
+<p><strong>Pitaya</strong> 则是由<strong>字节跳动</strong>的Client AI 团队与 MLX 团队共同构建的一套端智能工程链路 ，为端智能应用提供从开发到部署的全链路支持。迄今为止，Pitaya 端智能已经为<strong>抖音</strong>、<strong>头条</strong>、<strong>西瓜</strong>、<strong>小说</strong>等应用的 30+场景提供了端智能支持，让端智能算法包在手机端每天万亿生效次数的同时，错误率控制在不到十万分之一。</p>
+<h3 id="美团-大众点评"><a href="#美团-大众点评" class="headerlink" title="美团 | 大众点评"></a>美团 | 大众点评</h3><h4 id="端智能搜索重排序"><a href="#端智能搜索重排序" class="headerlink" title="端智能搜索重排序"></a>端智能搜索重排序</h4><blockquote>
+<p>解决<strong>分页结果排序调整决策延迟</strong>，更及时地建模<strong>用户实时的兴趣偏好变化</strong></p>
+</blockquote>
+<img src="/image/client-ai-03-01.png">
+
+<ul>
+<li><strong>支持页内重排，对用户反馈作出实时决策</strong>：不再受限于云端的分页请求更新机制，具备进行本地重排、智能刷新等实时决策的功能。</li>
+<li><strong>无延时感知用户实时偏好</strong>：无需通过云端的计算平台处理，不存在反馈信号感知延迟问题。</li>
+<li><strong>更好的保护用户隐私</strong>：大数据时代数据隐私问题越来越受到用户的关注，大众点评 App 也在积极响应监管部门在个人信息保护方面的执行条例，升级个人隐私保护功能，在端上排序可以做到相关数据存放在客户端，更好地保护用户的隐私。</li>
+</ul>
+<img src="/image/client-ai-03-02.png">
+
+<p>端智能重排在大众点评搜索和美食频道页上线后，均取得显著效果，其中搜索流量点击率提升了 25BP（基点），美食频道页点击率提升了 43BP，Query平均点击数提升 0.29%。</p>
+<img src="/image/client-ai-03-03.png">
+
+<hr>
+<h3 id="美团-外卖"><a href="#美团-外卖" class="headerlink" title="美团 | 外卖"></a>美团 | 外卖</h3><h4 id="1-外卖智能陪伴型导购"><a href="#1-外卖智能陪伴型导购" class="headerlink" title="1.外卖智能陪伴型导购"></a>1.外卖智能陪伴型导购</h4><blockquote>
+<p>导购服务直接影响着用户的<strong>购前决策</strong>，对商家的<strong>转化率</strong>和<strong>营业额</strong>有着重大的意义。</p>
+<p>在用户使用搜索&#x2F;推荐时，我们围绕用户表现出的兴趣主动提供更智能的搜索建议，更好地承接用户实时变化的意图和被激发出的灵感。同时，我们也解决了<strong>用户打字输入成本高</strong>、<strong>不知道附近的供给能否满足他们的需求</strong>以及<strong>不知道如何清晰表达他们的需求</strong>等三个方面的痛点。</p>
+</blockquote>
+<h5 id="框内词智能刷新"><a href="#框内词智能刷新" class="headerlink" title="框内词智能刷新"></a>框内词智能刷新</h5><img src="/image/client-ai-03-04.png">
+
+<p>上图展示了从“用户点击首页Feed商家卡片”开始，到框内词智能刷新的Query展现”的全流程。当客户端收集到用户进店行为后，调用Alita的意图感知引擎；满足框内词智能刷新的触发条件后，对用户在端上的进行特征处理、计算和存储，并将计算好的特征传递给客户端组装框内词智能刷新的请求；框内词智能刷新的请求经过应用服务层的Disptch透传给Query推荐的后端服务，经过召回、排序、过滤、机制、封装阶段，最终返回框内词智能刷新的结果到客户端进行展示。</p>
+<h6 id="产品形态"><a href="#产品形态" class="headerlink" title="产品形态"></a>产品形态</h6><p>早期导购服务在用户进入外卖首页时会主动触发刷新，但除非用户手动触发刷新操作，框内词会一直轮播首次刷新时的结果，造成了大量的流量浪费。</p>
+<p>为了解决这个问题，我们尝试利用基于Alita的意图感知能力。如<a target="_blank" rel="noopener" href="http://dpurl.cn/CEa1F67z">视频</a>演示，当用户在首页浏览商家并加购菜品“【爆款】麻酱凉皮”后返回首页，吸顶的搜索框中的框内词会自动更新，并轮播到新的搜索词“凉皮”，同时展示擦亮动效。当用户点击搜索按钮后，会直接跳转到搜索结果页，展示更多与凉皮相关的商家及菜品，帮助用户进行选购。</p>
+<h5 id="导购Query推荐全场景统一模型"><a href="#导购Query推荐全场景统一模型" class="headerlink" title="导购Query推荐全场景统一模型"></a>导购Query推荐全场景统一模型</h5><p>随着端智能在导购场景的应用，词服务场景已经扩展到了如图所示的五个场景（框内词、框下词、搜索发现、框内词智能刷新以及猜你想搜）。然而，如果每个场景都单独迭代一个模型，这将耗费大量时间和精力。此外，单场景模型无法利用多个场景的共性进行辅助学习。对于新场景或小场景等训练数据较少的场景，直接使用单个场景的数据进行训练，很容易导致过拟合问题。</p>
+<img src="/image/client-ai-03-05.png">
+
+<p>特征在排序的效果中，起到非常重要的作用，基于外卖搜索导购的实际场景，结合外卖推搜特征Matrix规范及特征重要度分析，如下图所示，我们从User、POI、Query、Context以及组合等5个维度入手来构建外卖导购特征Matrix，特征数量共120+。</p>
+<img src="/image/client-ai-03-06.png">
+
+<ul>
+<li><strong>User维度</strong>：该维度包括用户在不同时间窗口内的不同行为统计特征，比如时间窗口可以选择1天&#x2F;7天&#x2F;30天&#x2F;60天&#x2F;180天等，行为特征主要有搜索行为、点击行为以及购买行为等，以此来表征用户的兴趣。</li>
+<li><strong>POI维度</strong>：主要是POI在不同时间窗口的行为统计特征来表征POI的热度，时间窗口和行为类型参考User维度的设定，除此之外，还包括POI的商家分类等基础属性信息。</li>
+<li><strong>Query维度</strong>：主要包括Query的搜索量、点击率以及成单率等统计特征，此外还包括Query的商家分类及分词信息。</li>
+<li><strong>Context维度</strong>：主要是时间，如时段、星期几、节假日；场景特征，如当前所处场景（框内、框下、搜索发现）等等。</li>
+<li><strong>组合维度</strong>：Context-Item组合维度，组合Areaid_x_item以及Period_x_item的交叉维度，挖掘不同时段下Item的曝光点击率等特征；User-Item组合维度，User在不同时间窗口内对Item搜索、点击等行为次数等。</li>
+</ul>
+<p>除了上面提到的5种维度的特征外，为了配合异构行为序列建模，我们也设计了用户的异构序列特征。</p>
+<p><strong>搭建导购用户兴趣建模五维体系</strong>：如下图所示，我们搭建了理想版的导购用户兴趣建模五维体系，形成了“行为周期、行为情景、行为模式、行为表示、兴趣抽取”用户兴趣五维建模体系迭代认知。</p>
+<img src="/image/client-ai-03-07.png">
+
+<h4 id="2-交互式推荐"><a href="#2-交互式推荐" class="headerlink" title="2.交互式推荐"></a>2.交互式推荐</h4><blockquote>
+<p>交互式推荐是一种互动式实时推荐产品模块，主要通过<strong>理解用户需求</strong>、<strong>以互动的方式进行推荐</strong>。交互式推荐由Youtube在2018年提出，主要用于解决<strong>推荐系统的延迟</strong>和与<strong>用户互动偏弱</strong>的问题。</p>
+</blockquote>
+<p>从2021年下半年开始，美团外卖推荐技术团队在外卖首页Feed上持续进行探索，2022上半年完成全量。具体流程如视频所示：用户从首页Feed进入商家详情页并退出之后，动态地插入新的推荐内容到用户推荐列表中。其主要优势是根据用户的实时需求动态插入卡片进行反馈，进而增强用户的使用体验。</p>
+<p>外卖首页Feed在<strong>用户即时兴趣的捕捉和反馈</strong>上存在痛点，“对比型”用户的选购效率和体验不佳。外卖首页Feed作为泛意图用户主要选购场景之一，用户在浏览到成单过程中通常需要进行一番对比、才能逐步收敛意图，然后做出最终决策。</p>
+<p>但受限于长列表的翻页模式，首页Feed根据用户需求实时调整推荐结果的能力不足。具体表现在，一部分用户的浏览深度不足一页，推荐系统没有额外的机会根据用户兴趣调整推荐结果。另一部分用户虽然有较深的浏览深度，但需要等到翻页时推荐系统才能重新理解用户意图，实时性不足。</p>
+<p>业界优化这类问题的主要产品形态有交互式推荐、动态翻页、端上重排这三种。交互式推荐由于是在用户可视范围内插入，用户感知较强；后两种的主流形态是在用户不可见区域更新推荐，用户感知相对较弱。</p>
+<h5 id="用户意图理解"><a href="#用户意图理解" class="headerlink" title="用户意图理解"></a>用户意图理解</h5><p>交互式推荐，由推荐系统感知到用户的“交互”触发。其理解用户意图的流程主要包含两个阶段：1）用户对推荐系统的哪些行为可以触发交互式推荐；2）触发交互式推荐时用户的即时意图是什么样的。</p>
+<img src="/image/client-ai-03-08.png">
+
+<h5 id="用户实时需求理解"><a href="#用户实时需求理解" class="headerlink" title="用户实时需求理解"></a>用户实时需求理解</h5><p>如何通过端智能更好理解用户意图是我们关注的重点，相比服务端，用户在端上的特征主要有以下2个特点：</p>
+<ul>
+<li><strong>实时性更好</strong>：从“准实时”到“超实时”的交互。</li>
+<li><strong>维度更细</strong>：从“交互Item”进化到“Item交互的Micro-粒度”。</li>
+</ul>
+<p>因此，借助端智能的能力，我们不再受限于首页Feed的分页请求更新机制，能够根据用户行为，更好理解用户需求，实时智能决策更新推荐结果，缓解反馈信号感知延迟问题。</p>
+<p>用户点击商家卡片后在店内的主要行为可以帮助我们更好理解用户实时需求。下图第一张展示了部分店内行为，下图第二章中分析了部分不同的行为对比查看商家介绍行为，在用户当日完单率（当日完单率定义：当日用户在商家内发生某一行为，并在该自然日内外卖有成单）上的差异，说明不同行为下用户的需求有明显差异。</p>
+<img src="/image/client-ai-03-09.png">
+
+<img src="/image/client-ai-03-10.png">
+
+<hr>
+<h3 id="阿里巴巴-手淘天猫"><a href="#阿里巴巴-手淘天猫" class="headerlink" title="阿里巴巴 | 手淘天猫"></a>阿里巴巴 | 手淘天猫</h3><h4 id="MNN-深度神经网络推理引擎"><a href="#MNN-深度神经网络推理引擎" class="headerlink" title="MNN 深度神经网络推理引擎"></a>MNN 深度神经网络推理引擎</h4><img src="/image/client-ai-03-11.png">
+
+<p>淘系端智能团队经过长期思考和实践，构建了端智能完整技术体系，如图所示，其设计的基本思想和特点是：</p>
+<ol>
+<li>跨生态：通过基础层构建深度学习推理引擎等高性能计算库，解决模型运行和前后处理计算问题，覆盖碎片终端硬件和系统生态；</li>
+<li>全链路：通过系统层平台化建设轻量级的深度神经网络推理引擎MNN（Mobile Neural Network）工作台、MNN运行时和MNN服务端，解决算法模型研发全链路问题，以及运行期算法任务计算、数据和调度问题；</li>
+<li>低门槛：通过方案层配合算法人员沉淀开箱即用算法集和领域解决方案，降低算法门槛，实现多App、多场景快速复制接入应用。</li>
+</ol>
+<img src="/image/client-ai-03-12.png">
+
+<p>端智能应用场景碎片化，业务团队中往往缺少算法人员，而模型训练等工作对于工程人员门槛太高，导致应用落地困难。对此，解决思路是把通用的算法能力沉淀下来做成开箱即用的算法集，把在特定场景验证过的端智能应用方案沉淀下来做成解决方案，并且通过系统层MNN工作台统一对所有用户开放。</p>
+<h5 id="PixelAI算法集"><a href="#PixelAI算法集" class="headerlink" title="PixelAI算法集"></a>PixelAI算法集</h5><p>开箱即用算法集合：淘系算法沉淀PixelAI算法集，累计开发出超过30种功能。比如在人脸相关的功能方面，包含</p>
+<ul>
+<li>人脸检测</li>
+<li>人脸关键点</li>
+<li>人脸属性</li>
+<li>人脸3D重建</li>
+<li>人脸活体检测</li>
+<li>人脸比对等基础功能</li>
+</ul>
+<p>以及基于基础功能形成了</p>
+<ul>
+<li>人脸美颜</li>
+<li>美型</li>
+<li>美妆等上层功能</li>
+</ul>
+<p>同时，在图像分割方面，覆盖</p>
+<ul>
+<li>人像分割</li>
+<li>头发分割</li>
+<li>指甲分割</li>
+<li>商品分割等</li>
+</ul>
+<p>在人体和人手方面，覆盖</p>
+<ul>
+<li>人体姿态估计（2D和3D）</li>
+<li>手势检测和动作识别</li>
+<li>脚检测跟踪。</li>
+</ul>
+<h5 id="特定领域解决方案"><a href="#特定领域解决方案" class="headerlink" title="特定领域解决方案"></a>特定领域解决方案</h5><ul>
+<li>白屏检测方案：基于图像理解算法，在端侧对异常实时检测进行页面展示</li>
+<li>图像超分方案：基于端侧实时超分算法能力实现低质量图片清晰化，既保证用户体验又节省流量</li>
+<li>反欺诈方案：基于端侧高质量光学字符识别（Optical Character Recognition，OCR）算法能力，在聊天场景中进行实时防范，提示欺诈性的文字和对话，帮助用户避免被诈骗。</li>
+</ul>
+<h4 id="1-AR-商品导购"><a href="#1-AR-商品导购" class="headerlink" title="1.AR 商品导购"></a>1.AR 商品导购</h4><p>端智能技术已经在手淘拍立淘、直播内容理解、AR商品导购等场景具有<strong>规模化应用</strong>。</p>
+<p>用户线上购物时基本通过图文、短视频了解商品信息，相比于线下购物，线上购物一直存在无法试用商品的痛点。基于端侧智能技术，在端上能够做到<strong>实时精准</strong>的人脸、脚部检测和追踪，结合真实感渲染能力，为用户商品试用提供了技术可能性。</p>
+<p>目前，手淘天猫美妆等已构建“AR试”产品矩阵，包括AR试妆、AR试鞋、AR手表和眼镜试戴等15项能力（如图所示），累计近5000万用户参与，帮助品牌带来明显转化提升，用户停留时长明显增长。“AR试”给消费者带来有趣好玩、具有真实感的购物体验，让用户可以体验商品上身的逼真效果，打造“先试后买”的购物新体验，提高用户购买决策效率。</p>
+<p>AR试的基本方案是“端上实时检测+端上实时渲染”，由于产品交互的强实时需求，AR试的技术难点主要是，手淘在超过300种不同手机型号上解决人脸检测、脚检测、手腕检测等算法的实时性问题。针对这个问题，MNN推理引擎进行极致的性能优化，最终实现AR试妆人脸检测算法耗时小于5ms，AR试鞋检测算法耗时10~50 ms，有效保障了产品方案的实时交互体验。</p>
+<img src="/image/client-ai-03-13.png">
+
+<h4 id="2-手淘推荐"><a href="#2-手淘推荐" class="headerlink" title="2.手淘推荐"></a>2.手淘推荐</h4><img src="/image/client-ai-03-14.png">
+
+<p>相比于其他推荐产品，手淘推荐也有自身的如下特点：</p>
+<ol>
+<li><p><strong>购物决策周期</strong>：手淘推荐的主要价值是挖掘用户潜在需求和帮助用户购买决策，用户的购物决策周期比较长，需要经历需求发现,信息获取，商品对比和下单决策的过程，电商推荐系统需要根据用户购物状态来做出推荐决策。</p>
+</li>
+<li><p><strong>时效性</strong>：我们一生会在淘宝购买很多东西，但是这些需求通常是低频和只在很短的时间窗口有效，比如手机1~2才买一次但决策周期只有几小时到几天，因此需要非常强的时效性，需要快速地感知和捕获用户的实时兴趣和探索未知需求,因此，推荐诞生之初就与Flink、Blink实时计算关系非常紧密。</p>
+</li>
+<li><p><strong>人群结构复杂</strong>：手淘中会存在未登录用户、新用户、低活用户以及流式用户等，因此需要制定差异化的推荐策略，并且针对性地优推荐模型。</p>
+</li>
+<li><p><strong>多场景</strong>：手淘推荐覆盖了几百个场景，每个场景都独立进行优化显然是不可能的，而且每个场景的条件不同，因此超参也必然不同，无法依靠人工逐个优化场景模型的参数，因此需要在模型之间进行迁移学习以及自动的超参学习等，通过头部场景的迁移学习来服务好尾部场景。</p>
+</li>
+<li><p><strong>多目标和多物种</strong>。</p>
+<img src="/image/client-ai-03-15.png"></li>
+</ol>
+<p>在云和端协同计算方面，阿里巴巴已经做了大量的尝试，比如云和端如何实现协同推理，这里包括几个部分，比如<strong>手机端上拥有更加丰富的用户行为</strong>如<strong>用户滑屏速度</strong>、<strong>曝光窗口时长</strong>以及<strong>交互时长</strong>等，因此第一步是端上的<strong>用户行为模式感知的模型</strong>。第二步就是在<strong>端上决策</strong>，比如预测用户何时会离开APP，并在用户离开之前改变一些策略提高用户的浏览深度。此外，手淘还在端上做了一个小型推荐系统，因为目前云上推荐都是一次性给多个结果比如20多个，而手机一次仅能够浏览4到6个推荐结果，当浏览完这20个结果之前，无论用户在手机端做出什么样的操作，都不会向云端发起一次新的请求，因此推荐结果是不变化的，这样就使得个性化推荐的时效性比较差。现在的做法就是一次性将100个结果放在手机端上去，手机端不断地进行推理并且更新推荐结果，这样使得推荐能够具有非常强的时效性，如果这些任务全部放在云端来做，那么就需要增加成千上万台机器。</p>
+<h4 id="3-智能化-Push"><a href="#3-智能化-Push" class="headerlink" title="3.智能化 Push"></a>3.智能化 Push</h4><p>手淘 App 作为目前用户数最多的几个 App 之一，Push 天生就是一个用户触达量非常巨大的渠道，每天将触达几亿的人群，是整个手机淘宝非常重要流量渠道之一。</p>
+<p>但是实际上，我们希望 Push 消息不仅仅是一个触达渠道和通知方式，而是能够通过结合丰富的触达内容、深度的<strong>用户理解</strong>和<strong>个性化的运营分发</strong>，将其打造成一个具备用户心智和真正懂用户的产品，变成用户在淘宝上的一个贴身小助手。</p>
+<p>手淘的 Push 消息可以分为<strong>营销类</strong>（细分为个性化、定投和通投），<strong>产品通知类</strong>，<strong>聊天 IM 类</strong>。可以从下面的产品介绍图中找到部分相应的示例。</p>
+<img src="/image/client-ai-03-16.png">
+
+<p>消息推送最基本的能力是进行内容投放。对于一般的 App 而已， Push 更多的可以理解为实现一个内容推荐和分发系统，通过优化点击率来提高 App 的活跃度和内容的浏览量。但是对于手淘而言，还需要承担一个<strong>对不同业务方进行内容投放</strong>的需求，需要做到流量的合理分配，兼顾平台，业务方和用户的诉求，所以手淘 Push 同时也兼具了广告投放系统的很多特点。</p>
+<p>如下图，整体算法架构分为<strong>投放匹配</strong> 和 <strong>流量调控</strong>分别建设，同时我们还构造了第三个模块智能情景投放来决定整个投放的具体时机。</p>
+<img src="/image/client-ai-03-17.png">
+
+<h5 id="为大促赋能"><a href="#为大促赋能" class="headerlink" title="为大促赋能"></a>为大促赋能</h5><p>每年的天猫 618 大促既是一个年中重要的营销节日，也是对年末天猫双十一的一个预演和检验。对于今年的 618 大促，我们成立了专门的大促专项进行了重点支持。除了上述日常的改造提升之外，针对大促的特点和对 Push 投放的需求，也进行了相关的能力改造和升级。</p>
+<p><strong>大促流量保证 ：对于大促的赋能关键点是需要具备 2 个核心能力：实时投放</strong> + <strong>动态目标</strong>。</p>
+<p>业务上需要根据大促的实时情况来决定投放目标，比如大促 GMV 和流量的供给需求等。这种情况下离线算法是很难支持这种临时的投放任务的，而经过了前期的一系列实时化改造和对大促临时需求的调研，最终在 618 之前上线了大促机动策略功能，可以针对大促当天的临时或者机动需求，进行创建任务、选择投放目标和内容、开始投放的一系列实时能力。</p>
+<p>例如，618 当天，为了进一步释放大促潜在购买转化，在大促期间加购未购人群上实时创建了投放任务，进行了目标人群上的个性化投放。对比的投放方式是人工选择内容，随机选择内容和算法个性化选择内容。具体的实验方案如下图：</p>
+<img src="/image/client-ai-03-18.png">
+
+<p>综上，用一句话概括手淘 Push 的整体目标就是：<strong>在合适的时机，为用户提供需要的内容，并且建立稳定的用户预期和反馈机制，来形成有效的产品闭环</strong>。</p>
+<p>未来将继续沿着三个重要方向进行升级和优化。</p>
+<p>1.<strong>用户打扰和通道健康</strong>：</p>
+<p>应用内外的 Push 功能是一个很容易被滥用，并且健康度受损之后很难事后修复的渠道。目前手淘的 Push 应用通知关闭率低于大部分内容类应用，但在发送消息的时候仍然要对通道的健康度进行关注和优化，减少消息的发送量。</p>
+<p>2.<strong>事件触发机制支持和端侧能力结合</strong>：</p>
+<p>除了进行营销类的通知外，从用户体验上，需要将用户真正关心的事件和用户希望得到的通知提供给他们，成为用户真正的贴身助手。所以后续将会结合事件触发和端实时计算的能力还进行能力补全。</p>
+<p>3.<strong>算法深度的探索和应用</strong>：</p>
+<p>如之前介绍，手淘的 Push 算法融合了推荐和广告中的算法能力，未来将进一步对更加深入的算法方向进行探索，希望能够对用户的状态和推送正负反馈进行更加精准的建模，让推送内容变得更加准确和“有用”。</p>
+<h4 id="4-手淘直播窄带高清"><a href="#4-手淘直播窄带高清" class="headerlink" title="4.手淘直播窄带高清"></a>4.手淘直播窄带高清</h4><img src="/image/client-ai-03-19.png">
+
+<h5 id="自研的S265编码器"><a href="#自研的S265编码器" class="headerlink" title="自研的S265编码器"></a><strong>自研的S265编码器</strong></h5><p>带宽成本是视频服务中非常重的基础设施成本，如何在保证视频质量的前提下降低成本是整个链路中至关重要的一环。</p>
+<p><strong>码率控制</strong></p>
+<img src="/image/client-ai-03-20.png">
+
+<p><strong>编码工具</strong></p>
+<img src="/image/client-ai-03-21.png">
+
+<img src="/image/client-ai-03-22.png">
+
+<p><strong>速度优化</strong></p>
+<img src="/image/client-ai-03-23.png">
+
+<img src="/image/client-ai-03-24.png">
+
+<h5 id="智能码控"><a href="#智能码控" class="headerlink" title="智能码控"></a>智能码控</h5><p>智能码控是淘宝自研的码率控制算法。</p>
+<p>普通ABR或CBR码率控制为了追求目标码率，在低复杂度场景浪费了大量码率，根据人眼主观质量模型，当psnr高于一定阈值后再提高质量人眼无法察觉只会消耗过多码字。</p>
+<p>我们使用机器学习方法，根据17种历史编码信息和待编码帧的复杂度，预估出待编码帧在质量阈值以上的量化系数，并限定在ABR目标码率以下，确保每个帧都能以最合适的码率编码。</p>
+<img src="/image/client-ai-03-25.png">
+
+<img src="/image/client-ai-03-26.png">
+
+<h5 id="场景编码"><a href="#场景编码" class="headerlink" title="场景编码"></a>场景编码</h5><p>由于当前淘宝直播种类的丰富性，各种场景下的纹理、光照、背景、运动程度都是不一样的。</p>
+<p><strong>比如：</strong></p>
+<ul>
+<li>1）户外主播经常走动，画面帧变化幅度频率高；</li>
+<li>2）美妆主播大多坐在室内，光照基本上比较偏亮；</li>
+<li>3）珠宝类主播主要是拍摄物品，画面多静止不动。</li>
+</ul>
+<p>面对形形色色的直播场景，单一的编码器配置并不能满足当前淘宝直播的需求，开启或关闭某些编码工具对视频编码效果影响不一致，如何针对内容选择最佳参数成为业界研究的方向。</p>
+<img src="/image/client-ai-03-27.png">
+
+<h5 id="低延迟编码器"><a href="#低延迟编码器" class="headerlink" title="低延迟编码器"></a>低延迟编码器</h5><p>在直播中，低时延意味着高效率和优质体验。</p>
+<p>根据场景可以用不同的预测模型变种，最终实现用较短的lookahead模拟较长的lookahead的效果，测试在直播素材中lookahead4优化后比优化前可以节省13.5%的码率,有效的降低了编码延迟。</p>
+<img src="/image/client-ai-03-28.png">
+
+<p>同时，在之前的测试中发现，该优化对场景不敏感，运动简单场景和运动复杂场景提升同样有效。</p>
+<p>过去一年，我们采用前述优化，将265码流在画质不变的前提下，将码率从1.4M下降到800K。</p>
+<h5 id="画质增强"><a href="#画质增强" class="headerlink" title="画质增强"></a>画质增强</h5><p>在淘宝直播的场景中，大主播有自己的专业设备与团队，直播出来的视频与音频都是比较高质量的。但是针对中小主播，用户的行为不可控。</p>
+<p>因此产生的结果就是很多中小主播产生的视频质量比较低，收获的观众数量也比较少。</p>
+<p>针对这种情况，我们选取了用户习惯产生最严重的几种情况，对这一类主播进行了画质增加的，显著提升了用户的直播体验。</p>
+<img src="/image/client-ai-03-29.png">
+
+<p><strong>去抖</strong></p>
+<p>现代编码器能够较好的处理平坦纹理和平移运动，前者通过帧内预测来消除空间相关性，后者通过运动搜索来消除帧与帧之间的时间相关性。</p>
+<p>但是在视频采集过程中，由于摄像机抖动产生的<strong>视频帧抖动</strong>，编码器不能够很好的处理。</p>
+<p>由于抖动剧烈的一般是中小主播，且携带的<strong>设备比较老旧</strong>，我们考虑<strong>从采集源来改善视频帧</strong>，最终在这里我们采用<strong>相机路径平滑算法</strong>来去除视频帧中的抖动。</p>
+<p><strong>去噪</strong></p>
+<p>视频直播在灯光不太理想的情况下，摄像头采集的画面会产生明显的飞蚊噪声和高斯白噪声，严重影响用户对视频内容的感受，这种情况下，有必要对视频进行降噪。</p>
+<p>现有的很多优秀的云端去噪算法，其实<strong>对于移动端来说采用深度学习的方法就不合适</strong>。</p>
+<p>虽然现在有很多移动端深度学习框架，但是毕竟还没有跟机器是配得非常好，针对很<strong>多中低端的手机其实跑不动这种生成模型的</strong>。</p>
+<p>基于此，<strong>我们在移动端主要是考虑效率</strong>，那么我们就采了基于<strong>维纳滤波的时域降噪算法</strong>方式来实现，进行训练和优化。</p>
+<img src="/image/client-ai-03-30.png">
+
+<p><strong>超分</strong></p>
+<p>针对一些小微主播，录播设备只能支持360p，最终观众端看到的视频会通过插值等传统方法进行放大为720p。这样获得的视频帧难免产生<strong>模糊效果</strong>，<strong>影响直播观感</strong>。</p>
+<p>得益于深度学习在移动端的优化，我们在部分高端机实现了<strong>移动端视频帧的实时超分</strong>。</p>
+<p>在众多的网络架构中，我们最终选择了性能最佳的<strong>FSRCN</strong>方案，网络的架构图如下所示。</p>
+<img src="/image/client-ai-03-31.png">
+
+<h4 id="5-序列检索系统在淘宝首页信息流重排"><a href="#5-序列检索系统在淘宝首页信息流重排" class="headerlink" title="5.序列检索系统在淘宝首页信息流重排"></a>5.序列检索系统在淘宝首页信息流重排</h4><blockquote>
+<p>淘系推荐技术 EdgeRec 团队，致力于推动端智能与推荐系统的结合，落地了<strong>端上重排</strong>、<strong>端上混排</strong>、<strong>千人千模</strong>等前沿算法和系统，服务于阿里多个核心推荐场景，并且常年在 SIGKDD、SIGIR 和 CIKM 等顶级会议发表论文。</p>
+</blockquote>
+<p>重排逐渐成为了工业推荐系统必不可少的一环，工业推荐系统其中存在的四个主要挑战，分别为<strong>上下文感知</strong>、<strong>排列特异性</strong>、<strong>复杂度</strong>和<strong>业务要求。</strong></p>
+<p>在一个典型的工业推荐场景中（如图的首页信息流、微详情页和短视频），<strong>一个经过排序的、最贴近用户兴趣的最终推荐列表被推荐给用户</strong>。<strong>一个标准的工业推荐系统通常由三个阶段依次组成：召回、排序和重排</strong>。一直以来，召回和排序得到了持续的关注和长足的发展，而重排，由于其直接决定了最终透出的商品及其展示顺序，也在逐渐受到关注并且展示出极大的潜力。</p>
+<img src="/image/client-ai-03-32.png">
+
+<img src="/image/client-ai-03-33.png">
+
+<img src="/image/client-ai-03-34.png">
+
+<h4 id="6-基于端云协同的视频流实时搜索"><a href="#6-基于端云协同的视频流实时搜索" class="headerlink" title="6.基于端云协同的视频流实时搜索"></a>6.基于端云协同的视频流实时搜索</h4><p>点击首页搜索框的相机icon，就可以使用淘宝拍照功能来进行实时拍照搜同款和比价。</p>
+<img src="/image/client-ai-03-35.png">
+
+<p>这背后就是图片搜索技术在电商领域的应用。正如把大象关进冰箱只需要三步：打开冰箱、把大象放进去、关上冰箱。淘宝拍照的自动识别图搜功能也可以简化描述为以下三步：</p>
+<ol>
+<li><strong>客户端从摄像头获取图像，利用端侧算法识别出主体</strong></li>
+<li><strong>上传图片到云端，云端根据主体特征进行搜索，并返回识别结果</strong></li>
+<li><strong>客户端拉起结果页把图搜结果展示给用户</strong></li>
+</ol>
+<img src="/image/client-ai-03-36.png">
+
+<ul>
+<li>端侧算法会<strong>对视频流进行特征提取</strong>，对已识别的主体进行缓存，并且分配全局唯一的ID，以解决<strong>不同帧的相同主体重复的问题</strong>。</li>
+<li><strong>将服务端识别的结果回流到端侧算法进行修</strong>正，以<strong>解决端侧算法资源不足而识别不准确的问题</strong>，从而提升同款率</li>
+<li>对于端侧算法识别出的主体，<strong>数据层进行缓存</strong>，并在特定的时间节点上，<strong>批量抠图上传到服务端进行搜索</strong>，获取主体信息，从而<strong>解决服务端的压力问题</strong>。</li>
+</ul>
+<img src="/image/client-ai-03-37.png">
+
+<h4 id="7-基于端智能的在线红包分配"><a href="#7-基于端智能的在线红包分配" class="headerlink" title="7.基于端智能的在线红包分配"></a>7.基于端智能的在线红包分配</h4><p><strong>红包发放作为一种营销手段，其ROI是我们非常关心的一个指标，因为它直接反映了在有限的预算内红包为整个平台促活促成交的能力</strong>。优化红包发放的ROI要求我们<strong>把红包发到最合适的用户手上</strong>。而判断哪些用户适合领到红包需要我们<strong>在真正发红包之前判断当前用户的意图</strong>。举例来讲，一个购买意图非常明确、无论是否有红包都会下单的用户显然不适合领到红包；相反，红包对一个犹豫不决、货比三家的用户很有可能起到“临门一脚”的作用。</p>
+<p>随着1688业务的快速发展，每天都会有大量的平台新用户涌入，其中有很多用户在整个阿里经济体的数据都十分稀疏，基于常规手段，我们很难对这种“陌生”的用户进行精准刻画。然而，只要一个用户进入了APP，或多或少都会和平台产生相互作用（滑动，点击等），这种在端上实时产生的数据能够帮助我们对用户尤其是新用户的实时意图进行精准捕捉，进而完成红包发放的决策。</p>
+<img src="/image/client-ai-03-38.png">
+
+<h5 id="瞬时意图识别"><a href="#瞬时意图识别" class="headerlink" title="瞬时意图识别"></a>瞬时意图识别</h5><img src="/image/client-ai-03-39.png">
+
+<p>模型的输入主要是<strong>实时用户特征</strong>和<strong>红包特征</strong>，用户特征包括<strong>实时特征</strong>（端上收集到的：点击、加购等）、<strong>历史特征</strong>（用户核身、年龄等），红包特征现在只加入了<strong>面额</strong>。这些特征是高度异质的，需要进行一步处理把它们映射到相同的向量空间中。我们采用嵌套技术，把原始的异质特征映射为长度固定的向量，并把该向量作为后续结构的输入。</p>
+<p>红包发放的业务逻辑是：<strong>用户在详情页产生浏览行为并返回landing page的时候触发决策模型，判断给该用户发放红包的面额（0元代表不发放）</strong>。由于用户通常会产生一系列的详情页浏览行为，因此我们收集到的数据也是高度序列化的。为了更好地描述序列化数据当中的时间依赖关系，我们在特征抽取环节采用了Long Short Term Memory (LSTM) 来捕捉这种序列化信息。</p>
+<h5 id="求解MCKP"><a href="#求解MCKP" class="headerlink" title="求解MCKP"></a>求解MCKP</h5><p>根据<strong>瞬时意图识别阶段</strong>得到的<strong>实时意图</strong>P和S，我们在这一阶段<strong>完成红包的最终发放</strong>。</p>
+<img src="/image/client-ai-03-40.png">
+
+<hr>
+<h3 id="阿里巴巴-咸鱼"><a href="#阿里巴巴-咸鱼" class="headerlink" title="阿里巴巴 | 咸鱼"></a>阿里巴巴 | 咸鱼</h3><h4 id="利用端计算提升推荐场景的ctr"><a href="#利用端计算提升推荐场景的ctr" class="headerlink" title="利用端计算提升推荐场景的ctr"></a>利用端计算提升推荐场景的ctr</h4><blockquote>
+<p>闲鱼作为一个电商场景的app，最丰富的部分就是作为商品宝贝浏览承载的feeds，比如首页下面的宝贝信息流，搜索结果页以及详情页下面的猜你喜欢，这些feeds场景都少不了推荐算法在背后的支撑。</p>
+</blockquote>
+<p><strong>传统的推荐算法是依托于云上沉淀的埋点数据来</strong>。随着4G网络资费的下降，产生了越来越多的数据，如果将如此大量的数据都上传到运算，并且由云端来做中心化的存储&#x2F;计算和处理，<strong>不仅会产生大量无必要的网络流量，而且还会给云端带来高昂的存储成本，实时性也无法保证</strong>。</p>
+<p>我们观察到随着<strong>手机计算能力的提升</strong>，某些计算<strong>可以在端上直接计算</strong>，<strong>再统一上报到后端</strong>，这样相比云计算有很多明显的优势：</p>
+<ol>
+<li><strong>更加实时性</strong>：我们可以在端上完成<strong>原始特征的处理</strong>和<strong>实时打分</strong>，从原始特征的抽取到计算结果的上报完成，可以在1s左右完成。</li>
+<li><strong>计算资源的节约</strong>：大量数据如果都汇集到云端上计算，可能会造成计算资源的不足，我们可以将计算量分散到各个端上，可以<strong>降低计算资源开销</strong>。</li>
+<li><strong>多维度数据采集</strong>：一些类似于细粒度的行为数据、<strong>采集频率过高的数据</strong>或者<strong>涉及用户隐私的数据</strong>等，可以<strong>在端上直接消费掉而不需要上传</strong>。</li>
+</ol>
+<p>马里奥是闲鱼首页的一个创新形式的业务，其<strong>业务逻辑</strong>是：<strong>用户在闲鱼首页feeds部分点击来一个宝贝卡片，那么同时就会请求云端，根据后端算法拉取回来算法召回的query词和对应的推荐宝贝信息，以四个方块的形式展示在一个张卡片中，这样来给用户点击之后，跳到二级承接页面来给用户推荐更相关的宝贝，来达到提升首页feeds部分点击率和成交的效果</strong>。</p>
+<img src="/image/client-ai-03-41.png">
+
+<p>在这个场景下，需要在用户点击进入宝贝详情，然后<strong>离开详情页的时候，就需要给出用户对该宝贝的意向</strong>，只有满足某个阈值的情况，才应该出现马里奥卡片。<strong>这种场景下，如果使用传统的云端算法，把数据都收集好，再计算出结果，再返回到端上，这时候很可能插入卡片的时机早就过去了，没法抓到用户这个关键点</strong>。因为用户在浏览详情页的过程中，所有的<strong>点击</strong>和<strong>曝光</strong>都是在端上<strong>实时产生</strong>的，很可能在最后一刻退出页面之前，用户都在一直产生有价值的动作，这时候不断的往云端回传数据再计算，显然是不可行的方案。</p>
+<p>为此，我们提出了智能展现模型，通过用户在端侧的细粒度交互行为建模用户对触发模块的实时偏好，将原始的触发展现模块解藕为两部分:</p>
+<p>1、<strong>CTR(端):端侧做展现控制</strong>：基于用户当下细粒度交互行为及交互习惯决定是否请求（展现）相关模块</p>
+<p>2、<strong>CTR(云):云侧做内容控制</strong>：决定展现的相关内容</p>
+<p>所以我们最终采用端计算和云计算结合的方案，所有依赖数据都实时在端上产生，而且计算处理数据的过程也在端上，借助于集团提供的端计算容器，我们可以很方便的把模型部署到端上并运行它得到我们用户点击之后对点击宝贝的满意度的数值。</p>
+<img src="/image/client-ai-03-42.png">
+
+<p>新的马里奥方案，对整个链路和现有体系是最小侵入，也让整体更加简洁。闲鱼马里奥项目上，智能展现模型在保证94.4%的马里奥点击量和96%的二跳点击量下，马里奥<strong>服务端请求量减少了</strong>-28.0%<strong>，</strong>点击率提升**+31.1%<strong>，成交率增长了</strong>10%**。</p>
+<hr>
+<h3 id="阿里巴巴-阿里体育"><a href="#阿里巴巴-阿里体育" class="headerlink" title="阿里巴巴 | 阿里体育"></a>阿里巴巴 | 阿里体育</h3><h4 id="端智能运动"><a href="#端智能运动" class="headerlink" title="端智能运动"></a>端智能运动</h4><p>阿里体育技术团队在端智能方面不断探索，特别地，在运动健康场景下实现了实践落地和业务赋能，这就是AI运动项目。AI运动项目践行运动数字化的理念，为运动人口的上翻提供了重要支撑，迈出了阿里体育端智能运动领域的第一步，为用户带来了更加有趣的新颖玩法。上线以来，项目受到了广泛关注。</p>
+<p>2020年因新冠疫情，传统的线下运动受到限制，居家运动逐渐成为新趋势。基于阿里巴巴强大的技术沉淀，阿里体育团队顺应线上运动的迫切需要，开发出基于AI识别的智能运动，为用户提供了简便、好玩的新型居家运动方式。只需一部手机和3-4平米的场地，就可以开展AI运动。运动时，用户打开乐动力APP，将手机固定在场地一侧，适当设置手机角度，根据应用的自动语音提示调整身体与手机距离，直到人体完全位于识别框内，即可开始运动。</p>
+<img src="/image/client-ai-03-43.gif">
+
+<p>端智能运动的基本技术思路是运用MNN推理引擎进行推理和姿态识别。即</p>
+<ul>
+<li>实时检测图像及视频中的人体轮廓，定位人体14个关键骨骼点，包括头、肩、脚等重点关节部位。</li>
+<li>基于这些关键点信息，连点成线、连线形成动作，可以分析人体姿态、动作角度和运动轨迹。</li>
+<li>通过动作姿态匹配，检测用户运动动作，实现动作的计时与计数。同时，实时检测分析动作标准化程度，给出状态反馈，纠正用户动作，实现互动，提高交互体验。</li>
+</ul>
+<img src="/image/client-ai-03-44.png">
+
+<p>传统运动方式下，用户在运动时可以及时得到现场辅助人员（教练员、考官或亲友）的实时提醒和帮助。端智能运动方式下，用户在做动作时只能与手机应用进行交互。交互的能力和识别水平会受到推理模型能力、运动场景复杂度、运动匹配识别算法等一系列因素的影响。在端智能运动能力的探索和落地过程中，会遇到一些新的问题或者难题，如人机方位匹配、骨骼点识别丢点、点误识别、二维失真、用户移动、手机晃动、场景噪声等。</p>
+<ul>
+<li>动作的有效性判断及关键算法设计，以提高动作匹配精度，这是智能运动能力的基础。</li>
+<li>在保证识别效果的前提下，采取有效措施，降低移动终端的资源消耗，以提升用户体验，主要表现是费电和发热。</li>
+<li>采取更加灵活的方式，减轻移动端测试的人力和时间消耗，提高开发和测试效率，为团队的交付保障提供有力支撑。</li>
+</ul>
+<h5 id="骨骼点识别"><a href="#骨骼点识别" class="headerlink" title="骨骼点识别"></a>骨骼点识别</h5><p>智能运动带给用户的最直观、最基础的感受就是动作计数准确性。如果动作识别计数不准，用户使用APP的积极性就会打消，参与性就不高。为此，我们要首先解决计数准不准的问题。</p>
+<p>智能运动计数的基本原理是，把一个完整动作分解成若干个小步骤，然后对每个步骤触发识别和判断，全部步骤遍历后，对整个动作进行有效性确认。如果有效，计数加1；反之就重复上述过程。简言之，智能运动识别与计数是一个状态机。将一个运动动作离散化，抽象成N个状态机，{s(0),s(1),s(2),…,s(n-1)}，状态机按照一定的顺序依次进行检测，全部检测到意味用户完成了该动作，对计数加1；若某个状态未被检测到，触发对应反馈信息，重置状态机进入新的循环。每一个状态机对应着一定的触发条件，通过实时骨骼点坐标与状态的循环匹配性检测，获取一个动作匹配结果。</p>
+<p>动作识别精度与动作匹配算法紧密相关，算法匹配效果好，识别精度就越高。为提高动作识别精度，可以选取影响匹配算法的因素作为切入点和突破口，骨骼点、状态机、匹配等。相应的解决办法为：</p>
+<ul>
+<li>提高骨骼点稳定性，确保状态匹配结果精度。</li>
+<li>选择骨骼点稳定、易识别、具有代表性的动作作为状态机。</li>
+<li>帧率要能够覆盖一个动作的所有状态机。</li>
+</ul>
+<p>骨骼点识别准确度对动作匹配有着重要影响。如下图所示：测试对象左手臂骨骼点识别出现错误。如果径直进行匹配，显然会得到错误的结果。针对这种情况，应当利用好用户的历史动作信息，在动作匹配算法上对动作匹配进行纠正。</p>
+<img src="/image/client-ai-03-45.png">
+
+<p>还有一种情况，用户已经完成某种动作的全部动作，如下图中的开合跳，由于采样帧率低，无法捕获和识别全部开合跳运动过程中的全部姿态，造成某个状态匹配不成功，最终导致开合跳动作匹配错误。对于低帧率问题，可从模型和输入源两个方面着手。对于模型来说，在不影响动作识别精度情况下，采用精简模型，减少推理耗时。对不同的终端设备，采用不同分辨率的输入源，降低原始数据处理操作耗时。</p>
+<img src="/image/client-ai-03-46.png">
+
+<h5 id="自动化采集测试"><a href="#自动化采集测试" class="headerlink" title="自动化采集测试"></a>自动化采集测试</h5><img src="/image/client-ai-03-47.png">
+
+<hr>
+<h3 id="蚂蚁金服-支付宝"><a href="#蚂蚁金服-支付宝" class="headerlink" title="蚂蚁金服 | 支付宝"></a>蚂蚁金服 | 支付宝</h3><h4 id="端视觉算法"><a href="#端视觉算法" class="headerlink" title="端视觉算法"></a>端视觉算法</h4><img src="/image/client-ai-03-48.png">
+
+<p>整个终端视觉算法在支付宝里面的一些具体应用场景，基本上可以把它分为四个大类。</p>
+<p><strong>第一个大类是平台运营。</strong> 比如大家熟知的新春扫福，就是使用到了移动端的算法，还有很多支付设备里面的互动玩法。这里用到了一些互动技术，以及针对线下很多场景提供的 AR 打卡的功能，这些都是偏运营属性的业务。</p>
+<p><strong>第二个大类是平台工具。</strong> 比如扫一扫里面的识物，比如在支付宝里面的短视频拍摄，也有一些直播，这样一些拍摄工具，里面也会用到很多端上的视觉算法。</p>
+<p><strong>第三个大类是个人业务。</strong> 很多用户会在支付宝里操作的一些个人业务，比如绑卡、转账、开通会员、会员认证，包括做一些基金或者其他金融业务的开户操作等等。这里面都会用到大量的移动端的算法能力，以提升整体用户的一些使用体验。</p>
+<p><strong>第四个大类是垂直场景。</strong> 比如针对商品识别所做的线下 IoT 设备，AI inside 的这种能力，以及在疫情期间，我们为很多线上的服务提供了智能化识别算法，来提升整体效率。</p>
+<p>支付宝移动端视觉算法整体的应用范围是非常的广泛，应用的业务场景类型变化也比较大。主要是因为支付宝是一个数字生活平台，基于这个大的定位和背景，业务对于算法侧，无论在能力还是性能层面上，都有非常高的要求。</p>
+<img src="/image/client-ai-03-49.png">
+
+<img src="/image/client-ai-03-50.png">
+
+<img src="/image/client-ai-03-51.png">
+
+<img src="/image/client-ai-03-52.png">
+
+<img src="/image/client-ai-03-53.png">
+
+<img src="/image/client-ai-03-54.png">
+
+<h4 id="1-AR-相机扫福"><a href="#1-AR-相机扫福" class="headerlink" title="1.AR 相机扫福"></a>1.AR 相机扫福</h4><p>在 2018 年春节，支付宝将科技元素升级，推出了全民 AR 扫任意福的活动，通过扫福来集福，不管你是商店买的福，还是手写福，支付宝都可以将它们认出来。随了扫福以外，支付宝中还有大量的此类需求，如银行卡识别、身份证识别等，<strong>xMedia 多媒体端智能应用框架</strong>便由此衍生出来。</p>
+<img src="/image/client-ai-03-55.png">
+
+<p>AR 扫福即使在网络状况并不好的情况下，识别速度都非常快，而且和一般的上传图片进行识别的流程不同，<strong>并不需要用户选择图片并上传的操作</strong>。为什么？除了算法与模型优化之外，还有一个很重要的原因就是<strong>识别引擎运行在端上，这也是最近端上AI越来越火爆的一个原因，我们称之为“端智能”</strong>。为什么要将引擎运行在端上？和一般运行在云端的智能化有什么区别？ 引擎之所以运行在端上而不是云端，主要有两大原因：一是由于端上涌现出大量的需求云端无法满足，在很多场景下端上的优势明显；二是由于端自身条件成熟。</p>
+<p>除了在支付宝新春扫五福以外，我们将应用场景归纳为以下四类：</p>
+<ul>
+<li>智能交互</li>
+<li>智能服务</li>
+<li>智能推理</li>
+<li>风控安全</li>
+</ul>
+<p>智能推理主要用于支付宝中小程序<strong>智能预加载</strong>，<strong>首页腰封推荐</strong>等；<strong>风控安全</strong>包含内容<strong>安全检测</strong>、<strong>视频鉴黄</strong>等。</p>
+<h5 id="端智能应用框架-xMedia"><a href="#端智能应用框架-xMedia" class="headerlink" title="端智能应用框架 xMedia"></a><strong>端智能应用框架 xMedia</strong></h5><img src="/image/client-ai-03-56.png">
+
+<h4 id="2-手势检测"><a href="#2-手势检测" class="headerlink" title="2.手势检测"></a>2.手势检测</h4><p>以蚂蚁庄园运动会的小鸡操为例（可以通过支付宝-蚂蚁庄园-运动会-手保健操体验），这是一个手势识别的场景，通过 AI 引擎检测用户相机中采集到的手势，当用户的手势与 UI 上提示的手势一致时即判定成功。</p>
+<img src="/image/client-ai-03-57.png">
+
+<p>xMedia 框架根据描述文件，运行时生成如下所示的流程图，该图从数据源开始生成数据，并将数据传输至每个<code>functor</code>处理，最后通过预览的<code>functor</code>渲染至屏幕上。</p>
+<img src="/image/client-ai-03-58.png">
+
+<h4 id="3-智能交互"><a href="#3-智能交互" class="headerlink" title="3.智能交互"></a>3.智能交互</h4><p>智能交互是利用算法与用户进行交互，主要用于 AR 中，利用 AR 来替代传统的触摸交互，带来完全不同的体验。比如前面提到的 AR 扫福与小鸡操就是这类场景，小鸡操可以在<code>支付宝-蚂蚁庄园-运动会-手保健操</code>中体验。</p>
+<p>覆盖率中描述的蚂蚁森林的 AR 看树活动，可以通过下面的方式进行体验。</p>
+<img src="/image/client-ai-03-59.png">
+
+<p>另外一个基于头部的互动是颈保健操，可以从<code>支付宝-小目标-颈保健操</code>进行体验，适合办公室人群，每天给自己定个目标锻炼颈椎，缓解疲劳。</p>
+<img src="/image/client-ai-03-60.png">
+
+<h4 id="4-智能服务"><a href="#4-智能服务" class="headerlink" title="4.智能服务"></a>4.智能服务</h4><p>第二类是智能服务类，主要是垂直场景的应用，与支付宝业务紧密关联的，比如<strong>银行卡 OCR 识别</strong>、<strong>身份证 OCR</strong>、理赔宝等，可以通过下面几个视频来体验，不再一一赘述。端上的识别具有识别准确率高、速度快、模型等特点，很多垂直场景在支付宝小程序中也已经开放。</p>
+<hr>
+<h3 id="阿里巴巴-amp-蚂蚁金服-哈啰出行"><a href="#阿里巴巴-amp-蚂蚁金服-哈啰出行" class="headerlink" title="阿里巴巴 &amp; 蚂蚁金服 | 哈啰出行"></a>阿里巴巴 &amp; 蚂蚁金服 | 哈啰出行</h3><h4 id="端智能架构"><a href="#端智能架构" class="headerlink" title="端智能架构"></a>端智能架构</h4><img src="/image/client-ai-03-61.png">
+
+<h4 id="端智能数据流"><a href="#端智能数据流" class="headerlink" title="端智能数据流"></a>端智能数据流</h4><img src="/image/client-ai-03-62.png">
+
+<p>要在手机端上做触发，需要拿到端侧的一些行为数据，以及从云端拉取一些数据，同时需要一些业务数据，所有的数据融合之后进入到算法SDK做特征预处理，随后进入到推理引擎做端侧的模型推理，推理结果再加入算法SDK做业务规则处理，这样就会把整个结果展示给业务移动端。算法模型和特征对于算法模型和特征，由于云端的特征比较多，怎么保证重排和精排模型达到的效果是相互补充的，这时就需要去采集比较多的端侧特征，需要细粒度且变化快。这里的端侧特征有轮播次数、停留时长、滑动类型、点击不感兴趣等。</p>
+<img src="/image/client-ai-03-63.png">
+
+<p>模型会对这些端侧特征进行学习，与精排模型不同的是，除了用户的正反馈，还会加入用户产生的负反馈行为，如曝光的没有点击，或进入到详情页后马上退出。这样的重排模型一般体积不会太大，能达到较好的实时性效果。与云上推荐相比，端上推荐的用户行为延迟和系统全链路反应到用户的时间得到了明显的改善。</p>
+<h4 id="首页-Banner"><a href="#首页-Banner" class="headerlink" title="首页 Banner"></a>首页 Banner</h4><img src="/image/client-ai-03-64.png">
+
+<p>端智能建设过程中第一个上线的是首页banner的场景。之前服务端会下发6帧轮播，但是因为端智能的加入会有策略的改变，服务端下发20帧，实时挑6帧展示。触发逻辑是轮播完成用户没有点击和用户点击进入详情页，分别表示用户不感兴趣和感兴趣。触发后会在端侧基于用户实时行为特征对卡片进行<strong>打分重排序</strong>，不感兴趣的进行<strong>降权</strong>。</p>
+<p>同时有一些规划中的场景，如首页的联合推荐。目前首页接入搜推算法的有底纹词、宫格、banner和二屏，如果每个系统独立没有任何交互，会造成流量的浪费。我们需要去做全域的<strong>数据互通</strong>，<strong>联合决策</strong>。</p>
+<p>规划中的场景还有<strong>弹窗时机实施决策</strong>，弹窗时机是根据<strong>用户长期行为偏好</strong>、<strong>实时行为序列</strong>及<strong>设备实时性能状态</strong>，去<strong>判断用户的意图</strong>。综合考虑用户的<strong>疲劳度</strong>和<strong>意愿度</strong>，决定是否弹窗和弹窗的内容。</p>
+<hr>
+<h3 id="字节跳动-西瓜视频"><a href="#字节跳动-西瓜视频" class="headerlink" title="字节跳动 | 西瓜视频"></a>字节跳动 | 西瓜视频</h3><blockquote>
+<p>端智能作为目前火热的一个新方向，在业界已经开始崭露头角。阿里、谷歌、快手等大企业都在积极布局端智能，用端上AI来优化各种业务场景并取得了非常突出的效果。</p>
+<p>字节Client AI团队深耕端智能领域，并在今年早些时候与西瓜视频合作落地了<strong>端智能视频预加载</strong>方案，取得了不错的结果。</p>
+</blockquote>
+<h4 id="端智能视频预加载"><a href="#端智能视频预加载" class="headerlink" title="端智能视频预加载"></a>端智能视频预加载</h4><p>西瓜视频预加载这个场景非常简单： 在播放当前视频时，客户端会对后续3个视频，每个视频预加载固定800K的缓存。让用户在播放到后续的视频时可以快速起播，获得更为流畅的播放体验。</p>
+<img src="/image/client-ai-03-65.png">
+
+<p>但这样一个固定的策略也有一些非常明显的问题：</p>
+<ol>
+<li>用户大部分情况下不会看完800K的buffer，而是简单浏览内容后就划到下一个视频，造成带宽的浪费</li>
+</ol>
+<img src="/image/client-ai-03-66.png">
+
+<ol start="2">
+<li>在用户仔细浏览视频内容时，如果没有足够的buffer，容易造成起播失败或者卡顿，影响用户体验</li>
+</ol>
+<img src="/image/client-ai-03-67.png">
+
+<p>最理想的预加载策略其实是使『预加载大小和播放大小尽量匹配，用户在起播阶段会看多少，我们就提前加载多少，既不会造成浪费，又不会影响用户体验』。</p>
+<p><strong>如果我们可以预测用户接下来的行为模式， 比如 知道他接下来会 『 快 速切换视频』 还是 『慢速消费视频』 的话， 就可以辅助优化我们的预加载策略了。</strong></p>
+<p>事实上用户在一段时间内的行为模式是具有一定规律的：这个用户的『<strong>手速快慢</strong>』、对『<strong>互动的倾向性</strong>』、是不是在『<strong>碎片化时间</strong>』、是否是『<strong>工作日</strong>』等等。我们可以通过这些规律来<strong>预测用户的行为模式</strong>，进而得到一个更佳的预加载策略。</p>
+<img src="/image/client-ai-03-68.png">
+
+<ol start="3">
+<li><p>这个模型预测应该在『云端』上做还是在『客户端』上做？</p>
+<ol>
+<li><p>因场景而异，并没有一个固定通用的做法</p>
+</li>
+<li><p>以目前这个场景为例，预加载场景具有这样的特点：</p>
+<ol>
+<li>需要预测用户在页面的行为模式，和用户的滑动行为强相关</li>
+<li>滑动行为在短时间周期（秒级、分钟级）具有一定规律，长时间周期（天级、月级）规律性较弱</li>
+<li>预加载触发频率高，时间短，对实时性要求很高（否则容易造成用户卡顿）</li>
+<li>端上一些特征由于隐私以及量级的关系，不适合进行上报</li>
+</ol>
+</li>
+<li><p>对于这样实时性要求高、特征数据时间周期短的场景，比起请求云端的长响应链路，在『客户端』上直接跑模型来进行预测会是一个更好的方案。</p>
+</li>
+</ol>
+</li>
+</ol>
+<img src="/image/client-ai-03-69.png">
+
+<h5 id="端上AI开发"><a href="#端上AI开发" class="headerlink" title="端上AI开发"></a>端上AI开发</h5><ol>
+<li>特征处理</li>
+</ol>
+<img src="/image/client-ai-03-70.png">
+
+<ol>
+<li>特征分析</li>
+</ol>
+<img src="/image/client-ai-03-71.png">
+
+<h5 id="算法包开发"><a href="#算法包开发" class="headerlink" title="算法包开发"></a>算法包开发</h5><ol>
+<li>端上特征工程</li>
+</ol>
+<img src="/image/client-ai-03-72.png">
+
+<ol start="2">
+<li>端上模型推理</li>
+</ol>
+<img src="/image/client-ai-03-73.png">
+
+<h5 id="客户端开发"><a href="#客户端开发" class="headerlink" title="客户端开发"></a>客户端开发</h5><p>对于客户端来说，需要根据不同场景来决定不同算法包的触发时机，以及对应算法包结果的解析逻辑，从而执行相应的业务逻辑。在视频预加载场景下是这样的：</p>
+<ul>
+<li>触发算法包执行<ul>
+<li>横屏内流场景完成首帧渲染后，主动触发算法包执行。</li>
+</ul>
+</li>
+<li>解析算法包结果<ul>
+<li>业务添加预加载任务的逻辑，由之前的固定策略，改为根据算法包返回的执行结果，解析后添加预加任务。</li>
+</ul>
+</li>
+</ul>
+<img src="/image/client-ai-03-74.png">
+
+<h4 id="端智能工程链路-Pitaya"><a href="#端智能工程链路-Pitaya" class="headerlink" title="端智能工程链路 Pitaya"></a>端智能工程链路 Pitaya</h4><p>这些年，随着算法设计和设备算力的发展，AI 的端侧应用逐步从零星的探索走向规模化应用。行业里，FAANG、BATZ 都有众多落地场景，或是开创了新的交互体验，或是提升了商业智能的效率。</p>
+<p>Client AI是字节跳动产研架构下属的端智能团队，负责端智能AI框架和平台的建设，也负责模型和算法的研发，为字节跳动开拓商业智能 新场景。</p>
+<p>Pitaya则是由字节跳动的Client AI 团队与 MLX 团队共同构建的一套端智能工程链路 ，为端智能应用提供从开发到部署的全链路支持。</p>
+<p>迄今为止，Pitaya 端智能已经为<strong>抖音</strong>、<strong>头条</strong>、<strong>西瓜</strong>、<strong>小说</strong>等应用的 30+场景提供了端智能支持，让端智能算法包在手机端每天万亿生效次数的同时，错误率控制在不到十万分之一。</p>
+<img src="/image/client-ai-03-75.png">
+
+<h5 id="Pitaya-架构"><a href="#Pitaya-架构" class="headerlink" title="Pitaya 架构"></a>Pitaya 架构</h5><img src="/image/client-ai-03-76.png">
+
+<p>Pitaya 架构的两个最核心的部分：<strong>Pitaya平台</strong>和<strong>Pitaya SDK</strong>。</p>
+<ul>
+<li><strong>Pitaya 平台</strong>为端上AI提供了工程管理、数据接入、模型开发、算法开发和算法包部署管理等一系列的框架能力。在端上算法策略开发过程中，Pitaya 平台支持在AB平台对端智能算法策略进行实验，验证算法策略的效果。除此之外，Pitaya 平台还支持对端上AI的效果进行实时的监控和告警配置，并在看板上进行多维度的分析与展示。</li>
+</ul>
+<img src="/image/client-ai-03-77.png">
+
+<ul>
+<li><strong>Pitaya SDK</strong>为端智能算法包提供了在端上的运行环境，支持端上AI在不同设备上高效地运转起来。Pitaya SDK同时还支持在端上进行数据处理和特征工程，提供了为算法包和AI模型提供版本和任务管理、为端上AI运行的稳定和效果进行实时监控的能力。</li>
+</ul>
+<img src="/image/client-ai-03-78.png">
+
+<hr>
+<h3 id="快手-快手"><a href="#快手-快手" class="headerlink" title="快手 | 快手"></a>快手 | 快手</h3><h4 id="端智能上下滑推荐"><a href="#端智能上下滑推荐" class="headerlink" title="端智能上下滑推荐"></a>端智能上下滑推荐</h4><img src="/image/client-ai-03-79.png">
+
+<p>对于上下滑这种推荐形式，很自然的想到，每一屏消费一个视频时，用户都会产生显式&#x2F;隐式的反馈，<strong>推荐系统根据这些实时反馈可以及时修正用户偏好，下一屏即向用户推荐更好的作品</strong>。</p>
+<p>遗憾的是，<strong>上下滑的推荐形式并不支持手机终端每屏都请求云端重新生成一个推荐结果</strong>。客户端每次请求服务端，实际会下发 PageSize(PageSize &gt;&gt; 1)个 Feeds，等用户浏览完下发的 PageSize 个 Feeds 后，才会继续触发服务端推荐系统，重新计算并下发 PageSize 个 Feeds:</p>
+<img src="/image/client-ai-03-80.png">
+
+<ol>
+<li>客户端请求服务端天然存在显著的边界耗时成本(网络&gt;100ms)，请求服务端频率存在极限，用户快速滑动时极易卡顿。</li>
+<li>减小 PageSize 会增加客户端对服务端的请求 qps，从而增加服务端的计算压力。</li>
+</ol>
+<p>综上所述，目前基于云计算架构的推荐系统，不能实时响应用户的反馈修正推荐结果，已经难以满足上下滑推荐这种高频交互式推荐产品。</p>
+<h5 id="KIR-时时排序推荐"><a href="#KIR-时时排序推荐" class="headerlink" title="KIR 时时排序推荐"></a>KIR 时时排序推荐</h5><p>上下滑推荐这种全新的产品形式，使我们面临一个高频交互的推荐场景，<strong>暴露了云计算架构推荐系统的缺陷</strong>。我们基于端上智能技术设计并实现了 <strong>KIR(Kwai Instant Recommend)框架</strong>，使得智能手机终端具备 DNN 推理能力，<strong>用户每浏览一个 Feed，就能触发终端对未展示的候选 Feeds 集合进行重排序，实时修正用户偏好，向用户推荐更好的 Feed</strong>。</p>
+<img src="/image/client-ai-03-81.png">
+
+<p>相比服务端最终的排序 score，KIR 通过建模用户实时反馈行为，<strong>离线指标分别在观看时长(</strong>+3.01pp**)，点赞(<strong>+2.26pp</strong>)，关注(<strong>+3.25pp</strong>)等多个目标均取得了显著的提升；**在 KIR 系统上线之后，用户交互指标上有显著提升，并且对 <strong>APP 时长有</strong> **1%**的收益。</p>
+<img src="/image/client-ai-03-82.png">
+
+<hr>
+<h3 id="腾讯-NCNN"><a href="#腾讯-NCNN" class="headerlink" title="腾讯 | NCNN"></a>腾讯 | NCNN</h3><img src="/image/client-ai-03-83.png">
+
+<p>ncnn 是一个为手机端极致优化的高性能神经网络前向计算框架。 ncnn 从设计之初深刻考虑手机端的部署和使用。 无第三方依赖，跨平台，手机端 cpu 的速度快于目前所有已知的开源框架。 基于 ncnn，开发者能够将深度学习算法轻松移植到手机端高效执行， 开发出人工智能 APP，将 AI 带到你的指尖。 ncnn 目前已在腾讯多款应用中使用，如：<strong>QQ</strong>，<strong>Qzone</strong>，<strong>微信</strong>，<strong>天天 P 图</strong>等。</p>
+<ul>
+<li>支持卷积神经网络，支持多输入和多分支结构，可计算部分分支</li>
+<li>无任何第三方库依赖，不依赖 BLAS&#x2F;NNPACK 等计算框架</li>
+<li>纯 C++ 实现，跨平台，支持 Android &#x2F; iOS 等</li>
+<li>ARM Neon 汇编级良心优化，计算速度极快</li>
+<li>精细的内存管理和数据结构设计，内存占用极低</li>
+<li>支持多核并行计算加速，ARM big.LITTLE CPU 调度优化</li>
+<li>支持基于全新低消耗的 Vulkan API GPU 加速</li>
+<li>可扩展的模型设计，支持 8bit 量化 和半精度浮点存储，可导入 caffe&#x2F;pytorch&#x2F;mxnet&#x2F;onnx&#x2F;darknet&#x2F;keras&#x2F;tensorflow(mlir) 模型</li>
+<li>支持直接内存零拷贝引用加载网络模型</li>
+<li>可注册自定义层实现并扩展</li>
+<li>恩，很强就是了，不怕被塞卷 QvQ</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-wkwebview-cache-test/" title="WKWebView缓存协议验证">WKWebView缓存协议验证</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言本次我们基于 URLRequest.CachePolicy 协议进行 WKWebView 缓存能力的验证，主要验证方向为网页页面及相应资源的内容缓存。
+API 如下
+1234567891011public struct URLRequest : ReferenceConvertible, E
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-08-24T06:34:35.000Z" class="post-list__meta--date date">2024-08-24</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/WKWebview/" rel="tag">WKWebview</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a>
+</span><a class="btn-border-small" href="/ios-wkwebview-cache-test/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/client-ai-02/" title="「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)">「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言本期将会向大家介绍人工智能领域的一大重要分支：自然语言处理（NLP），与由 卷积神经网络、循环神经网络 以及《用于基于图像的序列识别的端到端可训练神经网络及其在场景文本识别中的应用》论文算法 等相关算法组成的光学字符识别（OCR）相结合在端智能领域的实践与应用，并展示客户端基于强大的机器学习
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-01-07T07:52:57.000Z" class="post-list__meta--date date">2024-01-07</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/CoreML/" rel="tag">CoreML</a>, <a class="-none-link" href="/tags/NLP/" rel="tag">NLP</a>, <a class="-none-link" href="/tags/OCR/" rel="tag">OCR</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
+</span><a class="btn-border-small" href="/client-ai-02/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/client-ai-03/';
+  var disqus_title = '「端智能」当前应用与发展现状';
+  var disqus_url = 'http://shevakuilin.com/client-ai-03/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
