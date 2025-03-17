@@ -152,87 +152,29 @@
   
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/hm-thread-pool/" title="link to post.title">HarmonyOS - 鸿蒙线程池及异步任务</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/rust-ffi-sdk-go/" title="link to post.title">Rust - 基于 FFI 的移动端跨平台 SDK 的探索和实践</a></h2>
       <p class="excerpt">
     
       
 
-鸿蒙中的并发并发是指在同一时间段内，能够处理多个任务的能力。为了提升应用的响应速度与帧率，以及防止耗时任务对主线程的干扰，HarmonyOS 系统提供了异步并发和多线程并发两种处理策略。
+为什么要跨平台
+减少人力成本，减少开发时间。
+抹平多端在逻辑细节的实现差异，提高代码一致性，保证工程质量。
+多个平台共享一套代码，后期产品维护简单。
 
-异步并发是指异步代码在执行到一定程度后会被暂停，以便在未来某个时间点继续执行，这种情况下，同一时间只有一段代码在执行。
-多线程并发允许在同一时间段内同时执行多段代码。在主线程继续响应用户操作和更新 UI 的
+
+目前常见的跨平台方案C++很多公司的跨平台移动基础库基本都有 C++ 的影子，如微信，腾讯会议，还有早期的 Dropbox，知名的开源库如微信的 Mars 等。好处是一套代码多端适配，但是需要大公司对 C++ 有强大的工具链支持，还需要花重金
     &hellip;
       </p>
-      <div class="post-list__meta"><time datetime="2024-02-01T00:26:13.000Z" class="post-list__meta--date date">2024-02-01</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%BC%82%E6%AD%A5/" rel="tag">异步</a>, <a class="-none-link" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="tag">线程池</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
-</span><a class="btn-border-small" href="/hm-thread-pool/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/harmonyos-dev-intro/" title="link to post.title">HarmonyOS - 鸿蒙开发指南</a></h2>
-      <p class="excerpt">
-    
-      
-
-1. 概述1.1 简介鸿蒙（即 HarmonyOS ，开发代号 Ark，正式名称为华为终端鸿蒙智能设备操作系统软件）是华为公司自 2012 年以来开发的一款可支持鸿蒙原生应用和兼容 AOSP 应用的分布式操作系统。该系统利用“分布式”技术将手机、电脑、平板、电视、汽车和智能穿戴等多款设备融合成一个“超级终端”，使用户便于操作和共享各种设备的资源。
-1.2 本文读者收获
-帮助开发者全面了解 Ha
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2024-01-23T04:21:17.000Z" class="post-list__meta--date date">2024-01-23</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" rel="tag">入门指南</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
-</span><a class="btn-border-small" href="/harmonyos-dev-intro/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/client-ai-03/" title="link to post.title">「端智能」移动端当前的应用与发展现状</a></h2>
-      <p class="excerpt">
-    
-      
-
-前言在国内，阿里、腾讯等企业也先后进行了端智能的尝试。
-阿里在手淘中宝贝列表重排、智能刷新、跳失点预测、智能 Push、拍立淘（以图搜图）等多个场景实现了端智能的落地，并推出了 MNN 神经网络深度学习框架。
-腾讯则推出自研的 NCNN 框架，并在医疗、翻译、游戏、智能音箱等领域广泛应用端智能技术。
-Pitaya 则是由字节跳动的Client AI 团队与 MLX 团队共同构建的一套端智能工程
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2024-01-14T15:33:12.000Z" class="post-list__meta--date date">2024-01-14</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
-</span><a class="btn-border-small" href="/client-ai-03/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/client-ai-02/" title="link to post.title">「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)</a></h2>
-      <p class="excerpt">
-    
-      
-
-前言本期将会向大家介绍人工智能领域的一大重要分支：自然语言处理（NLP），与由 卷积神经网络、循环神经网络 以及《用于基于图像的序列识别的端到端可训练神经网络及其在场景文本识别中的应用》论文算法 等相关算法组成的光学字符识别（OCR）相结合在端智能领域的实践与应用，并展示客户端基于强大的机器学习能力来进行的实际效果的演示以及背后运行原理的分析。受限于篇幅，本文的客户端代码将全部由 iOS 平台
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2024-01-07T07:52:57.000Z" class="post-list__meta--date date">2024-01-07</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/CoreML/" rel="tag">CoreML</a>, <a class="-none-link" href="/tags/NLP/" rel="tag">NLP</a>, <a class="-none-link" href="/tags/OCR/" rel="tag">OCR</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
-</span><a class="btn-border-small" href="/client-ai-02/">开始阅读</a></div>
+      <div class="post-list__meta"><time datetime="2024-03-22T06:09:45.000Z" class="post-list__meta--date date">2024-03-22</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/FFI/" rel="tag">FFI</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" rel="tag">跨平台</a>
+</span><a class="btn-border-small" href="/rust-ffi-sdk-go/">开始阅读</a></div>
       <hr class="post-list__divider" />
     </li>
   
     
   </ol>
 
-
-  <nav class="pagination" role="navigation">
-    
-      <a class="older-posts pagination__newer btn btn-small btn-tertiary" href="/#blog">&larr; 最近</a>
-    
-    <span class="pagination__page-number" >  2 / 2 </span>
-    
-  </nav>
 
  <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },

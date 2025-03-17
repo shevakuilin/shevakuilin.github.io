@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>Rust - 基于 FFI 的移动端跨平台 SDK 的探索和实践 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Rust - 基于 FFI 的移动端跨平台 SDK 的探索和实践 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Rust - 基于 FFI 的移动端跨平台 SDK 的探索和实践 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/rust-ffi-sdk-go/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-03-22T06:09:45.000Z" class="post-list__meta--date date">2024-03-22</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/FFI/" rel="tag">FFI</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" rel="tag">跨平台</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">Rust - 基于 FFI 的移动端跨平台 SDK 的探索和实践</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/rust-ffi-sdk-go.png">
+
+<h2 id="为什么要跨平台"><a href="#为什么要跨平台" class="headerlink" title="为什么要跨平台"></a>为什么要跨平台</h2><ul>
+<li>减少人力成本，减少开发时间。</li>
+<li>抹平多端在逻辑细节的实现差异，提高代码一致性，保证工程质量。</li>
+<li>多个平台共享一套代码，后期产品维护简单。</li>
+</ul>
+<hr>
+<h2 id="目前常见的跨平台方案"><a href="#目前常见的跨平台方案" class="headerlink" title="目前常见的跨平台方案"></a>目前常见的跨平台方案</h2><h3 id="C"><a href="#C" class="headerlink" title="C++"></a><strong>C++</strong></h3><p>很多公司的跨平台移动基础库基本都有 C++ 的影子，如微信，腾讯会议，还有早期的 Dropbox，知名的开源库如微信的 Mars 等。好处是一套代码多端适配，但是<strong>需要大公司对 C++ 有强大的工具链支持，还需要花重金聘请 C++ 研发人员，随着团队人员变动，产品维护成本也不可忽视</strong>，所以 Dropbox 后期也放弃了使用 C++ 的跨端方案。</p>
+<h3 id="Rust-FFI"><a href="#Rust-FFI" class="headerlink" title="Rust + FFI"></a><strong>Rust + FFI</strong></h3><p>Rust 和对应平台的 FFI 封装。常见的方法如飞书和 AppFlow 是通过类似 RPC 的理念，暴露少量的接口，用作数据传输。好处是复杂度可控，缺点是<strong>要进行大量的序列化和反序列化，同时代码的表达会受到限制</strong>，比如不好表达回调函数。</p>
+<h3 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a><strong>Flutter</strong></h3><p>更适合于有 UI 功能的跨平台完整 APP 解决方案，<strong>不适用于跨平台移动端 SDK 的方案</strong>。</p>
+<hr>
+<h2 id="为什么用-Rust-？"><a href="#为什么用-Rust-？" class="headerlink" title="为什么用 Rust ？"></a>为什么用 Rust ？</h2><h3 id="开发成本"><a href="#开发成本" class="headerlink" title="开发成本"></a><strong>开发成本</strong></h3><p>不考虑投入成本的话，原生方案在发布、集成和用户 Debug 等方面都会更有优势。但考虑到初创团队需要配置至少两名资深的研发人员来维护两套 SDK 需要面临成本问题。</p>
+<h3 id="Rust-有丰富的跨平台经验"><a href="#Rust-有丰富的跨平台经验" class="headerlink" title="Rust 有丰富的跨平台经验"></a><strong>Rust 有丰富的跨平台经验</strong></h3><p>不少团队用Rust 实现过跨平台的网络栈，如用 tokio 和 quinn 等高质量的 crate 实现了长连接的客户端和服务端。</p>
+<h3 id="安全稳定"><a href="#安全稳定" class="headerlink" title="安全稳定"></a><strong>安全稳定</strong></h3><ol>
+<li>作为应用的基础架构，基建 SDK 肩负了本地鉴权、APM、策略降级等职责，对 SDK 的稳定性要求更高。</li>
+<li>原生移动端 SDK 一旦出现多线程崩溃的问题，难以定位和排查，需要较长的修复周期。</li>
+<li>Rust 的代码天生是线程安全的，无需依赖于丰富经验的移动端开发人员，也可以保证提供高质量、稳定的 SDK。</li>
+</ol>
+<h3 id="可行性调查"><a href="#可行性调查" class="headerlink" title="可行性调查"></a>可行性调查</h3><h4 id="大型公司在移动端使用-Rust"><a href="#大型公司在移动端使用-Rust" class="headerlink" title="大型公司在移动端使用 Rust"></a>大型公司在移动端使用 Rust</h4><ul>
+<li>Google 在 2021 年将 Rust 引入 Android <a target="_blank" rel="noopener" href="https://security.googleblog.com/2021/04/rust-in-android-platform.html">Rust in the Android platform</a></li>
+<li>Mozilla 使用 Rust 编写跨平台应用服务组件<a target="_blank" rel="noopener" href="https://github.com/mozilla/application-services">Firefox Application Services</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/oh79weak7z3s2xavo*bv">飞书客户端非 UI 部分使用 Rust 跨平台实现</a></li>
+</ul>
+<h4 id="个人开发者在移动端的尝试-Rust-的案例"><a href="#个人开发者在移动端的尝试-Rust-的案例" class="headerlink" title="个人开发者在移动端的尝试 Rust 的案例"></a>个人开发者在移动端的尝试 Rust 的案例</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://medium.com/swlh/rust-cross-platform-mobile-development-9117a67ac9b7">Rust &amp; cross-platform mobile development</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rustdesk/rustdesk">RustDesk 远程桌面应用</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/347842418">深度探索：前端中的后端</a></li>
+<li><a target="_blank" rel="noopener" href="https://macroquad.rs/tutorials/android/">Publish game on Android with Macroquad</a></li>
+<li><a target="_blank" rel="noopener" href="https://nadim.computer/posts/2022-02-11-maccatalyst.html">Rust on iOS and Mac Catalyst: A Simple, Updated Guide</a></li>
+</ul>
+<hr>
+<h2 id="什么是FFI"><a href="#什么是FFI" class="headerlink" title="什么是FFI?"></a>什么是FFI?</h2><p>在本系列的第一期（<a target="_blank" rel="noopener" href="https://guanghe.feishu.cn/docx/doxcnK34BW21To8JQr1c2VtCGZb">Rust 编程系列01 - 为什么选择 Rust</a>）中我们曾介绍过：</p>
+<blockquote>
+<p>为了和现有的生态系统良好地集成，Rust 支持非常方便且零成本的 FFI 机制，兼容 C-ABI，并且从语言架构层面上将 Rust 语言分成 Safe Rust 和 Unsafe Rust 两部分。</p>
+</blockquote>
+<p>通过前面几期的学习，我们了解到了什么是 Rust，那么 FFI 又是什么呢？</p>
+<h3 id="FFI-概述"><a href="#FFI-概述" class="headerlink" title="FFI 概述"></a>FFI 概述</h3><p><strong>FFI</strong>（Foreign Function Interface）是这样一种机制：用一种编程语言写的程序能调用另一种编程语言写的函数（routines）。</p>
+<p>FFI 有两种内涵。一种是是在当前正在使用的语言（host）中，调用由其它语言（guest）提供的库。第二种内涵与第一种方向相反，即，使用当前语言（host）写库，供其它语言（guest）调用。不过，后者不是任何语言都能做到的，有些语言即使能做，也会非常吃力。</p>
+<h4 id="FFI-的历史和现状"><a href="#FFI-的历史和现状" class="headerlink" title="FFI 的历史和现状"></a>FFI 的历史和现状</h4><p>FFI 这个术语最早来自 Common Lisp 的<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Foreign_function_interface#cite_note-1">规范</a>。目前几乎所有严肃编程的语言都有提供 FFI 的支持，但大多数是单向功能。</p>
+<p>不同语言称呼这种语言间调用的功能名字可能不同。Common Lisp、Haskell、Python、Rust 这些叫 FFI，Java 叫 JNI 或 JNA，还有一些其它语言叫 “绑定”。严格来说，FFI 与 绑定，意义并不相同，绑定可以理解为 FFI 中的一种实现。</p>
+<p>不同语言实现 FFI 的方式不尽相同。有的语言，比如，要调用 C 库，必须用 C 语言，按那种语言的绑定规范，实现一个 C 项目，用 C 编译器编译并链接，生成库文件，再由这种语言调用（这种语言本身已经实现了加载其定义的规范 C 库的能力）。</p>
+<p>有的语言，比如，Rust，要调用 C 库，不再需要使用 C 语言写绑定工程，而是直接使用 Rust 语言写。这样，就有个好处是，你不再需要掌握 C 语言的那么多的繁文缛节和工具链（但是还是必须懂 C 语言）。</p>
+<h4 id="FFI-调用原理"><a href="#FFI-调用原理" class="headerlink" title="FFI 调用原理"></a>FFI 调用原理</h4><p>为什么不同的语言之间能互相调用呢？</p>
+<p>我们知道，计算机的运算，最底层的数据&#x2F;代码都是以二进制的形式存在。所有的语言在编译后，都会以二进制的形式去执行（即使编译后的代码为字节码，虚拟机在运行的时候，也会继续翻译成 CPU 认识的二进制指令）。这就为不同语言间的调用提供了可能性。</p>
+<p>但是，可能归可能。二进制毕竟太底层了。没有大家一致认可的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A">调用约定</a>，那也是不可能互通的。于是，ABI（应用程序二进制接口） 就出现了。调用约定，类型表示和名称修饰这三者的统称，即是众所周知的应用二进制接口（ABI）。</p>
+<p>试想，如果所有的语言在调用时都能认识同样一套 ABI 规范，那么就能完全畅通的调用了。可惜，世界不会像我们人为想象的那样干净。</p>
+<p>在计算机技术发展的过程中，出现了各种 ABI 规范，它们有的看起来相似，但在具体编译器的实现上，又有细微不同。所以，这是一件很麻烦的事情。大体来说，有如下规范：</p>
+<ul>
+<li>cdecl</li>
+<li>syscall</li>
+<li>optlink</li>
+<li>pascal</li>
+<li>register</li>
+<li>stdcall</li>
+<li>fastcall</li>
+<li>thiscall</li>
+<li>winapi</li>
+<li>Intel ABI</li>
+<li>System V</li>
+</ul>
+<p>等。详情可参考：<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/X86%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A#cdecl">X86调用约定</a>。</p>
+<p>而 Rust 目前支持如下 ABI <a target="_blank" rel="noopener" href="https://doc.rust-lang.org/nomicon/ffi.html">约定</a>：</p>
+<ul>
+<li>stdcall</li>
+<li>aapcs</li>
+<li>cdecl</li>
+<li>fastcall</li>
+<li>vectorcall</li>
+<li>Rust</li>
+<li>rust-intrinsic</li>
+<li>system</li>
+<li>C</li>
+<li>win64</li>
+<li>sysv64</li>
+</ul>
+<p>不过，值得庆幸的是，目前我们 IT 工业的基石，绝大部分是由 C 语言写成。于是自然而然，绝大多数库都遵循 cdecl（或 C）规范。所以我们可以专注于 C 规范来讨论问题。</p>
+<h4 id="FFI-的困难之处"><a href="#FFI-的困难之处" class="headerlink" title="FFI 的困难之处"></a>FFI 的困难之处</h4><p>FFI 实现起来，比想像的要复杂许多，困难体现在：</p>
+<ul>
+<li>如果 host 语言（调用主动方）带 GC（垃圾收集器），而 guest 语言（调用被动方）不带，那么可能会在资源管理（创建，释放）上面造成一些问题，需要特别细致地处理；</li>
+<li>复杂对象或类型，在映射到两边的时候，可能会有一些不协调甚至失真的现象；</li>
+<li>两边要同时引用一个可变对象的时候，可能会遇到问题；</li>
+<li>如果两边的语言都是运行在 VM 之上的语言，那么这两个语言之间的直接 FFI 非常困难甚至不可能；</li>
+<li>类型系统&#x2F;对象组合模型&#x2F;继承机制等其它细节，可能在跨语言的时候，成为障碍；</li>
+<li>其它。</li>
+</ul>
+<p>所以，虽然都能做 FFI，但是不同语言实现 FFI 的困难程度是不同的。</p>
+<h4 id="哪些语言可以方便地对外提供-FFI-库支持"><a href="#哪些语言可以方便地对外提供-FFI-库支持" class="headerlink" title="哪些语言可以方便地对外提供 FFI 库支持"></a>哪些语言可以方便地对外提供 FFI 库支持</h4><p>可惜，大部分语言只能单向地“索取”。目前所知，能（较方便地）对其它语言提供 FFI 库支持的语言有：</p>
+<ul>
+<li>C</li>
+<li>C++（通过定义 C 接口）</li>
+<li>Rust（通过使用 C 约定）</li>
+<li>Ada</li>
+<li>Fortran</li>
+</ul>
+<h4 id="偷懒的程序员"><a href="#偷懒的程序员" class="headerlink" title="偷懒的程序员"></a>偷懒的程序员</h4><p>在开发的过程中，要一个一个对大量的 C&#x2F;C++ 库写绑定来进行 FFI，毕竟是一项费时费力的活儿。聪明的程序员们就开始构想一些“通用”的方案，实现批量快速绑定。</p>
+<h5 id="SWIG"><a href="#SWIG" class="headerlink" title="SWIG"></a>SWIG</h5><p>以下定义来自 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/SWIG%EF%BC%9A">https://zh.wikipedia.org/wiki/SWIG：</a></p>
+<blockquote>
+<p>简单包装界面产生器(SWIG)是一个开源软件工具，用来将C语言或C++写的计算机程序或函式库，连接脚本语言，例如Lua, Perl, PHP, Python, R, Ruby, Tcl, 和其它语言，例如C#, Java, JavaScript, Go, D, OCaml, Octave, Scilab以及Scheme. 也可以输出成XML格式。</p>
+</blockquote>
+<p>也就是说，使用了 SWIG 这套工具和规范，就可以直接在上层语言（动态语言居多）中调用 C&#x2F;C++ 库了，省却大量烦恼。但在实际使用中，还会有一些细节问题，往往需要人工调整。所以也不是那么完美。</p>
+<p>SWIG 官网：<a target="_blank" rel="noopener" href="http://swig.org/">http://swig.org/</a> 。</p>
+<h5 id="Gnome-社区关于构建通用-GI-规范的理想和实践"><a href="#Gnome-社区关于构建通用-GI-规范的理想和实践" class="headerlink" title="Gnome 社区关于构建通用 GI 规范的理想和实践"></a>Gnome 社区关于构建通用 GI 规范的理想和实践</h5><p>Gnome&#x2F;Gtk 那一帮理想主义青年，发明了 GI（GObject Introspection）。用于对基于 glib&#x2F;gobject 生态的众多软件（C 代码库）自动生成完整的接口描述文件（及 typelib），然后其它语言只要实现了对 Gir 这一个标准的支持，那么就可以无缝调用所有经过 Gir 化处理的 C 库。而不再需要单独为每一个 C 库做绑定了。这样就大大简化了 FFI 接口项目的编写工作。</p>
+<p>目前这一杰出创意的重量级工作成果有 cairo, pango, gtk 等库。</p>
+<p>更多信息请参考：<a target="_blank" rel="noopener" href="https://gi.readthedocs.io/en/latest/%E3%80%82">https://gi.readthedocs.io/en/latest/。</a></p>
+<h4 id="另一种思路——基于字节码的平台级路线"><a href="#另一种思路——基于字节码的平台级路线" class="headerlink" title="另一种思路——基于字节码的平台级路线"></a>另一种思路——基于字节码的平台级路线</h4><p>语言间的相互调用，历史的发展提供了另一条路线：建立一个共同的字节码平台，这个平台之上的所有语言，皆可便捷地相互调用。</p>
+<h5 id="JVM-平台语言之间的-FFI"><a href="#JVM-平台语言之间的-FFI" class="headerlink" title="JVM 平台语言之间的 FFI"></a>JVM 平台语言之间的 FFI</h5><p>Java 发展到现在，已经形成了一个强大的 JVM 生态。JVM 平台上有大量的新语言产生，比如 Scala, Clojure, JRuby, Jython 等。这些语言前端不同，但是共享同一套 JVM 字节码和调用规范。因此，这些语言和 Java 之间，以及这些衍生语言之间，能比较容易地实现相互调用。</p>
+<p>JVM 平台的缺点在于，其生态中的成果，被局限在了 JVM 平台内，无法（或很难）被其它语言平台所享用。</p>
+<h4 id="WASM-平台的-FFI"><a href="#WASM-平台的-FFI" class="headerlink" title="WASM 平台的 FFI"></a>WASM 平台的 FFI</h4><p>Web Assembly（WASM）是一个新的字节码平台，其势头发展很猛。其有着比 JVM 平台更大的野心和联盟。因为是新设计的字节码，故其在设计的时候，就对 JVM 平台的一些问题做了规避（这方面可 Google 查阅相关资料）。</p>
+<p>目前几乎所有主流语言都已实现将 WASM 作为编译目标，并且有相当一部分语言能够加载 WASM 库文件，调用其中的函数。不同的语言编译出的 WASM 效能和体积大小也是不同的。目前来看，C、C++、Rust 这些非 GC 语言能够编译出最精简，执行效率最高的 WASM 字节码。</p>
+<p>WASM 的规范还在快速完善中。</p>
+<h3 id="UniFFI-rs"><a href="#UniFFI-rs" class="headerlink" title="UniFFI-rs"></a>UniFFI-rs</h3><p>UniFFI-rs 是 Mozilla 出品，应用在 Firefox mobile browser 上的 Rust 公共组件，用于自动生成 Rust 库与不同编程语言之间的绑定，UniFFI-rs 有以下特点：</p>
+<p><strong>安全</strong></p>
+<ul>
+<li>UniFFI-rs 的设计目标第一条就是“安全优先”，所有暴露给调用语言的 Rust 生成的方法，都不应该触发未定义的行为。</li>
+<li>所有暴露给外部语言的 Rust Object 实例都要求是 Send + Sync。</li>
+</ul>
+<p><strong>简单</strong></p>
+<ul>
+<li>不需要使用者去学习 FFI 的使用</li>
+<li>只定义一个 DSL 的接口抽象，框架生成对应平台实现，不用操心跨语言的调用封装。</li>
+</ul>
+<p><strong>高质量</strong></p>
+<ul>
+<li>完善的文档和测试。</li>
+<li>所有生成的对应语言，都符合风格要求。</li>
+</ul>
+<h3 id="UniFFI-rs-是如何工作的？"><a href="#UniFFI-rs-是如何工作的？" class="headerlink" title="UniFFI-rs 是如何工作的？"></a>UniFFI-rs 是如何工作的？</h3><p>首先我们 clone uniffi-rs 的项目到本地, 用喜欢的 IDE 打开 arithmetic 这个项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/mozilla/uniffi-rs.git</span><br><span class="line"><span class="built_in">cd</span> examples/arithmetic/src</span><br></pre></td></tr></table></figure>
+
+<p>打开项目，查看 arithmetic.udl (文件路径uniffi-rs&#x2F;examples&#x2F;arithmetic&#x2F;src)，我们看下这个样例代码具体做了什么：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[Error]</span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">ArithmeticError</span> &#123;</span><br><span class="line">  <span class="string">&quot;IntegerOverflow&quot;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">namespace arithmetic &#123;</span><br><span class="line">  [Throws=ArithmeticError]</span><br><span class="line">  <span class="type">u64</span> <span class="title function_ invoke__">add</span>(<span class="type">u64</span> a, <span class="type">u64</span> b);</span><br><span class="line"></span><br><span class="line">  [Throws=ArithmeticError]</span><br><span class="line">  <span class="type">u64</span> <span class="title function_ invoke__">sub</span>(<span class="type">u64</span> a, <span class="type">u64</span> b);</span><br><span class="line"></span><br><span class="line">  <span class="type">u64</span> <span class="title function_ invoke__">div</span>(<span class="type">u64</span> dividend, <span class="type">u64</span> divisor);</span><br><span class="line"></span><br><span class="line">  boolean <span class="title function_ invoke__">equal</span>(<span class="type">u64</span> a, <span class="type">u64</span> b);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码是使用 UniFFI 语法编写的 Rust FFI（Foreign Function Interface）接口定义文件的一部分。代码定义了一个 Rust 库的对外接口，允许其他语言通过 FFI 调用这些 Rust 函数。</p>
+<ol>
+<li><code>[Error]</code><ol>
+<li>这是一个注解，用于定义错误类型。在 UniFFI 中，[Error] 注解后面跟着的是一个枚举类型的定义，这里定义了一个名为 ArithmeticError 的枚举类型。</li>
+</ol>
+</li>
+<li><code>enum ArithmeticError &#123;</code><ol>
+<li>开始定义 ArithmeticError 枚举类型。</li>
+</ol>
+</li>
+<li>“IntegerOverflow”,<ol>
+<li>枚举的一个成员，表示整数溢出错误。</li>
+</ol>
+</li>
+<li><code>namespace arithmetic &#123;</code><ol>
+<li>开始定义一个名为 arithmetic 的命名空间，其中包含了多个函数的声明。</li>
+</ol>
+</li>
+<li><code>[Throws=ArithmeticError]</code><ol>
+<li>这是一个注解，表示接下来的函数可能会抛出 ArithmeticError 类型的错误。</li>
+</ol>
+</li>
+<li><code>u64 add(u64 a, u64 b);</code><ol>
+<li>定义了一个名为 add 的加法函数，它接受两个 u64 类型的参数 a 和 b，返回一个 u64 类型的结果。由于前面有 [Throws&#x3D;ArithmeticError] 注解，所以这个函数可能会抛出 ArithmeticError 类型的错误。</li>
+</ol>
+</li>
+<li><code>u64 sub(u64 a, u64 b);</code><ol>
+<li>定义了一个名为 sub 的减法函数，它接受两个 u64 类型的参数 a 和 b，返回一个 u64 类型的结果。同样，这个函数可能会抛出 ArithmeticError 类型的错误。</li>
+</ol>
+</li>
+<li><code>u64 div(u64 dividend, u64 divisor);</code><ol>
+<li>定义了一个名为 div 的除法函数，它接受两个 u64 类型的参数 dividend 和 divisor，返回一个 u64 类型的结果。这里没有 [Throws] 注解，意味着这个函数不会抛出错误。</li>
+</ol>
+</li>
+<li><code>boolean equal(u64 a, u64 b);</code><ol>
+<li>定义了一个名为 equal 的 判断两个整数是否相等函数，它接受两个 u64 类型的参数 a 和 b，返回一个 boolean 类型的结果。同样，这个函数没有抛出错误的能力。</li>
+</ol>
+</li>
+</ol>
+<p>这些函数可以通过 UniFFI 自动生成的绑定在其他编程语言中调用。</p>
+<p>在 arithmetic.udl 中，我们看到定义里一个 Error 类型，还定义了 add, sub, div, equal 四个方法，namespace 的作用是在代码生成时，作为对应语言的包名是必须的。我们接下来看看 lib.rs 中 rust 部分是怎么写的：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug, thiserror::Error)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">enum</span> <span class="title class_">ArithmeticError</span> &#123;</span><br><span class="line">    <span class="meta">#[error(<span class="string">&quot;Integer overflow on an operation with &#123;a&#125; and &#123;b&#125;&quot;</span>)]</span></span><br><span class="line">    IntegerOverflow &#123; a: <span class="type">u64</span>, b: <span class="type">u64</span> &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">add</span>(a: <span class="type">u64</span>, b: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">u64</span>&gt; &#123;</span><br><span class="line">    a.<span class="title function_ invoke__">checked_add</span>(b)</span><br><span class="line">        .<span class="title function_ invoke__">ok_or</span>(ArithmeticError::IntegerOverflow &#123; a, b &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sub</span>(a: <span class="type">u64</span>, b: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">u64</span>&gt; &#123;</span><br><span class="line">    a.<span class="title function_ invoke__">checked_sub</span>(b)</span><br><span class="line">        .<span class="title function_ invoke__">ok_or</span>(ArithmeticError::IntegerOverflow &#123; a, b &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">div</span>(dividend: <span class="type">u64</span>, divisor: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> <span class="type">u64</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> divisor == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">panic!</span>(<span class="string">&quot;Can&#x27;t divide by zero&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    dividend / divisor</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">equal</span>(a: <span class="type">u64</span>, b: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> <span class="type">bool</span> &#123;</span><br><span class="line">    a == b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Result</span>&lt;T, E = ArithmeticError&gt; = std::result::<span class="type">Result</span>&lt;T, E&gt;;</span><br><span class="line"></span><br><span class="line">uniffi::include_scaffolding!(<span class="string">&quot;arithmetic&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这段 Rust 代码定义了一个简单的算术操作库，其中包括加法、减法、除法和比较功能。同时，它还定义了一个错误类型 ArithmeticError 用于处理整数溢出的情况。</p>
+<ol>
+<li><code>ArithmeticError</code></li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug, thiserror::Error)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">enum</span> <span class="title class_">ArithmeticError</span> &#123;</span><br><span class="line">    <span class="meta">#[error(<span class="string">&quot;Integer overflow on an operation with &#123;a&#125; and &#123;b&#125;&quot;</span>)]</span></span><br><span class="line">    IntegerOverflow &#123; a: <span class="type">u64</span>, b: <span class="type">u64</span> &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>#[derive(Debug, thiserror::Error)] 是属性宏，用于自动实现 Debug trait 和 thiserror::Error trait。<ul>
+<li>pub enum ArithmeticError 定义了一个公开的枚举类型 ArithmeticError。</li>
+<li>#[error(“Integer overflow on an operation with {a} and {b}”)] 属性宏用于指定错误消息的格式字符串，其中 {a} 和 {b} 是格式化占位符。</li>
+<li>IntegerOverflow { a: u64, b: u64 } 枚举的一个变体，包含两个 u64 类型的字段 a 和 b。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>加法函数 <code>add</code></li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">add</span>(a: <span class="type">u64</span>, b: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">u64</span>&gt; &#123;</span><br><span class="line">    a.<span class="title function_ invoke__">checked_add</span>(b)</span><br><span class="line">        .<span class="title function_ invoke__">ok_or</span>(ArithmeticError::IntegerOverflow &#123; a, b &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fn add(a: u64, b: u64) -&gt; Result<u64> 定义了一个名为 add 的函数，接受两个 u64 类型的参数 a 和 b，返回一个 Result<u64> 类型的结果。<ul>
+<li>a.checked_add(b) 调用 checked_add 方法来安全地执行加法操作，如果发生溢出，则返回 None。</li>
+<li>.ok_or(ArithmeticError::IntegerOverflow { a, b }) 如果 checked_add 返回 None，则构造一个 ArithmeticError::IntegerOverflow 错误。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>减法函数 <code>sub</code></li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">sub</span>(a: <span class="type">u64</span>, b: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">u64</span>&gt; &#123;</span><br><span class="line">    a.<span class="title function_ invoke__">checked_sub</span>(b)</span><br><span class="line">        .<span class="title function_ invoke__">ok_or</span>(ArithmeticError::IntegerOverflow &#123; a, b &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>类似于 add 函数，但是使用 checked_sub 方法来执行减法操作。</li>
+</ul>
+<ol>
+<li>除法函数 <code>div</code></li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">div</span>(dividend: <span class="type">u64</span>, divisor: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> <span class="type">u64</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> divisor == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">panic!</span>(<span class="string">&quot;Can&#x27;t divide by zero&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    dividend / divisor</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fn div(dividend: u64, divisor: u64) -&gt; u64 定义了一个名为 div 的函数，接受两个 u64 类型的参数 dividend 和 divisor，返回一个 u64 类型的结果。<ul>
+<li>如果 divisor 为 0，则使用 panic! 宏引发运行时错误。</li>
+<li>如果 divisor 不为 0，则执行除法操作。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>比较函数 <code>equal</code></li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">equal</span>(a: <span class="type">u64</span>, b: <span class="type">u64</span>) <span class="punctuation">-&gt;</span> <span class="type">bool</span> &#123;</span><br><span class="line">    a == b</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fn equal(a: u64, b: u64) -&gt; bool 定义了一个名为 equal 的函数，接受两个 u64 类型的参数 a 和 b，返回一个布尔值，表示两个数是否相等。</li>
+</ul>
+<ol>
+<li>定义 <code>Result</code> 类型别名</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Result</span>&lt;T, E = ArithmeticError&gt; = std::result::<span class="type">Result</span>&lt;T, E&gt;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>type Result&lt;T, E &#x3D; ArithmeticError&gt; &#x3D; std::result::Result&lt;T, E&gt;; 定义了一个类型别名 Result，它是 std::result::Result&lt;T, E&gt; 的别名，其中 E 默认为 ArithmeticError。</li>
+</ul>
+<ol>
+<li>UniFFI 模块引入</li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uniffi::include_scaffolding!(<span class="string">&quot;arithmetic&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>uniffi::include_scaffolding!(“arithmetic”); 是 UniFFI 的宏调用，用于自动生成与外部语言交互所需的绑定代码。这里的 “arithmetic” 是模块名称，UniFFI 会基于这个模块生成相应的绑定代码。</li>
+</ul>
+<p>我们再来看一下 uniffi-rs&#x2F;uniffi_bindgen&#x2F;src&#x2F;bindings&#x2F;mod.rs 这个文件里的内容：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mod</span> kotlin;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> kotlin::KotlinBindingGenerator;</span><br><span class="line"><span class="keyword">mod</span> python;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> python::PythonBindingGenerator;</span><br><span class="line"><span class="keyword">mod</span> ruby;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> ruby::RubyBindingGenerator;</span><br><span class="line"><span class="keyword">mod</span> swift;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> swift::SwiftBindingGenerator;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[cfg(feature = <span class="string">&quot;bindgen-tests&quot;</span>)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> self::&#123;</span><br><span class="line">    kotlin::test <span class="keyword">as</span> kotlin_test, python::test <span class="keyword">as</span> python_test, ruby::test <span class="keyword">as</span> ruby_test,</span><br><span class="line">    swift::test <span class="keyword">as</span> swift_test,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[cfg(feature = <span class="string">&quot;bindgen-tests&quot;</span>)]</span></span><br><span class="line"><span class="comment">/// Mode for the `run_script` function defined for each language</span></span><br><span class="line"><span class="meta">#[derive(Clone, Debug)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">RunScriptOptions</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> show_compiler_messages: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[cfg(feature = <span class="string">&quot;bindgen-tests&quot;</span>)]</span></span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Default</span> <span class="keyword">for</span> <span class="title class_">RunScriptOptions</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">default</span>() <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        <span class="keyword">Self</span> &#123;</span><br><span class="line">            show_compiler_messages: <span class="literal">true</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段 Rust 代码定义了一个模块，用于生成不同编程语言的绑定代码。这些绑定代码允许其他语言与 Rust 编写的组件交互。代码中包含了几个子模块，每个子模块负责生成特定语言的绑定代码。此外，还提供了用于测试这些绑定的辅助功能。</p>
+<ul>
+<li>子模块定义：<ul>
+<li>kotlin: 定义了 Kotlin 绑定生成器。</li>
+<li>python: 定义了 Python 绑定生成器。</li>
+<li>ruby: 定义了 Ruby 绑定生成器。</li>
+<li>swift: 定义了 Swift 绑定生成器。</li>
+</ul>
+</li>
+<li>公共导出：<ul>
+<li>将各个子模块中的绑定生成器公开出来，以便外部使用。<ul>
+<li>KotlinBindingGenerator</li>
+<li>PythonBindingGenerator</li>
+<li>RubyBindingGenerator</li>
+<li>SwiftBindingGenerator</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>测试相关代码：<ul>
+<li>当启用 “bindgen-tests” 特性时，会导入测试相关的子模块和结构体。<ul>
+<li>kotlin_test, python_test, ruby_test, swift_test</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>RunScriptOptions 结构体：<ul>
+<li>定义了一个 RunScriptOptions 结构体，用于配置 run_script 函数的行为。<ul>
+<li>show_compiler_messages: 控制是否显示编译器消息，默认为 true。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>RunScriptOptions 默认实现：<ul>
+<li>实现了 Default trait 为 RunScriptOptions 提供默认值。</li>
+</ul>
+</li>
+</ul>
+<p>下图是一张 UniFFI-rs 各个文件示意图，我们一起来看下，上面的 udl 和 lib.rs 属于图中的哪个部分：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=ZmIxZGZhNjM1MDI4YmRkNGNjZTVkM2Y1ZTdlZDdhYWVfaDRMVU1Va3phNHhPQ3MySjFkNGtDQVlDWFJabGV0OXlfVG9rZW46Umh5U2I3cHR0b2NxSnB4bVNidGNWbnU1bnBkXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<ul>
+<li>图中最左边 <code>Interface Definition File</code> 对应 arithmetic.udl 文件</li>
+<li>图中最下面红色的 <code>Rust Business Logic</code> 对应到 example 中的 lib.rs</li>
+<li>test&#x2F;bindings&#x2F; 目录下的各平台的调用文件对应最上面绿色的方块</li>
+</ul>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=NTE0NGFlMDVlN2RjNzdmNWIxYjJhMDY1OWIyOWQ4OWFfcEU1OE1NSVI2aG52dEdDeVFYNVFQSjZCUEtWaGxsblJfVG9rZW46Rlg0WGJMTkppbzNDVUl4cHBaYWMxa3JCbjBlXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>那方框中蓝色的绑定文件去哪里了呢， 我们发现 lib.rs 最下面有这样一行代码 </p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uniffi_macros::include_scaffolding!(<span class="string">&quot;arithmetic&quot;</span>); </span><br></pre></td></tr></table></figure>
+
+<p>这句代码会在编译的时候引入生成的代码做依赖，我们这就执行一下测试用例，看看编译出来的文件是什么：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo test</span><br></pre></td></tr></table></figure>
+
+<p>如果顺利的话，你会看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">test</span> result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished <span class="keyword">in</span> 0.00s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=Y2YzZmVlYTRhNmJmYWQ3MmRlMDNhYjU4YjlhNTM1ODRfcVNjbXdubEVWN2Z5RjVMNXFBZmE5TlY5bXVSNlBHZldfVG9rZW46V29PaGJTM1BlbzBLa0h4M0xucmMxYmxCblJnXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>我们可以看到，这个测试用例，运行了 python, ruby, swift 和 kotlin 四种语言的调用，需要本地有对应语言的环境。</p>
+<p>具体如何安装对应环境超出了本文的范围，但是这里给大家一个方法看具体测试用例是如何启动的</p>
+<p>我们执行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo <span class="built_in">test</span> -- --nocapture</span><br></pre></td></tr></table></figure>
+
+<p><code>--nocapture</code> 是传递给测试运行器的一个选项，它告诉测试运行器不要捕获标准输出（stdout）和标准错误输出（stderr）。</p>
+<p>默认情况下，cargo test 会捕获测试运行期间的所有输出，以防止测试输出干扰测试结果的显示。使用 –nocapture 可以让测试中的 println! 或者 eprintln! 输出直接显示在控制台中。</p>
+<p>如果出现长时间等待：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=YWQxZDI5MzY4ZmE2MzM0ZjU5YWM3NWQwOTYxOTZkNjlfT2RiU1pCa3Q4MHc5YmQyYVpmcmJLNzhkZDJhbVN3R1VfVG9rZW46UG9HbWJleTgzb0ZSMGh4eHA4dWNMN2owbk5lXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>当你执行 cargo test – –nocapture 并遇到 Blocking waiting for file lock on package cache 的提示时，这通常是正常的流程。这是因为 cargo 命令在执行测试之前会尝试获取文件锁来确保包缓存的一致性。在多进程环境中，这种锁机制可以防止多个 cargo 实例同时修改相同的包缓存文件。</p>
+<p><strong>解释</strong> </p>
+<ol>
+<li>文件锁的目的:<ol>
+<li>文件锁是为了避免多个 cargo 进程同时访问包缓存而导致的数据不一致。</li>
+<li>当一个 cargo 进程正在使用包缓存时，它会锁定包缓存文件，其他进程必须等待当前进程完成才能继续。</li>
+</ol>
+</li>
+<li>为什么会出现等待提示:<ol>
+<li>当你执行 cargo test – –nocapture 时，cargo 首先会检查包缓存并尝试获取文件锁。</li>
+<li>如果另一个 cargo 进程（例如构建、测试或其他命令）正在运行并且已经锁定了包缓存，那么新的 cargo 进程就会等待文件锁释放。</li>
+<li>这个等待提示表明 cargo 正在等待文件锁被释放，以便它可以继续执行。</li>
+</ol>
+</li>
+</ol>
+<p><strong>处理方法</strong> </p>
+<ol>
+<li>等待:<ol>
+<li>如果提示只是一时出现，并且很快消失，那么通常不需要特别处理，只需要等待即可。</li>
+<li>这通常意味着另一个 cargo 进程即将完成。</li>
+</ol>
+</li>
+<li>检查其他运行中的进程:<ol>
+<li>如果提示长时间不消失，可以检查是否有其他 cargo 进程正在运行。</li>
+<li>使用 ps aux | grep cargo （在 Linux 或 macOS 上）或 tasklist | findstr cargo （在 Windows 上）来查找正在运行的 cargo 进程。</li>
+<li>如果发现有其他进程，可以尝试终止它们，然后重新运行你的 cargo 命令。</li>
+</ol>
+</li>
+<li>清理缓存:<ol>
+<li>如果上述方法无效，可以尝试清理 cargo 的包缓存，以解决潜在的文件锁问题。</li>
+<li>执行 cargo clean 来清理项目缓存。</li>
+<li>执行 cargo cache clean 来清理全局包缓存（需要安装 cargo-cache 插件）。</li>
+</ol>
+</li>
+<li>环境隔离:<ol>
+<li>如果你在 CI&#x2F;CD 环境中遇到这个问题，可以考虑为每个构建任务分配独立的缓存目录，以避免文件锁冲突。</li>
+<li>使用不同的工作目录或缓存目录来隔离不同任务之间的文件锁竞争。</li>
+</ol>
+</li>
+</ol>
+<p>这里我们采用终止进程的办法，运行命令来查找正在运行的 cargo 进程:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep cargo</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=NmJjMmVkZGVmMmM4YmFmZTM2NGNlYjU4M2NhNjI2MmRfbjd2ZE1yUERNMm9INGZxUzNGS2hKV1JMU21vV3VlaVlfVG9rZW46VzllY2JSWjRXb1piOXl4NFdoN2NseHJobjRiXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>找到你想杀死的进程进行直接 kill 掉即可。如果你想一次性终止所有 cargo 进程，可以使用 pgrep 和 kill 结合来完成。这里是一个示例命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pgrep -f <span class="string">&#x27;cargo&#x27;</span> | xargs <span class="built_in">kill</span></span><br></pre></td></tr></table></figure>
+
+<p>在清理完其他 cargo 进程后，我们重新运行命令，可以看到，没有再被 Blocking waiting for file lock on package cache 卡住了，但是产生了全新的其他问题，我们可以看到，生成各种目标语言失败了：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=MWY1Y2U0YTJjYTBhYThmZGM2NDAwODc3YjY5MTc3OTdfOUNnakJydUpGbkJCUVJwaFFaRlBhZ0prTlJvTlVsS2hfVG9rZW46Uko1cmJDVFJrb3JsNGt4bWpMdmNJRnEwblRiXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>这几个报错都是相同的问题，这表明生成的 .dylib 文件是为 arm64 架构编译的，但是运行环境需要的是 x86_64 架构的库。这意味着你的开发环境可能是基于 x86_64 的 Mac，而 Rust 编译器却为 arm64 架构编译了代码。</p>
+<p><strong>你需要确保 .dylib 文件是为正确的架构编译的，并且路径正确。</strong></p>
+<p><strong>问题解决方案</strong> ：</p>
+<ol>
+<li>安装x86架构的 Rust 工具链</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rustup install stable-x86_64-apple-darwin</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>设置当前默认工具链为x86架构</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rustup default stable-x86_64-apple-darwin</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>再次检查 Rust 当前的编译目标架构</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rustc --version --verbose</span><br></pre></td></tr></table></figure>
+
+<p>如果提示如下内容，则表明切换架构成功，直接跳到步骤6。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rustc 1.80.1 (3f5fd8dd4 2024-08-06)</span><br><span class="line">binary: rustc</span><br><span class="line">commit-hash: 3f5fd8dd41153bc5fdca9427e9e05be2c767ba23</span><br><span class="line">commit-date: 2024-08-06</span><br><span class="line">host: x86_64-apple-darwin // 切换成功</span><br><span class="line">release: 1.80.1</span><br><span class="line">LLVM version: 18.1.7</span><br></pre></td></tr></table></figure>
+
+<p>如果仍然提示之前的内容，则表明切换架构失败，需要进一步执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rustc 1.77.1 (7cf61ebde 2024-03-27)</span><br><span class="line">binary: rustc</span><br><span class="line">commit-hash: 7cf61ebde7b22796c69757901dd346d0fe70bd97</span><br><span class="line">commit-date: 2024-03-27</span><br><span class="line">host: aarch64-apple-darwin // 切换失败</span><br><span class="line">release: 1.77.1</span><br><span class="line">LLVM version: 17.0.6</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用 rustup show 命令来验证设置是否正确</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rustup show</span><br></pre></td></tr></table></figure>
+
+<p>该命令会展示出详细的信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Default host: aarch64-apple-darwin</span><br><span class="line">rustup home:  /Users/xiangkuilin/.rustup</span><br><span class="line"></span><br><span class="line">installed toolchains</span><br><span class="line">--------------------</span><br><span class="line"></span><br><span class="line">stable-aarch64-apple-darwin</span><br><span class="line">stable-x86_64-apple-darwin (default)</span><br><span class="line">1.77.1-aarch64-apple-darwin</span><br><span class="line"></span><br><span class="line">installed targets for active toolchain</span><br><span class="line">--------------------------------------</span><br><span class="line"></span><br><span class="line">aarch64-apple-darwin</span><br><span class="line">aarch64-apple-ios</span><br><span class="line">aarch64-linux-android</span><br><span class="line">armv7-linux-androideabi</span><br><span class="line">i686-linux-android</span><br><span class="line">x86_64-apple-ios</span><br><span class="line">x86_64-linux-android</span><br><span class="line"></span><br><span class="line">active toolchain</span><br><span class="line">----------------</span><br><span class="line"></span><br><span class="line">1.77.1-aarch64-apple-darwin (overridden by &#x27;/Users/xiangkuilin/Desktop/Rust/uniffi-rs/rust-toolchain.toml&#x27;)</span><br><span class="line">rustc 1.77.1 (7cf61ebde 2024-03-27)</span><br></pre></td></tr></table></figure>
+
+<p>注意高亮部分，从 rustup show 输出来看，默认工具链被设置为了 stable-x86_64-apple-darwin，但是在当前目录 (&#x2F;Users&#x2F;xiangkuilin&#x2F;Desktop&#x2F;Rust&#x2F;uniffi-rs) 中存在一个 rust-toolchain.toml 文件，它覆盖了默认设置，并指定了 1.77.1-aarch64-apple-darwin 作为当前项目的工具链。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>移除 rust-toolchain.toml 文件 如果你想让当前项目使用 stable-x86_64-apple-darwin 工具链，你可以删除项目中的 rust-toolchain.toml 文件。这将使项目使用默认工具链进行编译。</li>
+<li>修改 rust-toolchain.toml 文件 如果你希望保留 rust-toolchain.toml 文件，你可以修改文件内容，指定使用 stable-x86_64-apple-darwin 工具链。文件内容应如下所示：</li>
+</ol>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[toolchain]</span></span><br><span class="line"><span class="attr">channel</span> = <span class="string">&quot;stable&quot;</span></span><br><span class="line"><span class="attr">target</span> = <span class="string">&quot;x86_64-apple-darwin&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>鉴于该文件存在未知风险，我们选择直接删除  rust-toolchain.toml 文件，注意：需要完全删除，不能继续放在 uniffi-rs 可以扫描到的文件路径内。</p>
+<ol>
+<li>删除文件后，运行 rustup show 来确认默认工具链是否生效，预期输出应该显示 host: x86_64-apple-darwin，并且版本号应该与 rustup show 中显示的一致，即 rustc 1.80.1 (3f5fd8dd4 2024-08-06)。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Default host: aarch64-apple-darwin</span><br><span class="line">rustup home:  /Users/xiangkuilin/.rustup</span><br><span class="line"></span><br><span class="line">installed toolchains</span><br><span class="line">--------------------</span><br><span class="line"></span><br><span class="line">stable-aarch64-apple-darwin</span><br><span class="line">stable-x86_64-apple-darwin (default)</span><br><span class="line">1.77.1-aarch64-apple-darwin</span><br><span class="line"></span><br><span class="line">active toolchain</span><br><span class="line">----------------</span><br><span class="line"></span><br><span class="line">stable-x86_64-apple-darwin (default)</span><br><span class="line">rustc 1.80.1 (3f5fd8dd4 2024-08-06)</span><br></pre></td></tr></table></figure>
+
+<p>这时我们可以看到，在 active toolchain 下的工具链已经是x86架构了，且版本号为1.80.1，说明已经在本项目中设置生效成功并保持一致了。</p>
+<ol>
+<li>运行 cargo clean 清理项目</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Removed 8808 files, 1.6GiB total</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用 cargo build 重新编译项目，以确保它使用正确的工具链进行编译：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo build</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=NTliMDI3NGQ3ODYzMjdjNjRjNDdiNDQ4YTY5N2QwM2Ffa21POVNFN0RxZU9qRWhONTVlN1lwMjNxR04wZlN0UWNfVG9rZW46UFpUSmJoSGZDb2tyYnV4M2hVZ2NGa3dsbkliXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=YWI3YTE0MDhlNzQ2ZTBjOWM0YjBlNjIyYTg0ZDQwYTJfZnhEM25VQnFlUHNEOUNCc2VNVTN5VGlseDZSRWxuRE5fVG9rZW46SnZzVmJWb041b0RHVmt4VVQxZ2NPZURGbkloXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>再次运行 cargo test，我们可以看到完整的生成过程，这里生成通过了python 和 swift 文件，kotilin 和 ruby 报错是我本机这两个语言环境有问题，暂且忽略，需要的话检查本机相关路径处理即可</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=YzJjYjMxMDI5NzE2ZDMyODk0YTVhNmMxMGZkMjhiZDhfc2dvdDR2WTBYcjNmYzZvc0VVR0VTcUFqM2lMaFJqcWZfVG9rZW46QzVxamJuOG45bzlvZVp4QTg3emNiank4bnppXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>接下来我们就能在 uniffi-rs&#x2F;target&#x2F;temp 中看到生成的代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">arithmetic.kt</span><br><span class="line">arithmetic.py</span><br><span class="line">arithmetic.rb</span><br><span class="line">arithmetic.swift</span><br><span class="line">arithmetic.swiftmodule</span><br><span class="line">arithmeticFFI.h</span><br><span class="line">arithmeticFFI.modulemap</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=MWQ0Y2Y4OTNmODljYWIyNWNhMWEwYzE2MmNkN2Q4ODBfTVB1V0VCYzZnemoyaDNwdUFUdWlNQldnU3JSYmFqZUhfVG9rZW46UlBUN2JOSUdSb0U2ZVF4Y1c0VGNMTThHbndoXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>其中的 kt 是 kotlin, py 是 python，rb 是 ruby，剩下4个都是 swift，这些文件是图中上面的平台绑定文件，我们以 swift 的代码为例，看下里面的 add 方法：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=MDY4ZTQ0NDIyMTY4YzZmYzcxNGI2YWU2YjJiYjgyNDdfQmhIRFV2aldBVHdVV0c4Qjl4REVEYWVSNTRSN0tRa0lfVG9rZW46WHo5b2J2cVNGb0NLMmp4ZGUySWNCMWtrbk1jXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>这段代码是用 Swift 语言编写的，它定义了一个名为 add 的公共函数，该函数接收两个 UInt64 类型的参数 a 和 b，并返回一个 UInt64 类型的结果。这个函数使用了 Swift 的 throws 关键字，表明它可以抛出错误。</p>
+<p>下面是对这段代码的逐行解释：</p>
+<ol>
+<li><code>public func add(a: UInt64, b: UInt64) throws -&gt; UInt64 &#123;</code><ol>
+<li>定义了一个公共函数 add，它接受两个 UInt64 类型的参数 a 和 b。</li>
+<li>函数声明使用了 throws 关键字，表示该函数可能会抛出错误。</li>
+<li>函数的返回类型是 UInt64。</li>
+</ol>
+</li>
+<li><code>return try FfiConverterUInt64.lift(try rustCallWithError(FfiConverterTypeArithmeticError.lift) &#123;</code><ol>
+<li>这一行开始了一个复合表达式，用于调用 Rust 函数并处理可能的错误。</li>
+<li>FfiConverterUInt64.lift 是一个转换函数，它将 Rust 中的值转换为 Swift 中的值。</li>
+<li>try 关键字表示 lift 方法也可能抛出错误。</li>
+<li>rustCallWithError 是一个函数，它负责调用 Rust 函数并处理错误。</li>
+<li>FfiConverterTypeArithmeticError.lift 是一个转换函数，它将 Rust 中的错误类型转换为 Swift 中的错误类型。</li>
+<li>{ 表示闭包的开始，该闭包是 rustCallWithError 的参数。</li>
+</ol>
+</li>
+<li><code>uniffi_arithmetical_fn_func_add(</code><ol>
+<li>调用了一个名为 uniffi_arithmetical_fn_func_add 的 Rust 函数，这是一个通过 FFI（Foreign Function Interface，外部函数接口）调用的 Rust 函数。</li>
+<li>这个函数接受三个参数。</li>
+</ol>
+</li>
+<li><code>FfiConverterUInt64.lower(a),</code><ol>
+<li>FfiConverterUInt64.lower 是一个转换函数，它将 Swift 中的 UInt64 值转换为 Rust 中可以理解的形式。</li>
+<li>a 是第一个参数，它的值被转换为 Rust 可以接受的形式。</li>
+</ol>
+</li>
+<li><code>FfiConverterUInt64.lower(b),</code><ol>
+<li>同样，FfiConverterUInt64.lower 被用来将第二个参数 b 的值转换为 Rust 可以接受的形式。</li>
+</ol>
+</li>
+<li><code>$0</code><ol>
+<li>$0 是闭包中的第一个参数，它在这里代表 Rust 函数可能返回的错误处理逻辑。</li>
+<li>在这种情况下，$0 是 rustCallWithError 的第三个参数，它将被传递给 uniffi_arithmetical_fn_func_add 函数，通常用于错误处理。</li>
+</ol>
+</li>
+</ol>
+<p>综上所述，这段代码的作用是：</p>
+<ul>
+<li>将 Swift 中的 UInt64 参数转换为 Rust 可以接受的形式。</li>
+<li>调用 Rust 函数 uniffi_arithmetical_fn_func_add 来计算两个整数的和。</li>
+<li>处理 Rust 函数可能抛出的错误。</li>
+</ul>
+<p>可以看到实际调用的是 FFI 中的 <code>uniffi_arithmetical_fn_func_add</code> 方法，它被定义在 <code>arithmeticFFI.h</code>中：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=MzU0NmIzODI1NzVhYzQ1YmI2ZGYwZDEwMGI0MjVlYzVfZFBuSjBJMURjbkZ0TkZjRkk0VU5zZG1ZZ0RFOU51U3JfVG9rZW46T0sxZmJPVzlIb1A4a3h4WFNQcGNNMTVrbmxlXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>目前还缺图中的 Rust scaffolding 文件没找到，它实际藏在 &#x2F;uniffi-rs&#x2F;target&#x2F;debug&#x2F;build&#x2F;uniffi-example-arithmetic 开头目录的 out 文件夹中，注意多次编译可能有多个相同前缀的文件夹。我们以 add 方法为例：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=YTg0NWI1ZThiYTkwNTJjZWY2M2ZhOGI2NWU0ZGQ0OGJfOXNmS2ZZNm8xNElTcHM5Mnl4MzZYaE9lRGhXQTViRG1fVG9rZW46TUZZbGIwMjFWbzl4ZjJ4TGpEQmNnM3hkbnhnXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>我们看看生成的这个类</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// This file was autogenerated by some hot garbage in the `uniffi` crate.</span></span><br><span class="line"><span class="comment">// Trust me, you don&#x27;t want to mess with it!</span></span><br><span class="line"><span class="comment">//** 这些注释说明文件是自动生成的，并且警告用户不要修改这些代码 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 设置元数据</span></span><br><span class="line"><span class="comment">* 这行代码初始化了一些用于支持 UDL（Uniffi Definition Language）的元数据和辅助结构 </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">::uniffi::setup_scaffolding!(<span class="string">&quot;arithmetic&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/// Export info about the UDL while used to create us</span></span><br><span class="line"><span class="comment">/// See `uniffi_bindgen::macro_metadata` for how this is used.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ditto for info about the UDL which spawned us.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 元数据定义</span></span><br><span class="line"><span class="comment">* 这段代码定义了一个常量 UNIFFI_META_CONST_UDL_ARITHMETIC，它包含了关于 UDL 文件的一些元数据信息。</span></span><br><span class="line"><span class="comment">* UNIFFI_META_UDL_ARITHMETIC 是一个静态数组，存储了元数据缓冲区的内容。 </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">const</span> UNIFFI_META_CONST_UDL_ARITHMETIC: ::uniffi::MetadataBuffer = ::uniffi::MetadataBuffer::<span class="title function_ invoke__">from_code</span>(::uniffi::metadata::codes::UDL_FILE)</span><br><span class="line">    .<span class="title function_ invoke__">concat_str</span>(<span class="string">&quot;arithmetical&quot;</span>)</span><br><span class="line">    .<span class="title function_ invoke__">concat_str</span>(<span class="string">&quot;arithmetic&quot;</span>)</span><br><span class="line">    .<span class="title function_ invoke__">concat_str</span>(<span class="string">&quot;arithmetic&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">#[doc(hidden)]</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">static</span> UNIFFI_META_UDL_ARITHMETIC: [<span class="type">u8</span>; UNIFFI_META_CONST_UDL_ARITHMETIC.size] = UNIFFI_META_CONST_UDL_ARITHMETIC.<span class="title function_ invoke__">into_array</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Error definitions, corresponding to `error` in the UDL.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 错误定义</span></span><br><span class="line"><span class="comment">* 定义了一个名为 ArithmeticError 的枚举，它只有一个变体 IntegerOverflow，表示算术操作中可能出现的整数溢出错误。</span></span><br><span class="line"><span class="comment">* #[::uniffi::udl_derive(Error)] 和 #[uniffi(flat_error)] 是宏属性，用于生成与 UDL 中定义的错误相关的代码。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#[::uniffi::udl_derive(Error)]</span></span><br><span class="line"><span class="meta">#[uniffi(flat_error)]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">r#ArithmeticError</span> &#123;</span><br><span class="line">    r#IntegerOverflow &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Record definitions, implemented as method-less structs, corresponding to `dictionary` objects.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Top level functions, corresponding to UDL `namespace` functions.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 函数定义</span></span><br><span class="line"><span class="comment">* 定义了几个函数，包括 add、div、equal 和 sub，这些函数实现了算术操作。</span></span><br><span class="line"><span class="comment">* 这些函数都标记为 #[::uniffi::export_for_udl]，表示它们应该被导出到 UDL。</span></span><br><span class="line"><span class="comment">* 函数体中的 unreachable!() 表示这些函数的实现尚未完成，它们只是占位符。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#[::uniffi::export_for_udl]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">r#add</span>(</span><br><span class="line">    r#a: <span class="type">u64</span>,</span><br><span class="line">    r#b: <span class="type">u64</span>,</span><br><span class="line">) <span class="punctuation">-&gt;</span> ::std::result::<span class="type">Result</span>::&lt;<span class="type">u64</span>, r#ArithmeticError&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[::uniffi::export_for_udl]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">r#div</span>(</span><br><span class="line">    r#dividend: <span class="type">u64</span>,</span><br><span class="line">    r#divisor: <span class="type">u64</span>,</span><br><span class="line">) <span class="punctuation">-&gt;</span> <span class="type">u64</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[::uniffi::export_for_udl]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">r#equal</span>(</span><br><span class="line">    r#a: <span class="type">u64</span>,</span><br><span class="line">    r#b: <span class="type">u64</span>,</span><br><span class="line">) <span class="punctuation">-&gt;</span> <span class="type">bool</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#[::uniffi::export_for_udl]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">r#sub</span>(</span><br><span class="line">    r#a: <span class="type">u64</span>,</span><br><span class="line">    r#b: <span class="type">u64</span>,</span><br><span class="line">) <span class="punctuation">-&gt;</span> ::std::result::<span class="type">Result</span>::&lt;<span class="type">u64</span>, r#ArithmeticError&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Object definitions, corresponding to UDL `interface` definitions.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Callback Interface definitions, corresponding to UDL `callback interface` definitions.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// External and Wrapped types</span></span><br><span class="line"><span class="comment">// Support for external types.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Types with an external `FfiConverter`...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// We generate support for each Custom Type and the builtin type it uses.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Export scaffolding checksums for UDL items</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 检查和函数</span></span><br><span class="line"><span class="comment">* 定义了几个检查和函数，每个函数对应一个算术操作。</span></span><br><span class="line"><span class="comment">* 这些函数返回一个 u16 类型的值，用于校验生成的绑定是否正确。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="meta">#[doc(hidden)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="keyword">fn</span> <span class="title function_">r#uniffi_arithmetical_checksum_func_add</span>() <span class="punctuation">-&gt;</span> <span class="type">u16</span> &#123;</span><br><span class="line">    <span class="number">11953</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="meta">#[doc(hidden)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="keyword">fn</span> <span class="title function_">r#uniffi_arithmetical_checksum_func_div</span>() <span class="punctuation">-&gt;</span> <span class="type">u16</span> &#123;</span><br><span class="line">    <span class="number">59470</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="meta">#[doc(hidden)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="keyword">fn</span> <span class="title function_">r#uniffi_arithmetical_checksum_func_equal</span>() <span class="punctuation">-&gt;</span> <span class="type">u16</span> &#123;</span><br><span class="line">    <span class="number">25849</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#[no_mangle]</span></span><br><span class="line"><span class="meta">#[doc(hidden)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="keyword">fn</span> <span class="title function_">r#uniffi_arithmetical_checksum_func_sub</span>() <span class="punctuation">-&gt;</span> <span class="type">u16</span> &#123;</span><br><span class="line">    <span class="number">25090</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中 extern “C” 就是 Rust 用来生成 C 语言绑定的写法。我们终于知道这个奇怪的 add 方法名是如何生成的了</p>
+<p>到这里，我们就凑齐了上图中的所有部分，明白了 uniffi-rs 的整体流程。</p>
+<h3 id="如何集成到项目中？"><a href="#如何集成到项目中？" class="headerlink" title="如何集成到项目中？"></a>如何集成到项目中？</h3><p>现在，我们知道如何用 UniFFI-rs 生成对应平台的代码，并通过命令行可以调用执行，但是我们还不知道如何集成到具体的 Android 或者 Xcode 的项目中。在 UniFFI-rs 的帮助文档中，有 Gradle 和 XCode 的集成文档，但是读过之后，还是很难操作。</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=NGFlY2IyZjg1M2MzMjE2YzE4OGYyYmE3NTdhY2FmNzdfeUdUS2lVZUFDc0hhSE5hYnpLblQ2a0dhQnZXZWl6NVdfVG9rZW46SzlDb2JVNWFZb3hjZk14b21jM2NXcEtobkNiXzE3NDIxOTE4NTM6MTc0MjE5NTQ1M19WNA" alt="img"></p>
+<p>单来说，就是有个 Rust 的壳工程作为唯一生成二进制的 crate，其他组件如 autofill, logins, sync_manager 作为壳工程的依赖，把 udl 文件统一生成到一个路径，最终统一生成绑定文件和二进制。好处是避免了多个 rust crate 之间的调用消耗，只生成一个二进制文件，编译发布集成会更容易。</p>
+<p><strong>安卓平台</strong>：是生成一个 aar 的包，Mozilla 团队提供了一个 org.mozilla.rust-android-gradle.rust-android 的 gradle 插件，可以在 <a href="https://link.juejin.cn/?target=https://github.com/mozilla/application-services/blob/main/megazords/full/android/build.gradle">Mozilla</a> 找到具体使用。</p>
+<p><strong>苹果平台</strong>：是一个 xcframework，Mozilla 的团队提供了一个 build-xcframework.sh 的脚本，可以在 <a target="_blank" rel="noopener" href="https://github.com/mozilla/application-services/blob/main/megazords/ios-rust/build-xcframework.sh">Mozilla</a> 找到具体的使用。</p>
+<p>我们只需要适当的修改下，就可以创建出自己的跨平台的项目。</p>
+<p>以 iOS 为例，整个跨平台的开发流程如下：</p>
+<ol>
+<li>Rust 编码</li>
+<li>通过 UniFFI-rs 生成目标语言相关文件，实现 Swift 绑定</li>
+<li>编译目标平台静态库</li>
+<li>把静态库和头文件打包成 XCFramework，并依赖</li>
+<li>测试，发布</li>
+</ol>
+<p>下一期，我们将着重介绍如何在各个平台部署我们的 FFI 代码库。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/hm-web/" title="HarmonyOS - Web 运行流程原理解析">HarmonyOS - Web 运行流程原理解析</a></h2>
+                <p class="excerpt">
+                
+                
+
+Web渲染流程初始化 webview -&amp;gt; 请求页面 -&amp;gt; 下载数据 -&amp;gt; 解析HTML -&amp;gt; 请求 js&amp;#x2F;css 资源 -&amp;gt; dom 渲染 -&amp;gt; 解析 JS 执行 -&amp;gt; JS 请求数据 -&amp;gt; 解析渲染 -&amp;gt; 下载渲染图片
+
+
+初始
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-04-09T15:46:52.000Z" class="post-list__meta--date date">2024-04-09</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/WebView/" rel="tag">WebView</a>, <a class="-none-link" href="/tags/%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" rel="tag">原理解析</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+</span><a class="btn-border-small" href="/hm-web/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/hm-gesture/" title="HarmonyOS - 鸿蒙手势处理及实现原理">HarmonyOS - 鸿蒙手势处理及实现原理</a></h2>
+                <p class="excerpt">
+                
+                
+
+一、手势通用事件点击事件
+
+
+参数名
+类型
+必填
+说明
+
+
+
+event
+ClickEvent
+是
+获得ClickEvent对象。
+
+
+distanceThreshold
+number
+是
+点击事件移动阈值。当设置的值小于等于0时，会被转化为默认值。 默认值：2^31-1 说明：当手指的移动距离
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-03-05T05:37:18.000Z" class="post-list__meta--date date">2024-03-05</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" rel="tag">原理解析</a>, <a class="-none-link" href="/tags/%E6%89%8B%E5%8A%BF%E5%A4%84%E7%90%86/" rel="tag">手势处理</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+</span><a class="btn-border-small" href="/hm-gesture/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/rust-ffi-sdk-go/';
+  var disqus_title = 'Rust - 基于 FFI 的移动端跨平台 SDK 的探索和实践';
+  var disqus_url = 'http://shevakuilin.com/rust-ffi-sdk-go/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
