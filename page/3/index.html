@@ -152,6 +152,21 @@
   
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/rust-value-borrow/" title="link to post.title">Rust - 值的借用</a></h2>
+      <p class="excerpt">
+    
+      值的借用是如何工作的？当我们进行变量赋值、传参和函数返回时，如果涉及的数据结构没有实现 Copy trait，就会默认使用 Move 语义转移值的所有权，失去所有权的变量将无法继续访问原来的数据；如果数据结构实现了 Copy trait，就会使用 Copy 语义，自动把值复制一份，原有的变量还能继续访问。
+虽然，单一所有权解决了其它语言中值被任意共享带来的问题，但也引发了一些不便。我们上一讲提到：
+    &hellip;
+      </p>
+      <div class="post-list__meta"><time datetime="2023-04-19T09:29:05.000Z" class="post-list__meta--date date">2023-04-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Borrow/" rel="tag">Borrow</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>
+</span><a class="btn-border-small" href="/rust-value-borrow/">开始阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+  
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/rust-value-rule/" title="link to post.title">Rust - 值的所有权</a></h2>
       <p class="excerpt">
     
@@ -318,20 +333,6 @@ clang
       <div class="post-list__meta"><time datetime="2021-01-19T15:39:02.000Z" class="post-list__meta--date date">2021-01-19</time> &#8226; <span class="post-list__meta--tags tags">于 
   <a class="-none-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>, <a class="-none-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a>
 </span><a class="btn-border-small" href="/univalued-binarytree/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/macOS-dev-environment-config/" title="link to post.title">为一台 macOS 新设备快速配置基本开发环境的最佳实践（避坑）指南</a></h2>
-      <p class="excerpt">
-    
-      本文将提供一套最佳实践流，来帮助你告别 macOS 裸机配置开发环境时的各种坑，告别痛苦，一发入魂
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2021-01-17T09:11:29.000Z" class="post-list__meta--date date">2021-01-17</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/macOS/" rel="tag">macOS</a>, <a class="-none-link" href="/tags/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/" rel="tag">折腾日记</a>, <a class="-none-link" href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" rel="tag">环境配置</a>
-</span><a class="btn-border-small" href="/macOS-dev-environment-config/">开始阅读</a></div>
       <hr class="post-list__divider" />
     </li>
   

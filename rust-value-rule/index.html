@@ -254,19 +254,15 @@
                
             <div class="read-more-item">
                 <span class="read-more-item-dim">最近的文章</span>
-                <h2 class="post-list__post-title post-title"><a href="/rust-sturct-know/" title="Rust 工程结构初探">Rust 工程结构初探</a></h2>
+                <h2 class="post-list__post-title post-title"><a href="/rust-value-borrow/" title="Rust - 值的借用">Rust - 值的借用</a></h2>
                 <p class="excerpt">
                 
-                
-Rust 项目的依赖管理机制
-
-Rust 的依赖管理是基于项目的根 Cargo.toml 文件，而不是子目录中的 Cargo.toml 文件。如果再子目录的 Cargo.toml 文件中描述，即使同样在子目录中的.rs文件，也会出现识别不到的问题。
-我们需要明确 Rust 项目的依赖管理机制。在 
+                值的借用是如何工作的？当我们进行变量赋值、传参和函数返回时，如果涉及的数据结构没有实现 Copy trait，就会默认使用 Move 语义转移值的所有权，失去所有权的变量将无法继续访问原来的数据；如果数据结构实现了 Copy trait，就会使用 Copy 语义，自动把值复制一份，原有的变量还能继续
                 &hellip;
                 </p>
-                <div class="post-list__meta"><time datetime="2023-07-23T07:00:39.000Z" class="post-list__meta--date date">2023-07-23</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Cargo/" rel="tag">Cargo</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84/" rel="tag">工程结构</a>
-</span><a class="btn-border-small" href="/rust-sturct-know/">开始阅读</a></div>
+                <div class="post-list__meta"><time datetime="2023-04-19T09:29:05.000Z" class="post-list__meta--date date">2023-04-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Borrow/" rel="tag">Borrow</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>
+</span><a class="btn-border-small" href="/rust-value-borrow/">开始阅读</a></div>
                            
             </div>
         

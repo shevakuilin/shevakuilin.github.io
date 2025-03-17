@@ -214,6 +214,21 @@ Rust 的依赖管理是基于项目的根 Cargo.toml 文件，而不是子目录
   
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/rust-value-borrow/" title="link to post.title">Rust - 值的借用</a></h2>
+      <p class="excerpt">
+    
+      值的借用是如何工作的？当我们进行变量赋值、传参和函数返回时，如果涉及的数据结构没有实现 Copy trait，就会默认使用 Move 语义转移值的所有权，失去所有权的变量将无法继续访问原来的数据；如果数据结构实现了 Copy trait，就会使用 Copy 语义，自动把值复制一份，原有的变量还能继续访问。
+虽然，单一所有权解决了其它语言中值被任意共享带来的问题，但也引发了一些不便。我们上一讲提到：
+    &hellip;
+      </p>
+      <div class="post-list__meta"><time datetime="2023-04-19T09:29:05.000Z" class="post-list__meta--date date">2023-04-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Borrow/" rel="tag">Borrow</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>
+</span><a class="btn-border-small" href="/rust-value-borrow/">开始阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+  
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/rust-value-rule/" title="link to post.title">Rust - 值的所有权</a></h2>
       <p class="excerpt">
     

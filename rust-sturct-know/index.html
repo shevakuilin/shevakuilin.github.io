@@ -976,16 +976,15 @@ Copilot 支持许多编程语言，包括 Swift，并可以在IDE上安装相应
                
             <div class="read-more-item">
                 <span class="read-more-item-dim">更早的文章</span>
-                <h2 class="post-list__post-title post-title"><a href="/rust-value-rule/" title="Rust - 值的所有权">Rust - 值的所有权</a></h2>
+                <h2 class="post-list__post-title post-title"><a href="/rust-value-borrow/" title="Rust - 值的借用">Rust - 值的借用</a></h2>
                 <p class="excerpt">
                 
-                值的生杀大权究竟在谁手上？进入内存管理以后，我们就会一起研究 Rust 学习过程中最难啃的硬骨头：所有权和生命周期。为什么要从这个知识点开始呢？因为，所有权和生命周期是 Rust 和其它编程语言的主要区别，也是 Rust 其它知识点的基础。
-其实，所有权和生命周期之所以这么难学明白，除了其与众不同的
+                值的借用是如何工作的？当我们进行变量赋值、传参和函数返回时，如果涉及的数据结构没有实现 Copy trait，就会默认使用 Move 语义转移值的所有权，失去所有权的变量将无法继续访问原来的数据；如果数据结构实现了 Copy trait，就会使用 Copy 语义，自动把值复制一份，原有的变量还能继续
                 &hellip;
                 </p>
-                <div class="post-list__meta"><time datetime="2023-03-17T14:06:24.000Z" class="post-list__meta--date date">2023-03-17</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>, <a class="-none-link" href="/tags/%E6%89%80%E6%9C%89%E6%9D%83/" rel="tag">所有权</a>
-</span><a class="btn-border-small" href="/rust-value-rule/">开始阅读</a></div>
+                <div class="post-list__meta"><time datetime="2023-04-19T09:29:05.000Z" class="post-list__meta--date date">2023-04-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Borrow/" rel="tag">Borrow</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>
+</span><a class="btn-border-small" href="/rust-value-borrow/">开始阅读</a></div>
                        
             </div>
         
