@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>Rust 工程结构初探 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Rust 工程结构初探 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Rust 工程结构初探 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/rust-sturct-know/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-04-23T07:00:39.000Z" class="post-list__meta--date date">2024-04-23</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Cargo/" rel="tag">Cargo</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84/" rel="tag">工程结构</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">Rust 工程结构初探</h1>
+  </header>
+
+  <section class="post">
+    <ol>
+<li><h2 id="Rust-项目的依赖管理机制"><a href="#Rust-项目的依赖管理机制" class="headerlink" title="Rust 项目的依赖管理机制"></a>Rust 项目的依赖管理机制</h2></li>
+</ol>
+<p>Rust 的依赖管理是基于项目的根 <code>Cargo.toml</code> 文件，而不是子目录中的 <code>Cargo.toml</code> 文件。如果再子目录的 <code>Cargo.toml</code> 文件中描述，即使同样在子目录中的.rs文件，也会出现识别不到的问题。</p>
+<p>我们需要明确 Rust 项目的依赖管理机制。在 Rust 中，依赖管理是基于项目的根 <code>Cargo.toml</code> 文件进行的，而不是子目录中的 <code>Cargo.toml</code> 文件。这意味着子目录中的 <code>Cargo.toml</code> 文件不会被 Cargo 自动识别和使用。不过，你可以通过一些方法来组织和管理子目录中的依赖和模块。</p>
+<ol>
+<li><h3 id="为什么子目录中的-Cargo-toml-文件没有用？"><a href="#为什么子目录中的-Cargo-toml-文件没有用？" class="headerlink" title="为什么子目录中的 Cargo.toml 文件没有用？"></a>为什么子目录中的 <code>Cargo.toml</code> 文件没有用？</h3></li>
+<li><p><strong>依赖管理</strong>： </p>
+<ol>
+<li><strong>根</strong> **<code>Cargo.toml</code>**：Cargo 会解析根 <code>Cargo.toml</code> 文件中的依赖，并将其下载和编译。</li>
+<li><strong>子目录</strong> **<code>Cargo.toml</code>**：Cargo 不会自动解析子目录中的 <code>Cargo.toml</code> 文件，因此这些依赖不会被识别和使用。</li>
+</ol>
+</li>
+<li><p><strong>模块系统</strong>： </p>
+<ol>
+<li>Rust 的模块系统是基于文件和目录结构的，但依赖管理是集中式的，依赖项需要在根 <code>Cargo.toml</code> 中声明。</li>
+</ol>
+</li>
+<li><h3 id="如何在子目录中组织依赖和模块"><a href="#如何在子目录中组织依赖和模块" class="headerlink" title="如何在子目录中组织依赖和模块"></a>如何在子目录中组织依赖和模块</h3></li>
+</ol>
+<p>虽然子目录中的 <code>Cargo.toml</code> 文件不会被自动使用，但你可以通过以下方法来组织和管理子目录中的依赖和模块：</p>
+<ol>
+<li>在根 <code>Cargo.toml</code> 中声明所有依赖</li>
+</ol>
+<p>将所有依赖项添加到项目的根 <code>Cargo.toml</code> 文件中。这样，Cargo 会统一管理这些依赖。</p>
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件路径</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iris_net/Cargo.toml</span><br></pre></td></tr></table></figure>
+
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;iris_net&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">edition</span> = <span class="string">&quot;2021&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="comment"># 网络库</span></span><br><span class="line"><span class="attr">reqwest</span> = &#123; version = <span class="string">&quot;0.12&quot;</span>, features = [<span class="string">&quot;json&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 网络缓存库，实现接口缓存</span></span><br><span class="line"><span class="attr">reqwest-cache</span> = &#123; version = <span class="string">&quot;0.1.3&quot;</span> &#125;</span><br><span class="line"><span class="comment"># 异步运行时库，提供了事件循环、任务调度、I/O 操作（如网络和文件操作）等功能</span></span><br><span class="line"><span class="attr">tokio</span> = &#123; version = <span class="string">&quot;1&quot;</span>, features = [<span class="string">&quot;full&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 序列化和反序列化库</span></span><br><span class="line"><span class="attr">serde</span> = &#123; version = <span class="string">&quot;1.0.217&quot;</span>, features = [<span class="string">&quot;derive&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 懒加载库，用于在编译时声明静态变量</span></span><br><span class="line"><span class="attr">lazy_static</span> = <span class="string">&quot;1.5.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在子目录中组织模块</li>
+</ol>
+<p>在子目录中使用 <code>mod.rs</code> 文件来声明模块，并在根 <code>Cargo.toml</code> 中声明子目录为库或二进制文件。</p>
+<p><strong>项目结构</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iris_net/</span><br><span class="line">├── Cargo.toml</span><br><span class="line">├── src/</span><br><span class="line">│   ├── main.rs</span><br><span class="line">│   └── net_core/</span><br><span class="line">│       ├── mod.rs</span><br><span class="line">│       ├── iris_environment.rs</span><br><span class="line">│       └── iris_target.rs</span><br></pre></td></tr></table></figure>
+
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;iris_net&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">edition</span> = <span class="string">&quot;2021&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="comment"># 网络库</span></span><br><span class="line"><span class="attr">reqwest</span> = &#123; version = <span class="string">&quot;0.12&quot;</span>, features = [<span class="string">&quot;json&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 网络缓存库，实现接口缓存</span></span><br><span class="line"><span class="attr">reqwest-cache</span> = &#123; version = <span class="string">&quot;0.1.3&quot;</span> &#125;</span><br><span class="line"><span class="comment"># 异步运行时库，提供了事件循环、任务调度、I/O 操作（如网络和文件操作）等功能</span></span><br><span class="line"><span class="attr">tokio</span> = &#123; version = <span class="string">&quot;1&quot;</span>, features = [<span class="string">&quot;full&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 序列化和反序列化库</span></span><br><span class="line"><span class="attr">serde</span> = &#123; version = <span class="string">&quot;1.0.217&quot;</span>, features = [<span class="string">&quot;derive&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 懒加载库，用于在编译时声明静态变量</span></span><br><span class="line"><span class="attr">lazy_static</span> = <span class="string">&quot;1.5.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/main.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/main.rs</span></span><br><span class="line"><span class="keyword">mod</span> net_core;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="comment">// 设置环境变量</span></span><br><span class="line">    net_core::iris_environment::<span class="title function_ invoke__">set_environment</span>(<span class="string">&quot;release&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">target</span> = net_core::iris_target::MyTarget::<span class="title function_ invoke__">new</span>(<span class="string">&quot;/api/data&quot;</span>.<span class="title function_ invoke__">to_string</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Base URL: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">base_url</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Path: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">path</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/net_core/mod.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/net_core/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_environment;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_target;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/net_core/iris_environment.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/net_core/iris_environment.rs</span></span><br><span class="line"><span class="keyword">use</span> lazy_static::lazy_static;</span><br><span class="line"><span class="keyword">use</span> std::sync::Mutex;</span><br><span class="line">lazy_static! &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">ref</span> ENVIRONMENT: Mutex&lt;<span class="type">String</span>&gt; = Mutex::<span class="title function_ invoke__">new</span>(<span class="string">&quot;test&quot;</span>.<span class="title function_ invoke__">to_string</span>()); <span class="comment">// 默认为测试环境</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 设置环境变量</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">set_environment</span>(env: &amp;<span class="type">str</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">environment</span> = ENVIRONMENT.<span class="title function_ invoke__">lock</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    *environment = env.<span class="title function_ invoke__">to_string</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 获取环境变量</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">get_base_url_from_env</span>() <span class="punctuation">-&gt;</span> &amp;<span class="symbol">&#x27;static</span> <span class="type">str</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">environment</span> = ENVIRONMENT.<span class="title function_ invoke__">lock</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">match</span> environment.<span class="title function_ invoke__">as_str</span>() &#123;</span><br><span class="line">        <span class="string">&quot;release&quot;</span> =&gt; <span class="string">&quot;&lt;https://release.example.com&gt;&quot;</span>,</span><br><span class="line">        <span class="string">&quot;stage&quot;</span> =&gt; <span class="string">&quot;&lt;https://stage.example.com&gt;&quot;</span>,</span><br><span class="line">        _ =&gt; <span class="string">&quot;&lt;https://test.example.com&gt;&quot;</span>, <span class="comment">// 默认为测试环境</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/net_core/iris_target.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/net_core/iris_target.rs</span></span><br><span class="line"><span class="keyword">use</span> std::fmt::<span class="built_in">Debug</span>;</span><br><span class="line"><span class="keyword">use</span> reqwest::header::HeaderMap;</span><br><span class="line"><span class="keyword">use</span> std::time::Duration;</span><br><span class="line"><span class="keyword">use</span> std::collections::HashMap;</span><br><span class="line"><span class="keyword">use</span> reqwest::Method;</span><br><span class="line"><span class="keyword">use</span> crate::net_core::iris_environment::&#123;get_base_url_from_env, set_environment&#125;;</span><br><span class="line"><span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - Note: 所有具体的请求目标都将实现这个 trait。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">IrisTarget</span>: <span class="built_in">Debug</span> &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span>;</span><br><span class="line">    <span class="comment">/// 请求目标基础 URL</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">base_url</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">get_base_url_from_env</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标路径</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span>;</span><br><span class="line">    <span class="comment">/// 请求目标方法</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">method</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> Method &#123;</span><br><span class="line">        Method::GET <span class="comment">// 默认为 GET 请求</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标参数（用于 GET 请求的查询参数）</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">parameters</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HashMap&lt;<span class="type">String</span>, <span class="type">String</span>&gt;&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标主体（用于 POST、PUT、PATCH 等请求的方法）</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">body</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标请求头</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">headers</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HeaderMap&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标缓存过期时间</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">cache_expiration</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;Duration&gt; &#123;</span><br><span class="line">        <span class="title function_ invoke__">Some</span>(Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">7</span>)) <span class="comment">// 默认为 7 天</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 示例实现</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    path: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">new</span>(path: <span class="type">String</span>) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        MyTarget &#123; path &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">IrisTarget</span> <span class="keyword">for</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span> = <span class="type">String</span>; <span class="comment">// 替换为实际响应类型</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.path</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4></li>
+</ol>
+<p>确保你已经正确添加了所有依赖，并且在 <code>iris_environment.rs</code> 和 <code>iris_target.rs</code> 文件中正确引入了 <code>lazy_static</code>。然后运行你的项目：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cargo clean</span><br><span class="line">cargo build</span><br><span class="line">cargo run</span><br></pre></td></tr></table></figure>
+
+<p>如果一切配置正确，你应该能够看到输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Base URL: &lt;https://release.example.com&gt;</span><br><span class="line">Path: /api/data</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4></li>
+</ol>
+<ul>
+<li><strong>依赖声明位置</strong>：所有依赖项应该在项目的根 <code>Cargo.toml</code> 文件中声明。</li>
+<li><strong>模块路径</strong>：使用 <code>mod.rs</code> 文件来声明子模块，并在需要的地方正确引入模块。</li>
+<li><strong>重新构建项目</strong>：运行 <code>cargo clean</code> 和 <code>cargo build</code> 以确保所有依赖都被正确下载和编译。</li>
+</ul>
+<p>通过这些步骤，你应该能够解决 <code>unresolved import</code> 和 <code>use of undeclared crate or module</code> 的错误，并成功使用 <code>lazy_static</code> 来管理环境变量。</p>
+<ol>
+<li><h3 id="我是否可以理解为，子目录下的Cargo-toml完全是多余无用的？"><a href="#我是否可以理解为，子目录下的Cargo-toml完全是多余无用的？" class="headerlink" title="我是否可以理解为，子目录下的Cargo.toml完全是多余无用的？"></a>我是否可以理解为，子目录下的Cargo.toml完全是多余无用的？</h3></li>
+</ol>
+<p>这个理解部分是正确的，但有一些细微的差别。让我们详细解释一下子目录中的 <code>Cargo.toml</code> 文件的作用和限制。</p>
+<ol>
+<li><h4 id="子目录中的-Cargo-toml-文件的作用"><a href="#子目录中的-Cargo-toml-文件的作用" class="headerlink" title="子目录中的 Cargo.toml 文件的作用"></a>子目录中的 <code>Cargo.toml</code> 文件的作用</h4></li>
+<li><p><strong>独立的库或二进制项目</strong>： </p>
+<ol>
+<li>如果你希望 <code>net_core</code> 目录成为一个独立的库或二进制项目，你可以为其创建一个独立的 <code>Cargo.toml</code> 文件。这样，<code>net_core</code> 可以作为一个单独的 crate 进行开发、测试和发布。</li>
+</ol>
+</li>
+<li><p><strong>依赖管理</strong>： </p>
+<ol>
+<li>在独立的 <code>Cargo.toml</code> 文件中，你可以声明该 crate 所需的依赖。这些依赖仅适用于该 crate，不会影响根项目或其他子 crate。</li>
+</ol>
+</li>
+<li><p><strong>工作空间（Workspace）</strong>： </p>
+<ol>
+<li>如果你使用 Cargo 工作空间（workspace），可以在根 <code>Cargo.toml</code> 中声明多个成员（members），每个成员可以有自己的 <code>Cargo.toml</code> 文件。这样，每个成员都可以有自己的依赖和配置。</li>
+</ol>
+</li>
+<li><h4 id="子目录中的-Cargo-toml-文件的限制"><a href="#子目录中的-Cargo-toml-文件的限制" class="headerlink" title="子目录中的 Cargo.toml 文件的限制"></a>子目录中的 <code>Cargo.toml</code> 文件的限制</h4></li>
+<li><p><strong>依赖解析</strong>： </p>
+<ol>
+<li>如果 <code>net_core</code> 目录不是一个独立的 crate，而是根项目的一部分，那么其 <code>Cargo.toml</code> 文件中的依赖不会被根项目自动识别和使用。根项目只会解析根 <code>Cargo.toml</code> 文件中的依赖。</li>
+</ol>
+</li>
+<li><p><strong>模块系统</strong>： </p>
+<ol>
+<li>Rust 的模块系统是基于文件和目录结构的，但依赖管理是集中式的。依赖项需要在根 <code>Cargo.toml</code> 中声明，以便在整个项目中统一管理。</li>
+</ol>
+</li>
+<li><h4 id="如何正确组织项目"><a href="#如何正确组织项目" class="headerlink" title="如何正确组织项目"></a>如何正确组织项目</h4></li>
+<li><p>根 <code>Cargo.toml</code> 中声明所有依赖</p>
+</li>
+</ol>
+<p>如果你希望 <code>net_core</code> 目录作为根项目的一部分，而不是独立的 crate，应该将所有依赖项添加到根 <code>Cargo.toml</code> 文件中。</p>
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件路径</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iris_net/Cargo.toml</span><br></pre></td></tr></table></figure>
+
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;iris_net&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">edition</span> = <span class="string">&quot;2021&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="comment"># 网络库</span></span><br><span class="line"><span class="attr">reqwest</span> = &#123; version = <span class="string">&quot;0.12&quot;</span>, features = [<span class="string">&quot;json&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 网络缓存库，实现接口缓存</span></span><br><span class="line"><span class="attr">reqwest-cache</span> = &#123; version = <span class="string">&quot;0.1.3&quot;</span> &#125;</span><br><span class="line"><span class="comment"># 异步运行时库，提供了事件循环、任务调度、I/O 操作（如网络和文件操作）等功能</span></span><br><span class="line"><span class="attr">tokio</span> = &#123; version = <span class="string">&quot;1&quot;</span>, features = [<span class="string">&quot;full&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 序列化和反序列化库</span></span><br><span class="line"><span class="attr">serde</span> = &#123; version = <span class="string">&quot;1.0.217&quot;</span>, features = [<span class="string">&quot;derive&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 懒加载库，用于在编译时声明静态变量</span></span><br><span class="line"><span class="attr">lazy_static</span> = <span class="string">&quot;1.5.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在子目录中组织模块</li>
+</ol>
+<p>在子目录中使用 <code>mod.rs</code> 文件来声明模块，并在根 <code>Cargo.toml</code> 中声明子目录为库或二进制文件。</p>
+<p><strong>项目结构</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iris_net/</span><br><span class="line">├── Cargo.toml</span><br><span class="line">├── src/</span><br><span class="line">│   ├── main.rs</span><br><span class="line">│   └── net_core/</span><br><span class="line">│       ├── mod.rs</span><br><span class="line">│       ├── iris_environment.rs</span><br><span class="line">│       └── iris_target.rs</span><br></pre></td></tr></table></figure>
+
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;iris_net&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">edition</span> = <span class="string">&quot;2021&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="comment"># 网络库</span></span><br><span class="line"><span class="attr">reqwest</span> = &#123; version = <span class="string">&quot;0.12&quot;</span>, features = [<span class="string">&quot;json&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 网络缓存库，实现接口缓存</span></span><br><span class="line"><span class="attr">reqwest-cache</span> = &#123; version = <span class="string">&quot;0.1.3&quot;</span> &#125;</span><br><span class="line"><span class="comment"># 异步运行时库，提供了事件循环、任务调度、I/O 操作（如网络和文件操作）等功能</span></span><br><span class="line"><span class="attr">tokio</span> = &#123; version = <span class="string">&quot;1&quot;</span>, features = [<span class="string">&quot;full&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 序列化和反序列化库</span></span><br><span class="line"><span class="attr">serde</span> = &#123; version = <span class="string">&quot;1.0.217&quot;</span>, features = [<span class="string">&quot;derive&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 懒加载库，用于在编译时声明静态变量</span></span><br><span class="line"><span class="attr">lazy_static</span> = <span class="string">&quot;1.5.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/main.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/main.rs</span></span><br><span class="line"><span class="keyword">mod</span> net_core;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="comment">// 设置环境变量</span></span><br><span class="line">    net_core::iris_environment::<span class="title function_ invoke__">set_environment</span>(<span class="string">&quot;release&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">target</span> = net_core::iris_target::MyTarget::<span class="title function_ invoke__">new</span>(<span class="string">&quot;/api/data&quot;</span>.<span class="title function_ invoke__">to_string</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Base URL: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">base_url</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Path: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">path</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/net_core/mod.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/net_core/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_environment;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_target;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/net_core/iris_environment.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/net_core/iris_environment.rs</span></span><br><span class="line"><span class="keyword">use</span> lazy_static::lazy_static;</span><br><span class="line"><span class="keyword">use</span> std::sync::Mutex;</span><br><span class="line">lazy_static! &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">ref</span> ENVIRONMENT: Mutex&lt;<span class="type">String</span>&gt; = Mutex::<span class="title function_ invoke__">new</span>(<span class="string">&quot;test&quot;</span>.<span class="title function_ invoke__">to_string</span>()); <span class="comment">// 默认为测试环境</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 设置环境变量</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">set_environment</span>(env: &amp;<span class="type">str</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">environment</span> = ENVIRONMENT.<span class="title function_ invoke__">lock</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    *environment = env.<span class="title function_ invoke__">to_string</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 获取环境变量</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">get_base_url_from_env</span>() <span class="punctuation">-&gt;</span> &amp;<span class="symbol">&#x27;static</span> <span class="type">str</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">environment</span> = ENVIRONMENT.<span class="title function_ invoke__">lock</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">match</span> environment.<span class="title function_ invoke__">as_str</span>() &#123;</span><br><span class="line">        <span class="string">&quot;release&quot;</span> =&gt; <span class="string">&quot;&lt;https://release.example.com&gt;&quot;</span>,</span><br><span class="line">        <span class="string">&quot;stage&quot;</span> =&gt; <span class="string">&quot;&lt;https://stage.example.com&gt;&quot;</span>,</span><br><span class="line">        _ =&gt; <span class="string">&quot;&lt;https://test.example.com&gt;&quot;</span>, <span class="comment">// 默认为测试环境</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/net_core/iris_target.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/net_core/iris_target.rs</span></span><br><span class="line"><span class="keyword">use</span> std::fmt::<span class="built_in">Debug</span>;</span><br><span class="line"><span class="keyword">use</span> reqwest::header::HeaderMap;</span><br><span class="line"><span class="keyword">use</span> std::time::Duration;</span><br><span class="line"><span class="keyword">use</span> std::collections::HashMap;</span><br><span class="line"><span class="keyword">use</span> reqwest::Method;</span><br><span class="line"><span class="keyword">use</span> crate::net_core::iris_environment::&#123;get_base_url_from_env, set_environment&#125;;</span><br><span class="line"><span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - Note: 所有具体的请求目标都将实现这个 trait。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">IrisTarget</span>: <span class="built_in">Debug</span> &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span>;</span><br><span class="line">    <span class="comment">/// 请求目标基础 URL</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">base_url</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">get_base_url_from_env</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标路径</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span>;</span><br><span class="line">    <span class="comment">/// 请求目标方法</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">method</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> Method &#123;</span><br><span class="line">        Method::GET <span class="comment">// 默认为 GET 请求</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标参数（用于 GET 请求的查询参数）</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">parameters</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HashMap&lt;<span class="type">String</span>, <span class="type">String</span>&gt;&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标主体（用于 POST、PUT、PATCH 等请求的方法）</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">body</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标请求头</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">headers</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HeaderMap&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标缓存过期时间</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">cache_expiration</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;Duration&gt; &#123;</span><br><span class="line">        <span class="title function_ invoke__">Some</span>(Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">7</span>)) <span class="comment">// 默认为 7 天</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 示例实现</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    path: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">new</span>(path: <span class="type">String</span>) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        MyTarget &#123; path &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">IrisTarget</span> <span class="keyword">for</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span> = <span class="type">String</span>; <span class="comment">// 替换为实际响应类型</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.path</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="使用子目录作为独立的-crate"><a href="#使用子目录作为独立的-crate" class="headerlink" title="使用子目录作为独立的 crate"></a>使用子目录作为独立的 crate</h4></li>
+</ol>
+<p>如果你希望 <code>net_core</code> 目录成为一个独立的 crate，可以将其作为工作空间的一部分。以下是具体步骤：</p>
+<ol>
+<li>创建工作空间</li>
+</ol>
+<p>在项目根目录下创建一个 <code>Cargo.toml</code> 文件来定义工作空间。</p>
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件路径</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iris_net/Cargo.toml</span><br></pre></td></tr></table></figure>
+
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[workspace]</span></span><br><span class="line"><span class="attr">members</span> = [</span><br><span class="line">    <span class="string">&quot;net_core&quot;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>创建 <code>net_core</code> 的 <code>Cargo.toml</code></li>
+</ol>
+<p>在 <code>net_core</code> 目录下创建一个 <code>Cargo.toml</code> 文件来声明 <code>net_core</code> crate 的依赖。</p>
+<p><strong><code>iris_net/net_core/Cargo.toml</code></strong> <strong>文件路径</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iris_net/net_core/Cargo.toml</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/net_core/Cargo.toml</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;net_core&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">edition</span> = <span class="string">&quot;2021&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="comment"># 网络库</span></span><br><span class="line"><span class="attr">reqwest</span> = &#123; version = <span class="string">&quot;0.12&quot;</span>, features = [<span class="string">&quot;json&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 网络缓存库，实现接口缓存</span></span><br><span class="line"><span class="attr">reqwest-cache</span> = &#123; version = <span class="string">&quot;0.1.3&quot;</span> &#125;</span><br><span class="line"><span class="comment"># 异步运行时库，提供了事件循环、任务调度、I/O 操作（如网络和文件操作）等功能</span></span><br><span class="line"><span class="attr">tokio</span> = &#123; version = <span class="string">&quot;1&quot;</span>, features = [<span class="string">&quot;full&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 序列化和反序列化库</span></span><br><span class="line"><span class="attr">serde</span> = &#123; version = <span class="string">&quot;1.0.217&quot;</span>, features = [<span class="string">&quot;derive&quot;</span>] &#125;</span><br><span class="line"><span class="comment"># 懒加载库，用于在编译时声明静态变量</span></span><br><span class="line"><span class="attr">lazy_static</span> = <span class="string">&quot;1.5.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>组织模块</li>
+</ol>
+<p>在 <code>net_core</code> 目录中使用 <code>mod.rs</code> 文件来声明模块。</p>
+<p><strong>项目结构</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iris_net/</span><br><span class="line">├── Cargo.toml</span><br><span class="line">└── net_core/</span><br><span class="line">    ├── Cargo.toml</span><br><span class="line">    ├── src/</span><br><span class="line">    │   ├── lib.rs</span><br><span class="line">    │   ├── iris_environment.rs</span><br><span class="line">    │   └── iris_target.rs</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/net_core/src/lib.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_environment;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_target;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/net_core/src/iris_environment.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_environment.rs</span></span><br><span class="line"><span class="keyword">use</span> lazy_static::lazy_static;</span><br><span class="line"><span class="keyword">use</span> std::sync::Mutex;</span><br><span class="line">lazy_static! &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">ref</span> ENVIRONMENT: Mutex&lt;<span class="type">String</span>&gt; = Mutex::<span class="title function_ invoke__">new</span>(<span class="string">&quot;test&quot;</span>.<span class="title function_ invoke__">to_string</span>()); <span class="comment">// 默认为测试环境</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 设置环境变量</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">set_environment</span>(env: &amp;<span class="type">str</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">environment</span> = ENVIRONMENT.<span class="title function_ invoke__">lock</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    *environment = env.<span class="title function_ invoke__">to_string</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 获取环境变量</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">get_base_url_from_env</span>() <span class="punctuation">-&gt;</span> &amp;<span class="symbol">&#x27;static</span> <span class="type">str</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">environment</span> = ENVIRONMENT.<span class="title function_ invoke__">lock</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">match</span> environment.<span class="title function_ invoke__">as_str</span>() &#123;</span><br><span class="line">        <span class="string">&quot;release&quot;</span> =&gt; <span class="string">&quot;&lt;https://release.example.com&gt;&quot;</span>,</span><br><span class="line">        <span class="string">&quot;stage&quot;</span> =&gt; <span class="string">&quot;&lt;https://stage.example.com&gt;&quot;</span>,</span><br><span class="line">        _ =&gt; <span class="string">&quot;&lt;https://test.example.com&gt;&quot;</span>, <span class="comment">// 默认为测试环境</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/net_core/src/iris_target.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_target.rs</span></span><br><span class="line"><span class="keyword">use</span> std::fmt::<span class="built_in">Debug</span>;</span><br><span class="line"><span class="keyword">use</span> reqwest::header::HeaderMap;</span><br><span class="line"><span class="keyword">use</span> std::time::Duration;</span><br><span class="line"><span class="keyword">use</span> std::collections::HashMap;</span><br><span class="line"><span class="keyword">use</span> reqwest::Method;</span><br><span class="line"><span class="keyword">use</span> crate::iris_environment::&#123;get_base_url_from_env, set_environment&#125;;</span><br><span class="line"><span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - Note: 所有具体的请求目标都将实现这个 trait。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">IrisTarget</span>: <span class="built_in">Debug</span> &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span>;</span><br><span class="line">    <span class="comment">/// 请求目标基础 URL</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">base_url</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">get_base_url_from_env</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标路径</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span>;</span><br><span class="line">    <span class="comment">/// 请求目标方法</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">method</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> Method &#123;</span><br><span class="line">        Method::GET <span class="comment">// 默认为 GET 请求</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标参数（用于 GET 请求的查询参数）</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">parameters</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HashMap&lt;<span class="type">String</span>, <span class="type">String</span>&gt;&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标主体（用于 POST、PUT、PATCH 等请求的方法）</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">body</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标请求头</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">headers</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HeaderMap&gt; &#123;</span><br><span class="line">        <span class="literal">None</span> <span class="comment">// 默认为空</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 请求目标缓存过期时间</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">cache_expiration</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;Duration&gt; &#123;</span><br><span class="line">        <span class="title function_ invoke__">Some</span>(Duration::<span class="title function_ invoke__">from_secs</span>(<span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">7</span>)) <span class="comment">// 默认为 7 天</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 示例实现</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    path: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">new</span>(path: <span class="type">String</span>) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        MyTarget &#123; path &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">IrisTarget</span> <span class="keyword">for</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Response</span> = <span class="type">String</span>; <span class="comment">// 替换为实际响应类型</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.path</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在根项目中使用 <code>net_core</code> crate</li>
+</ol>
+<p>在根项目的 <code>Cargo.toml</code> 中添加 <code>net_core</code> 作为依赖。</p>
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件路径</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iris_net/Cargo.toml</span><br></pre></td></tr></table></figure>
+
+<p><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[workspace]</span></span><br><span class="line"><span class="attr">members</span> = [</span><br><span class="line">    <span class="string">&quot;net_core&quot;</span>,</span><br><span class="line">]</span><br><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;iris_net&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">edition</span> = <span class="string">&quot;2021&quot;</span></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="attr">net_core</span> = &#123; path = <span class="string">&quot;net_core&quot;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>iris_net/src/main.rs</code></strong> <strong>文件内容</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/main.rs</span></span><br><span class="line"><span class="keyword">use</span> net_core::&#123;set_environment, MyTarget, IrisTarget&#125;;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="comment">// 设置环境变量</span></span><br><span class="line">    <span class="title function_ invoke__">set_environment</span>(<span class="string">&quot;release&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">target</span> = MyTarget::<span class="title function_ invoke__">new</span>(<span class="string">&quot;/api/data&quot;</span>.<span class="title function_ invoke__">to_string</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Base URL: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">base_url</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Path: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">path</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4></li>
+</ol>
+<ul>
+<li><strong>根</strong> <strong><code>Cargo.toml</code></strong> <strong>中声明所有依赖</strong>： <ul>
+<li>如果 <code>net_core</code> 目录作为根项目的一部分，所有依赖项应该在根 <code>Cargo.toml</code> 文件中声明。</li>
+</ul>
+</li>
+<li><strong>子目录中的</strong> <strong><code>Cargo.toml</code></strong> <strong>文件</strong>： <ul>
+<li>如果 <code>net_core</code> 目录是一个独立的 crate，可以在其 <code>Cargo.toml</code> 文件中声明依赖。</li>
+<li>如果 <code>net_core</code> 目录作为根项目的一部分，子目录中的 <code>Cargo.toml</code> 文件不会被自动识别和使用。</li>
+</ul>
+</li>
+<li><strong>工作空间</strong>： <ul>
+<li>可以通过 Cargo 工作空间将 <code>net_core</code> 目录作为一个独立的 crate 进行管理。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><h4 id="示例项目结构"><a href="#示例项目结构" class="headerlink" title="示例项目结构"></a>示例项目结构</h4></li>
+<li><h5 id="根项目结构（作为独立-crate）"><a href="#根项目结构（作为独立-crate）" class="headerlink" title="根项目结构（作为独立 crate）"></a>根项目结构（作为独立 crate）</h5></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iris_net/</span><br><span class="line">├── Cargo.toml</span><br><span class="line">└── src/</span><br><span class="line">    ├── main.rs</span><br><span class="line">    └── net_core/</span><br><span class="line">        ├── mod.rs</span><br><span class="line">        ├── iris_environment.rs</span><br><span class="line">        └── iris_target.rs</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h5 id="根项目结构（作为工作空间）"><a href="#根项目结构（作为工作空间）" class="headerlink" title="根项目结构（作为工作空间）"></a>根项目结构（作为工作空间）</h5></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iris_net/</span><br><span class="line">├── Cargo.toml</span><br><span class="line">└── net_core/</span><br><span class="line">    ├── Cargo.toml</span><br><span class="line">    └── src/</span><br><span class="line">        ├── lib.rs</span><br><span class="line">        ├── iris_environment.rs</span><br><span class="line">        └── iris_target.rs</span><br></pre></td></tr></table></figure>
+
+<p>通过这些步骤，你可以正确组织和管理项目的依赖和模块，确保 <code>lazy_static</code> 和其他依赖项能够被正确识别和使用。</p>
+<ol>
+<li><h2 id="模块-mod-和库-lib"><a href="#模块-mod-和库-lib" class="headerlink" title="模块(mod)和库(lib)"></a>模块(mod)和库(lib)</h2></li>
+<li><h3 id="Rust-中模块和库的关系"><a href="#Rust-中模块和库的关系" class="headerlink" title="Rust 中模块和库的关系"></a>Rust 中模块和库的关系</h3></li>
+</ol>
+<p>在 Rust 中，<strong>模块</strong> 和 <strong>库</strong> 是两个不同的概念，但它们之间有紧密的联系。理解它们之间的关系有助于更好地组织和管理代码。</p>
+<ol>
+<li><h4 id="模块-Module"><a href="#模块-Module" class="headerlink" title="模块 (Module)"></a>模块 (Module)</h4></li>
+</ol>
+<ul>
+<li><strong>定义</strong>：模块是 Rust 中用于组织代码的基本单元。模块可以包含函数、结构体、枚举、常量等，并且可以通过 <code>pub</code> 关键字控制其可见性。</li>
+<li><strong>作用</strong>：模块用于将代码逻辑分隔成多个部分，提高代码的可读性和维护性。模块还可以通过嵌套形成层次结构。</li>
+<li><strong>声明方式</strong>： <ul>
+<li>在文件中使用 <code>mod</code> 关键字声明模块。</li>
+<li>模块可以是单个 <code>.rs</code> 文件，也可以是一个包含 <code>mod.rs</code> 的目录。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="库-Library"><a href="#库-Library" class="headerlink" title="库 (Library)"></a>库 (Library)</h4></li>
+</ol>
+<ul>
+<li><strong>定义</strong>：库是编译后生成的二进制文件（如 <code>.rlib</code> 或 <code>.so</code>），可以在其他项目或程序中引用和使用。库通常提供一组功能，供外部代码调用。</li>
+<li><strong>作用</strong>：库用于封装和复用代码，使得不同项目可以共享相同的代码逻辑。Rust 项目可以通过 <code>Cargo.toml</code> 文件指定依赖库。</li>
+<li><strong>类型</strong>： <ul>
+<li>**库包 (Library crate)**：生成静态库或动态库，供其他项目使用。</li>
+<li>**二进制包 (Binary crate)**：生成可执行文件，通常是应用程序的入口点。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><h4 id="模块与库的关系"><a href="#模块与库的关系" class="headerlink" title="模块与库的关系"></a>模块与库的关系</h4></li>
+</ol>
+<ul>
+<li><strong>库由模块组成</strong>：一个库是由多个模块组成的。库中的所有功能都是通过模块来实现和组织的。库的根模块通常是 <code>lib.rs</code> 或 <code>main.rs</code>。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs (库的根模块)</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_net;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>模块可以跨库重用</strong>：模块不仅可以存在于同一个库内，还可以被其他库或二进制包引用。通过 <code>Cargo.toml</code> 文件中的依赖项声明，可以在不同项目中重用模块。</li>
+</ul>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Cargo.toml</span></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="attr">some_library</span> = <span class="string">&quot;0.1.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>库的可见性控制</strong>：库中哪些模块和功能对外部可用，取决于 <code>pub</code> 关键字的使用。只有标记为 <code>pub</code> 的模块、函数、结构体等才能被外部代码访问。</li>
+</ul>
+<ol>
+<li><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4></li>
+</ol>
+<p>假设你有一个名为 <code>iris_net</code> 的库，它包含多个模块：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs (库的根模块)</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_net;</span><br><span class="line"><span class="comment">// src/iris_net/mod.rs (iris_net 模块)</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget;</span><br></pre></td></tr></table></figure>
+
+<p>文件结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">src/</span><br><span class="line">├── lib.rs</span><br><span class="line">└── iris_net/</span><br><span class="line">    ├── mod.rs</span><br><span class="line">    ├── inmethod.rs</span><br><span class="line">    └── intarget.rs</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中：</p>
+<ul>
+<li><code>lib.rs</code> 是库的根模块，它声明了 <code>iris_net</code> 模块。</li>
+<li><code>iris_net</code> 模块进一步包含了 <code>inmethod</code> 和 <code>intarget</code> 子模块。</li>
+</ul>
+<ol>
+<li><h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4></li>
+</ol>
+<ul>
+<li><strong>模块</strong> 是 Rust 中用于组织代码的基本单元，提供了代码的分隔和可见性控制。</li>
+<li><strong>库</strong> 是由多个模块组成的编译产物，可以在其他项目中引用和使用。</li>
+<li><strong>模块与库的关系</strong> 是：库由模块组成，模块可以跨库重用，库的可见性由 <code>pub</code> 关键字控制。</li>
+</ul>
+<p>通过合理使用模块和库，你可以构建出结构清晰、易于维护且高度复用的 Rust 项目。</p>
+<ol>
+<li><h3 id="Rust-中库的命名规则"><a href="#Rust-中库的命名规则" class="headerlink" title="Rust 中库的命名规则"></a>Rust 中库的命名规则</h3></li>
+</ol>
+<p>在 Rust 中，库的命名规则主要遵循以下几个方面，以确保代码的一致性和可读性。这些规则不仅适用于库本身，还适用于库中的模块、函数、结构体等。</p>
+<ol>
+<li><h4 id="库名命名规范"><a href="#库名命名规范" class="headerlink" title="库名命名规范"></a>库名命名规范</h4></li>
+</ol>
+<ul>
+<li>**蛇形命名法 (snake_case)**：库名应使用小写字母，并用下划线分隔单词。例如，<code>iris_net</code> 是符合规范的，而 <code>IrisNet</code> 或 <code>irisNet</code> 则不符合。</li>
+</ul>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Cargo.toml</span></span><br><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;iris_net&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>简洁明了</strong>：库名应尽量简洁且具有描述性，避免过于冗长或模糊不清的名字。</li>
+</ul>
+<ol>
+<li><h4 id="库包与二进制包的区别"><a href="#库包与二进制包的区别" class="headerlink" title="库包与二进制包的区别"></a>库包与二进制包的区别</h4></li>
+</ol>
+<ul>
+<li>**库包 (Library crate)**：通常用于提供可重用的功能，供其他项目依赖。库包的根文件通常是 <code>lib.rs</code>。</li>
+<li>**二进制包 (Binary crate)**：用于生成可执行文件，通常是应用程序的入口点。二进制包的根文件通常是 <code>main.rs</code>。</li>
+</ul>
+<p>对于库包，库名应该清晰地反映其功能和用途，以便其他开发者能够快速理解其作用。</p>
+<ol>
+<li><h4 id="命名冲突与唯一性"><a href="#命名冲突与唯一性" class="headerlink" title="命名冲突与唯一性"></a>命名冲突与唯一性</h4></li>
+</ol>
+<ul>
+<li><strong>避免命名冲突</strong>：为了防止与其他库发生命名冲突，建议选择独特且具体的库名。可以考虑加入项目或组织的名称作为前缀。</li>
+</ul>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Cargo.toml</span></span><br><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;my_org_iris_net&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>使用版本控制</strong>：通过 <code>Cargo.toml</code> 文件中的 <code>version</code> 字段管理库的版本，确保不同版本之间的兼容性和更新。</li>
+</ul>
+<ol>
+<li><h4 id="命名示例"><a href="#命名示例" class="headerlink" title="命名示例"></a>命名示例</h4></li>
+</ol>
+<p>以下是一些符合命名规范的库名示例：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Cargo.toml</span></span><br><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;http_client&quot;</span>          <span class="comment"># 简洁明了，描述 HTTP 客户端功能</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;json_parser&quot;</span>          <span class="comment"># 描述 JSON 解析器功能</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;image_processor&quot;</span>      <span class="comment"># 描述图像处理功能</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;my_org_network_lib&quot;</span>   <span class="comment"># 包含组织名称，避免冲突</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h4></li>
+</ol>
+<ul>
+<li><strong>一致性</strong>：在整个项目中保持命名的一致性。如果库中有多个模块，模块名也应遵循相同的命名规范。</li>
+<li><strong>文档化</strong>：为库编写详细的文档，解释其功能和使用方法，帮助其他开发者更好地理解和使用该库。</li>
+</ul>
+<ol>
+<li><h4 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h4></li>
+</ol>
+<p>Rust 中库的命名规则主要包括：</p>
+<ul>
+<li>使用 **蛇形命名法 (snake_case)**。</li>
+<li>保持 <strong>简洁明了</strong> 的名字。</li>
+<li>避免 <strong>命名冲突</strong>，必要时加入组织或项目名称。</li>
+<li>使用 <strong>版本控制</strong> 管理库的不同版本。</li>
+</ul>
+<p>遵循这些规则可以帮助你创建清晰、易用且易于维护的 Rust 库。通过合理的命名，不仅可以提高代码的可读性，还能减少潜在的错误和冲突。</p>
+<ol>
+<li><h3 id="在lib-rs中，应当写什么内容"><a href="#在lib-rs中，应当写什么内容" class="headerlink" title="在lib.rs中，应当写什么内容"></a>在lib.rs中，应当写什么内容</h3></li>
+</ol>
+<p>在 Rust 中，<code>lib.rs</code> 文件是库包（Library crate）的根文件，它定义了库的公共接口和结构。以下是 <code>lib.rs</code> 文件中应该包含的内容和最佳实践：</p>
+<ol>
+<li><h4 id="模块声明"><a href="#模块声明" class="headerlink" title="模块声明"></a>模块声明</h4></li>
+</ol>
+<p><code>lib.rs</code> 文件通常用于声明和组织库中的各个模块。你可以使用 <code>mod</code> 关键字来声明模块，并通过 <code>pub</code> 关键字将模块公开给外部使用。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_net;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> utils;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="公共接口"><a href="#公共接口" class="headerlink" title="公共接口"></a>公共接口</h4></li>
+</ol>
+<p><code>lib.rs</code> 文件应该定义库的公共接口，即外部代码可以访问的函数、结构体、枚举等。这些公共项通常使用 <code>pub</code> 关键字声明。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_net;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> utils;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> iris_net::IrisNet;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> utils::HelperFunction;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h4></li>
+</ol>
+<p>虽然依赖管理主要在 <code>Cargo.toml</code> 文件中进行，但在 <code>lib.rs</code> 文件中，你可能会使用这些依赖项来实现库的功能。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> some_dependency;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_net;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> utils;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> iris_net::IrisNet;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> utils::HelperFunction;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="文档注释"><a href="#文档注释" class="headerlink" title="文档注释"></a>文档注释</h4></li>
+</ol>
+<p>为库中的公共项添加文档注释，以便其他开发者能够理解如何使用这些功能。文档注释使用 <code>///</code> 开头。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs</span></span><br><span class="line"><span class="comment">/// 这是 iris_net 模块，提供网络相关功能。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_net;</span><br><span class="line"><span class="comment">/// 这是 utils 模块，提供一些实用工具函数。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> utils;</span><br><span class="line"><span class="comment">/// 这是 IrisNet 结构体，用于网络通信。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> iris_net::IrisNet;</span><br><span class="line"><span class="comment">/// 这是 HelperFunction 函数，提供一些辅助功能。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> utils::HelperFunction;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h4></li>
+</ol>
+<p>以下是一个完整的 <code>lib.rs</code> 文件示例，展示了如何组织模块、定义公共接口和添加文档注释：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs</span></span><br><span class="line"><span class="comment">/// 这是 iris_net 模块，提供网络相关功能。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> iris_net;</span><br><span class="line"><span class="comment">/// 这是 utils 模块，提供一些实用工具函数。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> utils;</span><br><span class="line"><span class="comment">/// 这是 IrisNet 结构体，用于网络通信。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> iris_net::IrisNet;</span><br><span class="line"><span class="comment">/// 这是 HelperFunction 函数，提供一些辅助功能。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> utils::HelperFunction;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="其他注意事项-1"><a href="#其他注意事项-1" class="headerlink" title="其他注意事项"></a>其他注意事项</h4></li>
+</ol>
+<ul>
+<li><strong>模块组织</strong>：合理组织模块，确保代码结构清晰。</li>
+<li><strong>可见性控制</strong>：使用 <code>pub</code> 关键字控制模块和项的可见性，避免不必要的暴露。</li>
+<li><strong>文档编写</strong>：为库中的公共项编写详细的文档注释，提高库的可使用性。</li>
+</ul>
+<ol>
+<li><h4 id="总结-4"><a href="#总结-4" class="headerlink" title="总结"></a>总结</h4></li>
+</ol>
+<p><code>lib.rs</code> 文件是库包的根文件，应该包含以下内容：</p>
+<ul>
+<li><strong>模块声明</strong>：使用 <code>mod</code> 关键字声明模块。</li>
+<li><strong>公共接口</strong>：使用 <code>pub</code> 关键字定义公共项。</li>
+<li><strong>依赖管理</strong>：使用 <code>extern crate</code> 声明外部依赖（在现代 Rust 中通常不需要显式声明，<code>use</code> 语句会自动处理）。</li>
+<li><strong>文档注释</strong>：为公共项添加文档注释，提高代码的可读性和可维护性。</li>
+</ul>
+<p>通过合理组织 <code>lib.rs</code> 文件，你可以创建一个结构清晰、功能完善的 Rust 库。</p>
+<ol>
+<li><h3 id="mod-rs中都可以写哪些内容"><a href="#mod-rs中都可以写哪些内容" class="headerlink" title="mod.rs中都可以写哪些内容"></a>mod.rs中都可以写哪些内容</h3></li>
+</ol>
+<p>在 Rust 中，<code>mod.rs</code> 文件是模块的根文件，用于定义和组织模块的内容。<code>mod.rs</code> 文件可以包含多种内容，以帮助构建和管理模块的结构。以下是 <code>mod.rs</code> 文件中可以写的内容及其详细解释：</p>
+<ol>
+<li><h4 id="模块声明-1"><a href="#模块声明-1" class="headerlink" title="模块声明"></a>模块声明</h4></li>
+</ol>
+<ul>
+<li><strong>声明子模块</strong>：使用 <code>mod</code> 关键字声明子模块。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod; <span class="comment">/// 请求方法执行器</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget; <span class="comment">/// 请求目标（Target）接口</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="重新导出（Re-export）"><a href="#重新导出（Re-export）" class="headerlink" title="重新导出（Re-export）"></a>重新导出（Re-export）</h4></li>
+</ol>
+<ul>
+<li><strong>重新导出项</strong>：使用 <code>pub use</code> 语法将子模块中的项重新导出到当前模块的公共接口中。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod; <span class="comment">/// 请求方法执行器</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget; <span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> inmethod::execute_request <span class="keyword">as</span> in_execute_request; <span class="comment">/// 导出 in_execute_request 方法</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> intarget::INTarget; <span class="comment">/// 导出 INTarget trait</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="结构体、枚举、函数等定义"><a href="#结构体、枚举、函数等定义" class="headerlink" title="结构体、枚举、函数等定义"></a>结构体、枚举、函数等定义</h4></li>
+</ol>
+<ul>
+<li><strong>定义结构体</strong>：</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> field: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>定义枚举</strong>：</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">enum</span> <span class="title class_">MyEnum</span> &#123;</span><br><span class="line">    Variant1,</span><br><span class="line">    Variant2,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>定义函数</strong>：</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">my_function</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello from my_function!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="使用外部依赖"><a href="#使用外部依赖" class="headerlink" title="使用外部依赖"></a>使用外部依赖</h4></li>
+</ol>
+<ul>
+<li><strong>使用外部 crate</strong>：通过 <code>use</code> 语句引入外部 crate 中的项。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="keyword">use</span> serde::&#123;Serialize, Deserialize&#125;;</span><br><span class="line"><span class="meta">#[derive(Serialize, Deserialize)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">MySerializableStruct</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> field: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="实现-Trait"><a href="#实现-Trait" class="headerlink" title="实现 Trait"></a>实现 Trait</h4></li>
+</ol>
+<ul>
+<li><strong>实现 Trait</strong>：为结构体或枚举实现 trait。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="keyword">use</span> std::fmt::<span class="built_in">Debug</span>;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">MyTrait</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">my_method</span>(&amp;<span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> field: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">MyTrait</span> <span class="keyword">for</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">my_method</span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;MyStruct field: &#123;&#125;&quot;</span>, <span class="keyword">self</span>.field);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Debug</span> <span class="keyword">for</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">fmt</span>(&amp;<span class="keyword">self</span>, f: &amp;<span class="keyword">mut</span> std::fmt::Formatter&lt;<span class="symbol">&#x27;_</span>&gt;) <span class="punctuation">-&gt;</span> std::fmt::<span class="type">Result</span> &#123;</span><br><span class="line">        <span class="built_in">write!</span>(f, <span class="string">&quot;MyStruct &#123;&#123; field: &#123;&#125; &#125;&#125;&quot;</span>, <span class="keyword">self</span>.field)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="文档注释-1"><a href="#文档注释-1" class="headerlink" title="文档注释"></a>文档注释</h4></li>
+</ol>
+<ul>
+<li><strong>添加文档注释</strong>：为模块、结构体、枚举、函数等添加文档注释，以便生成文档。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="comment">/// 这是 mods 模块，包含请求方法执行器和请求目标接口。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod; <span class="comment">/// 请求方法执行器</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget; <span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="comment">/// 这是一个示例结构体。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    <span class="comment">/// 这是一个字段。</span></span><br><span class="line">    <span class="keyword">pub</span> field: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 这是一个示例函数。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">my_function</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello from my_function!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h4></li>
+</ol>
+<ul>
+<li><strong>常量和静态变量</strong>：</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">const</span> MY_CONSTANT: <span class="type">i32</span> = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">static</span> MY_STATIC: &amp;<span class="type">str</span> = <span class="string">&quot;Hello, world!&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>宏定义</strong>：</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="built_in">macro_rules!</span> my_macro &#123;</span><br><span class="line">    () =&gt; &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;Hello from my_macro!&quot;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="示例-mod-rs-文件"><a href="#示例-mod-rs-文件" class="headerlink" title="示例 mod.rs 文件"></a>示例 <code>mod.rs</code> 文件</h4></li>
+</ol>
+<p>以下是一个完整的 <code>mod.rs</code> 文件示例，展示了上述各种内容：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/mods/mod.rs</span></span><br><span class="line"><span class="comment">/// 这是 mods 模块，包含请求方法执行器和请求目标接口。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod; <span class="comment">/// 请求方法执行器</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget; <span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="comment">/// 这是一个示例结构体。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    <span class="comment">/// 这是一个字段。</span></span><br><span class="line">    <span class="keyword">pub</span> field: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 这是一个示例函数。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">my_function</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello from my_function!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 这是一个示例常量。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">const</span> MY_CONSTANT: <span class="type">i32</span> = <span class="number">42</span>;</span><br><span class="line"><span class="comment">/// 这是一个示例静态变量。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">static</span> MY_STATIC: &amp;<span class="type">str</span> = <span class="string">&quot;Hello, world!&quot;</span>;</span><br><span class="line"><span class="comment">/// 这是一个示例宏。</span></span><br><span class="line"><span class="built_in">macro_rules!</span> my_macro &#123;</span><br><span class="line">    () =&gt; &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;Hello from my_macro!&quot;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 重新导出项</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> inmethod::execute_request <span class="keyword">as</span> in_execute_request; <span class="comment">/// 导出 in_execute_request 方法</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> intarget::INTarget; <span class="comment">/// 导出 INTarget trait</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="总结-5"><a href="#总结-5" class="headerlink" title="总结"></a>总结</h4></li>
+</ol>
+<p><code>mod.rs</code> 文件可以包含以下内容：</p>
+<ul>
+<li><strong>模块声明</strong>：使用 <code>mod</code> 关键字声明子模块。</li>
+<li><strong>重新导出</strong>：使用 <code>pub use</code> 语法重新导出子模块中的项。</li>
+<li><strong>结构体、枚举、函数等定义</strong>：定义和实现各种 Rust 项。</li>
+<li><strong>使用外部依赖</strong>：通过 <code>use</code> 语句引入外部 crate 中的项。</li>
+<li><strong>实现 Trait</strong>：为结构体或枚举实现 trait。</li>
+<li><strong>文档注释</strong>：为模块、结构体、枚举、函数等添加文档注释。</li>
+<li><strong>常量和静态变量</strong>：定义常量和静态变量。</li>
+<li><strong>宏定义</strong>：定义宏。</li>
+</ul>
+<p>通过合理组织 <code>mod.rs</code> 文件，你可以创建一个结构清晰、功能完善的 Rust 模块。</p>
+<ol>
+<li><h2 id="extern-crate-的作用"><a href="#extern-crate-的作用" class="headerlink" title="extern crate 的作用"></a><code>extern crate</code> 的作用</h2></li>
+</ol>
+<p>在 Rust 中，<code>extern crate</code> 用于声明外部依赖项。然而，在现代 Rust 版本（Rust 2018 及更高版本）中，<code>extern crate</code> 的使用已经不再是必需的，因为 <code>use</code> 语句会自动处理依赖项的引入。尽管如此，了解 <code>extern crate</code> 的作用仍然是有用的。</p>
+<ol>
+<li><h3 id="extern-crate-的基本作用"><a href="#extern-crate-的基本作用" class="headerlink" title="extern crate 的基本作用"></a><code>extern crate</code> 的基本作用</h3></li>
+</ol>
+<p><code>extern crate</code> 用于告诉 Rust 编译器在编译时链接一个外部 crate（库）。这使得你可以在代码中使用该 crate 中定义的模块、函数、结构体等。</p>
+<ol>
+<li><h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4></li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> some_dependency;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>some_dependency</code>：这是你想要引入的外部 crate 的名称。</li>
+</ul>
+<ol>
+<li><h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h4></li>
+</ol>
+<p>假设你有一个 <code>Cargo.toml</code> 文件，其中声明了一个依赖项 <code>serde</code>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Cargo.toml</span></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="attr">serde</span> = &#123; version = <span class="string">&quot;1.0&quot;</span>, features = [<span class="string">&quot;derive&quot;</span>] &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>lib.rs</code> 文件中，你可以使用 <code>extern crate</code> 来声明这个依赖项：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> serde;</span><br><span class="line"><span class="keyword">use</span> serde::&#123;Serialize, Deserialize&#125;;</span><br><span class="line"><span class="meta">#[derive(Serialize, Deserialize)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    field: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="现代-Rust-中的自动处理"><a href="#现代-Rust-中的自动处理" class="headerlink" title="现代 Rust 中的自动处理"></a>现代 Rust 中的自动处理</h4></li>
+</ol>
+<p>在 Rust 2018 及更高版本中，<code>use</code> 语句会自动处理依赖项的引入，因此 <code>extern crate</code> 可以省略。上述示例可以简化为：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/lib.rs</span></span><br><span class="line"><span class="keyword">use</span> serde::&#123;Serialize, Deserialize&#125;;</span><br><span class="line"><span class="meta">#[derive(Serialize, Deserialize)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyStruct</span> &#123;</span><br><span class="line">    field: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="详细解释"><a href="#详细解释" class="headerlink" title="详细解释"></a>详细解释</h4></li>
+</ol>
+<ul>
+<li><strong>链接外部库</strong>：<code>extern crate</code> 告诉编译器需要链接 <code>some_dependency</code> 这个外部库。</li>
+<li><strong>命名空间管理</strong>：在某些情况下，<code>extern crate</code> 可以用于重命名依赖项，以便在代码中使用不同的名称引用它。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> some_dependency <span class="keyword">as</span> sd;</span><br><span class="line"><span class="keyword">use</span> sd::SomeStruct;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>版本控制</strong>：<code>extern crate</code> 本身不处理版本控制，版本控制通常在 <code>Cargo.toml</code> 文件中通过 <code>[dependencies]</code> 部分进行管理。</li>
+</ul>
+<ol>
+<li><h4 id="总结-6"><a href="#总结-6" class="headerlink" title="总结"></a>总结</h4></li>
+</ol>
+<ul>
+<li><strong><code>extern crate</code></strong> <strong>的作用</strong>：声明并链接外部 crate。</li>
+<li><strong>现代 Rust</strong>：在 Rust 2018 及更高版本中，<code>use</code> 语句会自动处理依赖项的引入，因此 <code>extern crate</code> 通常是不必要的。</li>
+<li><strong>最佳实践</strong>：在现代 Rust 项目中，建议直接使用 <code>use</code> 语句来引入依赖项，除非有特殊需求（如重命名依赖项）。</li>
+</ul>
+<h3 id="具体到你的-lib-rs-文件"><a href="#具体到你的-lib-rs-文件" class="headerlink" title="具体到你的 lib.rs 文件"></a>具体到你的 <code>lib.rs</code> 文件</h3><p>假设你的 <code>lib.rs</code> 文件如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/lib.rs</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">crate</span> some_dependency;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget;</span><br></pre></td></tr></table></figure>
+
+<p>你可以简化为：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/lib.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget;</span><br></pre></td></tr></table></figure>
+
+<p>然后在需要使用 <code>some_dependency</code> 的模块中直接使用 <code>use</code> 语句：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/inmethod.rs</span></span><br><span class="line"><span class="keyword">use</span> some_dependency::SomeStruct;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">some_function</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">instance</span> = SomeStruct::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    <span class="comment">// 使用 instance 进行操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样可以保持代码的简洁和现代风格。</p>
+<ol>
+<li><h2 id="pub-use-的作用"><a href="#pub-use-的作用" class="headerlink" title="pub use 的作用"></a><code>pub use</code> 的作用</h2></li>
+</ol>
+<p>在 Rust 中，<code>pub use</code> 用于重新导出（re-export）模块中的项，使其在当前模块的公共接口中可用。这有助于简化模块的使用，并提高代码的可读性和可维护性。以下是详细的解释：</p>
+<ol>
+<li><h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3></li>
+</ol>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> some_module::SomeItem;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>some_module</code>：要导出项所在的模块。</li>
+<li><code>SomeItem</code>：要导出的具体项（如函数、结构体、枚举等）。</li>
+<li><code>pub</code>：使导出的项在当前模块的公共接口中可用。</li>
+</ul>
+<ol>
+<li><h3 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h3></li>
+</ol>
+<p>假设你有一个库结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">src/</span><br><span class="line">└── iris_net/</span><br><span class="line">    ├── lib.rs</span><br><span class="line">    ├── inmethod.rs</span><br><span class="line">    └── utils.rs</span><br></pre></td></tr></table></figure>
+
+<p>文件内容如下：</p>
+<p><strong><code>src/iris_net/lib.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/lib.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> utils;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> inmethod::IrisNet;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> utils::HelperFunction;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/iris_net/inmethod.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/inmethod.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">IrisNet</span> &#123;</span><br><span class="line">    <span class="comment">// 结构体定义</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">IrisNet</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">new</span>() <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        IrisNet &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/iris_net/utils.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/utils.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">HelperFunction</span>() &#123;</span><br><span class="line">    <span class="comment">// 函数实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h3 id="详细解释-1"><a href="#详细解释-1" class="headerlink" title="详细解释"></a>详细解释</h3></li>
+</ol>
+<ul>
+<li><strong>重新导出项</strong>：<code>pub use inmethod::IrisNet;</code> 将 <code>inmethod</code> 模块中的 <code>IrisNet</code> 结构体重新导出到 <code>iris_net</code> 模块的公共接口中。</li>
+<li><strong>简化使用</strong>：通过重新导出，外部代码可以直接从 <code>iris_net</code> 模块中使用 <code>IrisNet</code>，而不需要知道 <code>IrisNet</code> 实际上定义在 <code>inmethod</code> 模块中。</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 外部代码示例</span></span><br><span class="line"><span class="keyword">use</span> iris_net::IrisNet;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">net</span> = IrisNet::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    <span class="comment">// 使用 net 进行操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>提高可读性</strong>：重新导出可以使模块的公共接口更加清晰，外部代码不需要了解内部模块的结构，只需关注顶层模块的接口。</li>
+</ul>
+<ol>
+<li><h3 id="具体到你的-lib-rs-文件-1"><a href="#具体到你的-lib-rs-文件-1" class="headerlink" title="具体到你的 lib.rs 文件"></a>具体到你的 <code>lib.rs</code> 文件</h3></li>
+</ol>
+<p>在你的 <code>lib.rs</code> 文件中：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/lib.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> utils;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> iris_net::IrisNet;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> utils::HelperFunction;</span><br></pre></td></tr></table></figure>
+
+<p>这里有几点需要注意：</p>
+<ol>
+<li><h4 id="模块声明："><a href="#模块声明：" class="headerlink" title="模块声明："></a><strong>模块声明</strong>：</h4><ul>
+<li><code>pub mod inmethod;</code> 和 <code>pub mod utils;</code> 声明了 <code>inmethod</code> 和 <code>utils</code> 模块，并使它们在 <code>iris_net</code> 模块中可用。</li>
+</ul>
+</li>
+<li><h4 id="重新导出项："><a href="#重新导出项：" class="headerlink" title="重新导出项："></a><strong>重新导出项</strong>：</h4><ul>
+<li><code>pub use inmethod::IrisNet;</code> 试图将 <code>inmethod</code> 模块中的 <code>IrisNet</code> 结构体重新导出到 <code>iris_net</code> 模块的公共接口中。</li>
+<li><code>pub use utils::HelperFunction;</code> 将 <code>utils</code> 模块中的 <code>HelperFunction</code> 函数重新导出到 <code>iris_net</code> 模块的公共接口中。</li>
+</ul>
+</li>
+<li><h4 id="修正建议"><a href="#修正建议" class="headerlink" title="修正建议"></a>修正建议</h4></li>
+</ol>
+<p>在 <code>lib.rs</code> 文件中，<code>pub use iris_net::IrisNet;</code> 的写法是错误的，因为 <code>IrisNet</code> 实际上是在 <code>inmethod</code> 模块中定义的，而不是在 <code>iris_net</code> 模块中。正确的写法应该是：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/iris_net/lib.rs</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> utils;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> inmethod::IrisNet;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> utils::HelperFunction;</span><br></pre></td></tr></table></figure>
+
+<p>这样，外部代码可以直接从 <code>iris_net</code> 模块中使用 <code>IrisNet</code> 和 <code>HelperFunction</code>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 外部代码示例</span></span><br><span class="line"><span class="keyword">use</span> iris_net::&#123;IrisNet, HelperFunction&#125;;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">net</span> = IrisNet::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    <span class="title function_ invoke__">HelperFunction</span>();</span><br><span class="line">    <span class="comment">// 使用 net 和 HelperFunction 进行操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h4 id="总结-7"><a href="#总结-7" class="headerlink" title="总结"></a>总结</h4></li>
+</ol>
+<ul>
+<li><strong><code>pub use</code></strong> <strong>的作用</strong>：重新导出模块中的项，使其在当前模块的公共接口中可用。</li>
+<li><strong>简化使用</strong>：外部代码可以直接使用重新导出的项，而不需要了解内部模块的结构。</li>
+<li><strong>提高可读性</strong>：使模块的公共接口更加清晰和简洁。</li>
+</ul>
+<p>通过合理使用 <code>pub use</code>，你可以创建一个结构清晰、易于使用的 Rust 库。</p>
+<ol>
+<li><h2 id="不同-mod-中同名方法冲突处理"><a href="#不同-mod-中同名方法冲突处理" class="headerlink" title="不同 mod 中同名方法冲突处理"></a>不同 mod 中同名方法冲突处理</h2></li>
+<li><h3 id="在-main-rs-中引用两个模块时，同名方法的冲突处理"><a href="#在-main-rs-中引用两个模块时，同名方法的冲突处理" class="headerlink" title="在 main.rs 中引用两个模块时，同名方法的冲突处理"></a>在 <code>main.rs</code> 中引用两个模块时，同名方法的冲突处理</h3></li>
+</ol>
+<p>在 Rust 中，如果两个模块中定义了同名的方法（例如 <code>execute_request</code>），直接引用这两个模块会导致命名冲突。为了避免这种冲突，可以使用以下几种方法：</p>
+<ol>
+<li>使用模块路径</li>
+</ol>
+<p>通过指定完整的模块路径来调用具体的方法，可以避免命名冲突。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.rs</span></span><br><span class="line"><span class="keyword">mod</span> A;</span><br><span class="line"><span class="keyword">mod</span> B;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    A::<span class="title function_ invoke__">execute_request</span>();</span><br><span class="line">    B::<span class="title function_ invoke__">execute_request</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用 <code>as</code> 关键字重命名</li>
+</ol>
+<p>可以使用 <code>as</code> 关键字为导入的方法或函数重命名，以避免冲突。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.rs</span></span><br><span class="line"><span class="keyword">mod</span> A;</span><br><span class="line"><span class="keyword">mod</span> B;</span><br><span class="line"><span class="keyword">use</span> A::execute_request <span class="keyword">as</span> execute_request_a;</span><br><span class="line"><span class="keyword">use</span> B::execute_request <span class="keyword">as</span> execute_request_b;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">execute_request_a</span>();</span><br><span class="line">    <span class="title function_ invoke__">execute_request_b</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用模块块</li>
+</ol>
+<p>将每个模块的方法调用放在不同的模块块中，可以避免命名冲突。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.rs</span></span><br><span class="line"><span class="keyword">mod</span> A;</span><br><span class="line"><span class="keyword">mod</span> B;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">use</span> A::execute_request;</span><br><span class="line">        <span class="title function_ invoke__">execute_request</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">use</span> B::execute_request;</span><br><span class="line">        <span class="title function_ invoke__">execute_request</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用 <code>self</code> 和 <code>super</code> 关键字</li>
+</ol>
+<p>在更复杂的模块结构中，可以使用 <code>self</code> 和 <code>super</code> 关键字来明确指定方法的来源。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.rs</span></span><br><span class="line"><span class="keyword">mod</span> A;</span><br><span class="line"><span class="keyword">mod</span> B;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    A::<span class="title function_ invoke__">execute_request</span>();</span><br><span class="line">    B::<span class="title function_ invoke__">execute_request</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>示例代码</li>
+</ol>
+<p>假设你有两个模块 <code>A</code> 和 <code>B</code>，它们都有一个同名方法 <code>execute_request</code>：</p>
+<p><strong><code>src/main.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mod</span> A;</span><br><span class="line"><span class="keyword">mod</span> B;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    A::<span class="title function_ invoke__">execute_request</span>();</span><br><span class="line">    B::<span class="title function_ invoke__">execute_request</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/A.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">execute_request</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Executing request from module A&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/B.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">execute_request</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Executing request from module B&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用 <code>as</code> 关键字重命名的示例</li>
+</ol>
+<p><strong><code>src/main.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mod</span> A;</span><br><span class="line"><span class="keyword">mod</span> B;</span><br><span class="line"><span class="keyword">use</span> A::execute_request <span class="keyword">as</span> execute_request_a;</span><br><span class="line"><span class="keyword">use</span> B::execute_request <span class="keyword">as</span> execute_request_b;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">execute_request_a</span>();</span><br><span class="line">    <span class="title function_ invoke__">execute_request_b</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/A.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">execute_request</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Executing request from module A&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/B.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">execute_request</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Executing request from module B&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>总结</li>
+</ol>
+<ul>
+<li><strong>使用模块路径</strong>：通过指定完整的模块路径来调用具体的方法。</li>
+<li><strong>使用</strong> <strong><code>as</code></strong> <strong>关键字重命名</strong>：为导入的方法或函数重命名，以避免冲突。</li>
+<li><strong>使用模块块</strong>：将每个模块的方法调用放在不同的模块块中。</li>
+<li><strong>使用</strong> <strong><code>self</code></strong> <strong>和</strong> <strong><code>super</code></strong> <strong>关键字</strong>：在复杂的模块结构中明确指定方法的来源。</li>
+</ul>
+<p>通过这些方法，你可以有效地避免在 <code>main.rs</code> 中引用两个模块时出现的同名方法冲突问题。选择哪种方法取决于你的具体需求和代码结构。</p>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><h3 id="如果在-mod-rs-中写了如下内容，在-lib-rs-中应该如何写"><a href="#如果在-mod-rs-中写了如下内容，在-lib-rs-中应该如何写" class="headerlink" title="如果在 mod.rs 中写了如下内容，在 lib.rs 中应该如何写"></a>如果在 <code>mod.rs</code> 中写了如下内容，在 <code>lib.rs</code> 中应该如何写</h3><p>假设你在 <code>mod.rs</code> 文件中写了以下内容：</p>
+<p><strong><code>src/iris_net/mods/mod.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod; <span class="comment">/// 请求方法执行器</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget; <span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> inmethod::execute_request <span class="keyword">as</span> in_execute_request;   <span class="comment">/// 导出 in_execute_request 方法</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> intarget::Target <span class="keyword">as</span> INTarget;                      <span class="comment">/// 导出 INTarget trait;</span></span><br></pre></td></tr></table></figure>
+
+<p>为了确保 <code>lib.rs</code> 文件能够正确地暴露这些模块和项，你需要在 <code>lib.rs</code> 中进行相应的调整。以下是详细的步骤和建议：</p>
+<ol>
+<li>声明 <code>mods</code> 模块</li>
+</ol>
+<p>首先，你需要在 <code>lib.rs</code> 中声明 <code>mods</code> 模块，以便能够访问 <code>mods</code> 模块中的内容。</p>
+<p><strong><code>src/iris_net/lib.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> mods;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>重新导出 <code>mods</code> 模块中的内容</li>
+</ol>
+<p>接下来，你需要在 <code>lib.rs</code> 中重新导出 <code>mods</code> 模块中的内容，以便外部代码可以直接访问这些模块和项。</p>
+<p><strong><code>src/iris_net/lib.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> mods;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> mods::inmethod::execute_request <span class="keyword">as</span> in_execute_request;   <span class="comment">/// 导出 in_execute_request 方法</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> mods::intarget::Target <span class="keyword">as</span> INTarget;                      <span class="comment">/// 导出 INTarget trait</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>完整示例</li>
+</ol>
+<p>以下是完整的 <code>lib.rs</code> 文件示例，展示了如何正确地声明和重新导出 <code>mods</code> 模块中的内容：</p>
+<p><strong><code>src/iris_net/lib.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> mods;</span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> mods::inmethod::execute_request <span class="keyword">as</span> in_execute_request;   <span class="comment">/// 导出 in_execute_request 方法</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> mods::intarget::Target <span class="keyword">as</span> INTarget;                      <span class="comment">/// 导出 INTarget trait</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/iris_net/mods/mod.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod; <span class="comment">/// 请求方法执行器</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget; <span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> inmethod::execute_request <span class="keyword">as</span> in_execute_request;   <span class="comment">/// 导出 in_execute_request 方法</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> intarget::Target <span class="keyword">as</span> INTarget;                      <span class="comment">/// 导出 INTarget trait</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/iris_net/mods/inmethod.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">execute_request</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Executing request from inmethod&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/iris_net/mods/intarget.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fmt::<span class="built_in">Debug</span>;</span><br><span class="line"><span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - Note: 所有具体的请求目标都将实现这个 trait。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">Target</span>: <span class="built_in">Debug</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">base_url</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span>;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span>;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">method</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> Method;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">body</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt;;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">headers</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HeaderMap&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用示例</li>
+</ol>
+<p>假设你在 <code>main.rs</code> 中使用这些模块和项：</p>
+<p><strong><code>src/main.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mod</span> iris_net;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    iris_net::<span class="title function_ invoke__">in_execute_request</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">target</span>: <span class="type">Box</span>&lt;<span class="keyword">dyn</span> iris_net::INTarget&gt; = <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(MyTarget &#123;</span><br><span class="line">        base_url: <span class="string">&quot;&lt;http://example.com&gt;&quot;</span>.<span class="title function_ invoke__">to_string</span>(),</span><br><span class="line">        path: <span class="string">&quot;/api&quot;</span>.<span class="title function_ invoke__">to_string</span>(),</span><br><span class="line">        method: Method::GET,</span><br><span class="line">        body: <span class="literal">None</span>,</span><br><span class="line">        headers: <span class="literal">None</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Base URL: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">base_url</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Path: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">path</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Method: &#123;:?&#125;&quot;</span>, target.<span class="title function_ invoke__">method</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    base_url: <span class="type">String</span>,</span><br><span class="line">    path: <span class="type">String</span>,</span><br><span class="line">    method: Method,</span><br><span class="line">    body: <span class="type">Option</span>&lt;<span class="type">String</span>&gt;,</span><br><span class="line">    headers: <span class="type">Option</span>&lt;HeaderMap&gt;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Debug</span> <span class="keyword">for</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">fmt</span>(&amp;<span class="keyword">self</span>, f: &amp;<span class="keyword">mut</span> std::fmt::Formatter&lt;<span class="symbol">&#x27;_</span>&gt;) <span class="punctuation">-&gt;</span> std::fmt::<span class="type">Result</span> &#123;</span><br><span class="line">        f.<span class="title function_ invoke__">debug_struct</span>(<span class="string">&quot;MyTarget&quot;</span>)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;base_url&quot;</span>, &amp;<span class="keyword">self</span>.base_url)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;path&quot;</span>, &amp;<span class="keyword">self</span>.path)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;method&quot;</span>, &amp;<span class="keyword">self</span>.method)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;body&quot;</span>, &amp;<span class="keyword">self</span>.body)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;headers&quot;</span>, &amp;<span class="keyword">self</span>.headers)</span><br><span class="line">            .<span class="title function_ invoke__">finish</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">iris_net</span>::INTarget <span class="keyword">for</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">base_url</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.base_url</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.path</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">method</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> Method &#123;</span><br><span class="line">        <span class="keyword">self</span>.method</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">body</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">self</span>.body.<span class="title function_ invoke__">clone</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">headers</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HeaderMap&gt; &#123;</span><br><span class="line">        <span class="keyword">self</span>.headers.<span class="title function_ invoke__">clone</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">use</span> std::fmt::<span class="built_in">Debug</span>;</span><br><span class="line"><span class="keyword">use</span> http::Method;</span><br><span class="line"><span class="keyword">use</span> http::header::HeaderMap;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>总结</li>
+</ol>
+<ul>
+<li><strong>声明模块</strong>：在 <code>lib.rs</code> 中声明 <code>mods</code> 模块。</li>
+<li><strong>重新导出项</strong>：在 <code>lib.rs</code> 中重新导出 <code>mods</code> 模块中的内容，以便外部代码可以直接访问这些模块和项。</li>
+</ul>
+<p>通过这种方式，你可以确保 <code>lib.rs</code> 文件正确地暴露 <code>mods</code> 模块中的内容，并且外部代码可以方便地使用这些模块和项。</p>
+<h3 id="如果这些内容直接写在-lib-rs-中，是否-mod-rs-中就不需要写内容了？"><a href="#如果这些内容直接写在-lib-rs-中，是否-mod-rs-中就不需要写内容了？" class="headerlink" title="如果这些内容直接写在 lib.rs 中，是否 mod.rs 中就不需要写内容了？"></a>如果这些内容直接写在 <code>lib.rs</code> 中，是否 <code>mod.rs</code> 中就不需要写内容了？</h3><p>是的，如果这些内容直接写在 <code>lib.rs</code> 中，那么 <code>mod.rs</code> 文件就不需要写这些内容了。具体来说，<code>lib.rs</code> 文件作为库的根文件，可以完全包含模块声明和重新导出的逻辑。以下是详细的解释和示例：</p>
+<ol>
+<li>直接在 <code>lib.rs</code> 中写内容</li>
+</ol>
+<p>如果你决定将所有模块声明和重新导出的逻辑直接写在 <code>lib.rs</code> 文件中，那么 <code>mod.rs</code> 文件可以保持为空或删除。以下是具体的步骤和示例：</p>
+<p><strong><code>src/iris_net/lib.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> inmethod; <span class="comment">/// 请求方法执行器</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">mod</span> intarget; <span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> inmethod::execute_request <span class="keyword">as</span> in_execute_request;   <span class="comment">/// 导出 in_execute_request 方法</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">use</span> intarget::Target <span class="keyword">as</span> INTarget;                      <span class="comment">/// 导出 INTarget trait</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/iris_net/inmethod.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">execute_request</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Executing request from inmethod&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/iris_net/intarget.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fmt::<span class="built_in">Debug</span>;</span><br><span class="line"><span class="comment">/// 请求目标（Target）接口</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - Note: 所有具体的请求目标都将实现这个 trait。</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">Target</span>: <span class="built_in">Debug</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">base_url</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span>;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span>;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">method</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> Method;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">body</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt;;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">headers</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HeaderMap&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>删除 <code>mod.rs</code> 文件</li>
+</ol>
+<p>如果你不再需要 <code>mod.rs</code> 文件，可以将其删除。项目结构将简化为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">src/</span><br><span class="line">└── iris_net/</span><br><span class="line">    ├── lib.rs</span><br><span class="line">    ├── inmethod.rs</span><br><span class="line">    └── intarget.rs</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用示例</li>
+</ol>
+<p>假设你在 <code>main.rs</code> 中使用这些模块和项：</p>
+<p><strong><code>src/main.rs</code></strong>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mod</span> iris_net;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    iris_net::<span class="title function_ invoke__">in_execute_request</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">target</span>: <span class="type">Box</span>&lt;<span class="keyword">dyn</span> iris_net::INTarget&gt; = <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(MyTarget &#123;</span><br><span class="line">        base_url: <span class="string">&quot;&lt;http://example.com&gt;&quot;</span>.<span class="title function_ invoke__">to_string</span>(),</span><br><span class="line">        path: <span class="string">&quot;/api&quot;</span>.<span class="title function_ invoke__">to_string</span>(),</span><br><span class="line">        method: Method::GET,</span><br><span class="line">        body: <span class="literal">None</span>,</span><br><span class="line">        headers: <span class="literal">None</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Base URL: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">base_url</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Path: &#123;&#125;&quot;</span>, target.<span class="title function_ invoke__">path</span>());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Method: &#123;:?&#125;&quot;</span>, target.<span class="title function_ invoke__">method</span>());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    base_url: <span class="type">String</span>,</span><br><span class="line">    path: <span class="type">String</span>,</span><br><span class="line">    method: Method,</span><br><span class="line">    body: <span class="type">Option</span>&lt;<span class="type">String</span>&gt;,</span><br><span class="line">    headers: <span class="type">Option</span>&lt;HeaderMap&gt;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Debug</span> <span class="keyword">for</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">fmt</span>(&amp;<span class="keyword">self</span>, f: &amp;<span class="keyword">mut</span> std::fmt::Formatter&lt;<span class="symbol">&#x27;_</span>&gt;) <span class="punctuation">-&gt;</span> std::fmt::<span class="type">Result</span> &#123;</span><br><span class="line">        f.<span class="title function_ invoke__">debug_struct</span>(<span class="string">&quot;MyTarget&quot;</span>)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;base_url&quot;</span>, &amp;<span class="keyword">self</span>.base_url)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;path&quot;</span>, &amp;<span class="keyword">self</span>.path)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;method&quot;</span>, &amp;<span class="keyword">self</span>.method)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;body&quot;</span>, &amp;<span class="keyword">self</span>.body)</span><br><span class="line">            .<span class="title function_ invoke__">field</span>(<span class="string">&quot;headers&quot;</span>, &amp;<span class="keyword">self</span>.headers)</span><br><span class="line">            .<span class="title function_ invoke__">finish</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">iris_net</span>::INTarget <span class="keyword">for</span> <span class="title class_">MyTarget</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">base_url</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.base_url</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">path</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;<span class="type">str</span> &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.path</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">method</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> Method &#123;</span><br><span class="line">        <span class="keyword">self</span>.method</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">body</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">String</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">self</span>.body.<span class="title function_ invoke__">clone</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">headers</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;HeaderMap&gt; &#123;</span><br><span class="line">        <span class="keyword">self</span>.headers.<span class="title function_ invoke__">clone</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">use</span> std::fmt::<span class="built_in">Debug</span>;</span><br><span class="line"><span class="keyword">use</span> http::Method;</span><br><span class="line"><span class="keyword">use</span> http::header::HeaderMap;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>总结</li>
+</ol>
+<ul>
+<li><strong>直接在</strong> <strong><code>lib.rs</code></strong> <strong>中写内容</strong>：如果将所有模块声明和重新导出的逻辑直接写在 <code>lib.rs</code> 文件中，那么 <code>mod.rs</code> 文件可以保持为空或删除。</li>
+<li><strong>项目结构简化</strong>：删除 <code>mod.rs</code> 文件后，项目结构更加简洁。</li>
+<li><strong>保持一致性</strong>：确保所有模块声明和重新导出的逻辑在 <code>lib.rs</code> 文件中统一管理。</li>
+</ul>
+<p>通过这种方式，你可以简化项目结构，并确保 <code>lib.rs</code> 文件正确地暴露所有必要的模块和项。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/hm-event-loop/" title="HarmonyOS - Event Loop事件循环、宏任务and微任务">HarmonyOS - Event Loop事件循环、宏任务and微任务</a></h2>
+                <p class="excerpt">
+                
+                
+
+在阅读本文前先给大家抛出几个问题：
+
+事件循环是什么？
+宏任务和微任务是什么？
+哪些代码触发宏任务，哪些代码触发微任务？
+
+前言JS是一门单线程语言，单线程就意味着，所有的任务需要排队，前一个任务结束，才会执行下一个任务。
+这样所导致的问题是：如果JS执行的时间过长，这样就会造成页面的渲染不连贯
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-05-05T08:50:04.000Z" class="post-list__meta--date date">2024-05-05</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/EventLoop/" rel="tag">EventLoop</a>, <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" rel="tag">原理解析</a>, <a class="-none-link" href="/tags/%E5%AE%8F%E4%BB%BB%E5%8A%A1-%E5%BE%AE%E4%BB%BB%E5%8A%A1/" rel="tag">宏任务/微任务</a>
+</span><a class="btn-border-small" href="/hm-event-loop/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/hm-web/" title="HarmonyOS - Web 运行流程原理解析">HarmonyOS - Web 运行流程原理解析</a></h2>
+                <p class="excerpt">
+                
+                
+
+Web渲染流程初始化 webview -&amp;gt; 请求页面 -&amp;gt; 下载数据 -&amp;gt; 解析HTML -&amp;gt; 请求 js&amp;#x2F;css 资源 -&amp;gt; dom 渲染 -&amp;gt; 解析 JS 执行 -&amp;gt; JS 请求数据 -&amp;gt; 解析渲染 -&amp;gt; 下载渲染图片
+
+
+初始
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-04-09T15:46:52.000Z" class="post-list__meta--date date">2024-04-09</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/WebView/" rel="tag">WebView</a>, <a class="-none-link" href="/tags/%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" rel="tag">原理解析</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+</span><a class="btn-border-small" href="/hm-web/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/rust-sturct-know/';
+  var disqus_title = 'Rust 工程结构初探';
+  var disqus_url = 'http://shevakuilin.com/rust-sturct-know/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
