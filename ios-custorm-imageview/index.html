@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>iOS 图像聚合加载视图 YCImageView 架构设计 &amp; 使用 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iOS 图像聚合加载视图 YCImageView 架构设计 &amp; 使用 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="iOS 图像聚合加载视图 YCImageView 架构设计 &amp; 使用 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-custorm-imageview/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2023-05-19T07:35:07.000Z" class="post-list__meta--date date">2023-05-19</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Gif/" rel="tag">Gif</a>, <a class="-none-link" href="/tags/ImageView/" rel="tag">ImageView</a>, <a class="-none-link" href="/tags/Lottie/" rel="tag">Lottie</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/webP/" rel="tag">webP</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">iOS 图像聚合加载视图 YCImageView 架构设计 &amp; 使用</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><img src="/image/ios-custom-imageview-01.png">
+
+<h2 id="执行设计"><a href="#执行设计" class="headerlink" title="执行设计"></a>执行设计</h2><img src="/image/ios-custom-imageview-02.png">
+
+<h2 id="使用教程"><a href="#使用教程" class="headerlink" title="使用教程"></a>使用教程</h2><h3 id="Objective-C"><a href="#Objective-C" class="headerlink" title="Objective - C"></a>Objective - C</h3><h4 id="使用-URL-加载"><a href="#使用-URL-加载" class="headerlink" title="使用 URL 加载"></a>使用 URL 加载</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/// 常规使用</span><br><span class="line">/// - Note: 不需要的回调直接传入 nil 即可</span><br><span class="line">/// - Note: 注意，以下所有 回调内容 及 option 仅支持 PNG / JPG / JPEG / WebP / GIF 类型</span><br><span class="line">UIImageView *imageView = (UIImageView *)[YCImageView yc_imageWithUrlString:@&quot;xxxxx&quot;</span><br><span class="line">                                                                      option:YCWebImageOptionNone</span><br><span class="line">                                                                      progress:^(NSInteger receivedSize, NSInteger expectedSize) &#123;</span><br><span class="line">        </span><br><span class="line">&#125; transform:^UIImage * _Nonnull(UIImage * _Nonnull image, NSURL * _Nonnull url) &#123;</span><br><span class="line">   /// - Note: 在这里处理你的图片裁减等操作，将处理后的图像返回给 YCImageView</span><br><span class="line">   return image;</span><br><span class="line">&#125; completion:^(UIImage * _Nullable image, NSURL * _Nullable url, enum YCWebImageFromType fromType, enum YCWebImageStage stage, NSError * _Nullable error) &#123;</span><br><span class="line">        </span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">----------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">/// 需要手动接管 Lottie 动画时</span><br><span class="line">LOTAnimationView *imageView = (LOTAnimationView *)[YCImageView yc_imageWithUrlString:@&quot;xxxxx&quot; option:YCWebImageOptionNone progress:nil transform:nil completion:nil];</span><br><span class="line">/// - Note: 播放 Lottie</span><br><span class="line">[imageView play];</span><br><span class="line">/// - Note: 停止 Lottie</span><br><span class="line">[imageView stop];</span><br><span class="line"></span><br><span class="line">----------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">/// 需要手动接管 GIF 动画时</span><br><span class="line">YYAnimatedImageView *imageView = (YYAnimatedImageView *)[YCImageView yc_imageWithUrlString:@&quot;xxxxx&quot; option:YCWebImageOptionNone progress:nil transform:nil completion:nil];</span><br><span class="line">/// - Note: 播放 GIF</span><br><span class="line">[imageView startAnimating];</span><br><span class="line">/// - Note: 停止 GIF</span><br><span class="line">[imageView stopAnimating];</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用资源名称加载"><a href="#使用资源名称加载" class="headerlink" title="使用资源名称加载"></a>使用资源名称加载</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/// - Note: 用法类似，需要指定资源类型 resourceType</span><br><span class="line">UIImageView *imageView = (UIImageView *)[YCImageView yc_imageWithName:@&quot;xxxx&quot; resourceType:YCWebImageResourceTypePng];</span><br><span class="line"></span><br><span class="line">/// - Note: 枚举类型</span><br><span class="line">public enum YCWebImageResourceType: UInt &#123;</span><br><span class="line">    /// PNG 图片类型</span><br><span class="line">    case png = 0</span><br><span class="line">    /// JPG 图片类型</span><br><span class="line">    case jpg = 1</span><br><span class="line">    /// JPEG 图片类型</span><br><span class="line">    case jpeg = 2</span><br><span class="line">    /// WebP 图片类型</span><br><span class="line">    case webp = 3</span><br><span class="line">    /// GIF 动图类型</span><br><span class="line">    case gif = 4</span><br><span class="line">    /// Lottie 动画 JSON 文件类型</span><br><span class="line">    case lottie = 5</span><br><span class="line">    /// SVG 类型</span><br><span class="line">    case svg = 6</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Swift"><a href="#Swift" class="headerlink" title="Swift"></a>Swift</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 常规用法，注意事项与 Objective-C 中标明的一致</span></span><br><span class="line"><span class="keyword">let</span> imageView: <span class="type">UIImageView</span> <span class="operator">=</span> <span class="type">YCImageView</span>.yc_image(urlString: <span class="string">&quot;xxxx&quot;</span>, option: .none, progress: <span class="literal">nil</span>, transform: <span class="literal">nil</span>, completion: <span class="literal">nil</span>) <span class="keyword">as</span> <span class="type">UIImageView</span></span><br><span class="line"></span><br><span class="line"><span class="operator">----------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 需要手动接管 Lottie 时</span></span><br><span class="line"><span class="keyword">let</span> imageView: <span class="type">LOTAnimationView</span> <span class="operator">=</span> <span class="type">YCImageView</span>.yc_image(urlString: <span class="string">&quot;xxxx&quot;</span>, option: .none, progress: <span class="literal">nil</span>, transform: <span class="literal">nil</span>, completion: <span class="literal">nil</span>) <span class="keyword">as</span> <span class="type">LOTAnimationView</span></span><br><span class="line"><span class="comment">/// - Note: 播放 Lottie</span></span><br><span class="line">imageView.play()</span><br><span class="line"><span class="comment">/// - Note: 停止 Lottie</span></span><br><span class="line">imageView.stop()</span><br><span class="line"></span><br><span class="line"><span class="operator">----------------------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 需要手动接管 GIF 时</span></span><br><span class="line"><span class="keyword">let</span> imageView: <span class="type">YYAnimatedImageView</span> <span class="operator">=</span> <span class="type">YCImageView</span>.yc_image(urlString: <span class="string">&quot;xxxx&quot;</span>, option: .none, progress: <span class="literal">nil</span>, transform: <span class="literal">nil</span>, completion: <span class="literal">nil</span>) <span class="keyword">as</span> <span class="type">YYAnimatedImageView</span></span><br><span class="line"><span class="comment">/// - Note: 播放 GIF</span></span><br><span class="line">imageView.startAnimating()</span><br><span class="line"><span class="comment">/// - Note: 停止 GIF</span></span><br><span class="line">imageView.stopAnimating()</span><br></pre></td></tr></table></figure>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/rust-sturct-know/" title="Rust 工程结构初探">Rust 工程结构初探</a></h2>
+                <p class="excerpt">
+                
+                
+Rust 项目的依赖管理机制
+
+Rust 的依赖管理是基于项目的根 Cargo.toml 文件，而不是子目录中的 Cargo.toml 文件。如果再子目录的 Cargo.toml 文件中描述，即使同样在子目录中的.rs文件，也会出现识别不到的问题。
+我们需要明确 Rust 项目的依赖管理机制。在 
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-07-23T07:00:39.000Z" class="post-list__meta--date date">2023-07-23</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Cargo/" rel="tag">Cargo</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84/" rel="tag">工程结构</a>
+</span><a class="btn-border-small" href="/rust-sturct-know/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/rust-value-borrow/" title="Rust - 值的借用">Rust - 值的借用</a></h2>
+                <p class="excerpt">
+                
+                值的借用是如何工作的？当我们进行变量赋值、传参和函数返回时，如果涉及的数据结构没有实现 Copy trait，就会默认使用 Move 语义转移值的所有权，失去所有权的变量将无法继续访问原来的数据；如果数据结构实现了 Copy trait，就会使用 Copy 语义，自动把值复制一份，原有的变量还能继续
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-04-19T09:29:05.000Z" class="post-list__meta--date date">2023-04-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Borrow/" rel="tag">Borrow</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>
+</span><a class="btn-border-small" href="/rust-value-borrow/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-custorm-imageview/';
+  var disqus_title = 'iOS 图像聚合加载视图 YCImageView 架构设计 & 使用';
+  var disqus_url = 'http://shevakuilin.com/ios-custorm-imageview/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
