@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>字符串最短循环子串 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="字符串最短循环子串 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="字符串最短循环子串 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/string-min-sub/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2023-05-17T08:26:43.000Z" class="post-list__meta--date date">2023-05-17</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/%E5%8C%B9%E9%85%8D%E6%A8%A1%E5%BC%8F/" rel="tag">匹配模式</a>, <a class="-none-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">字符串最短循环子串</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>小M在研究字符串时发现了一个有趣的现象：某些字符串是由一个较短的子串反复拼接而成的。如果能够找到这个最短的子串，便可以很好地还原字符串的结构。你的任务是给定一个字符串，判断它是否是由<strong>某个子串</strong>反复拼接而成的。如果是，输出该最短的子串；否则，输出空字符串<code>&quot;&quot;</code>。</p>
+<p>例如：当输入字符串为 <code>abababab</code> 时，它可以由子串 <code>ab</code> 反复拼接而成，因此输出 <code>ab</code>；而如果输入 <code>ab</code>，则该字符串不能通过子串的重复拼接得到，因此输出空字符串。</p>
+<h3 id="测试样例"><a href="#测试样例" class="headerlink" title="测试样例"></a>测试样例</h3><p><em><strong>样例1：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;abcabcabcabc&quot;</code> 输出：<code>&#39;abc&#39;</code></p>
+</blockquote>
+<p><em><strong>样例2：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;aaa&quot;</code> 输出：<code>&#39;a&#39;</code></p>
+</blockquote>
+<p><em><strong>样例3：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;abababab&quot;</code> 输出：<code>&#39;ab&#39;</code></p>
+</blockquote>
+<p><em><strong>样例4：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;ab&quot;</code> 输出：<code>&#39;&#39;</code></p>
+</blockquote>
+<p><em><strong>样例5：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;abcdabcdabcdabcd&quot;</code> 输出：<code>&#39;abcd&#39;</code></p>
+</blockquote>
+<p><em><strong>样例6：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;b&quot;</code> 输出：<code>&#39;&#39;</code></p>
+</blockquote>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="思路说明"><a href="#思路说明" class="headerlink" title="思路说明"></a>思路说明</h3><p>题目要求判断一个字符串是否可以由某个子串反复拼接而成，并输出该最短的子串。核心信息是字符串的周期性。我们可以通过遍历字符串的长度，找到所有可能的子串长度，并验证这些子串是否能重复拼接成原字符串。如果找到这样的子串，则输出该子串；否则，输出空字符串。</p>
+<h3 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h3><ol>
+<li><strong>遍历可能的子串长度</strong>：<ol>
+<li>从长度为1到n-1的子串中，找到所有可能的子串长度。</li>
+<li>对于每个子串长度i，判断n是否能被i整除（即$$n % i &#x3D;&#x3D; 0$$）。</li>
+</ol>
+</li>
+<li><strong>验证子串的重复性</strong>：<ol>
+<li>如果n能被i整除，则取出前i个字符作为子串t。</li>
+<li>计算子串t重复$$n &#x2F; i$$（表示n除以i的整数部分）次后是否等于原字符串。</li>
+<li>如果相等，则返回子串t。</li>
+</ol>
+</li>
+<li><strong>返回结果</strong>：<ol>
+<li>如果遍历完所有可能的子串长度都没有找到符合条件的子串，则返回空字符串。</li>
+</ol>
+</li>
+</ol>
+<h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><ul>
+<li><strong>时间复杂度</strong>：<ul>
+<li>遍历可能的子串长度需要$$O(n)$$次操作。</li>
+<li>对于每个可能的子串长度，验证子串的重复性需要$$O(n)$$次操作。</li>
+<li>因此，总的时间复杂度为$$O(n^2)$$。</li>
+</ul>
+</li>
+<li><strong>空间复杂度</strong>：<ul>
+<li>仅使用了常数级别的额外空间，因此空间复杂度为$$O(1)$$。</li>
+</ul>
+</li>
+</ul>
+<h3 id="知识点扩展"><a href="#知识点扩展" class="headerlink" title="知识点扩展"></a>知识点扩展</h3><ul>
+<li><strong>字符串处理</strong>：<ul>
+<li>字符串的切片操作和拼接操作。</li>
+<li>字符串的周期性判断。</li>
+</ul>
+</li>
+<li><strong>数学分析</strong>：<ul>
+<li>整除运算和倍数关系。</li>
+<li>通过数学分析减少不必要的计算。</li>
+</ul>
+</li>
+</ul>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">solution</span>(inp: &amp;<span class="type">str</span>) <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="comment">// 记录原字符串长度</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">n</span> = inp.<span class="title function_ invoke__">len</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 遍历从 1 到 n-1 的整数范围，这里取的是子串可能的长度</span></span><br><span class="line">    <span class="comment">// 这个循环的目的是检查从 1 到 n-1 的每一个长度 i，</span></span><br><span class="line">    <span class="comment">// 看看是否存在一个子串 t，使得 t 重复若干次后可以构成原字符串 inp。</span></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">i</span> <span class="keyword">in</span> <span class="number">1</span>..n &#123;</span><br><span class="line">        <span class="comment">// 检查子串长度是否能被原字符串长度整除，不能被整除则说明无法构成原字符串</span></span><br><span class="line">        <span class="keyword">if</span> n % i == <span class="number">0</span> &#123;</span><br><span class="line">            <span class="comment">// 截取可能的子串</span></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">t</span> = &amp;inp[<span class="number">0</span>..i];</span><br><span class="line">            <span class="comment">// 检查子串重复 n/i 次后是否等于原字符串</span></span><br><span class="line">            <span class="keyword">if</span> t.<span class="title function_ invoke__">repeat</span>(n / i) == inp &#123;</span><br><span class="line">                <span class="keyword">return</span> t.<span class="title function_ invoke__">to_string</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果没找到模式，返回空字符串</span></span><br><span class="line">    <span class="type">String</span>::<span class="title function_ invoke__">new</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;abcabcabcabc&quot;</span>) == <span class="string">&quot;abc&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;aaa&quot;</span>) == <span class="string">&quot;a&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;abababab&quot;</span>) == <span class="string">&quot;ab&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;ab&quot;</span>) == <span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;abcdabcdabcdabcd&quot;</span>) == <span class="string">&quot;abcd&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;b&quot;</span>) == <span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这道题中用到的算法技巧可以归类为<strong>字符串处理</strong>和<strong>模式匹配</strong>。具体来说，它涉及到以下几个方面：</p>
+<ol>
+<li><strong>字符串分割与比较</strong>：通过遍历字符串的不同子串长度，并检查这些子串是否可以重复构成原字符串。</li>
+<li><strong>整除性检查</strong>：通过检查字符串长度是否能被某个子串长度整除，来判断该子串是否可能构成原字符串。</li>
+<li><strong>子串重复性验证</strong>：通过逐段比较字符串的不同部分，验证是否由某个子串重复构成。</li>
+</ol>
+<p>这些技巧在字符串处理和模式匹配问题中非常常见，尤其是在需要识别重复模式或周期性结构的字符串问题中。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-custorm-imageview/" title="iOS 图像聚合加载视图 YCImageView 架构设计 &amp; 使用">iOS 图像聚合加载视图 YCImageView 架构设计 &amp; 使用</a></h2>
+                <p class="excerpt">
+                
+                架构设计
+
+执行设计
+
+使用教程Objective - C使用 URL 加载12345678910111213141516171819202122232425262728293031/// 常规使用/// - Note: 不需要的回调直接传入 nil 即可/// - Note: 注意，以下所有 回调
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-05-19T07:35:07.000Z" class="post-list__meta--date date">2023-05-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Gif/" rel="tag">Gif</a>, <a class="-none-link" href="/tags/ImageView/" rel="tag">ImageView</a>, <a class="-none-link" href="/tags/Lottie/" rel="tag">Lottie</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/webP/" rel="tag">webP</a>
+</span><a class="btn-border-small" href="/ios-custorm-imageview/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/rust-value-borrow/" title="Rust - 值的借用">Rust - 值的借用</a></h2>
+                <p class="excerpt">
+                
+                值的借用是如何工作的？当我们进行变量赋值、传参和函数返回时，如果涉及的数据结构没有实现 Copy trait，就会默认使用 Move 语义转移值的所有权，失去所有权的变量将无法继续访问原来的数据；如果数据结构实现了 Copy trait，就会使用 Copy 语义，自动把值复制一份，原有的变量还能继续
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-04-19T09:29:05.000Z" class="post-list__meta--date date">2023-04-19</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Borrow/" rel="tag">Borrow</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>
+</span><a class="btn-border-small" href="/rust-value-borrow/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/string-min-sub/';
+  var disqus_title = '字符串最短循环子串';
+  var disqus_url = 'http://shevakuilin.com/string-min-sub/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+  
+         <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+    
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+   
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
