@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>找出最长的神奇数列 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="找出最长的神奇数列 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="找出最长的神奇数列 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/find-longest-magic-seq/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2022-12-29T13:25:02.000Z" class="post-list__meta--date date">2022-12-29</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a>, <a class="-none-link" href="/tags/%E6%95%B0%E5%88%97/" rel="tag">数列</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">找出最长的神奇数列</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>小F是一个好学的中学生，今天他学习了数列的概念。他在纸上写下了一个由 <code>0</code> 和 <code>1</code> 组成的正整数序列，长度为 <code>n</code>。这个序列中的 <code>1</code> 和 <code>0</code> 交替出现，且至少由 3 个连续的 <code>0</code> 和 <code>1</code> 组成的部分数列称为「神奇数列」。例如，<code>10101</code> 是一个神奇数列，而 <code>1011</code> 不是。现在，小F想知道在这个序列中，最长的「神奇数列」是哪一个。你能帮他找到吗？</p>
+<p>如果有多个神奇数列，那么输出最先出现的一个。</p>
+<h3 id="测试样例"><a href="#测试样例" class="headerlink" title="测试样例"></a>测试样例</h3><p><em><strong>样例1：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;0101011101&quot;</code> 输出：<code>&#39;010101&#39;</code></p>
+</blockquote>
+<p><em><strong>样例2：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;1110101010000&quot;</code> 输出：<code>&#39;10101010&#39;</code></p>
+</blockquote>
+<p><em><strong>样例3：</strong></em></p>
+<blockquote>
+<p>输入：<code>inp = &quot;1010101010101010&quot;</code> 输出：<code>&#39;1010101010101010&#39;</code></p>
+</blockquote>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="问题理解"><a href="#问题理解" class="headerlink" title="问题理解"></a>问题理解</h3><p>我们需要在一个由 <code>0</code> 和 <code>1</code> 组成的字符串中找到最长的「神奇数列」。神奇数列的定义是：</p>
+<ul>
+<li>由 <code>0</code> 和 <code>1</code> 交替出现。</li>
+<li>至少包含 3 个连续的 <code>0</code> 和 <code>1</code>。这意味着数列中至少要有 3 个连续的 <code>0</code> 或 <code>1</code>，并且这些 <code>0</code> 和 <code>1</code> 是交替出现的。比如<code>10101</code> 是神奇数列，而<code>1010</code>就不是。</li>
+</ul>
+<h3 id="数据结构选择"><a href="#数据结构选择" class="headerlink" title="数据结构选择"></a>数据结构选择</h3><p>由于我们处理的是字符串，可以直接使用字符串操作。</p>
+<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><ol>
+<li><strong>遍历字符串</strong>：从字符串的第一个字符开始，逐个检查字符。</li>
+<li><strong>检测交替模式</strong>：对于每个字符，检查它是否与前一个字符不同，如果是，则继续检查下一个字符是否与当前字符不同，以此类推。</li>
+<li><strong>记录最长神奇数列</strong>：在检测到交替模式（交替模式在本题中指的是序列中的 <code>0</code> 和 <code>1</code> 交替出现）时，记录当前的子串长度，并与之前记录的最长长度进行比较。如果当前长度更长，则更新最长神奇数列的起始和结束位置。</li>
+<li><strong>返回结果</strong>：遍历结束后，返回最长的神奇数列。</li>
+</ol>
+<h3 id="关键点"><a href="#关键点" class="headerlink" title="关键点"></a>关键点</h3><ul>
+<li>如何高效地检测交替模式。</li>
+<li>如何记录和更新最长神奇数列的起始和结束位置。</li>
+</ul>
+<p>这道题目综合运用了字符串处理和双指针算法知识，是一道典型的字符串处理问题，适合练习字符串操作和算法优化的同学。</p>
+<h3 id="思路说明"><a href="#思路说明" class="headerlink" title="思路说明"></a>思路说明</h3><p>题目要求找出由 <code>0</code> 和 <code>1</code> 交替组成的、长度至少为 3 的最长子序列。我们可以通过<strong>遍历字符串</strong>，使用<strong>双指针</strong>来识别和记录这些交替出现的子序列。具体来说，我们使用两个指针 <code>i</code> 和 <code>j</code>，其中 <code>i</code> 指向当前子序列的开始，<code>j</code> 用于扩展子序列，直到遇到与前一个字符相同的字符为止。通过这种方式，我们可以找到所有符合条件的子序列，并记录其中最长的那个。</p>
+<h3 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h3><ol>
+<li><strong>初始化</strong>：<ol>
+<li>初始化指针 <code>i</code> 为 0，表示当前子序列的起始位置。</li>
+<li>初始化变量 <code>ans</code> 为空字符串，用于存储最长的神奇数列。</li>
+</ol>
+</li>
+<li><strong>遍历字符串</strong>：<ol>
+<li>使用 <code>while</code> 循环遍历字符串，直到 <code>i</code> 达到字符串的长度。</li>
+<li>初始化指针 <code>j</code> 为 <code>i + 1</code>，表示当前子序列的下一个字符。</li>
+</ol>
+</li>
+<li><strong>扩展子序列</strong>：<ol>
+<li>使用 <code>while</code> 循环，当 <code>j</code> 未超出字符串长度且 <code>inp[j]</code> 不等于 <code>inp[j - 1]</code> 时，继续扩展子序列。</li>
+<li>每次扩展后，<code>j</code> 增加 1。</li>
+</ol>
+</li>
+<li><strong>更新最长子序列</strong>：<ol>
+<li>如果当前子序列的长度 <code>j - i</code> 大于 <code>ans</code> 的长度，则更新 <code>ans</code> 为当前子序列 <code>chars[i..j].iter().collect()</code>。</li>
+<li>更新 <code>i</code> 为 <code>j</code>，继续寻找下一个子序列。</li>
+</ol>
+</li>
+<li><strong>返回结果</strong>：<ol>
+<li>如果最终找到的最长子序列长度小于 3，则返回空字符串。</li>
+<li>否则，返回 <code>ans</code>。</li>
+</ol>
+</li>
+</ol>
+<h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><ul>
+<li><strong>时间复杂度</strong>：<ul>
+<li>遍历字符串一次，时间复杂度为 O(n)，其中 n 是字符串的长度。</li>
+<li>在每次遍历中，<code>j</code> 指针最多移动 n 次，因此总体时间复杂度为 O(n)。</li>
+</ul>
+</li>
+<li><strong>空间复杂度</strong>：<ul>
+<li>只使用了常数级别的额外空间，空间复杂度为 O(1)。</li>
+</ul>
+</li>
+</ul>
+<h3 id="知识点扩展"><a href="#知识点扩展" class="headerlink" title="知识点扩展"></a>知识点扩展</h3><ul>
+<li><strong>字符串处理</strong>：<ul>
+<li>字符串的基本操作，如遍历、切片等。</li>
+<li>双指针技巧在字符串处理中的应用，用于高效地识别和处理子序列。</li>
+</ul>
+</li>
+<li><strong>双指针算法</strong>：<ul>
+<li>双指针算法是一种常用的优化技巧，适用于需要在数组或字符串中寻找特定模式的场景。</li>
+<li>在本题中，双指针 <code>i</code> 和 <code>j</code> 分别用于标记子序列的起始和结束位置，通过这种方式可以高效地找到符合条件的子序列。</li>
+</ul>
+</li>
+</ul>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">solution</span>(inp: &amp;<span class="type">str</span>) <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="comment">// chars 是一个字符串切片（&amp;str）的 chars() 方法返回的迭代器，它将字符串转换为一个字符的迭代器。</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">chars</span>: <span class="type">Vec</span>&lt;<span class="type">char</span>&gt; = inp.<span class="title function_ invoke__">chars</span>().<span class="title function_ invoke__">collect</span>();</span><br><span class="line">    <span class="comment">// 初始化指针 i 为 0，表示当前子序列的起始位置。</span></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">i</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 初始化变量 ans 为空字符串，用于存储最长的神奇数列</span></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">ans</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// - Note: 遍历字符串，初始化指针 j 为 i + 1，表示当前子序列的下一个字符</span></span><br><span class="line">    <span class="keyword">while</span> i &lt; chars.<span class="title function_ invoke__">len</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">j</span> = i + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// - Note: 扩展子序列，每次扩展后，j 增加 1</span></span><br><span class="line">        <span class="comment">// 找到不再交替的位置：当 j 未超出字符串长度且 inp[j] 不等于 inp[j - 1] 时，继续扩展子序列</span></span><br><span class="line">        <span class="comment">// 也就是是当前和前一个数不相同时</span></span><br><span class="line">        <span class="keyword">while</span> j &lt; chars.<span class="title function_ invoke__">len</span>() &amp;&amp; chars[j] != chars[j - <span class="number">1</span>] &#123;</span><br><span class="line">            j += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// - Note: 更新最长子序列</span></span><br><span class="line">        <span class="comment">// 如果找到更长的序列：如果当前子序列的长度 j - i 大于 ans 的长度，则更新 ans 为当前子序列</span></span><br><span class="line">        <span class="keyword">if</span> j - i &gt; ans.<span class="title function_ invoke__">len</span>() &#123;</span><br><span class="line">            <span class="comment">// [i..j] 是一个切片操作，表示从索引 i 开始到索引 j 结束（不包括 j）的子切片。</span></span><br><span class="line">            <span class="comment">// iter() 方法将这个子切片转换为一个迭代器。这个迭代器会逐个返回子切片中的字符。</span></span><br><span class="line">            <span class="comment">// collect() 方法将迭代器中的元素收集到一个集合中。具体收集到什么类型的集合取决于上下文。</span></span><br><span class="line">            <span class="comment">// 例如，如果上下文允许，它可以将字符收集到一个字符串中，或者收集到一个向量中。</span></span><br><span class="line">            <span class="comment">// 等价与 python 中的 ans = inp[i:j]</span></span><br><span class="line">            ans = chars[i..j].<span class="title function_ invoke__">iter</span>().<span class="title function_ invoke__">collect</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 更新 i 为 j，继续寻找下一个子序列</span></span><br><span class="line">        i = j;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果序列长度小于3，返回空字符串</span></span><br><span class="line">    <span class="keyword">if</span> ans.<span class="title function_ invoke__">len</span>() &lt; <span class="number">3</span> &#123;</span><br><span class="line">        ans.<span class="title function_ invoke__">clear</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ans</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;0101011101&quot;</span>) == <span class="string">&quot;010101&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;1110101010000&quot;</span>) == <span class="string">&quot;10101010&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="string">&quot;1010101010101010&quot;</span>) == <span class="string">&quot;1010101010101010&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>字符串处理：<ol>
+<li>在 Rust 中，字符串不能像 Python 那样直接用下标访问字符</li>
+<li>需要先将字符串转换为字符数组：let chars: Vec<char> &#x3D; inp.chars().collect()</li>
+<li>切片操作需要使用 collect() 来收集字符：chars[i..j].iter().collect()</li>
+</ol>
+</li>
+<li>变量声明：<ol>
+<li>Rust 需要使用 mut 关键字声明可变变量</li>
+<li>使用 String::new() 创建空字符串</li>
+</ol>
+</li>
+<li>循环和条件：<ol>
+<li>while 循环的语法基本相同</li>
+<li>条件判断不需要括号</li>
+</ol>
+</li>
+<li>字符串操作：<ol>
+<li>Python 的字符串切片 inp[i:j] 变成了 Rust 的 chars[i..j].iter().collect()</li>
+<li>清空字符串使用 ans.clear() 而不是赋值空字符串</li>
+</ol>
+</li>
+</ol>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/rust-learn-01/" title="从零开始的 Rust 修炼生活">从零开始的 Rust 修炼生活</a></h2>
+                <p class="excerpt">
+                
+                
+前言在当今这个快速发展的软件开发领域，掌握一门高效且安全的编程语言显得尤为重要。Rust，作为一门集性能与安全性于一身的现代系统编程语言，自2010年首次公开以来，便以其独特的所有权系统和零成本抽象理念吸引了大量开发者的关注。本系列文章旨在为初学者提供一条系统学习Rust的道路，从基础语法到高级特
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-02-05T07:03:53.000Z" class="post-list__meta--date date">2023-02-05</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="tag">基础语法</a>
+</span><a class="btn-border-small" href="/rust-learn-01/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-moudle-02/" title="洋葱学园 iOS 端组件化重构之路[二]-实施方案">洋葱学园 iOS 端组件化重构之路[二]-实施方案</a></h2>
+                <p class="excerpt">
+                
+                
+
+背景基于洋葱学园 iOS 端组件化重构之路[一]-现状梳理 得出的结论与方案，需要验证方案的可行性及实施成本，设计完整架构图和演示工程，包括后续持续集成的改造思路等。
+实施目标
+中间件的方案，产出完整调度能力的中间件Demo，包含下沉依赖关系演示
+列出现有功能的基于中间件改造成本
+如何梳理职能范
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-11-01T02:41:50.000Z" class="post-list__meta--date date">2022-11-01</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>, <a class="-none-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a>
+</span><a class="btn-border-small" href="/ios-moudle-02/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/find-longest-magic-seq/';
+  var disqus_title = '找出最长的神奇数列';
+  var disqus_url = 'http://shevakuilin.com/find-longest-magic-seq/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+  
+         <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+    
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+   
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
