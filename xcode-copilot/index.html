@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>iOS 集成 Copilot 至 Xcode 实现智能化编程辅助 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iOS 集成 Copilot 至 Xcode 实现智能化编程辅助 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="iOS 集成 Copilot 至 Xcode 实现智能化编程辅助 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/xcode-copilot/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2023-08-17T03:57:52.000Z" class="post-list__meta--date date">2023-08-17</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/Copilot/" rel="tag">Copilot</a>, <a class="-none-link" href="/tags/IDE/" rel="tag">IDE</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">iOS 集成 Copilot 至 Xcode 实现智能化编程辅助</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/xcode-copilot.png">
+
+<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><p>GitHub 推出了一个强大的 AI 代码工具 <strong>Copilot</strong>（副驾驶），它能提供很好的代码建议，大大加快编程的开发速度。</p>
+<p>Copilot 支持许多编程语言，包括 Swift，并可以在IDE上安装相应的扩展插件，方便地在 IDE 上使用 Copilot。</p>
+<h2 id="2-CopilotForXcode"><a href="#2-CopilotForXcode" class="headerlink" title="2. CopilotForXcode"></a>2. <strong>CopilotForXcode</strong></h2><p>官方提到的 IDE 扩展并不包括 Xcode，令人高兴的是，Shx Guo 开发了 <strong>CopilotForXcode</strong>。</p>
+<p>只要安装 CopilotForXcode，然后再进行一些设置，就能在 Xcode 中使用 Copilot 了。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/intitni/CopilotForXcode">https://github.com/intitni/CopilotForXcode</a></p>
+<h2 id="3-如何使用"><a href="#3-如何使用" class="headerlink" title="3. 如何使用"></a>3. 如何使用</h2><p>接下来将一步步演示如何请 Copilo t在 Xcode 中帮忙写代码，和 Copilot 一起愉快地进行配对编程写 App：</p>
+<ul>
+<li><strong>申请 GitHub Copilot 账户</strong></li>
+<li><strong>安装 Node</strong></li>
+<li><strong>安装和设置 Copilot for Xcode</strong></li>
+<li><strong>将 Copilot 加入 Xcode Source Editor 的扩展</strong></li>
+<li><strong>同意 Copilot for Xcode 所需的权限</strong></li>
+<li><strong>在 Xcode 中使用 Copilot 帮助编写代码</strong></li>
+<li><strong>配置 Codeium、OpenAI、Azure OpenAI</strong></li>
+</ul>
+<h3 id="3-1-申请-GitHub-Copilot-账户"><a href="#3-1-申请-GitHub-Copilot-账户" class="headerlink" title="3.1 申请 GitHub Copilot 账户"></a>3.1 申请 GitHub Copilot 账户</h3><p>进入 GitHub Copilot 网站。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/features/copilot">https://github.com/features/copilot</a></p>
+<p>选择 <strong>Get started with Copliot</strong>。</p>
+<img src="/image/xcode-copilot-01.png">
+
+<p>选择 <strong>Start a free trial</strong>。</p>
+<img src="/image/xcode-copilot-02.png">
+
+<p>选择 <strong>Get Access to GitHub Copilot</strong> ，每个人有30天免费试用期，30天 过后每个月费用为 10 美金&#x2F;月。</p>
+<blockquote>
+<p>你可以在 30 天到期前随时取消订阅，以免被意外扣费。</p>
+</blockquote>
+<img src="/image/xcode-copilot-03.png">
+
+<p>进入资料填写页面</p>
+<img src="/image/xcode-copilot-04.png">
+
+<p>绑定支付信息，<strong>信用卡</strong>（信用卡需支持外币）或 <strong>PayPal</strong>，点击 <strong>Save payment infomation</strong> 进行保存。</p>
+<img src="/image/xcode-copilot-05.png">
+
+<p>支付信息绑定成功后，选择 <strong>Allow</strong>，然后点击 <strong>Save and get started</strong>。</p>
+<img src="/image/xcode-copilot-06.png">
+
+<p>然后就可以开始使用 Copilot 功能了。</p>
+<img src="/image/xcode-copilot-07.png">
+
+<h3 id="3-2-安装-Node"><a href="#3-2-安装-Node" class="headerlink" title="3.2 安装 Node"></a>3.2 安装 Node</h3><blockquote>
+<p>⚠️ ⚠️⚠️ 有 Node 环境的可以跳过这一步 ⚠️⚠️⚠️</p>
+</blockquote>
+<p>为了能使用 Copilot for Xcode，我们必须先安裝 Node。</p>
+<img src="/image/xcode-copilot-08.png">
+
+<p><a target="_blank" rel="noopener" href="https://nodejs.org/">https://nodejs.org/</a></p>
+<p>下载对应 pkg 文件安装</p>
+<img src="/image/xcode-copilot-09.png">
+
+<img src="/image/xcode-copilot-10.png">
+
+<h3 id="3-3-安装和设置-Copilot-for-Xcode"><a href="#3-3-安装和设置-Copilot-for-Xcode" class="headerlink" title="3.3 安装和设置 Copilot for Xcode"></a>3.3 <strong>安装和设置 Copilot for Xcode</strong></h3><p>下载 Copilot for Xcode 的<strong>安装包</strong>（注意：不是源码）。</p>
+<img src="/image/xcode-copilot-11.png">
+
+<p>将 Copilot for Xcode 移动到 <strong>Applications</strong>。</p>
+<img src="/image/xcode-copilot-12.png">
+
+<p>启动 Copilot for Xcode，点击 <strong>Set Up Launch Agent for XPC Service</strong>。</p>
+<img src="/image/xcode-copilot-13.png">
+
+<p>然后点击 <strong>Refresh</strong> 更新版本状态。</p>
+<img src="/image/xcode-copilot-14.png">
+
+<p>点击 <strong>Sign in</strong> 登录 GitHub 账号，点击后将打开 GitHub 的认证网页。</p>
+<img src="/image/xcode-copilot-15.png">
+
+<p>这个时候 <strong>user code</strong> 会自动复制到剪切板。</p>
+<img src="/image/xcode-copilot-16.png">
+
+<p>在认证网页 <strong>cmd + v</strong> 复制刚才的 <strong>user code</strong>，点击 <strong>Continue</strong>。</p>
+<img src="/image/xcode-copilot-17.png">
+
+<p>点击 <strong>Authorize GitHub Copilot Plugin</strong>。</p>
+<img src="/image/xcode-copilot-18.png">
+
+<p>连接成功。</p>
+<img src="/image/xcode-copilot-19.png">
+
+<p>回到 Copilot for Xcode，点击 <strong>Confirm Sign-in</strong>。</p>
+<img src="/image/xcode-copilot-20.png">
+
+<p>完成 Copilot 的设置，<strong>Status</strong> 显示 <strong>OK</strong>。</p>
+<img src="/image/xcode-copilot-21.png">
+
+<h3 id="3-4-将-Copilot-加入-Xcode-Source-Editor-的扩展"><a href="#3-4-将-Copilot-加入-Xcode-Source-Editor-的扩展" class="headerlink" title="3.4 将 Copilot 加入 Xcode Source Editor 的扩展"></a>3.4 <strong>将 Copilot 加入 Xcode Source Editor 的扩展</strong></h3><p>我们必须将 Copilot 设置为 Xcode Source Editor 的扩展，之后才能在 Xcode 使用 Copilot 的相关功能。</p>
+<p>打开 <strong>Settings App</strong>，进入 <strong>Extensions</strong> &gt; <strong>Xcode Source Editor</strong>。</p>
+<img src="/image/xcode-copilot-22.png">
+
+<p>勾选 <strong>Copilot</strong>。</p>
+<img src="/image/xcode-copilot-23.png">
+
+<h3 id="3-5-同意-Copilot-for-Xcode-所需的权限"><a href="#3-5-同意-Copilot-for-Xcode-所需的权限" class="headerlink" title="3.5 同意 Copilot for Xcode 所需的权限"></a>3.5 <strong>同意 Copilot for Xcode 所需的权限</strong></h3><p>为了让 Copilot 能在 Xcode 帮我们编程，我们还需要同意一些相关权限。</p>
+<p>重新启动 Xcode 后，在菜单的 <strong>Editor</strong> &gt; <strong>Copilot</strong> 可找到 Copilot 的相关命令，比方点击 <strong>Get Suggestions</strong> 可请 Copilot 给我们代码建议。</p>
+<img src="/image/xcode-copilot-24.png">
+
+<p>请先点击 <strong>Get Suggestions</strong>，让它出现权限不足的相关错误。比方下图显示无法访问 Accessibility API。</p>
+<img src="/image/xcode-copilot-25.png">
+
+<p>打开 <strong>Settings App</strong>，勾选 <strong>Privacy</strong> <strong>&amp;</strong> <strong>Security</strong> &gt; <strong>Accessibility</strong> 的 <strong>Copilot for Xcode</strong>。</p>
+<img src="/image/xcode-copilot-26.png">
+
+<p>回到 Xcode，再次点击 <strong>Get Suggestions</strong>，然后<strong>同意</strong> Copilot for Xcode 控制 Xcode 和访问桌面文件夹。</p>
+<img src="/image/xcode-copilot-27.png">
+
+<img src="/image/xcode-copilot-28.png">
+
+<h3 id="3-6-在-Xcode-中使用-Copilot-帮助编写代码"><a href="#3-6-在-Xcode-中使用-Copilot-帮助编写代码" class="headerlink" title="3.6 在 Xcode 中使用 Copilot 帮助编写代码"></a>3.6 <strong>在 Xcode 中使用 Copilot 帮助编写代码</strong></h3><p>经历了千辛万苦，现在我们终于能在 Xcode 使用 Copilot 编程了。通常我们会通过两种方法请 Copilot 帮忙。</p>
+<ul>
+<li>输入注释说明需求，然后请 Copilot 帮忙。</li>
+<li>输入部分代码，请 Copilot 完成剩下的代码。</li>
+</ul>
+<p>以下我们以实际的例子说明。</p>
+<h4 id="3-6-1-定义-array"><a href="#3-6-1-定义-array" class="headerlink" title="3.6.1 定义 array"></a>3.6.1 定义 array</h4><h5 id="3-6-1-1-方法1：输入注释"><a href="#3-6-1-1-方法1：输入注释" class="headerlink" title="3.6.1.1 方法1：输入注释"></a>3.6.1.1 方法1：输入注释</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 定义十二星座的 array</span></span><br></pre></td></tr></table></figure>
+
+<p>将光标移到注释的下一行，然后点击 Xcode 菜单的 <strong>Editor</strong> &gt; <strong>Copilot</strong> &gt; <strong>Get Suggestions</strong>。</p>
+<p>Copilot 将十二星座的数组写在以下注释：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义十二星座的 array</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/*========== Copilot Suggestion 1/1</span></span><br><span class="line"><span class="comment">   ^let zodiacs = [&quot;白羊座&quot;, &quot;金牛座&quot;, &quot;双子座&quot;, &quot;巨蟹座&quot;, &quot;狮子座&quot;, &quot;处女座&quot;, &quot;天秤座&quot;, &quot;天蝎座&quot;, &quot;射手座&quot;, &quot;摩羯座&quot;, &quot;水瓶座&quot;, &quot;双鱼座&quot;]</span></span><br><span class="line"><span class="comment">*/</span><span class="comment">//======== End of Copilot Suggestion</span></span><br></pre></td></tr></table></figure>
+
+<p>如果觉得 Copilot 的建议很好，请再点击 Xcode 菜单的 <strong>Editor</strong> &gt; <strong>Copilot</strong> &gt; <strong>Accept Suggestion</strong>，Copilot 将输入刚刚建议的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义十二星座的 array</span></span><br><span class="line"><span class="keyword">let</span> zodiacs <span class="operator">=</span> [<span class="string">&quot;白羊座&quot;</span>, <span class="string">&quot;金牛座&quot;</span>, <span class="string">&quot;双子座&quot;</span>, <span class="string">&quot;巨蟹座&quot;</span>, <span class="string">&quot;狮子座&quot;</span>, <span class="string">&quot;处女座&quot;</span>, <span class="string">&quot;天秤座&quot;</span>, <span class="string">&quot;天蝎座&quot;</span>, <span class="string">&quot;射手座&quot;</span>, <span class="string">&quot;摩羯座&quot;</span>, <span class="string">&quot;水瓶座&quot;</span>, <span class="string">&quot;双鱼座&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-6-1-2-方法2：输入部分代码"><a href="#3-6-1-2-方法2：输入部分代码" class="headerlink" title="3.6.1.2 方法2：输入部分代码"></a>3.6.1.2 方法2：输入部分代码</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> zodiacs <span class="operator">=</span> </span><br></pre></td></tr></table></figure>
+
+<p>点击 <strong>Get Suggestions</strong>，Copilot 自动将十二星座的数组写在以下注释：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*========== Copilot Suggestion 1/1</span></span><br><span class="line"><span class="comment">                 ^[&quot;白羊座&quot;, &quot;金牛座&quot;, &quot;双子座&quot;, &quot;巨蟹座&quot;, &quot;狮子座&quot;, &quot;处女座&quot;, &quot;天秤座&quot;, &quot;天蝎座&quot;, &quot;射手座&quot;, &quot;摩羯座&quot;, &quot;水瓶座&quot;, &quot;双鱼座&quot;]</span></span><br><span class="line"><span class="comment">*/</span><span class="comment">//======== End of Copilot Suggestion</span></span><br></pre></td></tr></table></figure>
+
+<p>点击 <strong>Accept Suggestion</strong>，Copilot 输入刚刚建议的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> zodiacs <span class="operator">=</span> [<span class="string">&quot;白羊座&quot;</span>, <span class="string">&quot;金牛座&quot;</span>, <span class="string">&quot;双子座&quot;</span>, <span class="string">&quot;巨蟹座&quot;</span>, <span class="string">&quot;狮子座&quot;</span>, <span class="string">&quot;处女座&quot;</span>, <span class="string">&quot;天秤座&quot;</span>, <span class="string">&quot;天蝎座&quot;</span>, <span class="string">&quot;射手座&quot;</span>, <span class="string">&quot;摩羯座&quot;</span>, <span class="string">&quot;水瓶座&quot;</span>, <span class="string">&quot;双鱼座&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-6-2-定义-function"><a href="#3-6-2-定义-function" class="headerlink" title="3.6.2 定义 function"></a>3.6.2 定义 function</h4><h5 id="3-6-2-1-方法1：输入注释"><a href="#3-6-2-1-方法1：输入注释" class="headerlink" title="3.6.2.1 方法1：输入注释"></a>3.6.2.1 方法1：输入注释</h5><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 检查是否为正确的 email 格式</span></span><br></pre></td></tr></table></figure>
+
+<p>将光标移到注释的下一行，然后点击 <strong>Get Suggestions</strong>，Copilot 将 email 格式检查的 function 写在以下注释。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*========== Copilot Suggestion 1/2</span></span><br><span class="line"><span class="comment">   ^func isValidEmail(_ email: String) -&gt; Bool &#123;</span></span><br><span class="line"><span class="comment">        let emailRegEx = &quot;[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]&#123;2,64&#125;&quot;</span></span><br><span class="line"><span class="comment">        let emailPred = NSPredicate(format:&quot;SELF MATCHES %@&quot;, emailRegEx)</span></span><br><span class="line"><span class="comment">        return emailPred.evaluate(with: email)</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">*/</span><span class="comment">//======== End of Copilot Suggestion</span></span><br></pre></td></tr></table></figure>
+
+<p>点击 <strong>Accept Suggestion</strong>，Copilot 输入刚刚建议的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">isValidEmail</span>(<span class="keyword">_</span> <span class="params">email</span>: <span class="type">String</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> emailRegEx <span class="operator">=</span> <span class="string">&quot;[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+<span class="subst">\\</span>.[A-Za-z]&#123;2,64&#125;&quot;</span></span><br><span class="line">    <span class="keyword">let</span> emailPred <span class="operator">=</span> <span class="type">NSPredicate</span>(format:<span class="string">&quot;SELF MATCHES %@&quot;</span>, emailRegEx)</span><br><span class="line">    <span class="keyword">return</span> emailPred.evaluate(with: email)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-6-2-2-方法2：输入部分代码"><a href="#3-6-2-2-方法2：输入部分代码" class="headerlink" title="3.6.2.2 方法2：输入部分代码"></a>3.6.2.2 方法2：输入部分代码</h5><p>输入 </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">isValidEmail</span></span><br></pre></td></tr></table></figure>
+
+<p>或 </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">isValidEmail</span>(<span class="keyword">_</span> <span class="params">email</span>: <span class="type">String</span>) -&gt; <span class="type">Bool</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>输入 <code>func isValidEmail</code> 后点击 <strong>Get Suggestions</strong>，Copilot 将 email 格式检查的 function 写在以下注释:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*========== Copilot Suggestion 1/1</span></span><br><span class="line"><span class="comment">                    ^(_ email: String) -&gt; Bool &#123;</span></span><br><span class="line"><span class="comment">        let emailRegEx = &quot;[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]&#123;2,64&#125;&quot;</span></span><br><span class="line"><span class="comment">        let emailPred = NSPredicate(format:&quot;SELF MATCHES %@&quot;, emailRegEx)</span></span><br><span class="line"><span class="comment">        return emailPred.evaluate(with: email)</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">*/</span><span class="comment">//======== End of Copilot Suggestion</span></span><br></pre></td></tr></table></figure>
+
+<p>点击 <strong>Accept Suggestion</strong>，Copilot 输入刚刚建议的代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">isValidEmail</span>(<span class="keyword">_</span> <span class="params">email</span>: <span class="type">String</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> emailRegEx <span class="operator">=</span> <span class="string">&quot;[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+<span class="subst">\\</span>.[A-Za-z]&#123;2,64&#125;&quot;</span></span><br><span class="line">    <span class="keyword">let</span> emailPred <span class="operator">=</span> <span class="type">NSPredicate</span>(format:<span class="string">&quot;SELF MATCHES %@&quot;</span>, emailRegEx)</span><br><span class="line">    <span class="keyword">return</span> emailPred.evaluate(with: email)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-7-配置-Codeium、OpenAI、Azure-OpenAI"><a href="#3-7-配置-Codeium、OpenAI、Azure-OpenAI" class="headerlink" title="3.7 配置 Codeium、OpenAI、Azure OpenAI"></a>3.7 <strong>配置 Codeium、OpenAI、Azure OpenAI</strong></h3><p>Codeium、OpenAI 和 Azure OpenAI 的配置都相似，只要填入对应的 API Key 即可</p>
+<p>具体说明参考：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/intitni/CopilotForXcode/wiki/Frequently-Asked-Questions#codeium">https://github.com/intitni/CopilotForXcode/wiki/Frequently-Asked-Questions#codeium</a></p>
+<img src="/image/xcode-copilot-29.png">
+
+<h2 id="4-结论"><a href="#4-结论" class="headerlink" title="4. 结论"></a>4. 结论</h2><p><strong>优点</strong>：</p>
+<ul>
+<li>安装难度较低，配置简单，对环境要求低。</li>
+<li>从示例可以看出，效果还是比较不错的，对开发效率的提升较为明显。</li>
+<li>Github 账号直接捆绑，无需额外注册内容。</li>
+<li>对 Swift 支持力度较好。</li>
+<li>与 ChatGPT 相比的优势是响应速度更快，对编程来讲更智能。</li>
+<li>除了 Github Copilot 以外，还支持 Codeium、OpenAI 和 Azure OpenAI 等 AI 辅助工具。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>需要付费，且账号不共享，成本估算为 <strong>N * 10USD &#x2F; 月</strong>。</li>
+<li>鉴于过往插件的经验，Xcode 长时间使用的可能存在影响 IDE 响应速度的性能问题。</li>
+<li>根据作者描述，SwiftUI 预览版本对 Objective-C 的支持可能存在部分问题。</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-moudle-end/" title="洋葱学园 iOS 端组件化重构之路[三]-重构完成">洋葱学园 iOS 端组件化重构之路[三]-重构完成</a></h2>
+                <p class="excerpt">
+                
+                
+
+概述
+以下数据均已脱敏
+
+当前，洋葱学园移动端工程的组件化完成度较低，在影响工程师开发效率的同时，又难以兜住持续集成的影响范围，不利于整体工程的高质量建设，已无法满足日益增长的工程预期与精细化控制的需求，更是掣肘了对公司业务快速扩展的响应速度。
+当前问题业务侧影响
+业务组件独立度的低，难以快速部
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-09-05T08:45:13.000Z" class="post-list__meta--date date">2023-09-05</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>, <a class="-none-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a>
+</span><a class="btn-border-small" href="/ios-moudle-end/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-moudle-02/" title="洋葱学园 iOS 端组件化重构之路[二]-实施方案">洋葱学园 iOS 端组件化重构之路[二]-实施方案</a></h2>
+                <p class="excerpt">
+                
+                
+
+背景基于洋葱学园 iOS 端组件化重构之路[一]-现状梳理 得出的结论与方案，需要验证方案的可行性及实施成本，设计完整架构图和演示工程，包括后续持续集成的改造思路等。
+实施目标
+中间件的方案，产出完整调度能力的中间件Demo，包含下沉依赖关系演示
+列出现有功能的基于中间件改造成本
+如何梳理职能范
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-11-01T02:41:50.000Z" class="post-list__meta--date date">2022-11-01</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>, <a class="-none-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a>
+</span><a class="btn-border-small" href="/ios-moudle-02/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/xcode-copilot/';
+  var disqus_title = 'iOS 集成 Copilot 至 Xcode 实现智能化编程辅助';
+  var disqus_url = 'http://shevakuilin.com/xcode-copilot/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
