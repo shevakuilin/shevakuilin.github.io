@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>hm-app-package | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="hm-app-package | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="hm-app-package | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/hm-app-package/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2025-01-24T05:02:02.000Z" class="post-list__meta--date date">2025-01-24</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E8%AE%BE%E8%AE%A1%E4%BB%8B%E7%BB%8D/" rel="tag">设计介绍</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">hm-app-package</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/hm-app-package.png">
+
+<h1 id="1-应用程序包概述"><a href="#1-应用程序包概述" class="headerlink" title="1. 应用程序包概述"></a>1. 应用程序包概述</h1><h3 id="1-1-应用与应用程序包"><a href="#1-1-应用与应用程序包" class="headerlink" title="1.1 应用与应用程序包"></a>1.1 <strong>应用与应用程序包</strong></h3><p>用户应用程序泛指运行在设备的操作系统之上，为用户提供特定服务的程序，简称“应用”。一个应用所对应的软件包文件，称为“应用程序包”。</p>
+<p>当前系统提供了应用程序包开发、安装、查询、更新、卸载的管理机制，便于开发者开发和管理应用。同时，系统还屏蔽了不同的芯片平台的差异（包括x86&#x2F;ARM，32位&#x2F;64位等），应用程序包在不同的芯片平台都能够安装运行，这使得开发者可以聚焦于应用的功能实现。</p>
+<h3 id="1-2-应用的多Module设计机制"><a href="#1-2-应用的多Module设计机制" class="headerlink" title="1.2 应用的多Module设计机制"></a>1.2 <strong>应用的多Module设计机制</strong></h3><ul>
+<li><strong>支持模块化开发：</strong> 一个应用通常会包含多种功能，将不同的功能特性按模块来划分和管理是一种良好的设计方式。在开发过程中，我们可以将每个功能模块作为一个独立的Module进行开发，Module中可以包含源代码、资源文件、第三方库、配置文件等，每一个Module可以独立编译，实现特定的功能。这种模块化、松耦合的应用管理方式有助于应用的开发、维护与扩展。</li>
+<li><strong>支持多设备适配：</strong> 一个应用往往需要适配多种设备类型，在采用多Module设计的应用中，每个Module都会标注所支持的设备类型。有些Module支持全部类型的设备，有些Module只支持某一种或几种型的设备（比如平板），那么在应用市场分发应用包时，也能够根据设备类型做精准的筛选和匹配，从而将不同的包合理的组合和部署到对应的设备上。</li>
+</ul>
+<h3 id="1-3-Module类型"><a href="#1-3-Module类型" class="headerlink" title="1.3 Module类型"></a>1.3 <strong>Module类型</strong></h3><p>Module按照使用场景可以分为两种类型：</p>
+<ul>
+<li><strong>Ability类型的Module：</strong> 用于实现应用的功能和特性。每一个Ability类型的Module编译后，会生成一个以.hap为后缀的文件，我们称其为HAP（Harmony Ability Package）包。HAP包可以独立安装和运行，是应用安装的基本单位，一个应用中可以包含一个或多个HAP包，具体包含如下两种类型。<ul>
+<li>entry类型的Module：应用的主模块，包含应用的入口界面、入口图标和主功能特性，编译后生成entry类型的HAP。每一个应用分发到同一类型的设备上的应用程序包，只能包含唯一一个entry类型的HAP。</li>
+<li>feature类型的Module：应用的动态特性模块，编译后生成feature类型的HAP。一个应用中可以包含一个或多个feature类型的HAP，也可以不包含。</li>
+</ul>
+</li>
+<li><strong>Library类型的Module：</strong> 用于实现代码和资源的共享。同一个Library类型的Module可以被其他的Module多次引用，合理地使用该类型的Module，能够降低开发和维护成本。Library类型的Module分为Static和Shared两种类型，编译后会生成共享包。<ul>
+<li>Static Library：静态共享库。编译后会生成一个以.har为后缀的文件，即静态共享包HAR（Harmony Archive）。</li>
+<li>Shared Library：动态共享库。编译后会生成一个以.hsp为后缀的文件，即动态共享包HSP（Harmony Shared Package）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>说明</strong></p>
+<ul>
+<li><p>实际上，Shared Library编译后除了会生成一个.hsp文件，还会生成一个.har文件。这个.har文件中包含了HSP对外导出的接口，应用中的其他模块需要通过.har文件来引用HSP的功能。为了表述方便，我们通常认为Shared Library编译后生成HSP。</p>
+</li>
+<li><p>HAR与HSP两种共享包的主要区别体现在：</p>
+<ul>
+<li><table>
+<thead>
+<tr>
+<th>共享包类型</th>
+<th>编译和运行方式</th>
+<th>发布和引用方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HAR</td>
+<td>HAR中的代码和资源跟随使用方编译，如果有多个使用方，它们的编译产物中会存在多份相同拷贝。</td>
+<td>HAR除了支持应用内引用，还可以独立打包发布，供其他应用引用。</td>
+</tr>
+<tr>
+<td>HSP</td>
+<td>HSP中的代码和资源可以独立编译，运行时在一个进程中代码也只会存在一份。</td>
+<td>HSP一般随应用进行打包，当前只支持应用内引用，不支持独立发布和跨应用的引用。</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p><strong>图1</strong> HAR和HSP在APP包中的形态示意图</p>
+</li>
+</ul>
+<img src="/image/hm-app-package-01.png">
+
+<h1 id="2-应用程序包结构"><a href="#2-应用程序包结构" class="headerlink" title="2. 应用程序包结构"></a>2. 应用程序包结构</h1><h3 id="2-1-开发态包结构"><a href="#2-1-开发态包结构" class="headerlink" title="2.1 开发态包结构"></a>2.1 <strong>开发态包结构</strong></h3><p>在DevEco Studio上<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/start-with-ets-stage-0000001820879533#ZH-CN_TOPIC_0000001820879533__%E5%88%9B%E5%BB%BAarkts%E5%B7%A5%E7%A8%8B">创建一个项目工程</a>，并尝试创建多个不同类型的Module。根据实际工程中的目录对照本章节进行学习，可以有助于理解开发态的应用程序结构。</p>
+<p><strong>图1</strong> 项目工程结构示意图（以实际为准）</p>
+<img src="/image/hm-app-package-02.png">
+
+<p>工程结构主要包含的文件类型及用途如下：</p>
+<p><strong>说明</strong></p>
+<ul>
+<li>AppScope目录由DevEco Studio自动生成，不可更改。</li>
+<li>Module目录名称可以由DevEco Studio自动生成（比如entry、library等），也可以自定义。为了便于说明，下表中统一采用Module_name表示。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>配置文件</td>
+<td>包括应用级配置信息、以及Module级配置信息：- AppScope &gt; app.json5：<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/app-configuration-file-0000001820999529">app.json5配置文件</a>，用于声明应用的全局配置信息，比如应用Bundle名称、应用名称、应用图标、应用版本号等。- Module_name &gt; src &gt; main &gt; module.json5：<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/module-configuration-file-0000001820879553">module.json5配置文件</a>，用于声明Module基本信息、支持的设备类型、所含的组件信息、运行所需申请的权限等。</td>
+</tr>
+<tr>
+<td>ArkTS源码文件</td>
+<td>Module_name &gt; src &gt; main &gt; ets：用于存放Module的ArkTS源码文件（.ets文件）。</td>
+</tr>
+<tr>
+<td>资源文件</td>
+<td>包括应用级资源文件、以及Module级资源文件，支持图形、多媒体、字符串、布局文件等，详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/resource-categories-and-access-0000001774119914">资源分类与访问</a>。- AppScope &gt; resources ：用于存放应用需要用到的资源文件。- Module_name &gt; src &gt; main &gt; resources ：用于存放该Module需要用到的资源文件。</td>
+</tr>
+<tr>
+<td>其他配置文件</td>
+<td>用于编译构建，包括构建配置文件、编译构建任务脚本、混淆规则文件、依赖的共享包信息等。- build-profile.json5：工程级或Module级的构建配置文件，包括应用签名、产品配置等。- hvigorfile.ts：应用级或Module级的编译构建任务脚本，开发者可以自定义编译构建工具版本、控制构建行为的配置参数。- obfuscation-rules.txt：混淆规则文件。混淆开启后，在使用Release模式进行编译时，会对代码进行编译、混淆及压缩处理，保护代码资产。- oh-package.json5：用于存放依赖库的信息，包括所依赖的三方库和共享包。</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-编译态包结构"><a href="#2-2-编译态包结构" class="headerlink" title="2.2 编译态包结构"></a>2.2 <strong>编译态包结构</strong></h3><p>不同类型的Module编译后会生成对应的HAP、HAR、HSP等文件，开发态视图与编译态视图的对照关系如下：</p>
+<p><strong>图2</strong> 开发态与编译态的工程结构视图</p>
+<img src="/image/hm-app-package-03.png">
+
+<p>从开发态到编译态，Module中的文件会发生如下变更：</p>
+<ul>
+<li><strong>ets目录</strong>：ArkTS源码编译生成.abc文件。</li>
+<li><strong>resources目录</strong>：AppScope目录下的资源文件会合入到Module下面资源目录中，如果两个目录下的存在重名文件，编译打包后只会保留AppScope目录下的资源文件。</li>
+<li><strong>module配置文件</strong>：AppScope目录下的app.json5文件字段会合入到Module下面的module.json5文件之中，编译后生成HAP或HSP最终的module.json文件。</li>
+</ul>
+<p><strong>说明</strong></p>
+<p>在编译HAP和HSP时，会把他们所依赖的HAR直接编译到HAP和HSP中。</p>
+<h3 id="2-3-发布态包结构"><a href="#2-3-发布态包结构" class="headerlink" title="2.3 发布态包结构"></a>2.3 <strong>发布态包结构</strong></h3><p>每个应用中至少包含一个.hap文件，可能包含若干个.hsp文件、也可能不含，一个应用中的所有.hap与.hsp文件合在一起称为<strong>Bundle</strong>，其对应的bundleName是应用的唯一标识（详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/app-configuration-file-0000001820999529">app.json5配置文件</a>中的bundleName标签）。</p>
+<p>当应用发布上架到应用市场时，需要将Bundle打包为一个.app后缀的文件用于上架，这个.app文件称为<strong>App Pack</strong>（Application Package），与此同时，DevEco Studio工具自动会生成一个<strong>pack.info</strong>文件。<strong>pack.info</strong>文件描述了App Pack中每个HAP和HSP的属性，包含APP中的bundleName和versionCode信息、以及Module中的name、type和abilities等信息。</p>
+<p><strong>说明</strong></p>
+<blockquote>
+<ul>
+<li>App Pack是发布上架到应用市场的基本单元，但是不能在设备上直接安装和运行。</li>
+<li>在应用签名、云端分发、端侧安装时，都是以HAP&#x2F;HSP为单位进行签名、分发和安装的。</li>
+</ul>
+</blockquote>
+<p><strong>图3</strong> 编译发布与上架部署流程图</p>
+<img src="/image/hm-app-package-04.png">
+
+<h3 id="2-4-选择合适的包类型"><a href="#2-4-选择合适的包类型" class="headerlink" title="2.4 选择合适的包类型"></a>2.4 <strong>选择合适的包类型</strong></h3><p>HAP、HAR、HSP三者的功能和使用场景总结对比如下：</p>
+<table>
+<thead>
+<tr>
+<th>Module类型</th>
+<th>包类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ability</td>
+<td><a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/hap-package-0000001820879541">HAP</a></td>
+<td>应用的功能模块，可以独立安装和运行，必须包含一个entry类型的HAP，可选包含一个或多个feature类型的HAP。</td>
+</tr>
+<tr>
+<td>Static Library</td>
+<td><a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/har-package-0000001774279570">HAR</a></td>
+<td>静态共享包，编译态复用。- 支持应用内共享，也可以发布后供其他应用使用。- 作为二方库，发布到<a target="_blank" rel="noopener" href="https://ohpm.openharmony.cn/">OHPM</a>私仓，供公司内部其他应用使用。- 作为三方库，发布到<a target="_blank" rel="noopener" href="https://ohpm.openharmony.cn/">OHPM</a>中心仓，供其他应用使用。- 多包（HAP&#x2F;HSP）引用相同的HAR时，会造成多包间代码和资源的重复拷贝，从而导致应用包膨大。</td>
+</tr>
+<tr>
+<td>Shared Library</td>
+<td><a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/in-app-hsp-0000001774119898">HSP</a></td>
+<td>动态共享包，运行时复用。- 当前仅支持应用内共享。- 当多包（HAP&#x2F;HSP）同时引用同一个共享包时，采用HSP替代HAR，可以避免HAR造成的多包间代码和资源的重复拷贝，从而减小应用包大小。</td>
+</tr>
+</tbody></table>
+<p>HAP、HSP、HAR支持的规格对比如下，其中“√”表示是，“×”表示否。</p>
+<p>开发者可以根据实际场景所需的能力，选择相应类型的包进行开发。在后续的章节中还会针对如何使用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/hap-package-0000001820879541">HAP</a>、<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/har-package-0000001774279570">HAR</a>、<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/in-app-hsp-0000001774119898">HSP</a>分别展开详细介绍。</p>
+<table>
+<thead>
+<tr>
+<th>规格</th>
+<th>HAP</th>
+<th>HAR</th>
+<th>HSP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>支持在配置文件中声明<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/uiability-overview-0000001774119974">UIAbility</a>组件与<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/extensionability-overview-0000001774279654">ExtensionAbility</a>组件</td>
+<td>√</td>
+<td>×</td>
+<td>×</td>
+</tr>
+<tr>
+<td>支持在配置文件中声明<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/module-configuration-file-0000001820879553#ZH-CN_TOPIC_0000001820879553__pages%E6%A0%87%E7%AD%BE">pages</a>页面</td>
+<td>√</td>
+<td>×</td>
+<td>√</td>
+</tr>
+<tr>
+<td>支持包含资源文件与.so文件</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>支持依赖其他HAR文件</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>支持依赖其他HSP文件</td>
+<td>√</td>
+<td>×</td>
+<td>√</td>
+</tr>
+<tr>
+<td>支持在设备上独立安装运行</td>
+<td>√</td>
+<td>×</td>
+<td>×</td>
+</tr>
+</tbody></table>
+<p><strong>说明</strong></p>
+<ul>
+<li>HAR虽然不支持在配置文件中声明pages页面，但是可以包含pages页面，并通过<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-routing-0000001820879797#ZH-CN_TOPIC_0000001820879797__%E5%91%BD%E5%90%8D%E8%B7%AF%E7%94%B1">命名路由</a>的方式进行跳转。</li>
+<li>HAR和HSP均不支持循环依赖，也不支持依赖传递。</li>
+</ul>
+<h1 id="3-应用程序包开发与使用"><a href="#3-应用程序包开发与使用" class="headerlink" title="3. 应用程序包开发与使用"></a>3. 应用程序包开发与使用</h1><h3 id="3-1-HAP"><a href="#3-1-HAP" class="headerlink" title="3.1 HAP"></a>3.1 HAP</h3><p>HAP（Harmony Ability Package）是应用安装和运行的基本单元。HAP包是由代码、资源、第三方库、配置文件等打包生成的模块包，其主要分为两种类型：entry和feature。</p>
+<ul>
+<li>entry：应用的主模块，作为应用的入口，提供了应用的基础功能。</li>
+<li>feature：应用的动态特性模块，作为应用能力的扩展，可以根据用户的需求和设备类型进行选择性安装。</li>
+</ul>
+<p>应用程序包可以只包含一个基础的entry包，也可以包含一个基础的entry包和多个功能性的feature包。</p>
+<h4 id="3-1-1-使用场景"><a href="#3-1-1-使用场景" class="headerlink" title="3.1.1 使用场景"></a>3.1.1 <strong>使用场景</strong></h4><ul>
+<li>单HAP场景：如果只包含UIAbility组件，无需使用ExtensionAbility组件，优先采用单HAP（即一个entry包）来实现应用开发。虽然一个HAP中可以包含一个或多个UIAbility组件，为了避免不必要的资源加载，推荐采用“一个UIAbility+多个页面”的方式。</li>
+<li>多HAP场景：如果应用的功能比较复杂，需要使用ExtensionAbility组件，可以采用多HAP（即一个entry包+多个feature包）来实现应用开发，每个HAP中包含一个UIAbility组件或者一个ExtensionAbility组件。在这种场景下，可能会存在多个HAP引用相同的库文件，导致重复打包的问题。</li>
+</ul>
+<h4 id="3-1-2-约束限制"><a href="#3-1-2-约束限制" class="headerlink" title="3.1.2 约束限制"></a>3.1.2 <strong>约束限制</strong></h4><ul>
+<li>不支持导出接口和ArkUI组件，给其他模块使用。</li>
+<li>多HAP场景下，App Pack包中同一设备类型的所有HAP中必须有且只有一个Entry类型的HAP，Feature类型的HAP可以有一个或者多个，也可以没有。</li>
+<li>多HAP场景下，同一应用中的所有HAP的配置文件中的bundleName、versionCode、versionName、minCompatibleVersionCode、debug、minAPIVersion、targetAPIVersion、apiReleaseType相同，同一设备类型的所有HAP对应的moduleName标签必须唯一。HAP打包生成App Pack包时，会对上述参数配置进行校验。</li>
+<li>多HAP场景下，同一应用的所有HAP、HSP的签名证书要保持一致。上架应用市场是以App Pack形式上架，应用市场分发时会将所有HAP从App Pack中拆分出来，同时对其中的所有HAP进行重签名，这样保证了所有HAP签名证书的一致性。在调试阶段，开发者通过命令行或DevEco Studio将HAP安装到设备上时，要保证所有HAP签名证书一致，否则会出现安装失败的问题。</li>
+</ul>
+<h4 id="3-1-3-创建"><a href="#3-1-3-创建" class="headerlink" title="3.1.3 创建"></a>3.1.3 <strong>创建</strong></h4><p>下面简要介绍如何通过DevEco Studio新建一个HAP模块。</p>
+<ol>
+<li>创建工程，详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/start-with-ets-stage-0000001820879533">构建第一个ArkTS应用</a>。</li>
+<li><strong>在工程目录上单击右键，选择New &gt; Module。</strong></li>
+<li>在弹出的对话框中选择<strong>Empty Ability</strong>模板，单击<strong>Next</strong>。</li>
+<li>在Module配置界面，配置<strong>Module name</strong>，选择<strong>Module Type</strong>和<strong>Device Type</strong>，然后单击<strong>Next</strong>。</li>
+<li>在Ability配置界面，配置<strong>Ability name</strong>，然后单击<strong>Finish</strong>完成创建。</li>
+</ol>
+<h4 id="3-1-4-开发"><a href="#3-1-4-开发" class="headerlink" title="3.1.4 开发"></a>3.1.4 <strong>开发</strong></h4><ul>
+<li>HAP中支持添加UIAbility组件或ExtensionAbility组件，添加pages页面。具体操作可参考<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-add-new-ability-0000001053183674">应用&#x2F;服务开发</a>。</li>
+<li>HAP中支持引用HAR或HSP共享包，详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/har-package-0000001774279570#ZH-CN_TOPIC_0000001774279570__%E4%BD%BF%E7%94%A8">HAR的使用</a>、<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/in-app-hsp-0000001774119898#ZH-CN_TOPIC_0000001774119898__%E4%BD%BF%E7%94%A8">HSP的使用</a>。</li>
+</ul>
+<h4 id="3-1-5-调试"><a href="#3-1-5-调试" class="headerlink" title="3.1.5 调试"></a>3.1.5 <strong>调试</strong></h4><p>通过DevEco Studio编译打包，生成单个或者多个HAP，即可基于HAP进行调试。如需根据不同的部署环境、目标人群、运行环境等，将同一个HAP定制编译为不同版本，请参见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-customized-multi-targets-and-products-guides-0000001731595144">定制编译指导</a>。</p>
+<p>开发者可以采用DevEco Studio或者hdc工具进行调试：</p>
+<ul>
+<li><p><strong>方法一：</strong> 使用DevEco Studio进行调试，详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-run-debug-configurations-0000001760344518">应用程序包调试方法</a>。</p>
+</li>
+<li><p><strong>方法二：</strong> 使用hdc工具(可通过OpenHarmony SDK获取，在SDK的toolchains目录下)进行调试。</p>
+</li>
+<li><p>在调试前，需要先安装或更新HAP，此处有两种方式：</p>
+<ul>
+<li><p>直接使用hdc安装、更新HAP。</p>
+</li>
+<li><p>HAP的路径为开发平台上的文件路径，以Windows开发平台为例，命令参考如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 安装、更新，多HAP可以指定多个文件路径</span><br><span class="line">hdc install entry.hap feature.hap</span><br><span class="line">// 执行结果</span><br><span class="line">install bundle successfully.</span><br><span class="line">// 卸载</span><br><span class="line">hdc uninstall com.example.myapplication</span><br><span class="line">// 执行结果</span><br><span class="line">uninstall bundle successfully.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>先执行hdc shell，再使用bm工具安装、更新HAP。</p>
+</li>
+<li><p>HAP的文件路径为真机上的文件路径，命令参考如下：</p>
+</li>
+<li><pre><code class="shell">// 先执行hdc shell才能使用bm工具
+hdc shell
+// 安装、更新，多HAP可以指定多个文件路径
+bm install -p /data/app/entry.hap /data/app/feature.hap
+// 执行结果
+install bundle successfully.
+// 卸载
+bm uninstall -n com.example.myapplication
+// 执行结果
+uninstall bundle successfully.
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  - 完成HAP安装或更新后，即可参考相关调试命令进行[调试](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/aa-tool-0000001821000453)。</span><br><span class="line"></span><br><span class="line">### 3.2 HAR</span><br><span class="line"></span><br><span class="line">HAR（Harmony Archive）是静态共享包，可以包含代码、C++库、资源和配置文件。通过HAR可以实现多个模块或多个工程共享ArkUI组件、资源等相关代码。</span><br><span class="line"></span><br><span class="line">#### 3.2.1 **使用场景**</span><br><span class="line"></span><br><span class="line">- 作为二方库，发布到[OHPM](https://ohpm.openharmony.cn/)私仓，供公司内部其他应用使用。</span><br><span class="line">- 作为三方库，发布到[OHPM](https://ohpm.openharmony.cn/)中心仓，供其他应用使用。</span><br><span class="line"></span><br><span class="line">#### 3.2.2 **约束限制**</span><br><span class="line"></span><br><span class="line">- HAR不支持在设备上单独安装/运行，只能作为应用模块的依赖项被引用。</span><br><span class="line">- HAR不支持在配置文件中声明[UIAbility](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/uiability-overview-0000001774119974)组件与[ExtensionAbility](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/extensionability-overview-0000001774279654)组件。</span><br><span class="line">- HAR不支持在配置文件中声明[pages](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/module-configuration-file-0000001820879553#ZH-CN_TOPIC_0000001820879553__pages标签)页面，但是可以包含pages页面，并通过[命名路由](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-routing-0000001820879797#ZH-CN_TOPIC_0000001820879797__命名路由)的方式进行跳转。</span><br><span class="line">- HAR不支持引用AppScope目录中的资源。在编译构建时，AppScope中的内容不会打包到HAR中，因此会导致HAR资源引用失败。</span><br><span class="line">- HAR可以依赖其他HAR，但不支持循环依赖，也不支持依赖传递。</span><br><span class="line"></span><br><span class="line">#### 3.2.3 **创建**</span><br><span class="line"></span><br><span class="line">通过DevEco Studio创建一个HAR模块，详见[创建库模块](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-har-0000001547134226#section643521083015)。</span><br><span class="line"></span><br><span class="line">#### 3.2.4 **开发**</span><br><span class="line"></span><br><span class="line">介绍如何导出HAR的ArkUI组件、接口、资源，供其他应用或当前应用的其他模块引用。</span><br><span class="line"></span><br><span class="line">Index.ets文件是HAR导出声明文件的入口，HAR需要导出的接口，统一在Index.ets文件中导出。Index.ets文件是DevEco Studio默认自动生成的，用户也可以自定义，在模块的oh-package.json5文件中的main字段配置入口声明文件，配置如下所示：</span><br><span class="line"></span><br><span class="line">```json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;main&quot;: &quot;Index.ets&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-2-5-导出ArkUI组件"><a href="#3-2-5-导出ArkUI组件" class="headerlink" title="3.2.5 导出ArkUI组件"></a>3.2.5 <strong>导出ArkUI组件</strong></h4><p>ArkUI组件的导出方式与ts的导出方式一致，通过export导出ArkUI组件，示例如下：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/components/mainpage/MainPage.ets</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">export</span> struct <span class="title class_">MainPage</span> &#123;</span><br><span class="line">  <span class="meta">@State</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">&#x27;HAR MainPage&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Column</span>() &#123;</span><br><span class="line">      <span class="title class_">Row</span>() &#123;</span><br><span class="line">        <span class="title class_">Text</span>(<span class="variable language_">this</span>.<span class="property">message</span>)</span><br><span class="line">          .<span class="title function_">fontSize</span>(<span class="number">32</span>)</span><br><span class="line">          .<span class="title function_">fontWeight</span>(<span class="title class_">FontWeight</span>.<span class="property">Bold</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;32px&#x27;</span> &#125;)</span><br><span class="line">      .<span class="title function_">height</span>(<span class="number">56</span>)</span><br><span class="line">      .<span class="title function_">width</span>(<span class="string">&#x27;624px&#x27;</span>)</span><br><span class="line"></span><br><span class="line">      <span class="title class_">Flex</span>(&#123; <span class="attr">justifyContent</span>: <span class="title class_">FlexAlign</span>.<span class="property">Center</span>, <span class="attr">alignItems</span>: <span class="title class_">ItemAlign</span>.<span class="property">Center</span>, <span class="attr">alignContent</span>: <span class="title class_">FlexAlign</span>.<span class="property">Center</span> &#125;) &#123;</span><br><span class="line">        <span class="title class_">Column</span>() &#123;</span><br><span class="line">          <span class="title class_">Image</span>($r(<span class="string">&#x27;app.media.pic_empty&#x27;</span>)).<span class="title function_">width</span>(<span class="string">&#x27;33%&#x27;</span>)</span><br><span class="line">          <span class="title class_">Text</span>($r(<span class="string">&#x27;app.string.empty&#x27;</span>))</span><br><span class="line">            .<span class="title function_">fontSize</span>(<span class="number">14</span>)</span><br><span class="line">            .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;app.color.text_color&#x27;</span>))</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;.<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">      .<span class="title function_">height</span>(<span class="string">&#x27;90%&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.page_background&#x27;</span>))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>HAR对外暴露的接口，在Index.ets导出文件中声明如下所示：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/Index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">MainPage</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./src/main/ets/components/mainpage/MainPage&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-6-导出ts类和方法"><a href="#3-2-6-导出ts类和方法" class="headerlink" title="3.2.6 导出ts类和方法"></a>3.2.6 <strong>导出ts类和方法</strong></h4><p>通过export导出ts类和方法，支持导出多个ts类和方法，示例如下所示：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ts/test.ets</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Log</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">info</span>(<span class="params"><span class="attr">msg</span>: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">info</span>(msg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">func</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;har func&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">func2</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;har func2&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>HAR对外暴露的接口，在Index.ets导出文件中声明如下所示：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/Index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">Log</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./src/main/ts/test&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> &#123; func &#125; <span class="keyword">from</span> <span class="string">&#x27;./src/main/ts/test&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> &#123; func2 &#125; <span class="keyword">from</span> <span class="string">&#x27;./src/main/ts/test&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-7-导出native方法"><a href="#3-2-7-导出native方法" class="headerlink" title="3.2.7 导出native方法"></a>3.2.7 <strong>导出native方法</strong></h4><p>在HAR中也可以包含C++编写的so。对于so中的native方法，HAR通过以下方式导出，以导出libnative.so的加法接口add为例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/utils/nativeTest.ts</span></span><br><span class="line"><span class="keyword">import</span> native <span class="keyword">from</span> <span class="string">&#x27;liblibrary.so&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">nativeAdd</span>(<span class="params"><span class="attr">a</span>: <span class="built_in">number</span>, <span class="attr">b</span>: <span class="built_in">number</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">result</span>: <span class="built_in">number</span> = native.<span class="title function_">add</span>(a, b);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>HAR对外暴露的接口，在Index.ets导出文件中声明如下所示：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/Index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; nativeAdd &#125; <span class="keyword">from</span> <span class="string">&#x27;./src/main/ets/utils/nativeTest&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-8-资源"><a href="#3-2-8-资源" class="headerlink" title="3.2.8 资源"></a>3.2.8 <strong>资源</strong></h4><p>HAR模块编译打包时会把资源打包到HAR中。在编译构建HAP时，DevEco Studio会从HAP模块及依赖的模块中收集资源文件，如果不同模块下的资源文件出现重名冲突时，DevEco Studio会按照以下优先级进行覆盖（优先级由高到低）：</p>
+<ul>
+<li>AppScope（仅API9的Stage模型支持）。</li>
+<li>HAP包自身模块。</li>
+<li>依赖的HAR模块，如果依赖的多个HAR之间有资源冲突，会按照工程oh-package.json5中dependencies下的依赖顺序进行覆盖，依赖顺序在前的优先级较高。例如下方示例中dayjs和lottie中包含同名文件时，会优先使用dayjs中的资源。</li>
+<li><strong>说明</strong></li>
+</ul>
+<blockquote>
+<p>如果在AppScope&#x2F;HAP模块&#x2F;HAR模块的国际化目录中配置了资源，在相同的国际化限定词下，合并的优先级也遵循上述规则。同时，国际化限定词中配置的优先级高于在base中的配置。如：在AppScope的base中配置了资源字段，在HAR模块的en_US中配置了同样的资源字段，则在en_US的使用场景中，会更优先使用HAR模块中配置的资源字段。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// oh-package.json5</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;dayjs&quot;</span>: <span class="string">&quot;^1.10.4&quot;</span>,</span><br><span class="line">  <span class="string">&quot;lottie&quot;</span>: <span class="string">&quot;^2.0.0&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-9-使用"><a href="#3-2-9-使用" class="headerlink" title="3.2.9 使用"></a>3.2.9 <strong>使用</strong></h4><p>介绍如何配置HAR依赖，并引用HAR的ArkUI组件、接口、资源。</p>
+<p>引用HAR前，需要先配置对HAR的依赖，详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-har-import-0000001547293682">引用HAR文件和资源</a>。</p>
+<h5 id="3-2-9-1-引用HAR的ArkUI组件"><a href="#3-2-9-1-引用HAR的ArkUI组件" class="headerlink" title="3.2.9.1 引用HAR的ArkUI组件"></a>3.2.9.1 <strong>引用HAR的ArkUI组件</strong></h5><p>HAR的依赖配置成功后，可以引用HAR的ArkUI组件。ArkUI组件的导入方式与ts的导入方式一致，通过import引入HAR导出的ArkUI组件，示例如下所示：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry/src/main/ets/pages/IndexSec.ets</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">MainPage</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;library&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">IndexSec</span> &#123;</span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Row</span>() &#123;</span><br><span class="line">      <span class="comment">// 引用HAR的ArkUI组件</span></span><br><span class="line">      <span class="title class_">MainPage</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-9-2-引用HAR的ts类和方法"><a href="#3-2-9-2-引用HAR的ts类和方法" class="headerlink" title="3.2.9.2 引用HAR的ts类和方法"></a>3.2.9.2 <strong>引用HAR的ts类和方法</strong></h5><p>通过import引用HAR导出的ts类和方法，示例如下所示：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry/src/main/ets/pages/Index.ets</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Log</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;library&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; func &#125; <span class="keyword">from</span> <span class="string">&#x27;library&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">Index</span> &#123;</span><br><span class="line">  <span class="meta">@State</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">&#x27;Hello World&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Column</span>() &#123;</span><br><span class="line">      <span class="title class_">Text</span>(<span class="variable language_">this</span>.<span class="property">message</span>)</span><br><span class="line">        .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">        .<span class="title function_">fontWeight</span>(<span class="title class_">FontWeight</span>.<span class="property">Bold</span>)</span><br><span class="line">        .<span class="title function_">fontSize</span>(<span class="number">32</span>)</span><br><span class="line">        .<span class="title function_">fontWeight</span>(<span class="number">700</span>)</span><br><span class="line">        .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;app.color.text_color&#x27;</span>))</span><br><span class="line">        .<span class="title function_">textAlign</span>(<span class="title class_">TextAlign</span>.<span class="property">Start</span>)</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;32px&#x27;</span> &#125;)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;624px&#x27;</span>)</span><br><span class="line"></span><br><span class="line">      <span class="comment">//引用HAR的ts类和方法</span></span><br><span class="line">      <span class="title class_">Button</span>($r(<span class="string">&#x27;app.string.button&#x27;</span>))</span><br><span class="line">        .<span class="title function_">id</span>(<span class="string">&#x27;button&#x27;</span>)</span><br><span class="line">        .<span class="title function_">height</span>(<span class="number">48</span>)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;624px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;4%&#x27;</span> &#125;)</span><br><span class="line">        .<span class="title function_">type</span>(<span class="title class_">ButtonType</span>.<span class="property">Capsule</span>)</span><br><span class="line">        .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">        .<span class="title function_">borderRadius</span>($r(<span class="string">&#x27;sys.float.ohos_id_corner_radius_button&#x27;</span>))</span><br><span class="line">        .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.button_background&#x27;</span>))</span><br><span class="line">        .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;sys.color.ohos_id_color_foreground_contrary&#x27;</span>))</span><br><span class="line">        .<span class="title function_">fontSize</span>($r(<span class="string">&#x27;sys.float.ohos_id_text_size_button1&#x27;</span>))</span><br><span class="line">        .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="comment">// 引用HAR的类和方法</span></span><br><span class="line">          <span class="title class_">Log</span>.<span class="title function_">info</span>(<span class="string">&#x27;har msg&#x27;</span>);</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">message</span> = <span class="string">&#x27;func return: &#x27;</span> + <span class="title function_">func</span>();</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.page_background&#x27;</span>))</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-9-3-引用HAR的native方法"><a href="#3-2-9-3-引用HAR的native方法" class="headerlink" title="3.2.9.3 引用HAR的native方法"></a>3.2.9.3 <strong>引用HAR的native方法</strong></h5><p>通过import引用HAR导出的native方法，示例如下所示：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry/src/main/ets/pages/Index.ets</span></span><br><span class="line"><span class="keyword">import</span> &#123; nativeAdd &#125; <span class="keyword">from</span> <span class="string">&#x27;library&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">Index</span> &#123;</span><br><span class="line">  <span class="meta">@State</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">&#x27;Hello World&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Column</span>() &#123;</span><br><span class="line">      <span class="title class_">Text</span>(<span class="variable language_">this</span>.<span class="property">message</span>)</span><br><span class="line">        .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">        .<span class="title function_">fontWeight</span>(<span class="title class_">FontWeight</span>.<span class="property">Bold</span>)</span><br><span class="line">        .<span class="title function_">fontSize</span>(<span class="number">32</span>)</span><br><span class="line">        .<span class="title function_">fontWeight</span>(<span class="number">700</span>)</span><br><span class="line">        .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;app.color.text_color&#x27;</span>))</span><br><span class="line">        .<span class="title function_">textAlign</span>(<span class="title class_">TextAlign</span>.<span class="property">Start</span>)</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;32px&#x27;</span> &#125;)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;624px&#x27;</span>)</span><br><span class="line"></span><br><span class="line">      <span class="comment">//引用HAR的native方法</span></span><br><span class="line">      <span class="title class_">Button</span>($r(<span class="string">&#x27;app.string.native_add&#x27;</span>))</span><br><span class="line">        .<span class="title function_">id</span>(<span class="string">&#x27;nativeAdd&#x27;</span>)</span><br><span class="line">        .<span class="title function_">height</span>(<span class="number">48</span>)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;624px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;4%&#x27;</span>, <span class="attr">bottom</span>: <span class="string">&#x27;6%&#x27;</span> &#125;)</span><br><span class="line">        .<span class="title function_">type</span>(<span class="title class_">ButtonType</span>.<span class="property">Capsule</span>)</span><br><span class="line">        .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">        .<span class="title function_">borderRadius</span>($r(<span class="string">&#x27;sys.float.ohos_id_corner_radius_button&#x27;</span>))</span><br><span class="line">        .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.button_background&#x27;</span>))</span><br><span class="line">        .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;sys.color.ohos_id_color_foreground_contrary&#x27;</span>))</span><br><span class="line">        .<span class="title function_">fontSize</span>($r(<span class="string">&#x27;sys.float.ohos_id_text_size_button1&#x27;</span>))</span><br><span class="line">        .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">message</span> = <span class="string">&#x27;result: &#x27;</span> + <span class="title function_">nativeAdd</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.page_background&#x27;</span>))</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-9-4-引用HAR的资源"><a href="#3-2-9-4-引用HAR的资源" class="headerlink" title="3.2.9.4 引用HAR的资源"></a>3.2.9.4 <strong>引用HAR的资源</strong></h5><p>通过$r引用HAR中的资源，例如在HAR模块的src&#x2F;main&#x2F;resources里添加字符串资源（在string.json中定义，name：hello_har）和图片资源（icon_har.png），然后在Entry模块中引用该字符串和图片资源的示例如下所示：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry/src/main/ets/pages/Index.ets</span></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">Index</span> &#123;</span><br><span class="line">  <span class="meta">@State</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">&#x27;Hello World&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Column</span>() &#123;</span><br><span class="line">      <span class="comment">// 引用HAR的字符串资源</span></span><br><span class="line">      <span class="title class_">Text</span>($r(<span class="string">&#x27;app.string.hello_har&#x27;</span>))</span><br><span class="line">        .<span class="title function_">id</span>(<span class="string">&#x27;stringHar&#x27;</span>)</span><br><span class="line">        .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">        .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;app.color.text_color&#x27;</span>))</span><br><span class="line">        .<span class="title function_">fontSize</span>(<span class="number">24</span>)</span><br><span class="line">        .<span class="title function_">fontWeight</span>(<span class="number">500</span>)</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;40%&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line">      <span class="title class_">List</span>() &#123;</span><br><span class="line">        <span class="title class_">ListItem</span>() &#123;</span><br><span class="line">          <span class="comment">// 引用HAR的图片资源</span></span><br><span class="line">          <span class="title class_">Image</span>($r(<span class="string">&#x27;app.media.icon_har&#x27;</span>))</span><br><span class="line">            .<span class="title function_">id</span>(<span class="string">&#x27;iconHar&#x27;</span>)</span><br><span class="line">            .<span class="title function_">borderRadius</span>(<span class="string">&#x27;48px&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;5%&#x27;</span> &#125;)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;312px&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      .<span class="title function_">alignListItem</span>(<span class="title class_">ListItemAlign</span>.<span class="property">Center</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.page_background&#x27;</span>))</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-10-编译"><a href="#3-2-10-编译" class="headerlink" title="3.2.10 编译"></a>3.2.10 <strong>编译</strong></h4><p>HAR可以作为二方库和三方库提供给其他应用使用，如果需要对代码资产进行保护时，建议开启混淆能力。</p>
+<p>混淆能力开启后，DevEco Studio在构建HAR时，会对代码进行编译、混淆及压缩处理，保护代码资产。</p>
+<p><strong>说明</strong></p>
+<blockquote>
+<p>仅Stage模型的ArkTS工程支持混淆。</p>
+<p>HAR开启混淆后资源ID为-1，<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-resource-manager-0000001774281590">ResourceManager</a>等通过ID获取资源的API不再生效。</p>
+</blockquote>
+<p>对于API 10及以上版本，HAR模块默认开启混淆能力，可以在HAR模块的build-profile.json5文件中的ruleOptions字段下的enable进行设置，配置如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;apiType&quot;</span>: <span class="string">&quot;stageMode&quot;</span>,</span><br><span class="line">  <span class="string">&quot;buildOption&quot;</span>: &#123;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;buildOptionSet&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;release&quot;</span>,</span><br><span class="line">      <span class="string">&quot;arkOptions&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;obfuscation&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;ruleOptions&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;enable&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="string">&quot;files&quot;</span>: [</span><br><span class="line">              <span class="string">&quot;./obfuscation-rules.txt&quot;</span></span><br><span class="line">            ]</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="string">&quot;consumerFiles&quot;</span>: [</span><br><span class="line">            <span class="string">&quot;./consumer-rules.txt&quot;</span></span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;targets&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;default&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-11-发布"><a href="#3-2-11-发布" class="headerlink" title="3.2.11 发布"></a>3.2.11 <strong>发布</strong></h4><p>详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-har-publish-0000001597973129">发布HAR</a>。</p>
+<h3 id="3-3-HSP"><a href="#3-3-HSP" class="headerlink" title="3.3 HSP"></a>3.3 HSP</h3><p>HSP（Harmony Shared Package）是动态共享包，可以包含代码、C++库、资源和配置文件，通过HSP可以实现应用内的代码和资源的共享。HSP不支持独立发布，而是跟随其宿主应用的APP包一起发布，与宿主应用同进程，具有相同的包名和生命周期。</p>
+<p><strong>说明</strong></p>
+<p>仅支持应用内HSP，不支持应用间HSP。</p>
+<h4 id="3-3-1-使用场景"><a href="#3-3-1-使用场景" class="headerlink" title="3.3.1 使用场景"></a>3.3.1 <strong>使用场景</strong></h4><ul>
+<li>多个HAP&#x2F;HSP共用的代码和资源放在同一个HSP中，可以提高代码、资源的可重用性和可维护性，同时编译打包时也只保留一份HSP代码和资源，能够有效控制应用包大小。</li>
+<li>HSP在运行时按需加载，有助于提升应用性能。</li>
+</ul>
+<h4 id="3-3-2-约束限制"><a href="#3-3-2-约束限制" class="headerlink" title="3.3.2 约束限制"></a>3.3.2 <strong>约束限制</strong></h4><ul>
+<li>HSP不支持在设备上单独安装&#x2F;运行，需要与依赖该HSP的HAP一起安装&#x2F;运行。HSP的版本号必须与HAP版本号一致。</li>
+<li>HSP不支持在配置文件中声明<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/uiability-overview-0000001774119974">UIAbility</a>组件与<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/extensionability-overview-0000001774279654">ExtensionAbility</a>组件。</li>
+<li>HSP可以依赖其他HAR或HSP，但不支持循环依赖，也不支持依赖传递。</li>
+</ul>
+<h4 id="3-3-3-创建"><a href="#3-3-3-创建" class="headerlink" title="3.3.3 创建"></a>3.3.3 <strong>创建</strong></h4><p>通过DevEco Studio创建一个HSP模块，详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-hsp-0000001521396322#section7717162312546">创建HSP模块</a>，我们以创建一个名为library的HSP模块为例。基本的工程目录结构如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">library</span><br><span class="line">├── src</span><br><span class="line">│   └── main</span><br><span class="line">│       ├── ets</span><br><span class="line">│       │   ├── pages</span><br><span class="line">│       │   └── index.<span class="property">ets</span></span><br><span class="line">│       ├── resources</span><br><span class="line">│       └── <span class="variable language_">module</span>.<span class="property">json5</span></span><br><span class="line">└── oh-package.<span class="property">json5</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-3-4-开发"><a href="#3-3-4-开发" class="headerlink" title="3.3.4 开发"></a>3.3.4 <strong>开发</strong></h4><p>介绍如何导出HSP的ArkUI组件、接口、资源，供应用内的其他HAP&#x2F;HSP引用。</p>
+<h5 id="3-3-4-1-导出ArkUI组件"><a href="#3-3-4-1-导出ArkUI组件" class="headerlink" title="3.3.4.1 导出ArkUI组件"></a>3.3.4.1 <strong>导出ArkUI组件</strong></h5><p>ArkUI组件可以通过export导出，例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/components/MyTitleBar.ets</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">export</span> struct <span class="title class_">MyTitleBar</span> &#123;</span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Row</span>() &#123;</span><br><span class="line">      <span class="title class_">Text</span>($r(<span class="string">&#x27;app.string.library_title&#x27;</span>))</span><br><span class="line">        .<span class="title function_">id</span>(<span class="string">&#x27;library&#x27;</span>)</span><br><span class="line">        .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">        .<span class="title function_">fontWeight</span>(<span class="title class_">FontWeight</span>.<span class="property">Bold</span>)</span><br><span class="line">        .<span class="title function_">fontSize</span>(<span class="number">32</span>)</span><br><span class="line">        .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;app.color.text_color&#x27;</span>))</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对外暴露的接口，需要在入口文件index.ets中声明：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">MyTitleBar</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./components/MyTitleBar&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-3-4-2-导出ts类和方法"><a href="#3-3-4-2-导出ts类和方法" class="headerlink" title="3.3.4.2 导出ts类和方法"></a>3.3.4.2 <strong>导出ts类和方法</strong></h5><p>通过export导出ts类和方法，例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/utils/test.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Log</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">info</span>(<span class="attr">msg</span>: <span class="built_in">string</span>): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">info</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">add</span>(<span class="params"><span class="attr">a</span>: <span class="built_in">number</span>, <span class="attr">b</span>: <span class="built_in">number</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">minus</span>(<span class="params"><span class="attr">a</span>: <span class="built_in">number</span>, <span class="attr">b</span>: <span class="built_in">number</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a - b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对外暴露的接口，需要在入口文件index.ets中声明：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">Log</span>, add, minus &#125; <span class="keyword">from</span> <span class="string">&#x27;./utils/test&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-3-4-3-导出native方法"><a href="#3-3-4-3-导出native方法" class="headerlink" title="3.3.4.3 导出native方法"></a>3.3.4.3 <strong>导出native方法</strong></h5><p>在HSP中也可以包含C++编写的so。对于so中的native方法，HSP通过间接的方式导出，以导出liblibrary.so的乘法接口multi为例：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/utils/nativeTest.ts</span></span><br><span class="line"><span class="keyword">import</span> native <span class="keyword">from</span> <span class="string">&#x27;liblibrary.so&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">nativeMulti</span>(<span class="params"><span class="attr">a</span>: <span class="built_in">number</span>, <span class="attr">b</span>: <span class="built_in">number</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">result</span>: <span class="built_in">number</span> = native.<span class="title function_">multi</span>(a, b);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对外暴露的接口，需要在入口文件index.ets中声明：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; nativeMulti &#125; <span class="keyword">from</span> <span class="string">&#x27;./utils/nativeTest&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-3-4-4-通过-r访问HSP中的资源"><a href="#3-3-4-4-通过-r访问HSP中的资源" class="headerlink" title="3.3.4.4 通过$r访问HSP中的资源"></a>3.3.4.4 <strong>通过$r访问HSP中的资源</strong></h5><p>在组件中，经常需要使用字符串、图片等资源。HSP中的组件需要使用资源时，一般将其所用资源放在HSP包内，而非放在HSP的使用方处，以符合高内聚低耦合的原则。</p>
+<p>在工程中，常通过$r&#x2F;$rawfile的形式引用应用资源。可以用$r&#x2F;$rawfile访问本模块resources目录下的资源，如访问resources目录下定义的图片src&#x2F;main&#x2F;resources&#x2F;base&#x2F;media&#x2F;example.png时，可以用$r(“app.media.example”)。有关$r&#x2F;$rawfile的详细使用方式，请参阅文档<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/resource-categories-and-access-0000001774119914">资源分类与访问</a>中“资源访问-应用资源”小节。</p>
+<p>不推荐使用相对路径的方式，容易引用错误路径。例如：</p>
+<p>当要引用上述同一图片资源时，在HSP模块中使用Image(“..&#x2F;..&#x2F;resources&#x2F;base&#x2F;media&#x2F;example.png”)，实际上该Image组件访问的是HSP调用方（如entry）下的资源entry&#x2F;src&#x2F;main&#x2F;resources&#x2F;base&#x2F;media&#x2F;example.png。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/pages/Index.ets</span></span><br><span class="line"><span class="comment">// 正确用例</span></span><br><span class="line"><span class="title class_">Image</span>($r(<span class="string">&#x27;app.media.example&#x27;</span>))</span><br><span class="line">  .<span class="title function_">id</span>(<span class="string">&#x27;example&#x27;</span>)</span><br><span class="line">  .<span class="title function_">borderRadius</span>(<span class="string">&#x27;48px&#x27;</span>)</span><br><span class="line"><span class="comment">// 错误用例</span></span><br><span class="line"><span class="title class_">Image</span>(<span class="string">&quot;../../resources/base/media/example.png&quot;</span>)</span><br><span class="line">  .<span class="title function_">id</span>(<span class="string">&#x27;example&#x27;</span>)</span><br><span class="line">  .<span class="title function_">borderRadius</span>(<span class="string">&#x27;48px&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-3-4-5-导出HSP中的资源"><a href="#3-3-4-5-导出HSP中的资源" class="headerlink" title="3.3.4.5 导出HSP中的资源"></a>3.3.4.5 <strong>导出HSP中的资源</strong></h5><p>跨包访问HSP内资源时，推荐实现一个资源管理类，以封装对外导出的资源。采用这种方式，具有如下优点：</p>
+<ul>
+<li>HSP开发者可以控制自己需要导出的资源，不需要对外暴露的资源可以不用导出。</li>
+<li>使用方无须感知HSP内部的资源名称。当HSP内部的资源名称发生变化时，也不需要使用方跟着修改。</li>
+</ul>
+<p>其具体实现如下：</p>
+<p>将需要对外提供的资源封装为一个资源管理类：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/ResManager.ets</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">ResManager</span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">getPic</span>(): <span class="title class_">Resource</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $r(<span class="string">&#x27;app.media.pic&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">getDesc</span>(): <span class="title class_">Resource</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $r(<span class="string">&#x27;app.string.shared_desc&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对外暴露的接口，需要在入口文件index.ets中声明：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">ResManager</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./ResManager&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-3-5-使用"><a href="#3-3-5-使用" class="headerlink" title="3.3.5 使用"></a>3.3.5 <strong>使用</strong></h4><p>介绍如何引用HSP中的接口，以及如何通过页面路由实现HSP的pages页面跳转与返回。</p>
+<h5 id="3-3-5-1-引用HSP中的接口"><a href="#3-3-5-1-引用HSP中的接口" class="headerlink" title="3.3.5.1 引用HSP中的接口"></a>3.3.5.1 <strong>引用HSP中的接口</strong></h5><p>要使用HSP中的接口，首先需要在使用方的oh-package.json5中配置对它的依赖，详见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-har-import-0000001547293682">引用动态共享包</a>。</p>
+<p>依赖配置成功后，就可以像使用HAR一样调用HSP的对外接口了。例如，上面的library已经导出了下面这些接口：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library/src/main/ets/index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">Log</span>, add, minus &#125; <span class="keyword">from</span> <span class="string">&#x27;./utils/test&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">MyTitleBar</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./components/MyTitleBar&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">ResManager</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./ResManager&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> &#123; nativeMulti &#125; <span class="keyword">from</span> <span class="string">&#x27;./utils/nativeTest&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在使用方的代码中，可以这样使用：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry/src/main/ets/pages/index.ets</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Log</span>, add, <span class="title class_">MyTitleBar</span>, <span class="title class_">ResManager</span>, nativeMulti &#125; <span class="keyword">from</span> <span class="string">&#x27;library&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">BusinessError</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@ohos.base&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Logger</span> <span class="keyword">from</span> <span class="string">&#x27;../logger/Logger&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;@ohos.router&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">TAG</span> = <span class="string">&#x27;Index&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">Index</span> &#123;</span><br><span class="line">  <span class="meta">@State</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Column</span>() &#123;</span><br><span class="line">      <span class="title class_">List</span>() &#123;</span><br><span class="line">        <span class="title class_">ListItem</span>() &#123;</span><br><span class="line">          <span class="title class_">MyTitleBar</span>()</span><br><span class="line">        &#125;</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">left</span>: <span class="string">&#x27;35px&#x27;</span>, <span class="attr">top</span>: <span class="string">&#x27;32px&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="title class_">ListItem</span>() &#123;</span><br><span class="line">          <span class="title class_">Text</span>(<span class="variable language_">this</span>.<span class="property">message</span>)</span><br><span class="line">            .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">            .<span class="title function_">fontSize</span>(<span class="number">18</span>)</span><br><span class="line">            .<span class="title function_">textAlign</span>(<span class="title class_">TextAlign</span>.<span class="property">Start</span>)</span><br><span class="line">            .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">            .<span class="title function_">fontWeight</span>(<span class="title class_">FontWeight</span>.<span class="property">Bold</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;685px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="number">30</span>, <span class="attr">bottom</span>: <span class="number">10</span> &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="title class_">ListItem</span>() &#123;</span><br><span class="line">          <span class="comment">// ResManager返回的Resource对象，可以传给组件直接使用，也可以从中取出资源来使用</span></span><br><span class="line">          <span class="title class_">Image</span>(<span class="title class_">ResManager</span>.<span class="title function_">getPic</span>())</span><br><span class="line">            .<span class="title function_">id</span>(<span class="string">&#x27;image&#x27;</span>)</span><br><span class="line">            .<span class="title function_">borderRadius</span>(<span class="string">&#x27;48px&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;685px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="number">10</span>, <span class="attr">bottom</span>: <span class="number">10</span> &#125;)</span><br><span class="line">        .<span class="title function_">padding</span>(&#123; <span class="attr">left</span>: <span class="number">12</span>, <span class="attr">right</span>: <span class="number">12</span>, <span class="attr">top</span>: <span class="number">4</span>, <span class="attr">bottom</span>: <span class="number">4</span> &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="title class_">ListItem</span>() &#123;</span><br><span class="line">          <span class="title class_">Text</span>($r(<span class="string">&#x27;app.string.add&#x27;</span>))</span><br><span class="line">            .<span class="title function_">fontSize</span>(<span class="number">18</span>)</span><br><span class="line">            .<span class="title function_">textAlign</span>(<span class="title class_">TextAlign</span>.<span class="property">Start</span>)</span><br><span class="line">            .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">            .<span class="title function_">fontWeight</span>(<span class="number">500</span>)</span><br><span class="line">            .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .<span class="title function_">id</span>(<span class="string">&#x27;add&#x27;</span>)</span><br><span class="line">        .<span class="title function_">borderRadius</span>(<span class="number">24</span>)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;685px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">height</span>(<span class="string">&#x27;84px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;sys.color.ohos_id_color_foreground_contrary&#x27;</span>))</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="number">10</span>, <span class="attr">bottom</span>: <span class="number">10</span> &#125;)</span><br><span class="line">        .<span class="title function_">padding</span>(&#123; <span class="attr">left</span>: <span class="number">12</span>, <span class="attr">right</span>: <span class="number">12</span>, <span class="attr">top</span>: <span class="number">4</span>, <span class="attr">bottom</span>: <span class="number">4</span> &#125;)</span><br><span class="line">        .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="title class_">Log</span>.<span class="title function_">info</span>(<span class="string">&#x27;add button click!&#x27;</span>);</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">message</span> = <span class="string">&#x27;result: &#x27;</span> + <span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="title class_">ListItem</span>() &#123;</span><br><span class="line">          <span class="title class_">Text</span>($r(<span class="string">&#x27;app.string.get_string_value&#x27;</span>))</span><br><span class="line">            .<span class="title function_">fontSize</span>(<span class="number">18</span>)</span><br><span class="line">            .<span class="title function_">textAlign</span>(<span class="title class_">TextAlign</span>.<span class="property">Start</span>)</span><br><span class="line">            .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">            .<span class="title function_">fontWeight</span>(<span class="number">500</span>)</span><br><span class="line">            .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .<span class="title function_">id</span>(<span class="string">&#x27;getStringValue&#x27;</span>)</span><br><span class="line">        .<span class="title function_">borderRadius</span>(<span class="number">24</span>)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;685px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">height</span>(<span class="string">&#x27;84px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;sys.color.ohos_id_color_foreground_contrary&#x27;</span>))</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="number">10</span>, <span class="attr">bottom</span>: <span class="number">10</span> &#125;)</span><br><span class="line">        .<span class="title function_">padding</span>(&#123; <span class="attr">left</span>: <span class="number">12</span>, <span class="attr">right</span>: <span class="number">12</span>, <span class="attr">top</span>: <span class="number">4</span>, <span class="attr">bottom</span>: <span class="number">4</span> &#125;)</span><br><span class="line">        .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="comment">// 先通过当前上下文获取hsp模块的上下文，再获取hsp模块的resourceManager，然后再调用resourceManager的接口获取资源</span></span><br><span class="line">          <span class="title function_">getContext</span>()</span><br><span class="line">            .<span class="title function_">createModuleContext</span>(<span class="string">&#x27;library&#x27;</span>)</span><br><span class="line">            .<span class="property">resourceManager</span></span><br><span class="line">            .<span class="title function_">getStringValue</span>(<span class="title class_">ResManager</span>.<span class="title function_">getDesc</span>())</span><br><span class="line">            .<span class="title function_">then</span>(<span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">              <span class="title class_">Logger</span>.<span class="title function_">info</span>(<span class="variable constant_">TAG</span>, <span class="string">`getStringValue is <span class="subst">$&#123;value&#125;</span>`</span>);</span><br><span class="line">              <span class="variable language_">this</span>.<span class="property">message</span> = <span class="string">&#x27;getStringValue is &#x27;</span> + value;</span><br><span class="line">            &#125;)</span><br><span class="line">            .<span class="title function_">catch</span>(<span class="function">(<span class="params"><span class="attr">err</span>: <span class="title class_">BusinessError</span></span>) =&gt;</span> &#123;</span><br><span class="line">              <span class="title class_">Logger</span>.<span class="title function_">info</span>(<span class="variable constant_">TAG</span>, <span class="string">`getStringValue promise error is <span class="subst">$&#123;err&#125;</span>`</span>);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="title class_">ListItem</span>() &#123;</span><br><span class="line">          <span class="title class_">Text</span>($r(<span class="string">&#x27;app.string.native_multi&#x27;</span>))</span><br><span class="line">            .<span class="title function_">fontSize</span>(<span class="number">18</span>)</span><br><span class="line">            .<span class="title function_">textAlign</span>(<span class="title class_">TextAlign</span>.<span class="property">Start</span>)</span><br><span class="line">            .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">            .<span class="title function_">fontWeight</span>(<span class="number">500</span>)</span><br><span class="line">            .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .<span class="title function_">id</span>(<span class="string">&#x27;nativeMulti&#x27;</span>)</span><br><span class="line">        .<span class="title function_">borderRadius</span>(<span class="number">24</span>)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;685px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">height</span>(<span class="string">&#x27;84px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;sys.color.ohos_id_color_foreground_contrary&#x27;</span>))</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="number">10</span>, <span class="attr">bottom</span>: <span class="number">10</span> &#125;)</span><br><span class="line">        .<span class="title function_">padding</span>(&#123; <span class="attr">left</span>: <span class="number">12</span>, <span class="attr">right</span>: <span class="number">12</span>, <span class="attr">top</span>: <span class="number">4</span>, <span class="attr">bottom</span>: <span class="number">4</span> &#125;)</span><br><span class="line">        .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="title class_">Log</span>.<span class="title function_">info</span>(<span class="string">&#x27;nativeMulti button click!&#x27;</span>);</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">message</span> = <span class="string">&#x27;result: &#x27;</span> + <span class="title function_">nativeMulti</span>(<span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      .<span class="title function_">alignListItem</span>(<span class="title class_">ListItemAlign</span>.<span class="property">Center</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.page_background&#x27;</span>))</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-3-5-2-页面路由跳转"><a href="#3-3-5-2-页面路由跳转" class="headerlink" title="3.3.5.2 页面路由跳转"></a>3.3.5.2 <strong>页面路由跳转</strong></h5><p>若开发者想在entry模块中，添加一个按钮跳转至library模块中的menu页面（路径为：library&#x2F;src&#x2F;main&#x2F;ets&#x2F;pages&#x2F;menu.ets），那么可以在使用方的代码（entry模块下的Index.ets，路径为：entry&#x2F;src&#x2F;main&#x2F;ets&#x2F;pages&#x2F;Index.ets）里这样使用：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Log</span>, add, <span class="title class_">MyTitleBar</span>, <span class="title class_">ResManager</span>, nativeMulti &#125; <span class="keyword">from</span> <span class="string">&#x27;library&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">BusinessError</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@ohos.base&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Logger</span> <span class="keyword">from</span> <span class="string">&#x27;../logger/Logger&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;@ohos.router&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">TAG</span> = <span class="string">&#x27;Index&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">Index</span> &#123;</span><br><span class="line">  <span class="meta">@State</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Column</span>() &#123;</span><br><span class="line">      <span class="title class_">List</span>() &#123;</span><br><span class="line">        <span class="title class_">ListItem</span>() &#123;</span><br><span class="line">          <span class="title class_">Text</span>($r(<span class="string">&#x27;app.string.click_to_menu&#x27;</span>))</span><br><span class="line">            .<span class="title function_">fontSize</span>(<span class="number">18</span>)</span><br><span class="line">            .<span class="title function_">textAlign</span>(<span class="title class_">TextAlign</span>.<span class="property">Start</span>)</span><br><span class="line">            .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">            .<span class="title function_">fontWeight</span>(<span class="number">500</span>)</span><br><span class="line">            .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .<span class="title function_">id</span>(<span class="string">&#x27;clickToMenu&#x27;</span>)</span><br><span class="line">        .<span class="title function_">borderRadius</span>(<span class="number">24</span>)</span><br><span class="line">        .<span class="title function_">width</span>(<span class="string">&#x27;685px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">height</span>(<span class="string">&#x27;84px&#x27;</span>)</span><br><span class="line">        .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;sys.color.ohos_id_color_foreground_contrary&#x27;</span>))</span><br><span class="line">        .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="number">10</span>, <span class="attr">bottom</span>: <span class="number">10</span> &#125;)</span><br><span class="line">        .<span class="title function_">padding</span>(&#123; <span class="attr">left</span>: <span class="number">12</span>, <span class="attr">right</span>: <span class="number">12</span>, <span class="attr">top</span>: <span class="number">4</span>, <span class="attr">bottom</span>: <span class="number">4</span> &#125;)</span><br><span class="line">        .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          router.<span class="title function_">pushUrl</span>(&#123;</span><br><span class="line">            <span class="attr">url</span>: <span class="string">&#x27;@bundle:com.samples.hspsample/library/ets/pages/Menu&#x27;</span></span><br><span class="line">          &#125;).<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;push page success&#x27;</span>);</span><br><span class="line">            <span class="title class_">Logger</span>.<span class="title function_">info</span>(<span class="variable constant_">TAG</span>, <span class="string">&#x27;push page success&#x27;</span>);</span><br><span class="line">          &#125;).<span class="title function_">catch</span>(<span class="function">(<span class="params"><span class="attr">err</span>: <span class="title class_">BusinessError</span></span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="title class_">Logger</span>.<span class="title function_">error</span>(<span class="variable constant_">TAG</span>, <span class="string">`pushUrl failed, code is <span class="subst">$&#123;err.code&#125;</span>, message is <span class="subst">$&#123;err.message&#125;</span>`</span>);</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      .<span class="title function_">alignListItem</span>(<span class="title class_">ListItemAlign</span>.<span class="property">Center</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.page_background&#x27;</span>))</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中router.pushUrl方法的入参中url的内容为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;@bundle:com.samples.hspsample/library/ets/pages/Menu&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>url内容的模板为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;@bundle:包名（bundleName）/模块名（moduleName）/路径/页面所在的文件名(不加.ets后缀)&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-3-5-3-页面路由返回"><a href="#3-3-5-3-页面路由返回" class="headerlink" title="3.3.5.3 页面路由返回"></a>3.3.5.3 <strong>页面路由返回</strong></h5><p>如果当前处于HSP中的页面，需要返回之前的页面时，可以使用router.back方法，但是返回的页面必须是当前页面跳转路径上的页面。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;@ohos.router&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">Index3</span> &#123; <span class="comment">// 路径为：`library/src/main/ets/pages/Back.ets</span></span><br><span class="line">  <span class="meta">@State</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">&#x27;HSP back page&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Row</span>() &#123;</span><br><span class="line">      <span class="title class_">Column</span>() &#123;</span><br><span class="line">        <span class="title class_">Text</span>(<span class="variable language_">this</span>.<span class="property">message</span>)</span><br><span class="line">          .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">          .<span class="title function_">fontWeight</span>(<span class="title class_">FontWeight</span>.<span class="property">Bold</span>)</span><br><span class="line">          .<span class="title function_">fontSize</span>(<span class="number">32</span>)</span><br><span class="line">          .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;app.color.text_color&#x27;</span>))</span><br><span class="line">          .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;32px&#x27;</span> &#125;)</span><br><span class="line">          .<span class="title function_">width</span>(<span class="string">&#x27;624px&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="title class_">Button</span>($r(<span class="string">&#x27;app.string.back_to_HAP&#x27;</span>))</span><br><span class="line">          .<span class="title function_">id</span>(<span class="string">&#x27;backToHAP&#x27;</span>)</span><br><span class="line">          .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">          .<span class="title function_">height</span>(<span class="number">48</span>)</span><br><span class="line">          .<span class="title function_">width</span>(<span class="string">&#x27;624px&#x27;</span>)</span><br><span class="line">          .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="number">550</span> &#125;)</span><br><span class="line">          .<span class="title function_">type</span>(<span class="title class_">ButtonType</span>.<span class="property">Capsule</span>)</span><br><span class="line">          .<span class="title function_">borderRadius</span>($r(<span class="string">&#x27;sys.float.ohos_id_corner_radius_button&#x27;</span>))</span><br><span class="line">          .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.button_background&#x27;</span>))</span><br><span class="line">          .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;sys.color.ohos_id_color_foreground_contrary&#x27;</span>))</span><br><span class="line">          .<span class="title function_">fontSize</span>($r(<span class="string">&#x27;sys.float.ohos_id_text_size_button1&#x27;</span>))</span><br><span class="line">            <span class="comment">// 绑定点击事件</span></span><br><span class="line">          .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            router.<span class="title function_">back</span>(&#123; <span class="comment">//  返回HAP的页面</span></span><br><span class="line">              <span class="attr">url</span>: <span class="string">&#x27;pages/Index&#x27;</span> <span class="comment">// 路径为：`entry/src/main/ets/pages/Index.ets`</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="title class_">Button</span>($r(<span class="string">&#x27;app.string.back_to_HSP&#x27;</span>))</span><br><span class="line">          .<span class="title function_">id</span>(<span class="string">&#x27;backToHSP&#x27;</span>)</span><br><span class="line">          .<span class="title function_">fontFamily</span>(<span class="string">&#x27;HarmonyHeiTi&#x27;</span>)</span><br><span class="line">          .<span class="title function_">height</span>(<span class="number">48</span>)</span><br><span class="line">          .<span class="title function_">width</span>(<span class="string">&#x27;624px&#x27;</span>)</span><br><span class="line">          .<span class="title function_">margin</span>(&#123; <span class="attr">top</span>: <span class="string">&#x27;4%&#x27;</span> , <span class="attr">bottom</span>: <span class="string">&#x27;6%&#x27;</span> &#125;)</span><br><span class="line">          .<span class="title function_">type</span>(<span class="title class_">ButtonType</span>.<span class="property">Capsule</span>)</span><br><span class="line">          .<span class="title function_">borderRadius</span>($r(<span class="string">&#x27;sys.float.ohos_id_corner_radius_button&#x27;</span>))</span><br><span class="line">          .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.button_background&#x27;</span>))</span><br><span class="line">          .<span class="title function_">fontColor</span>($r(<span class="string">&#x27;sys.color.ohos_id_color_foreground_contrary&#x27;</span>))</span><br><span class="line">          .<span class="title function_">fontSize</span>($r(<span class="string">&#x27;sys.float.ohos_id_text_size_button1&#x27;</span>))</span><br><span class="line">            <span class="comment">// 绑定点击事件</span></span><br><span class="line">          .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            router.<span class="title function_">back</span>(&#123; <span class="comment">//  返回HSP的页面</span></span><br><span class="line">              <span class="attr">url</span>: <span class="string">&#x27;@bundle:com.samples.hspsample/library/ets/pages/Menu&#x27;</span> <span class="comment">//路径为：`library/src/main/ets/pages/Menu.ets</span></span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.page_background&#x27;</span>))</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>页面返回router.back方法的入参中url说明：</p>
+<ul>
+<li><p>如果从HSP页面返回HAP页面，url的内容为：</p>
+<ul>
+<li><pre><code class="JavaScript">&#39;pages/Index&#39;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- url内容的模板为：</span><br><span class="line"></span><br><span class="line">  - ```JavaScript</span><br><span class="line">    &#x27;页面所在的文件名(不加.ets后缀)&#x27;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>如果从HSP1的页面跳到HSP2的页面后，需要返回到HSP1的页面，url的内容为：</p>
+<ul>
+<li><pre><code class="JavaScript">&#39;@bundle:com.samples.hspsample/library/ets/pages/Menu&#39;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- url内容的模板为：</span><br><span class="line"></span><br><span class="line">  - ```JavaScript</span><br><span class="line">    &#x27;@bundle:包名（bundleName）/模块名（moduleName）/路径/页面所在的文件名(不加.ets后缀)&#x27;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-动态导入"><a href="#4-动态导入" class="headerlink" title="4. 动态导入"></a>4. 动态导入</h1><p>动态import支持条件延迟加载，支持部分反射功能，可以提升页面的加载速度；动态import支持加载HSP模块&#x2F;HAR模块&#x2F;OHPM包&#x2F;Native库等，并且HAR模块间只有变量动态import时还可以进行模块解耦。</p>
+<h2 id="4-1-技术适用场景介绍"><a href="#4-1-技术适用场景介绍" class="headerlink" title="4.1 技术适用场景介绍"></a>4.1 <strong>技术适用场景介绍</strong></h2><p>应用开发的有些场景中，如果希望根据条件导入模块或者按需导入模块，可以使用动态导入代替<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/introduction-to-arkts-0000001774279590#ZH-CN_TOPIC_0000001774279590__%E9%9D%99%E6%80%81%E5%AF%BC%E5%85%A5">静态导入</a>。下面是可能会需要动态导入的场景：</p>
+<ul>
+<li>当静态导入的模块很明显的降低了代码的加载速度且被使用的可能性很低，或者并不需要马上使用它。</li>
+<li>当静态导入的模块很明显的占用了大量的系统内存且被使用的可能性很低。</li>
+<li>当被导入的模块，在加载时并不存在，需要异步获取。</li>
+<li>当被导入的模块说明符，需要动态构建。（静态导入只能使用静态说明符）</li>
+<li>当被导入的模块有副作用（这里的副作用，可以理解为模块中会直接运行的代码），这些副作用只有在触发了某些条件才被需要时。</li>
+</ul>
+<h2 id="4-2-业务扩展场景介绍"><a href="#4-2-业务扩展场景介绍" class="headerlink" title="4.2 业务扩展场景介绍"></a>4.2 <strong>业务扩展场景介绍</strong></h2><p>动态import在业务上除了能实现条件延迟加载，还可以实现部分反射功能。实例如下，HAP动态import HAR包harlibrary，并调用静态成员函数staticAdd()、成员函数instanceAdd()，以及全局方法addHarlibrary()。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// harlibrary&#x27;s src/main/ets/utils/Calc.ets</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Calc</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="title function_">staticAdd</span>(<span class="attr">a</span>:<span class="built_in">number</span>, <span class="attr">b</span>:<span class="built_in">number</span>):<span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> c = a + b;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;DynamicImport I am harlibrary in staticAdd, %d + %d = %d&#x27;</span>, a, b, c);</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">instanceAdd</span>(<span class="attr">a</span>:<span class="built_in">number</span>, <span class="attr">b</span>:<span class="built_in">number</span>):<span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> c = a + b;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;DynamicImport I am harlibrary in instanceAdd, %d + %d = %d&#x27;</span>, a, b, c);</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">addHarlibrary</span>(<span class="params"><span class="attr">a</span>:<span class="built_in">number</span>, <span class="attr">b</span>:<span class="built_in">number</span></span>):<span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> c = a + b;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;DynamicImport I am harlibrary in addHarlibrary, %d + %d = %d&#x27;</span>, a, b, c);</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// harlibrary&#x27;s Index.ets</span></span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">Calc</span>, addHarlibrary &#125; <span class="keyword">from</span> <span class="string">&#x27;./src/main/ets/utils/Calc&#x27;</span></span><br><span class="line"><span class="comment">// HAP&#x27;s oh-package.json5</span></span><br><span class="line"><span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;harlibrary&quot;</span>: <span class="string">&quot;file:../harlibrary&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// HAP&#x27;s Index.ets</span></span><br><span class="line"><span class="keyword">import</span>(<span class="string">&#x27;harlibrary&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params"><span class="attr">ns</span>:<span class="title class_">ESObject</span></span>) =&gt;</span> &#123;</span><br><span class="line">  ns.<span class="property">Calc</span>.<span class="title function_">staticAdd</span>(<span class="number">8</span>, <span class="number">9</span>);  <span class="comment">// 调用静态成员函数staticAdd()</span></span><br><span class="line">  <span class="keyword">let</span> <span class="attr">calc</span>:<span class="title class_">ESObject</span> = <span class="keyword">new</span> ns.<span class="title class_">Calc</span>();  <span class="comment">// 实例化类Calc</span></span><br><span class="line">  calc.<span class="title function_">instanceAdd</span>(<span class="number">10</span>, <span class="number">11</span>);  <span class="comment">// 调用成员函数instanceAdd()</span></span><br><span class="line">  ns.<span class="title function_">addHarlibrary</span>(<span class="number">6</span>, <span class="number">7</span>);  <span class="comment">// 调用全局方法addHarlibrary()</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 使用类、成员函数和方法的字符串名字进行反射调用</span></span><br><span class="line">  <span class="keyword">let</span> className = <span class="string">&#x27;Calc&#x27;</span>;</span><br><span class="line">  <span class="keyword">let</span> methodName = <span class="string">&#x27;instanceAdd&#x27;</span>;</span><br><span class="line">  <span class="keyword">let</span> staticMethod = <span class="string">&#x27;staticAdd&#x27;</span>;</span><br><span class="line">  <span class="keyword">let</span> functionName = <span class="string">&#x27;addHarlibrary&#x27;</span>;</span><br><span class="line">  ns[className][staticMethod](<span class="number">12</span>, <span class="number">13</span>);  <span class="comment">// 调用静态成员函数staticAdd()</span></span><br><span class="line">  <span class="keyword">let</span> <span class="attr">calc1</span>:<span class="title class_">ESObject</span> = <span class="keyword">new</span> ns[className]();  <span class="comment">// 实例化类Calc</span></span><br><span class="line">  calc1[methodName](<span class="number">14</span>, <span class="number">15</span>);  <span class="comment">// 调用成员函数instanceAdd()</span></span><br><span class="line">  ns[functionName](<span class="number">16</span>, <span class="number">17</span>);  <span class="comment">// 调用全局方法addHarlibrary()</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ai-prompt/" title="AI 工具的使用艺术之 Prompt">AI 工具的使用艺术之 Prompt</a></h2>
+                <p class="excerpt">
+                
+                
+
+
+什么是提示词和提示词工程1.1 提示词（Prompt）
+
+提示词，英文名叫 Prompt。
+是用户发送给大语言模型的问题、指令或请求，用来明确地告诉模型用户想要解决的问题或完成的任务，是大语言模型理解用户需求并据此生成相关、准确回答或内容的基础。
+对于大语言模型来说，提示词就是用户输入给大语言
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-11-27T13:43:03.000Z" class="post-list__meta--date date">2024-11-27</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/Midjourney/" rel="tag">Midjourney</a>, <a class="-none-link" href="/tags/Prompt/" rel="tag">Prompt</a>
+</span><a class="btn-border-small" href="/ai-prompt/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/hm-app-package/';
+  var disqus_title = 'hm-app-package';
+  var disqus_url = 'http://shevakuilin.com/hm-app-package/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>

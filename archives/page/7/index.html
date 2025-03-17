@@ -152,42 +152,32 @@
   
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/hm-app-package/" title="link to post.title">hm-app-package</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/autolayout-multiplier/" title="link to post.title">AutoLayout控件等比间距的百分比布局</a></h2>
       <p class="excerpt">
     
-      
+      多控件水平、垂直分布要求相同间距时，使用multiplier来进行布局，即百分比布局是最佳选择。
+在看本文前可以了解一下iOS NSLayoutConstraint 其中就提到过multiplier, 本文中的百分比布局都是基于 multiplier 实现的，下面来一一查看其实现。
 
-1. 应用程序包概述1.1 应用与应用程序包用户应用程序泛指运行在设备的操作系统之上，为用户提供特定服务的程序，简称“应用”。一个应用所对应的软件包文件，称为“应用程序包”。
-当前系统提供了应用程序包开发、安装、查询、更新、卸载的管理机制，便于开发者开发和管理应用。同时，系统还屏蔽了不同的芯片平台的差异（包括x86&amp;#x2F;ARM，32位&amp;#x2F;64位等），应用程序包在不同的芯片平台都能
+我们需要实现的功能很简单，以一个居中的按钮为基准，达成五个按钮等比间距水平分布在屏幕上的效果为例，首先约束居中按钮
     &hellip;
       </p>
-      <div class="post-list__meta"><time datetime="2025-01-24T05:02:02.000Z" class="post-list__meta--date date">2025-01-24</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E8%AE%BE%E8%AE%A1%E4%BB%8B%E7%BB%8D/" rel="tag">设计介绍</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
-</span><a class="btn-border-small" href="/hm-app-package/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/harmonyos-dev-intro/" title="link to post.title">鸿蒙开发指南</a></h2>
-      <p class="excerpt">
-    
-      
-
-1. 概述1.1 简介鸿蒙（即 HarmonyOS ，开发代号 Ark，正式名称为华为终端鸿蒙智能设备操作系统软件）是华为公司自 2012 年以来开发的一款可支持鸿蒙原生应用和兼容 AOSP 应用的分布式操作系统。该系统利用“分布式”技术将手机、电脑、平板、电视、汽车和智能穿戴等多款设备融合成一个“超级终端”，使用户便于操作和共享各种设备的资源。
-1.2 本文读者收获
-帮助开发者全面了解 Ha
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2024-01-23T04:21:17.000Z" class="post-list__meta--date date">2024-01-23</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" rel="tag">入门指南</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
-</span><a class="btn-border-small" href="/harmonyos-dev-intro/">开始阅读</a></div>
+      <div class="post-list__meta"><time datetime="2016-08-22T06:08:36.000Z" class="post-list__meta--date date">2016-08-22</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/NSLayoutConstraint/" rel="tag">NSLayoutConstraint</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AD%89%E6%AF%94%E9%97%B4%E8%B7%9D%E5%B8%83%E5%B1%80/" rel="tag">等比间距布局</a>
+</span><a class="btn-border-small" href="/autolayout-multiplier/">开始阅读</a></div>
       <hr class="post-list__divider" />
     </li>
   
     
   </ol>
 
+
+  <nav class="pagination" role="navigation">
+    
+      <a class="older-posts pagination__newer btn btn-small btn-tertiary" href="/archives/page/6/">&larr; 最近</a>
+    
+    <span class="pagination__page-number" >  7 / 7 </span>
+    
+  </nav>
 
  <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
