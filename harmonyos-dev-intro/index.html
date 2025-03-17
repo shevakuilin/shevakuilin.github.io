@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>鸿蒙开发指南 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="鸿蒙开发指南 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="鸿蒙开发指南 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/harmonyos-dev-intro/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-01-23T04:21:17.000Z" class="post-list__meta--date date">2024-01-23</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" rel="tag">入门指南</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">鸿蒙开发指南</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/harmonyos-dev-intro.png">
+
+<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. <strong>概述</strong></h1><h2 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 <strong>简介</strong></h2><p><strong>鸿蒙</strong>（即 <strong>HarmonyOS</strong> ，开发代号 <strong>Ark</strong>，正式名称为华为终端鸿蒙智能设备操作系统软件）是华为公司自 2012 年以来开发的一款可支持鸿蒙原生应用和兼容 AOSP 应用的<strong>分布式操作系统</strong>。该系统利用“分布式”技术将<strong>手机、电脑、平板、电视、汽车和智能穿戴</strong>等多款设备融合成一个“超级终端”，使用户便于操作和共享各种设备的资源。</p>
+<h2 id="1-2-本文读者收获"><a href="#1-2-本文读者收获" class="headerlink" title="1.2 本文读者收获"></a>1.2 <strong>本文读者收获</strong></h2><ul>
+<li>帮助开发者全面了解 HarmonyOS 系统</li>
+<li>引导开发者从 0 到 1 上手 HarmonyOS 应用开发</li>
+</ul>
+<h2 id="1-3-鸿蒙开发基础"><a href="#1-3-鸿蒙开发基础" class="headerlink" title="1.3 鸿蒙开发基础"></a>1.3 <strong>鸿蒙开发基础</strong></h2><h3 id="1-3-1-鸿蒙应用开发框架概述"><a href="#1-3-1-鸿蒙应用开发框架概述" class="headerlink" title="1.3.1 鸿蒙应用开发框架概述"></a>1.3.1 <strong>鸿蒙应用开发框架概述</strong></h3><p>鸿蒙应用开发框架是鸿蒙系统提供的一套开发工具和框架，用于帮助开发者快速构建鸿蒙应用。它提供了一系列的 API 和组件，使开发者可以方便地进行应用的开发、测试和发布。鸿蒙应用开发框架支持多种开发语言，包括 C++、JavaScript、ArkTS 等，开发者可以根据自己的需求选择合适的开发语言进行开发。</p>
+<h3 id="1-3-2-鸿蒙应用开发框架的主要特点"><a href="#1-3-2-鸿蒙应用开发框架的主要特点" class="headerlink" title="1.3.2 鸿蒙应用开发框架的主要特点"></a>1.3.2 <strong>鸿蒙应用开发框架的主要特点</strong></h3><ul>
+<li><strong>跨平台开发</strong>：鸿蒙应用开发框架支持多种平台，包括手机、平板、电视、汽车等，开发者可以使用同一套代码开发适配不同平台的应用，大大提高了开发效率。</li>
+<li><strong>模块化开发</strong>：鸿蒙应用开发框架采用模块化的设计，开发者可以根据需要选择所需的功能模块进行开发，避免了不必要的代码冗余，提高了代码的可维护性和可重用性。</li>
+<li><strong>灵活的布局和界面设计</strong>：鸿蒙应用开发框架提供了丰富的布局和界面设计工具，开发者可以灵活地设计应用的界面，实现丰富多样的交互效果，提升用户体验。</li>
+<li><strong>强大的性能优化和调试工具</strong>：鸿蒙应用开发框架提供了一系列的性能优化和调试工具，开发者可以通过这些工具对应用进行性能优化和调试，提高应用的运行效率和稳定性。</li>
+</ul>
+<h3 id="1-3-3-语言和开发范式概念"><a href="#1-3-3-语言和开发范式概念" class="headerlink" title="1.3.3 语言和开发范式概念"></a>1.3.3 <strong>语言和开发范式概念</strong></h3><p>当我们首次创建鸿蒙程序时，会面临模型的选择，如下图：</p>
+<img src="/image/hm-dev-intro-01.png">
+
+<p><strong>HarmonyOS</strong> 中的两种开发范式：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>语言生态</th>
+<th>UI 更新方式</th>
+<th>适用场景</th>
+<th>适用人群</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>声明式开发范式</td>
+<td>ArkTS</td>
+<td>数据驱动更新</td>
+<td>复杂度较大、团队合作度较高的程序</td>
+<td>移动系统应用开发人员、系统应用开发人员</td>
+</tr>
+<tr>
+<td>类 Web 开发范式</td>
+<td>JS</td>
+<td>数据驱动更新</td>
+<td>界面较为简单的程序应用和卡片</td>
+<td>Web 前端开发人员</td>
+</tr>
+</tbody></table>
+<p>语言选择</p>
+<ul>
+<li><strong>ArkTS</strong>：只支持 <strong>Stage 模型</strong></li>
+<li><strong>JS</strong>：支持 <strong>Stage 模型 和 FA 模型</strong></li>
+</ul>
+<p>模型概念</p>
+<p><strong>HarmonyOS</strong> 的两种模型，是历史的产物，可以理解为设计模式。</p>
+<ul>
+<li><strong>FA（Feature Ability）模型</strong>：HarmonyOS API 7 开始支持的模型，已经不再主推。FA 模型开发可见 FA 模型开发概述。</li>
+<li><strong>Stage 模型</strong>：HarmonyOS API 9 开始新增的模型，是目前主推且会长期演进的模型。在该模型中，由于提供了 AbilityStage、WindowStage 等类作为应用组件和 Window 窗口的“舞台”，因此称这种应用模型为 Stage 模型。Stage 模型开发可见Stage 模型开发概述。Stage 模型架构如下图：</li>
+</ul>
+<img src="/image/hm-dev-intro-02.png">
+
+<ul>
+<li>目前官方主推 Stage 模型</li>
+<li>针对 Stage 模型衍生出的声明式开发更优的开发框架</li>
+<li>ArkTS 优于 JS</li>
+<li>我们认为，以上选型是目前（SDK 3.1.0 API 9）最优解&#x2F;最佳实践即：Stage 模型+ArkTS+声明式。</li>
+</ul>
+<h1 id="2-鸿蒙应用开发环境搭建"><a href="#2-鸿蒙应用开发环境搭建" class="headerlink" title="2. 鸿蒙应用开发环境搭建"></a>2. <strong>鸿蒙应用开发环境搭建</strong></h1><h2 id="2-1-安装鸿蒙-DevEco-Studio"><a href="#2-1-安装鸿蒙-DevEco-Studio" class="headerlink" title="2.1 安装鸿蒙 DevEco Studio"></a>2.1 <strong>安装鸿蒙 DevEco Studio</strong></h2><p>步骤 1：下载 DevEco Studio SDK <a target="_blank" rel="noopener" href="https://developer.harmonyos.com/cn/develop/deveco-studio#download">https://developer.harmonyos.com/cn/develop/deveco-studio#download</a></p>
+<h2 id="2-2-配置开发环境"><a href="#2-2-配置开发环境" class="headerlink" title="2.2 配置开发环境"></a>2.2 <strong>配置开发环境</strong></h2><h3 id="2-2-1-（可选）配置-Proxy"><a href="#2-2-1-（可选）配置-Proxy" class="headerlink" title="2.2.1 （可选）配置 Proxy"></a>2.2.1 <strong>（可选）配置 Proxy</strong></h3><p>步骤 2：网络不能直接访问 Internet，可通过设置代理服务器进行访问。如果无需代理即可访问 Internet，将跳过该步骤。</p>
+<h3 id="2-2-2-安装-Node-js-和-ohpm"><a href="#2-2-2-安装-Node-js-和-ohpm" class="headerlink" title="2.2.2 安装 Node.js 和 ohpm"></a>2.2.2 <strong>安装 Node.js 和 ohpm</strong></h3><p>步骤 3：指定本地已安装的 Node.js&#x2F;ohpm，或在线下载安装 Node.js 与 ohpm。可以指定本地已安装的 Node.js 或 ohpm（Node.js 版本要求为 v14.19.1 及以上，且低于 v17.0.0；对应的 npm 版本要求为 6.14.16 及以上）路径位置；如果本地没有合适的版本，可以选择 Install 按钮，选择下载源和存储路径后，进行在线下载，单击 Next 进入下一步。</p>
+<h3 id="2-2-3-下载-HarmonyOS-SDK"><a href="#2-2-3-下载-HarmonyOS-SDK" class="headerlink" title="2.2.3 下载 HarmonyOS SDK"></a>2.2.3 <strong>下载 HarmonyOS SDK</strong></h3><img src="/image/hm-dev-intro-03.png">
+
+<h3 id="2-2-4-创建鸿蒙应用"><a href="#2-2-4-创建鸿蒙应用" class="headerlink" title="2.2.4 创建鸿蒙应用"></a>2.2.4 <strong>创建鸿蒙应用</strong></h3><img src="/image/hm-dev-intro-04.png">
+
+<h3 id="2-2-5-运行项目"><a href="#2-2-5-运行项目" class="headerlink" title="2.2.5 运行项目"></a>2.2.5 <strong>运行项目</strong></h3><p>单击 DevEco Studio 工具栏中的按钮 ▶️ 运行工程，或使用默认快捷键 <strong>Shift+F10</strong>（ macOS 为 <strong>Control+R</strong> )运行工程。</p>
+<h1 id="3-开发指南"><a href="#3-开发指南" class="headerlink" title="3. 开发指南"></a>3. <strong>开发指南</strong></h1><h2 id="3-1-项目与配置"><a href="#3-1-项目与配置" class="headerlink" title="3.1 项目与配置"></a>3.1 <strong>项目与配置</strong></h2><h3 id="3-11-项目结构"><a href="#3-11-项目结构" class="headerlink" title="3.11 项目结构"></a>3.11 <strong>项目结构</strong></h3><img src="/image/hm-dev-intro-05.png">
+
+<figcaption style="text-align:center; font-size:14px; color:#777;">项目结构</figcaption>
+  </figure>
+
+<h3 id="3-1-2-配置文件含义"><a href="#3-1-2-配置文件含义" class="headerlink" title="3.1.2 配置文件含义"></a>3.1.2 <strong>配置文件含义</strong></h3><p><strong>AppScope &gt; app.json5</strong>：应用的全局配置信息。</p>
+<p><strong>entry</strong>：HarmonyOS 工程模块，编译构建生成一个 HAP 包。</p>
+<ul>
+<li><strong>src &gt; main &gt; ets</strong>：用于存放 ArkTS 源码。</li>
+<li><strong>src &gt; main &gt; ets &gt; entryability</strong>：应用&#x2F;服务的入口。</li>
+<li><strong>src &gt; main &gt; ets &gt; pages</strong>：应用&#x2F;服务包含的页面。</li>
+<li><strong>src &gt; main &gt; resources</strong>：用于存放应用&#x2F;服务所用到的资源文件，如图形、多媒体、字符串、布局文件等。关于资源文件，详见资源分类与访问。</li>
+<li><strong>src &gt; main &gt; module.json5</strong>：Stage 模型模块配置文件。主要包含 HAP 包的配置信息、应用&#x2F;服务在具体设备上的配置信息以及应用&#x2F;服务的全局配置信息。具体的配置文件说明，详见 module.json5 配置文件。</li>
+<li><strong>build-profile.json5</strong>：当前的模块信息、编译信息配置项，包括 buildOption、targets 配置等。其中 targets 中可配置当前运行环境，默认为 HarmonyOS。</li>
+<li><strong>hvigorfile.ts</strong>：模块级编译构建任务脚本，开发者可以自定义相关任务和代码实现。</li>
+<li><strong>oh_modules</strong>：用于存放三方库依赖信息。关于原 npm 工程适配 ohpm 操作，请参考历史工程迁移。</li>
+<li><strong>build-profile.json5</strong>：应用级配置信息，包括签名、产品配置等。</li>
+<li><strong>hvigorfile.ts</strong>：应用级编译构建任务脚本。</li>
+</ul>
+<h2 id="3-2-ArkUI-框架"><a href="#3-2-ArkUI-框架" class="headerlink" title="3.2 ArkUI 框架"></a>3.2 <strong>ArkUI 框架</strong></h2><h3 id="3-2-1-ArkUI-定义"><a href="#3-2-1-ArkUI-定义" class="headerlink" title="3.2.1 ArkUI 定义"></a>3.2.1 <strong>ArkUI 定义</strong></h3><p>ArkTS 是 HarmonyOS 优选的主力应用开发语言，在 TS 基础上发展而来。基于 ArkTS 的声明式开发范式的方舟开发框架是一套开发极简、高性能、支持跨设备的 UI 开发框架，提供了构建 HarmonyOS 应用 UI 所必需的能力。</p>
+<img src="/image/hm-dev-intro-06.png">
+
+<figcaption style="text-align:center; font-size:14px; color:#777;">ArkUI框架架构</figcaption>
+  </figure>
+
+<h3 id="3-2-2-ArkTS-声明式-UI-的基本组成"><a href="#3-2-2-ArkTS-声明式-UI-的基本组成" class="headerlink" title="3.2.2 ArkTS 声明式 UI 的基本组成"></a>3.2.2 <strong>ArkTS 声明式 UI 的基本组成</strong></h3><img src="/image/hm-dev-intro-07.png">
+
+<figcaption style="text-align:center; font-size:14px; color:#777;">ArkTS的基本组成</figcaption>
+  </figure>
+
+<h3 id="3-2-3-ArkTS-特点"><a href="#3-2-3-ArkTS-特点" class="headerlink" title="3.2.3 ArkTS 特点"></a>3.2.3 <strong>ArkTS 特点</strong></h3><ul>
+<li>开发效率高，开发体验好</li>
+<li>性能优越</li>
+<li>生态容易快速推进</li>
+</ul>
+<h2 id="3-3-组件与布局汇总（API-9）"><a href="#3-3-组件与布局汇总（API-9）" class="headerlink" title="3.3 组件与布局汇总（API 9）"></a>3.3 <strong>组件与布局汇总（API 9）</strong></h2><h3 id="3-3-1-汇总"><a href="#3-3-1-汇总" class="headerlink" title="3.3.1 汇总"></a>3.3.1 <strong>汇总</strong></h3><img src="/image/hm-dev-intro-08.png">
+
+<h3 id="3-3-2-XComponent-的使用"><a href="#3-3-2-XComponent-的使用" class="headerlink" title="3.3.2 XComponent 的使用"></a>3.3.2 <strong>XComponent 的使用</strong></h3><p>ArkUI 框架提供了基于 <strong>XComponent</strong> 组件的 C++ 自绘制引擎接入（比如游戏引擎）能力，和基于 Web 组件的 HTML5&#x2F;Web 的渲染能力。满足了开发者在游戏、相机、地图、浏览器等复杂应用场景的开发诉求，降低了这类应用移植的门槛。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">XComponent</span>(&#123;<span class="attr">id</span>:<span class="string">&#x27;&#x27;</span>,<span class="attr">type</span>:<span class="string">&#x27;texture&#x27;</span>,<span class="attr">librayname</span>:<span class="string">&#x27;nativerender&#x27;</span>&#125;)</span><br><span class="line">.<span class="title function_">onload</span>(<span class="function">(<span class="params">context</span>)=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line">.<span class="title function_">onDestroy</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-界面开发"><a href="#3-4-界面开发" class="headerlink" title="3.4 界面开发"></a>3.4 <strong>界面开发</strong></h2><h3 id="3-4-1-网络请求"><a href="#3-4-1-网络请求" class="headerlink" title="3.4.1 网络请求"></a>3.4.1 <strong>网络请求</strong></h3><ul>
+<li>@ohos.net.http(API6)</li>
+<li>@system.fetch(API3)</li>
+</ul>
+<p>完整示例</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入包名</span></span><br><span class="line"><span class="keyword">import</span> http <span class="keyword">from</span> <span class="string">&#x27;@ohos.net.http&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 每一个httpRequest对应一个HTTP请求任务，不可复用</span></span><br><span class="line"><span class="keyword">let</span> httpRequest = http.<span class="title function_">createHttp</span>();</span><br><span class="line"><span class="comment">// 用于订阅HTTP响应头，此接口会比request请求先返回。可以根据业务需要订阅此消息</span></span><br><span class="line"><span class="comment">// 从API 8开始，使用on(&#x27;headersReceive&#x27;, Callback)替代on(&#x27;headerReceive&#x27;, AsyncCallback)。8+</span></span><br><span class="line">httpRequest.<span class="title function_">on</span>(<span class="string">&#x27;headersReceive&#x27;</span>, <span class="function">(<span class="params">header</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;header: &#x27;</span><span class="title class_">JSON</span>.<span class="title function_">stringify</span>(header));</span><br><span class="line">&#125;);</span><br><span class="line">httpRequest.<span class="title function_">request</span>(</span><br><span class="line">    <span class="comment">// 填写HTTP请求的URL地址，可以带参数也可以不带参数。URL地址需要开发者自定义。请求的参数可以在extraData中指定</span></span><br><span class="line">    <span class="string">&quot;EXAMPLE_URL&quot;</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">method</span>: http.<span class="property">RequestMethod</span>.<span class="property">POST</span>, <span class="comment">// 可选，默认为http.RequestMethod.GET</span></span><br><span class="line">        <span class="comment">// 开发者根据自身业务需要添加header字段</span></span><br><span class="line">        <span class="attr">header</span>: &#123;</span><br><span class="line">            <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment">// 当使用POST请求时此字段用于传递内容</span></span><br><span class="line">        <span class="attr">extraData</span>: &#123;</span><br><span class="line">            <span class="string">&quot;data&quot;</span>: <span class="string">&quot;data to send&quot;</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">expectDataType</span>: http.<span class="property">HttpDataType</span>.<span class="property">STRING</span>, <span class="comment">// 可选，指定返回数据的类型</span></span><br><span class="line">        <span class="attr">usingCache</span>: <span class="literal">true</span>, <span class="comment">// 可选，默认为true</span></span><br><span class="line">        <span class="attr">priority</span>: <span class="number">1</span>, <span class="comment">// 可选，默认为1</span></span><br><span class="line">        <span class="attr">connectTimeout</span>: <span class="number">60000</span>, <span class="comment">// 可选，默认为60000ms</span></span><br><span class="line">        <span class="attr">readTimeout</span>: <span class="number">60000</span>, <span class="comment">// 可选，默认为60000ms</span></span><br><span class="line">        <span class="attr">usingProtocol</span>: http.<span class="property">HttpProtocol</span>.<span class="property">HTTP1_1</span>, <span class="comment">// 可选，协议类型默认值由系统自动指定</span></span><br><span class="line">    &#125;, <span class="function">(<span class="params">err, data</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!err) &#123;</span><br><span class="line">            <span class="comment">// data.result为HTTP响应内容，可根据业务需要进行解析</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;Result:&#x27;</span><span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data.<span class="property">result</span>));</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;code:&#x27;</span><span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data.<span class="property">responseCode</span>));</span><br><span class="line">            <span class="comment">// data.header为HTTP响应头，可根据业务需要进行解析</span></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;header:&#x27;</span><span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data.<span class="property">header</span>));</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;cookies:&#x27;</span><span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data.<span class="property">cookies</span>)); <span class="comment">// 8+</span></span><br><span class="line">            <span class="comment">// 取消订阅HTTP响应头事件</span></span><br><span class="line">            httpRequest.<span class="title function_">off</span>(<span class="string">&#x27;headersReceive&#x27;</span>);</span><br><span class="line">            <span class="comment">// 当该请求使用完毕时，调用destroy方法主动销毁</span></span><br><span class="line">            httpRequest.<span class="title function_">destroy</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;error:&#x27;</span><span class="title class_">JSON</span>.<span class="title function_">stringify</span>(err));</span><br><span class="line">            <span class="comment">// 取消订阅HTTP响应头事件</span></span><br><span class="line">            httpRequest.<span class="title function_">off</span>(<span class="string">&#x27;headersReceive&#x27;</span>);</span><br><span class="line">            <span class="comment">// 当该请求使用完毕时，调用destroy方法主动销毁。</span></span><br><span class="line">            httpRequest.<span class="title function_">destroy</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-2-数据存储"><a href="#3-4-2-数据存储" class="headerlink" title="3.4.2 数据存储"></a>3.4.2 <strong>数据存储</strong></h3><ul>
+<li>@ohos.data.storage(轻量)</li>
+<li>@ohos.data.rdb(关系型数据库)</li>
+<li>@ohos.data.distributedData(分布式数据管理)</li>
+<li>数据存储分类概念图</li>
+</ul>
+<img src="/image/hm-dev-intro-09.png">
+
+<figcaption style="text-align:center; font-size:14px; color:#777;">数据存储分类</figcaption>
+  </figure>
+
+<h3 id="3-4-3-页面路由"><a href="#3-4-3-页面路由" class="headerlink" title="3.4.3 页面路由"></a>3.4.3 <strong>页面路由</strong></h3><ul>
+<li>@ohos.router(API8)</li>
+<li>@system.router(API3)</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index页面</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line"><span class="title function_">indexPushPage</span>(<span class="params"></span>) &#123;</span><br><span class="line">  router.<span class="title function_">push</span>(&#123;</span><br><span class="line">    <span class="attr">uri</span>: <span class="string">&#x27;pages/detail/detail&#x27;</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-4-app-模块"><a href="#3-4-4-app-模块" class="headerlink" title="3.4.4 app 模块"></a>3.4.4 <strong>app 模块</strong></h3><p><strong>导入模块</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> app <span class="keyword">from</span> <span class="string">&#x27;@system.app&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-4-4-1-App"><a href="#3-4-4-1-App" class="headerlink" title="3.4.4.1 App"></a>3.4.4.1 <strong>App</strong></h4><h5 id="getInfo"><a href="#getInfo" class="headerlink" title="getInfo"></a><strong>getInfo</strong></h5><p>static getInfo(): AppResponse</p>
+<p>获取当前应用配置文件中声明的信息。</p>
+<p>从API Version9开始，推荐使用<a target="_blank" rel="noopener" href="https://developer.harmonyos.com/cn/docs/documentation/doc-references-V3/js-apis-bundlemanager-0000001427585060-V3#ZH-CN_TOPIC_0000001573928977__bundlemanagergetapplicationinfo">bundleManager.getApplicationInfo</a>。</p>
+<p><strong>系统能力：</strong> SystemCapability.ArkUI.ArkUI.Lite</p>
+<p><strong>返回值：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://developer.harmonyos.com/cn/docs/documentation/doc-references-V3/js-apis-system-app-0000001478061993-V3#ZH-CN_TOPIC_0000001523968702__appresponse">AppResponse</a></td>
+<td>定义AppResponse信息。</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;    </span><br><span class="line">  <span class="title function_">getInfo</span>(<span class="params"></span>)&#123;        </span><br><span class="line">    <span class="keyword">var</span> info = app.<span class="title function_">getInfo</span>();        </span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(info));    </span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="terminate"><a href="#terminate" class="headerlink" title="terminate"></a><strong>terminate</strong></h5><p>static terminate(): void  退出当前Ability。</p>
+<p>从API Version 7开始，推荐使用<a target="_blank" rel="noopener" href="https://developer.harmonyos.com/cn/docs/documentation/doc-references-V3/js-apis-ability-featureability-0000001478181545-V3">@ohos.ability.featureAbility</a>。</p>
+<p><strong>系统能力：</strong> SystemCapability.ArkUI.ArkUI.Lite</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export <span class="keyword">default</span> &#123;    </span><br><span class="line">  terminate()&#123;        </span><br><span class="line">    app.terminate();    </span><br><span class="line">  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="setImageCacheCount-7"><a href="#setImageCacheCount-7" class="headerlink" title="setImageCacheCount(7+)"></a><strong>setImageCacheCount(7+)</strong></h5><p>staticsetImageCacheCount(value: number): void</p>
+<p>设置内存中缓存解码后图片的数量上限，提升再次加载同源图片的加载速度。如果不设置则默认为0，不进行缓存。缓存采用内置的LRU策略，新图片加载后，如果超过缓存上限，会删除最久未再次加载的缓存。建议根据应用内存需求，设置合理缓存数量，数字过大可能导致内存使用过高。</p>
+<p><strong>系统能力：</strong> SystemCapability.ArkUI.ArkUI.Full</p>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>number</td>
+<td>是</td>
+<td>内存中解码后图片的缓存数量。</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.ets</span></span><br><span class="line"><span class="keyword">import</span> app <span class="keyword">from</span> <span class="string">&#x27;@system.app&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    <span class="title function_">onCreate</span>(<span class="params"></span>) &#123; </span><br><span class="line">        app.<span class="title function_">setImageCacheCount</span>(<span class="number">100</span>)    <span class="comment">// 设置解码后图片内存缓存上限为100张</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;Application onCreate&#x27;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="title function_">onDestroy</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;Application onDestroy&#x27;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="ScreenOnVisible-deprecated"><a href="#ScreenOnVisible-deprecated" class="headerlink" title="ScreenOnVisible((deprecated))"></a><strong>ScreenOnVisible((deprecated))</strong></h5><p>static screenOnVisible(options?: ScreenOnVisibleOptions): void</p>
+<p>定义屏幕唤醒时是否保持应用可见。</p>
+<p><strong>说明：</strong> 该接口从API Version 8 开始废弃。</p>
+<p><strong>系统能力：</strong> 以下各项对应的系统能力均为SystemCapability.ArkUI.ArkUI.Full</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>options</td>
+<td>ScreenOnVisibleOptions</td>
+<td>否</td>
+<td>当启动保活时，锁屏时将阻止系统返回桌面显示，以保持屏幕唤醒时应用可见。</td>
+</tr>
+</tbody></table>
+<h5 id="requestFullWindow-deprecated"><a href="#requestFullWindow-deprecated" class="headerlink" title="requestFullWindow((deprecated))"></a><strong>requestFullWindow((deprecated))</strong></h5><p>static requestFullWindow(options?: RequestFullWindowOptions): void</p>
+<p>请求应用以全窗口运行，FA在某些场景下（如半模态FA）会以非全窗口运行，调用该接口会从非全窗口切换为全窗口运行，如果已经以全窗口运行则该接口调用无效。</p>
+<p>从API Version 7开始，推荐使用<a target="_blank" rel="noopener" href="https://developer.harmonyos.com/cn/docs/documentation/doc-references-V3/js-apis-window-0000001477981397-V3">@ohos.window</a>。</p>
+<p><strong>系统能力：</strong> SystemCapability.ArkUI.ArkUI.Full</p>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>options</td>
+<td><a target="_blank" rel="noopener" href="https://developer.harmonyos.com/cn/docs/documentation/doc-references-V3/js-apis-system-app-0000001478061993-V3#ZH-CN_TOPIC_0000001523968702__requestfullwindowoptions">RequestFullWindowOptions</a></td>
+<td>否</td>
+<td>请求全屏时，设定非全屏到全屏的过渡时间，单位为毫秒，默认时间与非全屏到全屏的距离成正比。</td>
+</tr>
+</tbody></table>
+<p><strong>示例：</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;    </span><br><span class="line">  <span class="title function_">requestFullWindow</span>(<span class="params"></span>)&#123;        </span><br><span class="line">    app.<span class="title function_">requestFullWindow</span>(&#123;            </span><br><span class="line">      <span class="attr">duration</span>: <span class="number">200</span>&#125;);    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-4-4-2-AppResponse"><a href="#3-4-4-2-AppResponse" class="headerlink" title="3.4.4.2 AppResponse"></a>3.4.4.2 <strong>AppResponse</strong></h4><p>定义AppResponse信息。</p>
+<p><strong>系统能力：</strong> 以下各项对应的系统能力有所不同，详见下表。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>appID6+</td>
+<td>string</td>
+<td>是</td>
+<td>表示应用的包名，用于标识应用的唯一性。系统能力： SystemCapability.ArkUI.ArkUI.Full</td>
+</tr>
+<tr>
+<td>appName</td>
+<td>string</td>
+<td>是</td>
+<td>表示应用的名称。系统能力： SystemCapability.ArkUI.ArkUI.Lite</td>
+</tr>
+<tr>
+<td>versionName</td>
+<td>string</td>
+<td>是</td>
+<td>表示应用的版本名称。系统能力： SystemCapability.ArkUI.ArkUI.Lite</td>
+</tr>
+<tr>
+<td>versionCode</td>
+<td>number</td>
+<td>是</td>
+<td>表示应用的版本号。系统能力： SystemCapability.ArkUI.ArkUI.Lite</td>
+</tr>
+</tbody></table>
+<h4 id="3-4-4-3-ScreenOnVisibleOptions"><a href="#3-4-4-3-ScreenOnVisibleOptions" class="headerlink" title="3.4.4.3 ScreenOnVisibleOptions"></a>3.4.4.3 <strong>ScreenOnVisibleOptions</strong></h4><p>定义屏幕上可见接口的选项。</p>
+<p><strong>系统能力：</strong> 以下各项对应的系统能力均为SystemCapability.ArkUI.ArkUI.Full</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>visible</td>
+<td>boolean</td>
+<td>否</td>
+<td>是否启动保活，默认值false。</td>
+</tr>
+<tr>
+<td>success</td>
+<td>() &#x3D;&gt; void</td>
+<td>否</td>
+<td>接口调用成功的回调函数。</td>
+</tr>
+<tr>
+<td>fail</td>
+<td>(data: string, code: number) &#x3D;&gt; void</td>
+<td>否</td>
+<td>接口调用失败的回调函数。</td>
+</tr>
+<tr>
+<td>complete</td>
+<td>() &#x3D;&gt; void</td>
+<td>否</td>
+<td>接口调用结束的回调函数。</td>
+</tr>
+</tbody></table>
+<h2 id="3-5-权限管理"><a href="#3-5-权限管理" class="headerlink" title="3.5 权限管理"></a>3.5 <strong>权限管理</strong></h2><h3 id="3-5-1-应用权限管理"><a href="#3-5-1-应用权限管理" class="headerlink" title="3.5.1 应用权限管理"></a>3.5.1 <strong>应用权限管理</strong></h3><p>HarmonyOS 中 所有的应用均在应用沙盒内运行。默认情况下，应用只能访问有限的系统资源，系统负责管理应用对资源的访问权限。</p>
+<p>应用权限管理是由接口提供方（Ability）、接口使用方（应用）、系统（包括云侧和端侧）以及用户等多方共同参与的整个流程，保证受限接口是在约定好的规则下被正常使用，避免接口被滥用而导致用户、应用和设备受损。</p>
+<h3 id="3-5-2-敏感权限"><a href="#3-5-2-敏感权限" class="headerlink" title="3.5.2 敏感权限"></a>3.5.2 <strong>敏感权限</strong></h3><p>涉及访问个人数据（如：照片、通讯录、日历、本机号码、短信等）和操作敏感能力（如：相机、麦克风等）的权限。</p>
+<h3 id="3-5-3-权限申请过程"><a href="#3-5-3-权限申请过程" class="headerlink" title="3.5.3 权限申请过程"></a>3.5.3 <strong>权限申请过程</strong></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.定义</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;module&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;reqPermissions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ohos.permission.CAMERA&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;reason&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$string:permreason_camera&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;usedScene&quot;</span><span class="punctuation">:</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;ability&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;com.mycamera.Ability&quot;</span><span class="punctuation">,</span> <span class="string">&quot;com.mycamera.AbilityBackground&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;when&quot;</span><span class="punctuation">:</span> <span class="string">&quot;always&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span></span><br><span class="line">            ...</span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>name</strong> : 必须，填写需要使用的权限名称。</li>
+<li><strong>reason</strong>: 失败原因，可选，当申请的权限为 user_grant 权限时此字段必填。</li>
+<li><strong>usedScene</strong>:可选，当申请的权限为 user_grant 权限时此字段必填。描述权限使用的场景和时机。场景类型有：ability、when（调用时机）。可配置多个 ability。</li>
+</ul>
+<h3 id="3-5-4-动态申请"><a href="#3-5-4-动态申请" class="headerlink" title="3.5.4 动态申请"></a>3.5.4 <strong>动态申请</strong></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//2. 动态申请</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">verifySelfPermission</span>(<span class="string">&quot;ohos.permission.CAMERA&quot;</span>) != <span class="title class_">IBundleManager</span>.<span class="property">PERMISSION_GRANTED</span>) &#123;</span><br><span class="line">    <span class="comment">// 应用未被授予权限</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">canRequestPermission</span>(<span class="string">&quot;ohos.permission.CAMERA&quot;</span>)) &#123;</span><br><span class="line">        <span class="comment">// 是否可以申请弹框授权(首次申请或者用户未选择禁止且不再提示)</span></span><br><span class="line">        <span class="title function_">requestPermissionsFromUser</span>(</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">String</span>&#123; <span class="string">&quot;ohos.permission.CAMERA&quot;</span> &#125; , <span class="variable constant_">MY_PERMISSIONS_REQUEST_CAMERA</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 显示应用需要权限的理由，提示用户进入设置授权</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 权限已被授予</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-5-权限使用原则"><a href="#3-5-5-权限使用原则" class="headerlink" title="3.5.5 权限使用原则"></a>3.5.5 <strong>权限使用原则</strong></h3><ul>
+<li>权限申请最小化。跟用户提供的功能无关的权限，不要申请；尽量采用其他无需权限的操作来实现相应功能（如：通过 intent 拉起系统 UI 界面由用户交互、应用自己生成 uuid 代替设备 ID 等）。</li>
+<li>权限申请完整。应用所需权限（包括应用调用到的三方库依赖的权限）都要逐个在应用的 config.json 中按格式声明。</li>
+<li>满足用户可知。应用申请的敏感权限的目的需要真实准确告知用户。</li>
+<li>权限就近申请。应用在用户触发相关业务功能时，就近提示用户授予实现此功能所需的权限。</li>
+<li>权限不扩散。在用户未授权的情况下，不允许提供给其他应用使用。</li>
+<li>应用自定义权限防止重名。建议以包名为前缀来命名权限，防止跟系统定义的权限重名。</li>
+</ul>
+<h2 id="3-6-状态管理"><a href="#3-6-状态管理" class="headerlink" title="3.6 状态管理"></a>3.6 <strong>状态管理</strong></h2><h3 id="3-6-1-状态管理双向交互"><a href="#3-6-1-状态管理双向交互" class="headerlink" title="3.6.1 状态管理双向交互"></a>3.6.1 <strong>状态管理双向交互</strong></h3><img src="/image/hm-dev-intro-10.png">
+
+<h3 id="3-6-2-State-使用"><a href="#3-6-2-State-使用" class="headerlink" title="3.6.2 @State 使用"></a>3.6.2 <strong>@State 使用</strong></h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">MyComponent</span> &#123;</span><br><span class="line">  <span class="meta">@State</span> <span class="attr">count</span>: <span class="built_in">number</span> = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="attr">increaseBy</span>: <span class="built_in">number</span> = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">Parent</span> &#123;</span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Column</span>() &#123;</span><br><span class="line">      <span class="comment">// 从父组件初始化，覆盖本地定义的默认值</span></span><br><span class="line">      <span class="title class_">MyComponent</span>(&#123; <span class="attr">count</span>: <span class="number">1</span>, <span class="attr">increaseBy</span>: <span class="number">2</span> &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-6-3-Components-级别的状态管理"><a href="#3-6-3-Components-级别的状态管理" class="headerlink" title="3.6.3 Components 级别的状态管理"></a>3.6.3 <strong>Components 级别的状态管理</strong></h3><ul>
+<li><code>@State</code>：@State 装饰的变量拥有其所属组件的状态，可以作为其子组件单向和双向同步的数据源。当其数值改变时，会引起相关组件的渲染刷新。</li>
+<li><code>@Prop</code>：@Prop 装饰的变量可以和父组件建立单向同步关系，@Prop 装饰的变量是可变的，但修改不会同步回父组件。</li>
+<li><code>@Link</code>：@Link 装饰的变量和父组件构建双向同步关系的状态变量，父组件会接受来自 @Link 装饰的变量的修改的同步，父组件的更新也会同步给 @Link 装饰的变量。</li>
+<li><code>@Provide/@Consume</code>：@Provide&#x2F;@Consume 装饰的变量用于跨组件层级（多层组件）同步状态变量，可以不需要通过参数命名机制传递，通过 alias（别名）或者属性名绑定。</li>
+<li><code>@Observed</code>：@Observed 装饰 class，需要观察多层嵌套场景的 class 需要被 @Observed 装饰。单独使用 @Observed 没有任何作用，需要和 @ObjectLink、@Prop 连用。</li>
+<li><code>@ObjectLink</code>：@ObjectLink 装饰的变量接收 @Observed 装饰的 class 的实例，应用于观察多层嵌套场景，和父组件的数据源构建双向同步。</li>
+</ul>
+<img src="/image/hm-dev-intro-11.png">
+
+<figcaption style="text-align:center; font-size:14px; color:#777;">Components装饰器</figcaption>
+  </figure>
+
+<h2 id="3-7-线程通信"><a href="#3-7-线程通信" class="headerlink" title="3.7 线程通信"></a>3.7 <strong>线程通信</strong></h2><ul>
+<li>HarmonyOS 应用中每个进程都会有一个主线程，其中主线程作用如下：<ul>
+<li>执行 UI 绘制；</li>
+<li>管理主线程的 ArkTS 引擎实例，使多个 UIAbility 组件能够运行在其之上；</li>
+<li>管理其他线程（例如 Worker 线程）的 ArkTS 引擎实例，例如启动和终止其他线程；</li>
+<li>分发交互事件；</li>
+<li>处理应用代码的回调，包括事件处理和生命周期管理；</li>
+<li>接收 Worker 线程发送的消息；</li>
+</ul>
+</li>
+<li>主线程之外，用户最多可以创建 8 个子线程</li>
+</ul>
+<img src="/image/hm-dev-intro-12.png">
+
+<h3 id="3-7-1-使用-Emitter-进行通信"><a href="#3-7-1-使用-Emitter-进行通信" class="headerlink" title="3.7.1 使用 Emitter 进行通信"></a>3.7.1 使用 <strong>Emitter</strong> 进行通信</h3><ul>
+<li>订阅事件</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> emitter <span class="keyword">from</span> <span class="string">&quot;@ohos.events.emitter&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个eventId为1的事件</span></span><br><span class="line"><span class="keyword">let</span> event = &#123;</span><br><span class="line">    <span class="attr">eventId</span>: <span class="number">1</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 收到eventId为1的事件后执行该回调</span></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">callback</span> = (<span class="params">eventData</span>) =&gt; &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&#x27;event callback&#x27;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅eventId为1的事件</span></span><br><span class="line">emitter.<span class="title function_">on</span>(event, callback);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>发送事件</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> emitter <span class="keyword">from</span> <span class="string">&quot;@ohos.events.emitter&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个eventId为1的事件，事件优先级为Low</span></span><br><span class="line"><span class="keyword">let</span> event = &#123;</span><br><span class="line">    <span class="attr">eventId</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">priority</span>: emitter.<span class="property">EventPriority</span>.<span class="property">LOW</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> eventData = &#123;</span><br><span class="line">    <span class="attr">data</span>: &#123;</span><br><span class="line">        <span class="string">&quot;content&quot;</span>: <span class="string">&quot;c&quot;</span>,</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&quot;isEmpty&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送eventId为1的事件，事件内容为eventData</span></span><br><span class="line">emitter.<span class="title function_">emit</span>(event, eventData);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-7-2-使用-Worker-进行通信"><a href="#3-7-2-使用-Worker-进行通信" class="headerlink" title="3.7.2 使用 Worker 进行通信"></a>3.7.2 使用 Worker 进行通信</h3><p><a target="_blank" rel="noopener" href="https://developer.harmonyos.com/cn/docs/documentation/doc-references-V3/js-apis-worker-0000001427902752-V3">Worker</a>是与主线程并行的独立线程。创建Worker的线程被称为宿主线程，Worker工作的线程被称为Worker线程。创建Worker时传入的脚本文件在Worker线程中执行，通常在Worker线程中处理耗时的操作，需要注意的是，Worker中不能直接更新Page。</p>
+<p>Worker的开发步骤如下：</p>
+<ol>
+<li>在工程的<a target="_blank" rel="noopener" href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ohos-building-configuration-0000001218440654#section6887184182020">模块级build-profile.json5</a>文件的buildOption属性中添加配置信息。</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;buildOption&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;sourceOption&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;workers&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="string">&quot;./src/main/ets/workers/worker.ts&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>根据build-profile.json5中的配置创建对应的worker.ts文件。</li>
+</ol>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> worker <span class="keyword">from</span> <span class="string">&#x27;@ohos.worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> parent = worker.<span class="property">workerPort</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理来自主线程的消息</span></span><br><span class="line">parent.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">message</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&quot;onmessage: &quot;</span>message)</span><br><span class="line">    <span class="comment">// 发送消息到主线程</span></span><br><span class="line">    parent.<span class="title function_">postMessage</span>(<span class="string">&quot;message from worker thread.&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><em>主线程中使用如下方式初始化和使用worker （Stage模型）</em></li>
+</ol>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> worker <span class="keyword">from</span> <span class="string">&#x27;@ohos.worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> wk = <span class="keyword">new</span> worker.<span class="title class_">ThreadWorker</span>(<span class="string">&quot;entry/ets/workers/worker.ts&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送消息到worker线程</span></span><br><span class="line">wk.<span class="title function_">postMessage</span>(<span class="string">&quot;message from main thread.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理来自worker线程的消息</span></span><br><span class="line">wk.<span class="property">onmessage</span> = <span class="keyword">function</span>(<span class="params">message</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">info</span>(<span class="string">&quot;message from worker: &quot;</span>message)</span><br><span class="line">    <span class="comment">// 根据业务按需停止worker线程</span></span><br><span class="line">    wk.<span class="title function_">terminate</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-8-进程通信"><a href="#3-8-进程通信" class="headerlink" title="3.8 进程通信"></a>3.8 <strong>进程通信</strong></h2><h3 id="3-8-1-进程通信两种实现"><a href="#3-8-1-进程通信两种实现" class="headerlink" title="3.8.1 进程通信两种实现"></a>3.8.1 <strong>进程通信两种实现</strong></h3><ul>
+<li>IPC（Inter-Process Communication）<ul>
+<li>使用 Binder 驱动</li>
+</ul>
+</li>
+<li>RPC（Remote Procedure Call）<ul>
+<li>使用软总线驱动</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-8-2-实现步骤"><a href="#3-8-2-实现步骤" class="headerlink" title="3.8.2 实现步骤"></a>3.8.2 <strong>实现步骤</strong></h3><ul>
+<li>实现接口类：需继承 IRemoteBroker，需定义消息码，可声明不在此类实现的方法。</li>
+<li>实现服务提供端（Stub）：需继承 IRemoteStub 或者 RemoteObject，需重写 AsObject 方法及 OnRemoteRequest 方法。</li>
+<li>实现服务请求端（Proxy）：需继承 IRemoteProxy 或 RemoteProxy，需重写 AsObject 方法，封装所需方法调用 SendRequest。</li>
+<li>注册 SA：申请 SA 的唯一 ID，向 SAMgr 注册 SA。</li>
+<li>获取 SA：通过 SA 的 ID 和设备 ID 获取 Proxy，使用 Proxy 与远端通信</li>
+</ul>
+<img src="/image/hm-dev-intro-12.png">
+
+<h2 id="3-9-设备唯一标识"><a href="#3-9-设备唯一标识" class="headerlink" title="3.9 设备唯一标识"></a>3.9 <strong>设备唯一标识</strong></h2><ul>
+<li>Oaid：它是基于华为自由算法生成的 UUID 标识符，同一台设备上不同 App 获取的 Oaid 一致；</li>
+<li>NetworkID：网络设备节点通信标识符（重启后变化）</li>
+<li>DVID：分布式虚拟设备标识符（需要登录 HarmonyOS 账号）</li>
+<li>UUID：同一时空下所有设备生成的 UUID 都不同</li>
+</ul>
+<h2 id="3-10-适配"><a href="#3-10-适配" class="headerlink" title="3.10 适配"></a>3.10 <strong>适配</strong></h2><h3 id="3-10-1-国际化"><a href="#3-10-1-国际化" class="headerlink" title="3.10.1 国际化"></a>3.10.1 <strong>国际化</strong></h3><ol>
+<li>导入 I18n 模块。</li>
+</ol>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> I18n <span class="keyword">from</span> <span class="string">&#x27;@ohos.i18n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>判断 Locale 的语言是否为从右到左语言。</li>
+<li>调用 isRTL 接口获取 Locale 的语言是否为从右到左语言。</li>
+</ol>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="keyword">let</span> rtl = I18n.<span class="title function_">isRTL</span>(<span class="string">&quot;zh-CN&quot;</span>); <span class="comment">// rtl = false</span></span><br><span class="line">   rtl = I18n.<span class="title function_">isRTL</span>(<span class="string">&quot;ar&quot;</span>); <span class="comment">// rtl = true</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`call i18n.System interface failed, error code: <span class="subst">$&#123;error.code&#125;</span>, message: <span class="subst">$&#123;error.message&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>获取语言的本地化表示。</li>
+</ol>
+<p>调用 getDisplayLanguage 接口获取某一语言的本地化表示。其中， language 表示待本地化显示的语言，locale 表示本地化的 Locale， sentenceCase 结果是否需要首字母大写。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="keyword">let</span> language = <span class="string">&quot;en&quot;</span>;</span><br><span class="line">   <span class="keyword">let</span> locale = <span class="string">&quot;zh-CN&quot;</span>;</span><br><span class="line">   <span class="keyword">let</span> sentenceCase = <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">let</span> localizedLanguage = I18n.<span class="property">System</span>.<span class="title function_">getDisplayLanguage</span>(language, locale, sentenceCase); <span class="comment">// localizedLanguage = &quot;英语&quot;</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`call i18n.System interface failed, error code: <span class="subst">$&#123;error.code&#125;</span>, message: <span class="subst">$&#123;error.message&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>获取国家的本地化表示。</li>
+</ol>
+<p>调用 getDisplayCountry 接口获取某一国家的本地化表示。其中，country 表示待本地化显示的国家，locale 表示本地化的 Locale，sentenceCase 结果是否需要首字母大写。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="keyword">let</span> country = <span class="string">&quot;US&quot;</span>;</span><br><span class="line">   <span class="keyword">let</span> locale = <span class="string">&quot;zh-CN&quot;</span>;</span><br><span class="line">   <span class="keyword">let</span> sentenceCase = <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">let</span> localizedCountry = I18n.<span class="property">System</span>.<span class="title function_">getDisplayCountry</span>(country, locale, sentenceCase); <span class="comment">// localizedCountry = &quot;美国&quot;</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`call i18n.System interface failed, error code: <span class="subst">$&#123;error.code&#125;</span>, message: <span class="subst">$&#123;error.message&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>获取系统语言列表和某个语言系统支持的国家列表。</li>
+</ol>
+<ul>
+<li>调用 getSystemLanguages 接口获取系统支持的语言列表。</li>
+<li>调用 getSystemCountries 接口获取某一语言系统支持的地区列表。</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="keyword">let</span> languageList = I18n.<span class="property">System</span>.<span class="title function_">getSystemLanguages</span>();  <span class="comment">// languageList = [&quot;en-Latn-US&quot;, &quot;zh-Hans&quot;]</span></span><br><span class="line">   <span class="keyword">let</span> countryList = I18n.<span class="property">System</span>.<span class="title function_">getSystemCountries</span>(<span class="string">&quot;zh&quot;</span>); <span class="comment">// countryList = [&quot;ZW&quot;, &quot;YT&quot;, ..., &quot;CN&quot;, &quot;DE&quot;], 共240个国家和地区</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`call i18n.System interface failed, error code: <span class="subst">$&#123;error.code&#125;</span>, message: <span class="subst">$&#123;error.message&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>判断语言和国家是否匹配。</li>
+</ol>
+<p>调用 isSuggested 接口判断语言和地区是否匹配。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="keyword">let</span> isSuggest = I18n.<span class="property">System</span>.<span class="title function_">isSuggested</span>(<span class="string">&quot;zh&quot;</span>, <span class="string">&quot;CN&quot;</span>); <span class="comment">// isSuggest = true</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(error) &#123;</span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`call i18n.System interface failed, error code: <span class="subst">$&#123;error.code&#125;</span>, message: <span class="subst">$&#123;error.message&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-10-2-屏幕适配"><a href="#3-10-2-屏幕适配" class="headerlink" title="3.10.2 屏幕适配"></a>3.10.2 <strong>屏幕适配</strong></h3><ul>
+<li>百分比</li>
+<li>根据 dpi 动态计算（算法）</li>
+<li>全局定义（src&#x2F;main&#x2F;resources&#x2F;base&#x2F;element&#x2F; float.json）</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;float&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;btn_height&quot;</span>,</span><br><span class="line">      <span class="string">&quot;value&quot;</span>: <span class="string">&quot;40vp&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;value_height&quot;</span>,</span><br><span class="line">      <span class="string">&quot;value&quot;</span>: <span class="string">&quot;28vp&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 引用</span></span><br><span class="line"> <span class="title class_">Button</span>($r(<span class="string">&#x27;app.string.pixel_introduce&#x27;</span>))</span><br><span class="line">        .<span class="title function_">height</span>($r(<span class="string">&#x27;app.float.btn_height&#x27;</span>))</span><br><span class="line">        .<span class="title function_">width</span>(<span class="title class_">Constants</span>.<span class="property">FULL_PERCENT</span>)</span><br><span class="line">        .<span class="title function_">backgroundColor</span>($r(<span class="string">&#x27;app.color.blue_background&#x27;</span>))</span><br><span class="line">        .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> <span class="variable language_">this</span>.<span class="title function_">jumpPage</span>(<span class="title class_">Constants</span>.<span class="property">INTRODUCTION_PAGE_URL</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-10-3-其他适配（暗黑模式等）"><a href="#3-10-3-其他适配（暗黑模式等）" class="headerlink" title="3.10.3 其他适配（暗黑模式等）"></a>3.10.3 <strong>其他适配（暗黑模式等）</strong></h3><p>New-&gt;Resource File，在弹出的界面选择 Color Mode 来创建如下图</p>
+<img src="/image/hm-dev-intro-13.png">
+
+<h1 id="4-应用测试"><a href="#4-应用测试" class="headerlink" title="4. 应用测试"></a>4. <strong>应用测试</strong></h1><h2 id="4-1-测试标准"><a href="#4-1-测试标准" class="headerlink" title="4.1 测试标准"></a>4.1 <strong>测试标准</strong></h2><ul>
+<li>性能测试</li>
+<li>安全测试</li>
+<li>兼容性测试</li>
+<li>稳定性测试</li>
+<li>功耗测试</li>
+<li>流转测试</li>
+<li>游戏测试</li>
+</ul>
+<h2 id="4-2-测试服务"><a href="#4-2-测试服务" class="headerlink" title="4.2 测试服务"></a>4.2 <strong>测试服务</strong></h2><h3 id="4-2-1-单元测试框架"><a href="#4-2-1-单元测试框架" class="headerlink" title="4.2.1 单元测试框架"></a>4.2.1 <strong>单元测试框架</strong></h3><ol>
+<li>框架概述:单元测试框架(hypium)是 HarmonyOS 上的测试框架，提供测试用例编写、执行、结果显示能力，用于测试系统或应用接口。</li>
+<li>测试框架引用方式:目前 hypium 以 npm 包的形式发布, 因此需要在 Deveco Studio 工程级 package.json 内配置。</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;@ohos/hypium&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.6&quot;</span> #最新版本号，可通过cmd命令 <span class="string">&quot;npm view @ohos/hypium version&quot;</span>查询</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用</li>
+</ol>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; describe, beforeAll, beforeEach, afterEach, afterAll, it, expect &#125; <span class="keyword">from</span> <span class="string">&#x27;@ohos/hypium&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">abilityTest</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">describe</span>(<span class="string">&#x27;ActsAbilityTest&#x27;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">it</span>(<span class="string">&#x27;assertContain&#x27;</span>,<span class="number">0</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">let</span> a = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line">      <span class="keyword">let</span> b = <span class="string">&#x27;b&#x27;</span></span><br><span class="line">      <span class="comment">// Defines a variety of assertion methods, which are used to declare expected boolean conditions.</span></span><br><span class="line">      <span class="title function_">expect</span>(a).<span class="title function_">assertContain</span>(b)</span><br><span class="line">      <span class="title function_">expect</span>(a).<span class="title function_">assertEqual</span>(a)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-应用发布与测试"><a href="#5-应用发布与测试" class="headerlink" title="5. 应用发布与测试"></a>5. <strong>应用发布与测试</strong></h1><h2 id="5-1-签名与上架流程图"><a href="#5-1-签名与上架流程图" class="headerlink" title="5.1 签名与上架流程图"></a>5.1 <strong>签名与上架流程图</strong></h2><img src="/image/hm-dev-intro-14.png">
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-npl-ocr-demo/" title="iOS 端基于 NLP/CoreML + Vision 实现「图像文字识别&amp;提取」">iOS 端基于 NLP/CoreML + Vision 实现「图像文字识别&amp;提取」</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言
+阅读本文内容前，你可能需要了解的基础知识「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)
+
+在最近的技术分享中，我们已经知道了实现「图像文字识别&amp;amp;提取」这个功能所需的基本技术方案和原理 ，这解决了我们实现这一功能当中 Why 和 What 的问题。但光知道 Why
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-03-02T13:29:45.000Z" class="post-list__meta--date date">2024-03-02</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/NLP/" rel="tag">NLP</a>, <a class="-none-link" href="/tags/OCR/" rel="tag">OCR</a>, <a class="-none-link" href="/tags/Vision/" rel="tag">Vision</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
+</span><a class="btn-border-small" href="/ios-npl-ocr-demo/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/client-ai-03/" title="「端智能」移动端当前的应用与发展现状">「端智能」移动端当前的应用与发展现状</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言在国内，阿里、腾讯等企业也先后进行了端智能的尝试。
+阿里在手淘中宝贝列表重排、智能刷新、跳失点预测、智能 Push、拍立淘（以图搜图）等多个场景实现了端智能的落地，并推出了 MNN 神经网络深度学习框架。
+腾讯则推出自研的 NCNN 框架，并在医疗、翻译、游戏、智能音箱等领域广泛应用端智能技
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-01-14T15:33:12.000Z" class="post-list__meta--date date">2024-01-14</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
+</span><a class="btn-border-small" href="/client-ai-03/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/harmonyos-dev-intro/';
+  var disqus_title = '鸿蒙开发指南';
+  var disqus_url = 'http://shevakuilin.com/harmonyos-dev-intro/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
