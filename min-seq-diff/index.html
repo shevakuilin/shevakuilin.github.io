@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>数列差异的最小化 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="数列差异的最小化 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="数列差异的最小化 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/min-seq-diff/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2021-09-17T08:21:56.000Z" class="post-list__meta--date date">2021-09-17</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a>, <a class="-none-link" href="/tags/%E6%95%B0%E5%88%97/" rel="tag">数列</a>, <a class="-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">数列差异的最小化</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>小R在研究两个数列之间的关系。他给定了两个数列 <code>a</code> 和 <code>b</code>，长度分别为 <code>n</code> 和 <code>m</code>，并设计了一个有趣的公式：$$∣(a[i]−b[j])^2−k^2∣∣(a[i]−b[j])^2−k^2∣$$，其中 <code>k</code> 是给定的一个整数， $$0≤i。现在，小R想知道如何选择数列 <code>a</code> 和 <code>b</code> 中的元素 a[i]<em>a</em>[<em>i</em>] 和 b[j]<em>b</em>[<em>j</em>]，使得这个公式的值达到最小。</p>
+<p>给定两个整数数列 <code>a</code>（长度为 <code>n</code>） 和 <code>b</code>（长度为 <code>m</code>），以及一个整数 <code>k</code>，你需要找到这个公式的最小值。</p>
+<h3 id="约束条件"><a href="#约束条件" class="headerlink" title="约束条件"></a>约束条件</h3><ul>
+<li>$$1≤n,m≤10^5$$</li>
+<li>$$0≤k≤10^9$$</li>
+<li>$$0≤a[i],b[j]≤10^9$$</li>
+</ul>
+<h3 id="测试样例"><a href="#测试样例" class="headerlink" title="测试样例"></a>测试样例</h3><p><em><strong>样例1：</strong></em></p>
+<blockquote>
+<p>输入：<code>n = 5 ,m = 5, k = 1, a = [5, 3, 4, 1, 2] ,b = [0, 6, 7, 9, 8]</code> 输出：<code>0</code></p>
+</blockquote>
+<p>解释：当选择 a[3] &#x3D; 1 和 b[0] &#x3D; 0 时，$$∣(1−0)^2−1^2∣&#x3D;∣1−1∣&#x3D;0$$，这是最小可能值。</p>
+<p><em><strong>样例2：</strong></em></p>
+<blockquote>
+<p>输入：<code>n = 5 ,m = 5, k = 0 ,a = [5, 3, 4, 1, 2] ,b = [0, 6, 7, 9, 8]</code> 输出：<code>1</code></p>
+</blockquote>
+<p><em><strong>样例3：</strong></em></p>
+<blockquote>
+<p>输入：<code>n = 5 ,m = 6, k = 3 ,a = [5, 3, 4, 1, 2] ,b = [0, 6, 7, 9, 8, 11]</code> 输出：<code>0</code></p>
+</blockquote>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>好的，让我们来分析一下这个问题。</p>
+<h3 id="问题理解"><a href="#问题理解" class="headerlink" title="问题理解"></a>问题理解</h3><p>你需要找到两个数列 <code>a</code> 和 <code>b</code> 中的元素 a[i] 和 b[j]，使得公式 $$∣(a[i]−b[j])^2−k^2∣ $$的值最小。</p>
+<h3 id="数据结构选择"><a href="#数据结构选择" class="headerlink" title="数据结构选择"></a>数据结构选择</h3><p>由于数列 <code>a</code> 和 <code>b</code> 的长度可能非常大（最多 $$10^5$$），我们需要选择一种高效的算法来解决这个问题。</p>
+<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><ol>
+<li><strong>排序</strong>：首先对数列 <code>a</code> 和 <code>b</code> 进行排序。排序后的数列可以帮助我们更快地找到最接近的元素。</li>
+<li><strong>双指针法</strong>：使用**<a target="_blank" rel="noopener" href="https://tjny2v67lw.feishu.cn/docx/ES5CdJprpoGfBWxEme1cut00nVb">双指针法</a>**来遍历排序后的数列 <code>a</code> 和 <code>b</code>。一个指针用于遍历 <code>a</code>，另一个指针用于遍历 <code>b</code>。</li>
+<li><strong>计算公式值</strong>：在遍历过程中，计算公式 $$∣(a[i]−b[j])^2−k^2∣$$ 的值，并记录最小值。</li>
+<li><strong>移动指针</strong>：根据当前计算的值，决定移动哪个指针。如果当前值较大，可以尝试移动指针以找到更接近的值。</li>
+</ol>
+<h3 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h3><ol>
+<li><strong>初始化</strong>：初始化两个指针 <code>i</code> 和 <code>j</code>，分别指向数列 <code>a</code> 和 <code>b</code> 的起始位置。</li>
+<li><strong>遍历</strong>：在 <code>i</code> 和 <code>j</code> 的范围内，计算公式 $$∣(a[i]−b[j])^2−k^2∣$$ 的值。</li>
+<li><strong>更新最小值</strong>：如果当前计算的值小于之前记录的最小值，则更新最小值。</li>
+<li><strong>移动指针</strong>：根据当前计算的值，决定移动 <code>i</code> 还是 <code>j</code>。如果 <code>a[i]</code> 和 <code>b[j]</code> 的差值较大，可以尝试移动指针以找到更接近的值。</li>
+<li><strong>返回结果</strong>：遍历结束后，返回记录的最小值。</li>
+</ol>
+<p>通过这种方法，你可以在 $$O(n \log n + m \log m)$$ 的时间复杂度内解决问题，其中 n 和 m 分别是数列 <code>a</code> 和 <code>b</code> 的长度。</p>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">solution</span>(n: <span class="type">i32</span>, m: <span class="type">i32</span>, k: <span class="type">i32</span>, a: <span class="type">Vec</span>&lt;<span class="type">i32</span>&gt;, b: <span class="type">Vec</span>&lt;<span class="type">i32</span>&gt;) <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">  <span class="comment">// Please write your code here</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 对数组 a 和 b 进行排序</span></span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">a</span> = a;</span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">b</span> = b;</span><br><span class="line">  <span class="comment">// 从小到大生序排列</span></span><br><span class="line">  a.<span class="title function_ invoke__">sort</span>();</span><br><span class="line">  b.<span class="title function_ invoke__">sort</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 记录最小差值</span></span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">min_diff</span> = std::<span class="type">i32</span>::MAX;</span><br><span class="line">  <span class="comment">// 创建两个指针，都指向数组起始位置，属于同向双指针</span></span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">i</span> = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">j</span> = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 使用双指针法遍历数组 a 和 b</span></span><br><span class="line">  <span class="keyword">while</span> i &lt; n <span class="keyword">as</span> <span class="type">usize</span> &amp;&amp; j &lt; m <span class="keyword">as</span> <span class="type">usize</span> &#123;</span><br><span class="line">      <span class="comment">// 计算当前的差值</span></span><br><span class="line">      <span class="keyword">let</span> <span class="variable">diff</span> = (a[i] - b[j]).<span class="title function_ invoke__">abs</span>();</span><br><span class="line">      <span class="comment">// 在遍历过程中，计算公式 ∣(a[i]−b[j])2−k2∣ 的值</span></span><br><span class="line">      <span class="keyword">let</span> <span class="variable">current_value</span> = (diff * diff - k * k).<span class="title function_ invoke__">abs</span>();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 更新最小差值，因为默认是i32的最大值，所以第一次一定会进入</span></span><br><span class="line">      <span class="keyword">if</span> current_value &lt; min_diff &#123;</span><br><span class="line">          min_diff = current_value;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 根据当前差值调整指针，如果 a[i] 和 b[j] 的差值较大，可以尝试移动指针以找到更接近的值。</span></span><br><span class="line">      <span class="comment">// 如果 a 比 b 的值小，则 a 的指针进一位</span></span><br><span class="line">      <span class="keyword">if</span> a[i] &lt; b[j] &#123;</span><br><span class="line">          i += <span class="number">1</span>;</span><br><span class="line">      <span class="comment">// 如果 a 值大于等于 b 的值，则 b 的指针进一位</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          j += <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  min_diff</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">  <span class="comment">// You can add more test cases here</span></span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="built_in">vec!</span>[<span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="built_in">vec!</span>[<span class="number">0</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">8</span>]) == <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="number">5</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="built_in">vec!</span>[<span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="built_in">vec!</span>[<span class="number">0</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">8</span>]) == <span class="number">1</span>);</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="title function_ invoke__">solution</span>(<span class="number">5</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="built_in">vec!</span>[<span class="number">5</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>], <span class="built_in">vec!</span>[<span class="number">0</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">11</span>]) == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/DSL-Native/" title="DSL Native+ 动态化方案设计">DSL Native+ 动态化方案设计</a></h2>
+                <p class="excerpt">
+                
+                
+
+为什么要有动态化？
+应“变”：随着互联网红利的消失，整个移动市场的关注从“流量”转成了“留量”，大部分的移动产品也都告别了初期的抢占市场，对某个业务领域的精细化打磨、避免 App 发布漫长的周期，在出现问题时还能即时对线上进行中止血，成为了所有业务的基本诉求。
+提“效”：动态化往往和跨端化一桌而
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-02-01T05:01:25.000Z" class="post-list__meta--date date">2022-02-01</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/DSL/" rel="tag">DSL</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" rel="tag">动态化</a>
+</span><a class="btn-border-small" href="/DSL-Native/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/clang-xcode/" title="基于 Clang 的 Xcode 编译器插件开发">基于 Clang 的 Xcode 编译器插件开发</a></h2>
+                <p class="excerpt">
+                
+                LLVM &amp;amp; Clang
+
+官方文档
+Clang 是作为常规 LLVM 版本的一部分发布的，你可以从 https://LLVM.org/releases/下载版本。
+1.下载LLVM工程1git clone git@github.com:llvm/llvm-project.git
+
+其中包含
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2021-03-13T15:45:09.000Z" class="post-list__meta--date date">2021-03-13</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Clang/" rel="tag">Clang</a>, <a class="-none-link" href="/tags/IDE-%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" rel="tag">IDE 插件开发</a>, <a class="-none-link" href="/tags/Xcode/" rel="tag">Xcode</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+</span><a class="btn-border-small" href="/clang-xcode/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/min-seq-diff/';
+  var disqus_title = '数列差异的最小化';
+  var disqus_url = 'http://shevakuilin.com/min-seq-diff/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+  
+         <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+    
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+   
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
