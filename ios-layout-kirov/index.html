@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>iPhone/iPad AutoLayout 框架 Kirov 架构设计 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iPhone/iPad AutoLayout 框架 Kirov 架构设计 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="iPhone/iPad AutoLayout 框架 Kirov 架构设计 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/ios-layout-kirov/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2025-03-09T13:56:33.000Z" class="post-list__meta--date date">2025-03-09</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Layout/" rel="tag">Layout</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">iPhone/iPad AutoLayout 框架 Kirov 架构设计</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><p>Kirov 的能力非常强大，可以让工程师以最快速度还原设计稿，一次编码同时适配 iPhone&#x2F;iPad 的不同比例设计，同时它非常的轻量化，支持绝对布局与相对布局以及自动适配子视图。</p>
+<img src="/image/ios-layout-kirov.png">
+
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><h3 id="设计基准"><a href="#设计基准" class="headerlink" title="设计基准"></a>设计基准</h3><p>整体布局的核心来源于通用抽象出来的设计基准类<code>KirovDesignBasic</code>，其负责承接外部使用者填充进来的设计稿基准值：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@objc(KirovDesignBasic)</span></span><br><span class="line"><span class="keyword">@objcMembers</span> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KirovDesignBasic</span>: <span class="title class_ inherited__">NSObject</span> &#123;</span><br><span class="line">    <span class="comment">/// 设计稿基准尺寸，默认 .zero</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> frame: <span class="type">CGRect</span> <span class="operator">=</span> .zero</span><br><span class="line">    <span class="comment">/// 设计稿基准顶边距，默认 CGFloat.leastNonzeroMagnitude</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> top: <span class="type">CGFloat</span> <span class="operator">=</span> <span class="type">CGFloat</span>.leastNonzeroMagnitude</span><br><span class="line">    <span class="comment">/// 设计稿基准底边距，默认 CGFloat.leastNonzeroMagnitude</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> bottom: <span class="type">CGFloat</span> <span class="operator">=</span> <span class="type">CGFloat</span>.leastNonzeroMagnitude</span><br><span class="line">    <span class="comment">/// 设计稿基准左边距，默认 CGFloat.leastNonzeroMagnitude</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> left: <span class="type">CGFloat</span> <span class="operator">=</span> <span class="type">CGFloat</span>.leastNonzeroMagnitude</span><br><span class="line">    <span class="comment">/// 设计稿基准右边距，默认 CGFloat.leastNonzeroMagnitude</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> right: <span class="type">CGFloat</span> <span class="operator">=</span> <span class="type">CGFloat</span>.leastNonzeroMagnitude</span><br><span class="line">    <span class="comment">/// 设计稿基准宽度，默认 CGFloat.leastNonzeroMagnitude</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> width: <span class="type">CGFloat</span> <span class="operator">=</span> <span class="type">CGFloat</span>.leastNonzeroMagnitude</span><br><span class="line">    <span class="comment">/// 设计稿基准高度，默认 CGFloat.leastNonzeroMagnitude</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> height: <span class="type">CGFloat</span> <span class="operator">=</span> <span class="type">CGFloat</span>.leastNonzeroMagnitude</span><br><span class="line">    <span class="comment">/// 设计稿基准字体，默认 UIFont.systemFont(ofSize: 17)</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> font: <span class="type">UIFont</span> <span class="operator">=</span> <span class="type">UIFont</span>.systemFont(ofSize: <span class="number">17</span>)</span><br><span class="line">    <span class="comment">///  设计稿基准字体，默认 0</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> lineHeight: <span class="type">CGFloat</span> <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>KirovDesignBasic</code> 之上，有分别对应着 iPhone 和 iPad 设计基准的<code>KiroviPhoneDesignBasic</code> 和 <code>KiroviPadDesignBasic</code>，这两个基准类的作用是负责对设计稿的填充值进行分流：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// iPad 设计稿基准</span></span><br><span class="line"><span class="keyword">@objc(KiroviPadDesignBasic)</span></span><br><span class="line"><span class="keyword">@objcMembers</span> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KiroviPadDesignBasic</span>: <span class="title class_ inherited__">KirovDesignBasic</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// iPhone 设计稿基准</span></span><br><span class="line"><span class="keyword">@objc(KiroviPhoneDesignBasic)</span></span><br><span class="line"><span class="keyword">@objcMembers</span> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">KiroviPhoneDesignBasic</span>: <span class="title class_ inherited__">KirovDesignBasic</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="布局控制"><a href="#布局控制" class="headerlink" title="布局控制"></a>布局控制</h3><p>具体的布局由 <code>Kirov</code> 来负责控制，每一个<code>Kirov</code> 对象的内部都分别持有了一个<code>KiroviPhoneDesignBasic</code> 和 <code>KiroviPadDesignBasic</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// iPhone &amp; iPad 自动适配布局属性，基于 frame</span></span><br><span class="line"><span class="keyword">@objc(Kirov)</span></span><br><span class="line"><span class="keyword">@objcMembers</span> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Kirov</span>: <span class="title class_ inherited__">NSObject</span> &#123;</span><br><span class="line">    <span class="comment">/// iPad 的设计稿基准</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> iPadDesign: <span class="type">KiroviPadDesignBasic</span>!</span><br><span class="line">    <span class="comment">/// iPhone 的设计稿基准</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> iPhoneDesign: <span class="type">KiroviPhoneDesignBasic</span>!</span><br><span class="line">    <span class="comment">/// 自动适配子视图，默认 fasle</span></span><br><span class="line">    <span class="comment">/// - Note: 当 autoAdaptSubView = true，自动适配所有子视图</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> autoAdaptSubView: <span class="type">Bool</span> <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">    <span class="comment">/// 自动适配富文本，默认 fasle</span></span><br><span class="line">    <span class="comment">/// - Note: 当 autoAdaptAttributedString = true时，自动适配富文本大小</span></span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">public</span> <span class="keyword">var</span> autoAdaptAttributedString: <span class="type">Bool</span> <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">        <span class="keyword">self</span>.iPadDesign <span class="operator">=</span> <span class="type">KiroviPadDesignBasic</span>()</span><br><span class="line">        <span class="keyword">self</span>.iPhoneDesign <span class="operator">=</span> <span class="type">KiroviPhoneDesignBasic</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="布局实现"><a href="#布局实现" class="headerlink" title="布局实现"></a>布局实现</h3><h4 id="自动适配"><a href="#自动适配" class="headerlink" title="自动适配"></a>自动适配</h4><p>布局的实现依托于针对基础的 <code>UIView</code> 进行扩展，以及一些特性控件（<code>UITextView</code>&#x2F;<code>UITextField</code>&#x2F;<code>UILabel</code>&#x2F;<code>UIButton</code>…）的特性支持。</p>
+<p>对每一个潜在的布局对象，都实现了一个扩展方法<code>configureAutoAdaptLayoutWithBlock</code>其允许你对该布局对象进行 iPhone &#x2F; iPad 的同时适配，并且自动识别采用绝对布局&#x2F;相对布局、是否需要同时适配子视图等等：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// iPhone &amp; iPad 自动适配布局，基于 frame</span></span><br><span class="line">    <span class="keyword">@objc</span>(configureAutoAdaptLayoutWithBlock:)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">configureAutoAdaptLayoutWithBlock</span>(<span class="keyword">_</span> <span class="params">block</span>: (<span class="keyword">_</span> kirov: <span class="type">Kirov</span>) -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">        block(<span class="keyword">self</span>.kirov)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.kirov.iPadDesign.frame.size <span class="operator">==</span> .zero <span class="operator">&amp;&amp;</span> <span class="keyword">self</span>.kirov.iPhoneDesign.frame.size <span class="operator">==</span> .zero &#123;</span><br><span class="line">            <span class="comment">/// - Note: 如果没有设置 frame 尝试进行绝对布局</span></span><br><span class="line">            kirov_setAbsoluteLayout()</span><br><span class="line">            </span><br><span class="line">            <span class="comment">/// - Note: 自动适配子视图</span></span><br><span class="line">            kirov_autoAdaptSubviews <span class="operator">=</span> <span class="keyword">self</span>.kirov.autoAdaptSubView</span><br><span class="line">            <span class="keyword">guard</span> kirov_autoAdaptSubviews <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">            <span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() <span class="operator">+</span> <span class="number">2.0</span>) &#123;</span><br><span class="line">                <span class="keyword">self</span>.kirov_adaptSubviews(root: <span class="keyword">self</span>)</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">self</span>.frame <span class="operator">==</span> .zero &#123;</span><br><span class="line">                <span class="built_in">assertionFailure</span>(<span class="string">&quot;缺少 iPad 和 iPhone 基准尺寸，请补充&quot;</span>)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">self</span>.kirov.iPadDesign.frame.size <span class="operator">==</span> .zero &#123;</span><br><span class="line">            <span class="built_in">assertionFailure</span>(<span class="string">&quot;缺少 iPad 的基准尺寸，请补充&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">self</span>.kirov.iPhoneDesign.frame.size <span class="operator">==</span> .zero &#123;</span><br><span class="line">            <span class="built_in">assertionFailure</span>(<span class="string">&quot;缺少 iPhone 的基准尺寸，请补充&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/// - Note: 设置 frame</span></span><br><span class="line">        kirov_setFrames(kirov_ipadFrame: <span class="keyword">self</span>.kirov.iPadDesign.frame, kirov_iphoneFrame: <span class="keyword">self</span>.kirov.iPhoneDesign.frame)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/// - Note: 自动适配子视图</span></span><br><span class="line">        kirov_autoAdaptSubviews <span class="operator">=</span> <span class="keyword">self</span>.kirov.autoAdaptSubView</span><br><span class="line">        <span class="keyword">guard</span> kirov_autoAdaptSubviews <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        <span class="type">DispatchQueue</span>.main.asyncAfter(deadline: .now() <span class="operator">+</span> <span class="number">2.0</span>) &#123;</span><br><span class="line">            <span class="keyword">self</span>.kirov_adaptSubviews(root: <span class="keyword">self</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="子视图的适配"><a href="#子视图的适配" class="headerlink" title="子视图的适配"></a>子视图的适配</h4><p>如果开启了子视图的适配开关，将以当前视图为根节点，其节点下的所有子视图进行递归适配</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">extension</span> <span class="title class_">UIView</span> &#123;</span><br><span class="line">    <span class="comment">/// 适配子视图</span></span><br><span class="line">    <span class="comment">/// - Parameters root 父视图</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">kirov_adaptSubviews</span>(<span class="params">root</span>: <span class="type">UIView</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> subview <span class="keyword">in</span> root.subviews &#123;</span><br><span class="line">            <span class="comment">// - Note: 如果CALayer的position属性包含了NaN，说明视图没有准备好，结束循环</span></span><br><span class="line">            <span class="keyword">if</span> subview.frame <span class="operator">==</span> .zero &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">let</span> originFrame <span class="operator">=</span> subview.frame;</span><br><span class="line">            <span class="comment">// - Note: 将所有子视图都标记为自动适配</span></span><br><span class="line">            subview.kirov.autoAdaptSubView <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">            <span class="comment">/// - Note: setFrames (kirov_ipadFrame:kirov_iphoneFrame: ) 内部将会根据当前设备类型自动计算出合适的适配比例</span></span><br><span class="line">            subview.kirov_setFrames(kirov_ipadFrame: originFrame, kirov_iphoneFrame: originFrame)</span><br><span class="line">            <span class="comment">/// - Note: 自动适配子视图相关属性</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> label <span class="operator">=</span> subview <span class="keyword">as?</span> <span class="type">UILabel</span> &#123;</span><br><span class="line">                label.kirov_autoAdapt()</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> textFiled <span class="operator">=</span> subview <span class="keyword">as?</span> <span class="type">UITextField</span> &#123;</span><br><span class="line">                textFiled.kirov_autoAdapt()</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> textView <span class="operator">=</span> subview <span class="keyword">as?</span> <span class="type">UITextView</span> &#123;</span><br><span class="line">                textView.kirov_autoAdapt()</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> button <span class="operator">=</span> subview <span class="keyword">as?</span> <span class="type">UIButton</span> &#123;</span><br><span class="line">                button.kirov_autoAdapt()</span><br><span class="line">            &#125;</span><br><span class="line">            subview.kirov_adaptSubviews(root: subview)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="绝对布局的相邻坐标检测"><a href="#绝对布局的相邻坐标检测" class="headerlink" title="绝对布局的相邻坐标检测"></a>绝对布局的相邻坐标检测</h4><p>针对绝对布局，需要考虑碰撞检测，判断相邻点是否可以进行布局</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 当前 view 判定周边路径的方向</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">enum</span> <span class="title class_">KirovDirection</span> &#123;</span><br><span class="line">        <span class="comment">/// 左方</span></span><br><span class="line">        <span class="keyword">case</span> left</span><br><span class="line">        <span class="comment">/// 上方</span></span><br><span class="line">        <span class="keyword">case</span> top</span><br><span class="line">        <span class="comment">/// 右方</span></span><br><span class="line">        <span class="keyword">case</span> right</span><br><span class="line">        <span class="comment">/// 下方</span></span><br><span class="line">        <span class="keyword">case</span> bottom</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 获取指定方向上相邻最近视图点的坐标</span></span><br><span class="line">    <span class="comment">/// - Parameters direction 方向</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">kirov_nearestViewDistanceInDirection</span>(<span class="keyword">_</span> <span class="params">direction</span>: <span class="type">KirovDirection</span>) -&gt; <span class="type">CGFloat</span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> superview <span class="operator">=</span> superview <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="operator">-</span><span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> nearestViewDistance: <span class="type">CGFloat</span> <span class="operator">=</span> <span class="type">CGFloat</span>.leastNonzeroMagnitude</span><br><span class="line">        <span class="keyword">let</span> point <span class="operator">=</span> convert(<span class="type">CGPoint</span>.zero, to: superview)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">switch</span> direction &#123;</span><br><span class="line">        <span class="keyword">case</span> .left:</span><br><span class="line">            <span class="keyword">for</span> subview <span class="keyword">in</span> superview.subviews &#123;</span><br><span class="line">                <span class="keyword">if</span> subview <span class="operator">!=</span> <span class="keyword">self</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> subviewRight <span class="operator">=</span> subview.frame.origin.x <span class="operator">+</span> subview.frame.width</span><br><span class="line">                    <span class="keyword">if</span> subviewRight <span class="operator">&lt;=</span> point.x &#123;</span><br><span class="line">                        <span class="keyword">let</span> distance <span class="operator">=</span> point.x <span class="operator">-</span> subviewRight</span><br><span class="line">                        <span class="keyword">if</span> distance <span class="operator">&lt;</span> nearestViewDistance &#123;</span><br><span class="line">                            nearestViewDistance <span class="operator">=</span> distance</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">case</span> .top:</span><br><span class="line">            <span class="keyword">for</span> subview <span class="keyword">in</span> superview.subviews &#123;</span><br><span class="line">                <span class="keyword">if</span> subview <span class="operator">!=</span> <span class="keyword">self</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> subviewBottom <span class="operator">=</span> subview.frame.origin.y <span class="operator">+</span> subview.frame.height</span><br><span class="line">                    <span class="keyword">if</span> subviewBottom <span class="operator">&lt;=</span> point.y &#123;</span><br><span class="line">                        <span class="keyword">let</span> distance <span class="operator">=</span> point.y <span class="operator">-</span> subviewBottom</span><br><span class="line">                        <span class="keyword">if</span> distance <span class="operator">&lt;</span> nearestViewDistance &#123;</span><br><span class="line">                            nearestViewDistance <span class="operator">=</span> distance</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">case</span> .right:</span><br><span class="line">            <span class="keyword">for</span> subview <span class="keyword">in</span> superview.subviews &#123;</span><br><span class="line">                <span class="keyword">if</span> subview <span class="operator">!=</span> <span class="keyword">self</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> subviewLeft <span class="operator">=</span> subview.frame.origin.x</span><br><span class="line">                    <span class="keyword">if</span> subviewLeft <span class="operator">&gt;=</span> point.x &#123;</span><br><span class="line">                        <span class="keyword">let</span> distance <span class="operator">=</span> subviewLeft <span class="operator">-</span> point.x</span><br><span class="line">                        <span class="keyword">if</span> distance <span class="operator">&lt;</span> nearestViewDistance &#123;</span><br><span class="line">                            nearestViewDistance <span class="operator">=</span> distance</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">case</span> .bottom:</span><br><span class="line">            <span class="keyword">for</span> subview <span class="keyword">in</span> superview.subviews &#123;</span><br><span class="line">                <span class="keyword">if</span> subview <span class="operator">!=</span> <span class="keyword">self</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> subviewTop <span class="operator">=</span> subview.frame.origin.y</span><br><span class="line">                    <span class="keyword">if</span> subviewTop <span class="operator">&gt;=</span> point.y &#123;</span><br><span class="line">                        <span class="keyword">let</span> distance <span class="operator">=</span> subviewTop <span class="operator">-</span> point.y</span><br><span class="line">                        <span class="keyword">if</span> distance <span class="operator">&lt;</span> nearestViewDistance &#123;</span><br><span class="line">                            nearestViewDistance <span class="operator">=</span> distance</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> nearestViewDistance <span class="operator">==</span> <span class="type">CGFloat</span>.leastNonzeroMagnitude &#123;</span><br><span class="line">            nearestViewDistance <span class="operator">=</span> <span class="operator">-</span><span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nearestViewDistance</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ai-prompt/" title="AI 工具的使用艺术之 Prompt">AI 工具的使用艺术之 Prompt</a></h2>
+                <p class="excerpt">
+                
+                
+
+
+什么是提示词和提示词工程1.1 提示词（Prompt）
+
+提示词，英文名叫 Prompt。
+是用户发送给大语言模型的问题、指令或请求，用来明确地告诉模型用户想要解决的问题或完成的任务，是大语言模型理解用户需求并据此生成相关、准确回答或内容的基础。
+对于大语言模型来说，提示词就是用户输入给大语言
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-11-27T13:43:03.000Z" class="post-list__meta--date date">2024-11-27</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/Midjourney/" rel="tag">Midjourney</a>, <a class="-none-link" href="/tags/Prompt/" rel="tag">Prompt</a>
+</span><a class="btn-border-small" href="/ai-prompt/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/ios-layout-kirov/';
+  var disqus_title = 'iPhone/iPad AutoLayout 框架 Kirov 架构设计';
+  var disqus_url = 'http://shevakuilin.com/ios-layout-kirov/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
