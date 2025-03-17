@@ -152,74 +152,29 @@
   
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2017-shanghai-gdd/" title="link to post.title">2017上海 Google Developer Days 之旅</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/hm-web/" title="link to post.title">HarmonyOS - Web 运行流程原理解析</a></h2>
       <p class="excerpt">
     
-      受邀参加在上海举办的2017 Google Developer Days，记录下了一些参会见闻和感想。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2018-07-08T05:54:08.000Z" class="post-list__meta--date date">2018-07-08</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Google-Developer-Days/" rel="tag">Google Developer Days</a>, <a class="-none-link" href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag">随笔</a>
-</span><a class="btn-border-small" href="/2017-shanghai-gdd/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/sdwebimage-gradient/" title="link to post.title">SDWebImage框架下的图片渐变加载效果</a></h2>
-      <p class="excerpt">
-    
-      用非侵入的方式，为 SDWebImage添加柔和的图片渐变加载效果。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2017-10-29T10:27:01.000Z" class="post-list__meta--date date">2017-10-29</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/SDWebImage/" rel="tag">SDWebImage</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%BA%90%E7%A0%81%E6%89%A9%E5%B1%95/" rel="tag">第三方源码扩展</a>
-</span><a class="btn-border-small" href="/sdwebimage-gradient/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/arkitkeynote-md/" title="link to post.title">AR原理解析及iOS系统ARKit初探实践</a></h2>
-      <p class="excerpt">
-    
-      2017年9月掘金内部技术分享会演讲 keynote 及演示代码，主题是 ARKit。
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2017-09-10T13:16:12.000Z" class="post-list__meta--date date">2017-09-10</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/ARKit/" rel="tag">ARKit</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" rel="tag">技术分享</a>, <a class="-none-link" href="/tags/%E6%8E%98%E9%87%91/" rel="tag">掘金</a>
-</span><a class="btn-border-small" href="/arkitkeynote-md/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/autolayout-multiplier/" title="link to post.title">AutoLayout控件等比间距的百分比布局</a></h2>
-      <p class="excerpt">
-    
-      多控件水平、垂直分布要求相同间距时，使用multiplier来进行布局，即百分比布局是最佳选择。
-在看本文前可以了解一下iOS NSLayoutConstraint 其中就提到过multiplier, 本文中的百分比布局都是基于 multiplier 实现的，下面来一一查看其实现。
+      
 
-我们需要实现的功能很简单，以一个居中的按钮为基准，达成五个按钮等比间距水平分布在屏幕上的效果为例，首先约束居中按钮
+Web渲染流程初始化 webview -&amp;gt; 请求页面 -&amp;gt; 下载数据 -&amp;gt; 解析HTML -&amp;gt; 请求 js&amp;#x2F;css 资源 -&amp;gt; dom 渲染 -&amp;gt; 解析 JS 执行 -&amp;gt; JS 请求数据 -&amp;gt; 解析渲染 -&amp;gt; 下载渲染图片
+
+
+初始化 WebView
+
+操作：创建并初始化一个WebView组件。
+目的：为后续加载和渲染网页提供容器
     &hellip;
       </p>
-      <div class="post-list__meta"><time datetime="2016-08-22T06:08:36.000Z" class="post-list__meta--date date">2016-08-22</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/NSLayoutConstraint/" rel="tag">NSLayoutConstraint</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AD%89%E6%AF%94%E9%97%B4%E8%B7%9D%E5%B8%83%E5%B1%80/" rel="tag">等比间距布局</a>
-</span><a class="btn-border-small" href="/autolayout-multiplier/">开始阅读</a></div>
+      <div class="post-list__meta"><time datetime="2024-04-09T15:46:52.000Z" class="post-list__meta--date date">2024-04-09</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/WebView/" rel="tag">WebView</a>, <a class="-none-link" href="/tags/%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" rel="tag">原理解析</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+</span><a class="btn-border-small" href="/hm-web/">开始阅读</a></div>
       <hr class="post-list__divider" />
     </li>
   
     
   </ol>
 
-
-  <nav class="pagination" role="navigation">
-    
-      <a class="older-posts pagination__newer btn btn-small btn-tertiary" href="/archives/page/6/">&larr; 最近</a>
-    
-    <span class="pagination__page-number" >  7 / 7 </span>
-    
-  </nav>
 
  <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },

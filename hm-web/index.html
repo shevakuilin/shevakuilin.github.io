@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>HarmonyOS - Web 运行流程原理解析 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="HarmonyOS - Web 运行流程原理解析 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="HarmonyOS - Web 运行流程原理解析 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/hm-web/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-04-09T15:46:52.000Z" class="post-list__meta--date date">2024-04-09</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/WebView/" rel="tag">WebView</a>, <a class="-none-link" href="/tags/%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" rel="tag">原理解析</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">HarmonyOS - Web 运行流程原理解析</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/hm-web.png">
+
+<h2 id="Web渲染流程"><a href="#Web渲染流程" class="headerlink" title="Web渲染流程"></a>Web渲染流程</h2><p>初始化 webview -&gt; 请求页面 -&gt; 下载数据 -&gt; 解析HTML -&gt; 请求 js&#x2F;css 资源 -&gt; dom 渲染 -&gt; 解析 JS 执行 -&gt; JS 请求数据 -&gt; 解析渲染 -&gt; 下载渲染图片</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=Y2UxZWJlYTg4NGM4OTBmYjc0ZTA4MmQ4ZDg3MmM2OWJfbHZKanpXcHpEZGhnMTJkM0FhYWlHdlBmbW1leHdidnBfVG9rZW46VlFLc2JHb0ZIbzdWR1R4a0pmUGNkdVY0blZiXzE3NDIxOTA0Njk6MTc0MjE5NDA2OV9WNA" alt="img"></p>
+<ol>
+<li><h3 id="初始化-WebView"><a href="#初始化-WebView" class="headerlink" title="初始化 WebView"></a>初始化 WebView</h3></li>
+</ol>
+<p><strong>操作：</strong>创建并初始化一个WebView组件。</p>
+<p><strong>目的：</strong>为后续加载和渲染网页提供容器。</p>
+<p><strong>细节：</strong></p>
+<p>初始化过程中，可以设置各种配置选项，如缓存策略、用户代理、JavaScript执行权限等。</p>
+<ol>
+<li><h3 id="请求页面"><a href="#请求页面" class="headerlink" title="请求页面"></a>请求页面</h3></li>
+</ol>
+<p><strong>操作：</strong>向WebView发送一个请求，加载指定的URL。</p>
+<p><strong>目的：</strong>启动页面加载过程。</p>
+<p><strong>细节：</strong></p>
+<p>创建一个URL对象，并使用它构造一个请求对象。</p>
+<p>将请求对象传递给WebView，触发页面加载。</p>
+<p>可以设置各种监听器来监控加载进度和结果。</p>
+<ol>
+<li><h3 id="下载数据"><a href="#下载数据" class="headerlink" title="下载数据"></a>下载数据</h3></li>
+</ol>
+<p><strong>操作：</strong>WebView开始下载页面数据。</p>
+<p><strong>目的：</strong>获取页面的主要HTML内容和其他相关资源。</p>
+<p><strong>细节：</strong></p>
+<p>WebView会向服务器发起HTTP请求，下载页面的主要HTML文件。</p>
+<p>下载过程中，WebView会处理各种网络请求，包括重定向、认证等。</p>
+<p>下载的数据会暂时存储在内存中，等待进一步处理。</p>
+<ol>
+<li><h3 id="解析-HTML"><a href="#解析-HTML" class="headerlink" title="解析 HTML"></a>解析 HTML</h3></li>
+</ol>
+<p><strong>操作：</strong>解析下载的HTML数据，构建DOM树。</p>
+<p><strong>目的：</strong>将HTML文本转换成DOM树结构。</p>
+<p><strong>细节：</strong></p>
+<p>解析器逐行读取HTML文本，并根据HTML语法构建DOM节点。</p>
+<p>构建的DOM树包含了页面的所有元素及其属性。</p>
+<p>解析过程中，可能会发现外部资源（如CSS、JavaScript文件），并发起相应的请求。</p>
+<ol>
+<li><h3 id="请求-JS-x2F-CSS-资源"><a href="#请求-JS-x2F-CSS-资源" class="headerlink" title="请求 JS&#x2F;CSS 资源"></a>请求 JS&#x2F;CSS 资源</h3></li>
+</ol>
+<p><strong>操作：</strong>根据DOM树中的引用，请求外部的JavaScript和CSS资源。</p>
+<p><strong>目的：</strong>下载页面所需的样式和脚本文件。</p>
+<p><strong>细节：</strong></p>
+<p>遍历DOM树中的<link>和<script>标签，提取出外部资源的URL。</p>
+<p>发起HTTP请求，下载这些资源。</p>
+<p>下载的资源会暂时存储在内存中，等待进一步处理。</p>
+<ol>
+<li><h3 id="DOM-渲染"><a href="#DOM-渲染" class="headerlink" title="DOM 渲染"></a>DOM 渲染</h3></li>
+</ol>
+<p><strong>操作：</strong>基于DOM树和下载的CSS资源，生成可视化页面。</p>
+<p><strong>目的：</strong>将DOM树转换成可视化的页面布局。</p>
+<p><strong>细节：</strong></p>
+<p>根据DOM树和CSS规则计算每个元素的位置和尺寸。</p>
+<p>生成渲染树（Render Tree），包含每个元素的视觉表现。</p>
+<p>将渲染树绘制到屏幕上，显示初步的页面内容。</p>
+<ol>
+<li><h3 id="解析-JS-并执行"><a href="#解析-JS-并执行" class="headerlink" title="解析 JS 并执行"></a>解析 JS 并执行</h3></li>
+</ol>
+<p><strong>操作：</strong>解析并执行页面中的JavaScript代码。</p>
+<p><strong>目的：</strong>执行页面中的脚本逻辑，动态修改DOM树。</p>
+<p><strong>细节：</strong></p>
+<p>解析器逐行读取JavaScript代码，并执行相应的函数和操作。</p>
+<p>JavaScript代码可以修改DOM树，添加或删除元素，绑定事件处理程序等。</p>
+<p>执行过程中，可能会发起新的网络请求。</p>
+<ol>
+<li><h3 id="JS-请求数据"><a href="#JS-请求数据" class="headerlink" title="JS 请求数据"></a>JS 请求数据</h3></li>
+</ol>
+<p><strong>操作：</strong>JavaScript代码发起新的网络请求，获取动态数据。</p>
+<p><strong>目的：</strong>加载动态数据并更新页面内容。</p>
+<p><strong>细节：</strong></p>
+<p>JavaScript代码使用AJAX或其他网络请求库发起请求。</p>
+<p>请求的数据可能包括JSON、XML等格式。</p>
+<p>数据返回后，JavaScript代码会更新DOM树，重新渲染页面。</p>
+<ol>
+<li><h3 id="解析渲染"><a href="#解析渲染" class="headerlink" title="解析渲染"></a>解析渲染</h3></li>
+</ol>
+<p><strong>操作：</strong>根据更新后的DOM树重新渲染页面。</p>
+<p><strong>目的：</strong>显示更新后的页面内容。</p>
+<p><strong>细节：</strong></p>
+<p>重新计算DOM树的布局和样式。</p>
+<p>更新渲染树，并重新绘制到屏幕上。</p>
+<p>显示更新后的页面内容。</p>
+<ol>
+<li><h3 id="下载渲染图片"><a href="#下载渲染图片" class="headerlink" title="下载渲染图片"></a>下载渲染图片</h3></li>
+</ol>
+<p><strong>操作：</strong>下载页面中的图片资源，并将其渲染到页面中。</p>
+<p><strong>目的：</strong>加载并显示页面中的图片。</p>
+<p><strong>细节：</strong></p>
+<p>根据DOM树中的<img>标签，发起图片资源的下载请求。</p>
+<p>下载的图片会存储在内存中，并插入到DOM树对应的元素中。</p>
+<p>图片加载完成后，重新渲染页面，显示图片内容。</p>
+<h2 id="Web组件的生命周期"><a href="#Web组件的生命周期" class="headerlink" title="Web组件的生命周期"></a>Web组件的生命周期</h2><p>开发者可以使用Web组件加载本地或者在线网页。</p>
+<p>Web组件提供了丰富的组件生命周期回调接口，通过这些回调接口，开发者可以感知Web组件的生命周期状态变化，进行相关的业务处理。</p>
+<p>Web组件的状态主要包括：Controller绑定到Web组件、网页加载开始、网页加载进度、网页加载结束、页面即将可见等。</p>
+<p><strong>图1</strong> Web组件网页正常加载过程中的回调事件</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=N2NmZmY4YzcwNDhhODhlYTY4N2JhYWQ5YWJkYjdhZGFfbEpEeFJTYnYwODhJb1hMRmwxeDFBSXB6WHViS0FnZEZfVG9rZW46Vk9uSmJ0T0Fib21QZGd4MVpkT2M3cU5jblRlXzE3NDIxOTA0Njk6MTc0MjE5NDA2OV9WNA" alt="img"></p>
+<h2 id="Web组件网页加载的状态说明"><a href="#Web组件网页加载的状态说明" class="headerlink" title="Web组件网页加载的状态说明"></a>Web组件网页加载的状态说明</h2><h3 id="aboutToAppear函数"><a href="#aboutToAppear函数" class="headerlink" title="aboutToAppear函数"></a>aboutToAppear函数</h3><p>在创建自定义组件的新实例后，在执行其build函数前执行。一般建议在此设置WebDebug调试模式setWebDebuggingAccess、设置Web内核自定义协议URL的跨域请求与fetch请求的权限customizeSchemes、设置CookieconfigCookie等。</p>
+<p>aboutToAppear函数在创建自定义组件的新实例后，在执行其build()函数之前执行。允许在aboutToAppear函数中改变状态变量，更改将在后续执行build()函数中生效。实现自定义布局的自定义组件的aboutToAppear生命周期在布局过程中触发。</p>
+<h3 id="onControllerAttached事件"><a href="#onControllerAttached事件" class="headerlink" title="onControllerAttached事件"></a>onControllerAttached事件</h3><p>当Controller成功绑定到Web组件时触发该回调，推荐在此事件中注入JS对象registerJavaScriptProxy、设置自定义用户代理setCustomUserAgent，可以在回调中使用loadUrl，getWebId等操作网页不相关的接口。但因该回调调用时网页还未加载，因此无法在回调中使用有关操作网页的接口，例如zoomIn、zoomOut等。</p>
+<h3 id="onLoadIntercept事件"><a href="#onLoadIntercept事件" class="headerlink" title="onLoadIntercept事件"></a>onLoadIntercept事件</h3><p>当Web组件加载url之前触发该回调，用于判断是否阻止此次访问。默认允许加载。</p>
+<h3 id="onOverrideUrlLoading事件"><a href="#onOverrideUrlLoading事件" class="headerlink" title="onOverrideUrlLoading事件"></a>onOverrideUrlLoading事件</h3><p>当URL将要加载到当前Web中时，让宿主应用程序有机会获得控制权，回调函数返回true将导致当前Web中止加载URL，而返回false则会导致Web继续照常加载URL。onLoadIntercept接口和onOverrideUrlLoading接口行为不一致，触发时机也不同，所以在应用场景上存在一定区别。主要是在LoadUrl和iframe（HTML标签，表示HTML内联框架元素，用于将另一个页面嵌入到当前页面中）加载时，onLoadIntercept事件会正常回调到，但onOverrideUrlLoading事件在LoadUrl加载时不会触发，在iframe加载HTTP(s)协议或about:blank时也不会触发。详细介绍请见onLoadIntercept和onOverrideUrlLoading的说明。</p>
+<ul>
+<li>onLoadIntercept事件：当Web组件加载url之前触发该回调，用于判断是否阻止此次访问。默认允许加载。</li>
+<li>onOverrideUrlLoading事件：<ul>
+<li>当URL将要加载到当前Web中时，让宿主应用程序有机会获得控制权，回调函数返回true将导致当前Web中止加载URL，而返回false则会导致Web继续照常加载URL。</li>
+<li>POST请求不会触发该回调。</li>
+<li>iframe加载HTTP(s)协议或about:blank时不会触发该回调，加载非HTTP(s)协议的跳转可以触发。调用loadUrl(String)主动触发的跳转不会触发该回调。</li>
+<li>不要使用相同的URL调用loadUrl(String)方法，然后返回true。这样做会不必要地取消当前的加载并重新使用相同的URL开始新的加载。继续加载给定URL的正确方式是直接返回false，而不是调用loadUrl(String)。</li>
+</ul>
+</li>
+</ul>
+<h3 id="onInterceptRequest事件"><a href="#onInterceptRequest事件" class="headerlink" title="onInterceptRequest事件"></a>onInterceptRequest事件</h3><p>当Web组件加载url之前触发该回调，用于拦截url并返回响应数据。</p>
+<h3 id="onPageBegin事件"><a href="#onPageBegin事件" class="headerlink" title="onPageBegin事件"></a>onPageBegin事件</h3><p>网页开始加载时触发该回调，且只在主frame（表示一个HTML元素，用于展示HTML页面的HTML元素）触发。如果是iframe或者frameset（用于包含frame的HTML标签）的内容加载时则不会触发此回调。多frame页面有可能同时开始加载，即使主frame已经加载结束，子frame也有可能才开始或者继续加载中。同一页面导航（片段、历史状态等）或者在提交前失败、被取消的导航等也不会触发该回调。</p>
+<h3 id="onProgressChange事件"><a href="#onProgressChange事件" class="headerlink" title="onProgressChange事件"></a>onProgressChange事件</h3><p>告知开发者当前页面加载的进度。多frame页面或者子frame有可能还在继续加载而主frame可能已经加载结束，所以在onPageEnd事件后依然有可能收到该事件。</p>
+<h3 id="onPageEnd事件"><a href="#onPageEnd事件" class="headerlink" title="onPageEnd事件"></a>onPageEnd事件</h3><p>网页加载完成时触发该回调，且只在主frame触发。多frame页面有可能同时开始加载，即使主frame已经加载结束，子frame也有可能才开始或者继续加载中。同一页面导航（片段、历史状态等）或者在提交前失败、被取消的导航等也不会触发该回调。推荐在此回调中执行JavaScript脚本loadUrl等。需要注意的是收到该回调并不能保证Web绘制的下一帧将反映此时DOM的状态。</p>
+<h3 id="onPageVisible事件"><a href="#onPageVisible事件" class="headerlink" title="onPageVisible事件"></a>onPageVisible事件</h3><p>当HTTP响应的主体开始加载，新页面即将可见时触发该回调，且只在主frame触发。此回调在文档加载的早期触发，因此链接的资源比如在线CSS、在线图片等可能尚不可用。</p>
+<h3 id="onRenderExited事件"><a href="#onRenderExited事件" class="headerlink" title="onRenderExited事件"></a>onRenderExited事件</h3><p>应用渲染进程异常退出时触发该回调, 可以在此回调中进行系统资源的释放、数据的保存等操作。如果应用希望异常恢复，需要调用loadUrl接口重新加载页面。</p>
+<h3 id="onDisAppear事件"><a href="#onDisAppear事件" class="headerlink" title="onDisAppear事件"></a>onDisAppear事件</h3><p>组件卸载消失时触发此回调。该事件为通用事件，指组件从组件树上卸载时触发的事件。</p>
+<h2 id="Web组件网页加载的性能指标"><a href="#Web组件网页加载的性能指标" class="headerlink" title="Web组件网页加载的性能指标"></a>Web组件网页加载的性能指标</h2><p>网页加载过程中需要关注一些重要的性能指标。例如，FCP(First Contentful Paint)首次内容绘制，FMP(First Meaningful Paint)首次有效绘制，LCP(Largest Contentful Paint)最大内容绘制等。Web组件提供了如下接口来通知开发者。</p>
+<h3 id="onFirstContentfulPaint事件"><a href="#onFirstContentfulPaint事件" class="headerlink" title="onFirstContentfulPaint事件"></a>onFirstContentfulPaint事件</h3><p>网页首次内容绘制的回调函数。首次绘制文本、图像、非空白Canvva或者SVG的时间点。</p>
+<h3 id="onFirstMeaningfulPaint事件"><a href="#onFirstMeaningfulPaint事件" class="headerlink" title="onFirstMeaningfulPaint事件"></a>onFirstMeaningfulPaint事件</h3><p>网页首次有效绘制的回调函数。首次绘制页面主要内容的时间点。</p>
+<h3 id="onLargestContentfulPaint事件"><a href="#onLargestContentfulPaint事件" class="headerlink" title="onLargestContentfulPaint事件"></a>onLargestContentfulPaint事件</h3><p>网页绘制页面最大内容的回调函数。可视区域内容最大的可见元素开始出现在页面上的时间点。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-wkwebview-cache-test/" title="WKWebView缓存协议验证">WKWebView缓存协议验证</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言本次我们基于 URLRequest.CachePolicy 协议进行 WKWebView 缓存能力的验证，主要验证方向为网页页面及相应资源的内容缓存。
+API 如下
+1234567891011public struct URLRequest : ReferenceConvertible, E
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-08-24T06:34:35.000Z" class="post-list__meta--date date">2024-08-24</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/WKWebview/" rel="tag">WKWebview</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a>
+</span><a class="btn-border-small" href="/ios-wkwebview-cache-test/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/hm-gesture/" title="HarmonyOS - 鸿蒙手势处理及实现原理">HarmonyOS - 鸿蒙手势处理及实现原理</a></h2>
+                <p class="excerpt">
+                
+                
+
+一、手势通用事件点击事件
+
+
+参数名
+类型
+必填
+说明
+
+
+
+event
+ClickEvent
+是
+获得ClickEvent对象。
+
+
+distanceThreshold
+number
+是
+点击事件移动阈值。当设置的值小于等于0时，会被转化为默认值。 默认值：2^31-1 说明：当手指的移动距离
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-03-05T05:37:18.000Z" class="post-list__meta--date date">2024-03-05</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" rel="tag">原理解析</a>, <a class="-none-link" href="/tags/%E6%89%8B%E5%8A%BF%E5%A4%84%E7%90%86/" rel="tag">手势处理</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+</span><a class="btn-border-small" href="/hm-gesture/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/hm-web/';
+  var disqus_title = 'HarmonyOS - Web 运行流程原理解析';
+  var disqus_url = 'http://shevakuilin.com/hm-web/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
