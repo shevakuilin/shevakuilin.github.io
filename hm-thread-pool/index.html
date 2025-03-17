@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>鸿蒙线程池及异步任务 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="鸿蒙线程池及异步任务 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="鸿蒙线程池及异步任务 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/hm-thread-pool/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2024-02-01T00:26:13.000Z" class="post-list__meta--date date">2024-02-01</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%BC%82%E6%AD%A5/" rel="tag">异步</a>, <a class="-none-link" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="tag">线程池</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">鸿蒙线程池及异步任务</h1>
+  </header>
+
+  <section class="post">
+    <img src="https://github.com/shevakuilin/GhostPostsImages/raw/master/hm-thread-pool.png">
+
+<h1 id="鸿蒙中的并发"><a href="#鸿蒙中的并发" class="headerlink" title="鸿蒙中的并发"></a>鸿蒙中的并发</h1><p>并发是指在同一时间段内，能够处理多个任务的能力。为了提升应用的响应速度与帧率，以及防止耗时任务对主线程的干扰，HarmonyOS 系统提供了异步并发和多线程并发两种处理策略。</p>
+<ul>
+<li>异步并发是指异步代码在执行到一定程度后会被暂停，以便在未来某个时间点继续执行，这种情况下，同一时间只有一段代码在执行。</li>
+<li>多线程并发允许在同一时间段内同时执行多段代码。在主线程继续响应用户操作和更新 UI 的同时，后台也能执行耗时操作，从而避免应用出现卡顿。</li>
+</ul>
+<h2 id="一-异步并发"><a href="#一-异步并发" class="headerlink" title="一.异步并发"></a>一.异步并发</h2><p>问题1：Promise &#x2F; async 中执行的异步任务运行在哪个线程，为什么不会阻塞主线程</p>
+<p>Promise和async&#x2F;await提供异步并发能力，是标准的JS异步语法。异步代码会被挂起并在之后继续执行，同一时间只有一段代码执行，适用于<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/single-io-development-0000001774279766">单次I&#x2F;O任务</a>的场景开发，例如一次网络请求、一次文件读写等操作。</p>
+<p>异步语法是一种编程语言的特性，允许程序在执行某些操作时不必等待其完成，而是可以继续执行其他操作。</p>
+<ol>
+<li><h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3></li>
+</ol>
+<p>Promise是一种用于处理异步操作的对象，可以将异步操作转换为类似于同步操作的风格，以方便代码编写和维护。Promise提供了一个状态机制来管理异步操作的不同阶段，并提供了一些方法来注册回调函数以处理异步操作的成功或失败的结果。</p>
+<p>Promise有三种状态：</p>
+<ol>
+<li>pending（进行中）</li>
+<li>fulfilled（已完成）</li>
+<li>rejected（已拒绝）</li>
+</ol>
+<p>Promise对象创建后处于pending状态，并在异步操作完成后转换为fulfilled或rejected状态。</p>
+<p>最基本的用法是通过构造函数实例化一个Promise对象，同时传入一个带有两个参数的函数，通常称为executor函数。executor函数接收两个参数：resolve和reject，分别表示异步操作成功和失败时的回调函数，在函数的闭包中可以书写耗时代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">let p: Promise&lt;string&gt; = <span class="keyword">new</span> <span class="title class_">Promise</span>((resolve, reject) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 执行异步耗时操作</span></span><br><span class="line">    YCAppStoreManager.mInstance.get(key).then((value) =&gt; &#123;</span><br><span class="line">      <span class="comment">// 返回数据</span></span><br><span class="line">      resolve(value as string)</span><br><span class="line">    &#125;).<span class="keyword">catch</span>((e: Error) =&gt; &#123;</span><br><span class="line">      <span class="comment">// 返回异常</span></span><br><span class="line">      reject(e)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>Promise对象创建后，可以使用then方法和catch方法指定fulfilled状态和rejected状态的回调函数。then方法可接受两个参数，一个处理fulfilled（已完成）状态的函数，另一个处理rejected（已拒绝）状态的函数。只传一个参数则表示当Promise对象状态变为fulfilled（已完成）时，then方法会自动调用这个回调函数，并将Promise对象的结果作为参数传递给它。使用catch方法注册一个回调函数，用于处理“失败”的结果，即捕获Promise的状态改变为rejected状态或操作失败抛出的异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> p.then((result: string) =&gt; &#123;</span><br><span class="line"> </span><br><span class="line">&#125;).<span class="keyword">catch</span>((error: BusinessError) =&gt; &#123;</span><br><span class="line"> </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>也可以都用then来处理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">p.then((result: string) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">&#125;, (error: BusinessError) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h3 id="async-x2F-await"><a href="#async-x2F-await" class="headerlink" title="async&#x2F;await"></a>async&#x2F;await</h3></li>
+</ol>
+<p>async&#x2F;await是一种用于处理异步操作的Promise语法糖，使得编写异步代码变得更加简单和易读。通过使用async关键字声明一个函数为异步函数，并使用await关键字等待Promise的解析（完成或拒绝），以同步的方式编写异步操作的代码。</p>
+<p>async函数是一个返回Promise对象的函数，用于表示一个异步操作。在async函数内部，可以使用await关键字等待一个Promise对象的解析，并返回其解析值。如果一个async函数抛出异常，那么该函数返回的Promise对象将被拒绝，并且异常信息会被传递给Promise对象的onRejected()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">async function <span class="title function_">myAsyncFunction</span><span class="params">()</span> &#123;</span><br><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line">    const result: string = await <span class="keyword">new</span> <span class="title class_">Promise</span>((resolve: Function) =&gt; &#123;</span><br><span class="line">      resolve(<span class="string">&#x27;Hello, world!&#x27;</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    console.info(result); <span class="comment">// 输出： Hello, world!</span></span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    console.error(`Get exception: $&#123;e&#125;`);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myAsyncFunction();</span><br></pre></td></tr></table></figure>
+
+<p>问题1回答：</p>
+<p>在 ArkTS 层级上看，ts语言作为一个专注于构建用户界面的框架，其设计原则主要是为了简化UI开发流程。当执行Promise链或异步函数时，实际的异步操作（如网络请求、文件读写）会被委托给环境处理，这个环境就是当前的操作系统，这些异步的耗时操作并不会阻塞UI线程。而TS继承自JS的特性让Promise&#x2F;async没有多线程的概念,而是基于事件的回调。一旦这些操作完成，它们的结果会被放入事件队列，等待主线程空闲时通过事件循环机制处理，进而执行相应的回调函数或Promise的resolve&#x2F;reject。因此，即使异步操作在技术上可能涉及其他线程，它们与主线程的交互仍然是非阻塞的，确保了UI渲染线程不会被长时间的任务所阻塞，从而保持应用的响应性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">test() &#123;</span><br><span class="line">  let p: Promise&lt;string&gt; = <span class="keyword">new</span> <span class="title class_">Promise</span>((resolve, reject) =&gt; &#123;</span><br><span class="line">    console.log(`Promise执行时当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">    setTimeout(() =&gt; &#123;</span><br><span class="line">      resolve(<span class="string">&quot;成功&quot;</span>)</span><br><span class="line">      console.log(`当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  p.then((result: string) =&gt; &#123;</span><br><span class="line">    console.log(`返回结果：$&#123;result&#125;,当前线程：<span class="string">&quot; + $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span></span><br><span class="line"><span class="string">  &#125;).catch((error: Error) =&gt; &#123;</span></span><br><span class="line"><span class="string">    console.log(&quot;</span>出现异常了：<span class="string">&quot; + error)</span></span><br><span class="line"><span class="string">  &#125;)</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">上面打印的线程进程id都是同样的值</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二-多线程并发"><a href="#二-多线程并发" class="headerlink" title="二. 多线程并发"></a>二. 多线程并发</h2><p>并发模型是用来实现不同应用场景中并发任务的编程模型，常见的并发模型分为基于内存共享的并发模型和基于消息通信的并发模型。</p>
+<p>Actor并发模型作为基于消息通信并发模型的典型代表，不需要开发者去面对锁带来的一系列复杂偶发的问题，同时并发度也相对较高，因此得到了广泛的支持和使用。</p>
+<p>当前ArkTS提供了TaskPool和Worker两种并发能力，TaskPool和Worker都基于Actor并发模型实现。</p>
+<p>更多基于Actor模型进行多线程并发编程的例子可参考<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/actor-model-development-samples-0000001820999725">Actor并发模型对比内存共享并发模型</a></p>
+<p>问题2：Actor模型是什么，与我们目前使用的thread有什么不同</p>
+<p>Actor模型就是每个线程拥有独立的内存空间，线程直接通过消息传递来同步数据；而涉及到消息传递就需要序列化，所以鸿蒙中的多线程最需要注意的点就是参数要保证可序列化的问题。</p>
+<p>Java中的的thread是内存共享并发模型，每个线程都在同一块内存上操作，为了不影响数据，需要通过锁来保证同一时间只有一个线程去操作数据</p>
+<p><a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/actor-model-development-samples-0000001820999725">Actor并发模型对比内存共享并发模型</a></p>
+<h3 id="1-TaskPool"><a href="#1-TaskPool" class="headerlink" title="1. TaskPool"></a>1. TaskPool</h3><p>任务池（TaskPool）作用是为应用程序提供一个多线程的运行环境，降低整体资源的消耗、提高系统的整体性能，且无需关心线程实例的生命周期。</p>
+<img src="/image/hm-thread-pool-01.png">
+
+<p>TaskPool支持开发者在主线程封装任务抛给任务队列，系统选择合适的工作线程，进行任务的分发及执行，再将结果返回给主线程。接口直观易用，支持任务的执行、取消，以及指定优先级的能力，同时通过系统统一线程管理，结合动态调度及负载均衡算法，可以节约系统资源。系统默认会启动一个任务工作线程，当任务较多时会扩容，工作线程数量上限跟当前设备的物理核数相关，具体数量内部管理，保证最优的调度及执行效率，长时间没有任务分发时会缩容，减少工作线程数量。可以理解成一个很智能的线程池。</p>
+<h4 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h4><h5 id="在子线程中频繁写入文件为例："><a href="#在子线程中频繁写入文件为例：" class="headerlink" title="在子线程中频繁写入文件为例："></a>在子线程中频繁写入文件为例：</h5><p>1.定义并发函数，内部密集调用I&#x2F;O能力，首先定义个a.ets文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.ets</span></span><br><span class="line"><span class="keyword">import</span> fs from <span class="string">&#x27;@ohos.file.fs&#x27;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义并发函数，内部密集调用I/O能力</span></span><br><span class="line"><span class="comment">// 写入文件的实现</span></span><br><span class="line">export async function <span class="title function_">write</span><span class="params">(data: string|<span class="literal">null</span>, filePath: string)</span>: Promise&lt;<span class="keyword">void</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span>(data === <span class="literal">null</span>)&#123;</span><br><span class="line">     <span class="type">let</span> <span class="variable">url</span> <span class="operator">=</span> <span class="string">&quot;https://fp.yangcong345.com/middle//zhufeng/1.0.0/data.json&quot;</span></span><br><span class="line">      <span class="comment">// let savePath = getFileSaveName(url)</span></span><br><span class="line">      <span class="type">let</span> <span class="variable">savePath</span> <span class="operator">=</span> <span class="string">&#x27;/data/storage/el2/base/haps/phone/files/preLoad/8d777f385d3dfec8815d20f7496026dc.json&#x27;</span></span><br><span class="line">      data = fs.readTextSync(savePath)</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(`taskPool write 执行时当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  let file: fs.File = await fs.open(filePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);</span><br><span class="line">  await fs.write(file.fd, data);</span><br><span class="line">  fs.close(file);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>构建 @Concurrent 修饰的异步函数，taskPool必须接收@Concurrent修饰的函数</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; write &#125; from <span class="string">&#x27;./a&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; BusinessError &#125; from <span class="string">&#x27;@ohos.base&#x27;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Concurrent</span></span><br><span class="line">async function <span class="title function_">concurrentTest</span><span class="params">(fileList: string[])</span>: Promise&lt;<span class="type">boolean</span>&gt; &#123;</span><br><span class="line">  console.log(`taskTool concurrentTest函数执行时 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  <span class="comment">// 循环写文件操作</span></span><br><span class="line">  <span class="keyword">for</span> (let i: number = <span class="number">0</span>; i &lt; fileList.length * <span class="number">500</span>; i++) &#123;</span><br><span class="line">    write(`Hello World!`, fileList[i % fileList.length]).then(() =&gt; &#123;</span><br><span class="line">      console.info(`taskTool 写入文件成功， FileList: $&#123;fileList[i% fileList.length]&#125;，当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`);</span><br><span class="line">    &#125;).<span class="keyword">catch</span>((err: BusinessError) =&gt; &#123;</span><br><span class="line">      console.error(`taskTool 写入文件失败， Code is $&#123;err.code&#125;, message is $&#123;err.message&#125;，当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>使用TaskPool执行包含密集I&#x2F;O的并发函数：通过调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-taskpool-0000001860295901#ZH-CN_TOPIC_0000001860295901__taskpoolexecute">execute()</a>方法执行任务，并在回调中进行调度结果处理。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// taskTool写入1000个文件</span></span><br><span class="line">testTaskTool() &#123;</span><br><span class="line">  console.log(`taskpool 开始调用,当前为主线程，线程id： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  <span class="type">let</span> <span class="variable">filesDir</span> <span class="operator">=</span> YCContextProvider.getContext().filesDir + <span class="string">&quot;/testTaskPool/&quot;</span></span><br><span class="line">  <span class="keyword">if</span> (!fs.accessSync(filesDir)) &#123;</span><br><span class="line">    fs.mkdirSync(filesDir, <span class="literal">true</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  let filePath1: string = filesDir + <span class="string">&quot;path1.txt&quot;</span>; <span class="comment">// 应用文件路径</span></span><br><span class="line">  let filePath2: string = filesDir + <span class="string">&quot;path2.txt&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 使用TaskPool执行包含密集I/O的并发函数</span></span><br><span class="line">  <span class="comment">// 数组较大时，I/O密集型任务任务分发也会抢占主线程，需要使用多线程能力</span></span><br><span class="line">  <span class="type">let</span> <span class="variable">startTime</span> <span class="operator">=</span> YCDateUtil.getCurrentTime()</span><br><span class="line">  console.log(`taskpool 开始调用，当前时间：$&#123;startTime&#125;`)</span><br><span class="line">  taskpool.execute(concurrentTest, [filePath1, filePath2]).then(() =&gt; &#123;</span><br><span class="line">    <span class="comment">// 调度结果处理</span></span><br><span class="line">    console.log(`taskpool 调度结果处理,当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;，耗时：$&#123;YCDateUtil.getCurrentTime() - startTime&#125;`)</span><br><span class="line">    ToastUtil.showToast(`taskpool 调度完成,耗时：$&#123;YCDateUtil.getCurrentTime() - startTime&#125;`)</span><br><span class="line">  &#125;)</span><br><span class="line">  ToastUtil.showToast(`测试taskTool写入弹窗toast,耗时：$&#123;YCDateUtil.getCurrentTime() - startTime&#125;`)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="使用TaskPool进行图像直方图处理"><a href="#使用TaskPool进行图像直方图处理" class="headerlink" title="使用TaskPool进行图像直方图处理"></a>使用TaskPool进行图像直方图处理</h5><ol>
+<li>实现图像处理的业务逻辑。</li>
+<li>数据分段，通过任务组发起关联任务调度。</li>
+<li>创建<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-taskpool-0000001860295901#ZH-CN_TOPIC_0000001860295901__taskgroup10">TaskGroup</a>并通过<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-taskpool-0000001860295901#ZH-CN_TOPIC_0000001860295901__addtask10">addTask()</a>添加对应的任务，通过<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-taskpool-0000001860295901#ZH-CN_TOPIC_0000001860295901__taskpoolexecute10">execute()</a>执行任务组，并指定为<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-taskpool-0000001860295901#ZH-CN_TOPIC_0000001860295901__priority">高优先级</a>，在当前任务组所有任务结束后，会将直方图处理结果同时返回。</li>
+<li>结果数组汇总处理。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> taskpool from <span class="string">&#x27;@ohos.taskpool&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Concurrent</span></span><br><span class="line">function <span class="title function_">imageProcessing</span><span class="params">(dataSlice: ArrayBuffer)</span>: ArrayBuffer &#123;</span><br><span class="line">  <span class="comment">// 步骤1: 具体的图像处理操作及其他耗时操作</span></span><br><span class="line">  <span class="keyword">return</span> dataSlice;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function <span class="title function_">histogramStatistic</span><span class="params">(pixelBuffer: ArrayBuffer)</span>: <span class="keyword">void</span> &#123;</span><br><span class="line">  <span class="comment">// 步骤2: 分成三段并发调度</span></span><br><span class="line">  let number: number = pixelBuffer.byteLength / <span class="number">3</span>;</span><br><span class="line">  let buffer1: ArrayBuffer = pixelBuffer.slice(<span class="number">0</span>, number);</span><br><span class="line">  let buffer2: ArrayBuffer = pixelBuffer.slice(number, number * <span class="number">2</span>);</span><br><span class="line">  let buffer3: ArrayBuffer = pixelBuffer.slice(number * <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">  let group: taskpool.TaskGroup = <span class="keyword">new</span> <span class="title class_">taskpool</span>.TaskGroup();</span><br><span class="line">  group.addTask(imageProcessing, buffer1);</span><br><span class="line">  group.addTask(imageProcessing, buffer2);</span><br><span class="line">  group.addTask(imageProcessing, buffer3);</span><br><span class="line"></span><br><span class="line">  taskpool.execute(group, taskpool.Priority.HIGH).then((ret: Object) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 步骤3: 结果数组汇总处理</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct Index &#123;</span><br><span class="line">  <span class="meta">@State</span> message: string = <span class="string">&#x27;Hello World&#x27;</span></span><br><span class="line"></span><br><span class="line">  build() &#123;</span><br><span class="line">    Row() &#123;</span><br><span class="line">      Column() &#123;</span><br><span class="line">        Text(<span class="built_in">this</span>.message)</span><br><span class="line">          .fontSize(<span class="number">50</span>)</span><br><span class="line">          .fontWeight(FontWeight.Bold)</span><br><span class="line">          .onClick(() =&gt; &#123;</span><br><span class="line">            let buffer: ArrayBuffer = <span class="keyword">new</span> <span class="title class_">ArrayBuffer</span>(<span class="number">24</span>);</span><br><span class="line">            histogramStatistic(buffer);</span><br><span class="line">          &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      .width(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="b-TaskPool注意事项"><a href="#b-TaskPool注意事项" class="headerlink" title="b.TaskPool注意事项"></a>b.TaskPool注意事项</h4><ul>
+<li>实现任务的函数需要使用装饰器<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-concurrent-0000001774120106">@Concurrent</a>标注，且仅支持在.ets文件中使用。</li>
+<li>从API version 11开始，实现任务的函数需要使用类方法时，该类必须使用装饰器<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-sendable-0000001820999729">@Sendable</a>标注，且仅支持在.ets文件中使用。</li>
+<li>任务函数在TaskPool工作线程的执行耗时不能超过3分钟（不包含Promise和async&#x2F;await异步调用的耗时，例如网络下载、文件读写等I&#x2F;O任务的耗时），否则会被强制退出。</li>
+<li>实现任务的函数入参需满足序列化支持的类型，详情请参见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/serialization-support-types-0000001820879749#ZH-CN_TOPIC_0000001857875817__TaskPool%E5%92%8CWorker%E6%94%AF%E6%8C%81%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E7%B1%BB%E5%9E%8B">TaskPool和Worker支持的序列化类型</a>。</li>
+<li>ArrayBuffer参数在TaskPool中默认转移，需要设置转移列表的话可通过接口<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-taskpool-0000001860295901#ZH-CN_TOPIC_0000001860295901__settransferlist10">setTransferList()</a>设置。</li>
+<li>由于不同线程中上下文对象是不同的，因此TaskPool工作线程只能使用线程安全的库，例如UI相关的非线程安全库不能使用，具体请见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/multi-thread-safety-0000001774279778">多线程安全注意事项</a>。</li>
+<li>序列化传输的数据量大小限制为16MB。</li>
+</ul>
+<h3 id="2-Worker"><a href="#2-Worker" class="headerlink" title="2. Worker"></a>2. Worker</h3><p>Worker主要作用是为应用程序提供一个多线程的运行环境，可满足应用程序在执行过程中与主线程分离，在后台线程中运行一个脚本操作耗时操作，极大避免类似于计算密集型或高延迟的任务阻塞主线程的运行。具体接口信息及使用方法详情请见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065">Worker</a>。</p>
+<img src="/image/hm-thread-pool-02.png">
+
+<p>创建Worker的线程称为宿主线程（不一定是主线程，工作线程也支持创建Worker子线程），Worker自身的线程称为Worker子线程（或Actor线程、工作线程）。每个Worker子线程与宿主线程拥有独立的实例，包含基础设施、对象、代码段等，因此每个Worker启动存在一定的内存开销，需要限制Worker的子线程数量。Worker子线程和宿主线程之间的通信是基于消息传递的，Worker通过序列化机制与宿主线程之间相互通信，完成命令及数据交互。</p>
+<h4 id="Worker注意事项"><a href="#Worker注意事项" class="headerlink" title="Worker注意事项"></a>Worker注意事项</h4><ul>
+<li>创建Worker时，有手动和自动两种创建方式，手动创建Worker线程目录及文件时，还需同步进行相关配置，详情请参考<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/worker-introduction-0000001774279770#ZH-CN_TOPIC_0000001857875469__%E5%88%9B%E5%BB%BAworker%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">创建Worker的注意事项</a>。</li>
+<li>使用Worker能力时，构造函数中传入的Worker线程文件的路径在不同版本有不同的规则，详情请参见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/worker-introduction-0000001774279770#ZH-CN_TOPIC_0000001857875469__%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">文件路径注意事项</a>。</li>
+<li>Worker创建后需要手动管理生命周期，且最多同时运行的Worker子线程数量为8个，详情请参见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/worker-introduction-0000001774279770#ZH-CN_TOPIC_0000001857875469__%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">生命周期注意事项</a>。</li>
+<li>由于不同线程中上下文对象是不同的，因此Worker线程只能使用线程安全的库，例如UI相关的非线程安全库不能使用，具体请见<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/multi-thread-safety-0000001774279778">多线程安全注意事项</a>。</li>
+<li>序列化传输的数据量大小限制为16MB。</li>
+<li>使用Worker模块时，需要在主线程中注册onerror接口，否则当worker线程出现异常时会发生jscrash问题。</li>
+<li>不支持跨HAP使用Worker线程文件。</li>
+</ul>
+<h4 id="创建Worker的注意事项"><a href="#创建Worker的注意事项" class="headerlink" title="创建Worker的注意事项"></a>创建Worker的注意事项</h4><p>Worker线程文件需要放在”{moduleName}&#x2F;src&#x2F;main&#x2F;ets&#x2F;“目录层级之下，否则不会被打包到应用中。有手动和自动两种创建Worker线程目录及文件的方式。</p>
+<ul>
+<li>手动创建：开发者手动创建相关目录及文件，此时需要配置build-profile.json5的相关字段信息，Worker线程文件才能确保被打包到应用中。<ul>
+<li>Stage模型：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;buildOption&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;sourceOption&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;workers&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;./src/main/ets/workers/worker.ets&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>自动创建：DevEco Studio支持一键生成Worker，在对应的{moduleName}目录下任意位置，<strong>点击鼠标右键 &gt; New &gt; Worker</strong>，即可自动生成Worker的模板文件及配置信息，无需再手动在build-profile.json5中进行相关配置。</li>
+</ul>
+<h4 id="文件路径注意事项"><a href="#文件路径注意事项" class="headerlink" title="文件路径注意事项"></a>文件路径注意事项</h4><p>当使用Worker模块具体功能时，均需先构造Worker实例对象，其构造函数与API版本相关，且构造函数需要传入Worker线程文件的路径（scriptURL）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 导入模块</span></span><br><span class="line"><span class="keyword">import</span> worker from <span class="string">&#x27;@ohos.worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// API 9及之后版本使用：</span></span><br><span class="line">const worker1: worker.ThreadWorker = <span class="keyword">new</span> <span class="title class_">worker</span>.ThreadWorker(<span class="string">&#x27;entry/ets/workers/MyWorker.ets&#x27;</span>);</span><br><span class="line"><span class="comment">// API 8及之前版本使用：</span></span><br><span class="line">const worker2: worker.Worker = <span class="keyword">new</span> <span class="title class_">worker</span>.Worker(<span class="string">&#x27;entry/ets/workers/MyWorker.ets&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h5 id="Stage模型下的文件路径规则"><a href="#Stage模型下的文件路径规则" class="headerlink" title="Stage模型下的文件路径规则"></a><strong>Stage模型下的文件路径规则</strong></h5><p>构造函数中的scriptURL要求如下：</p>
+<ul>
+<li>scriptURL的组成包含 {moduleName}&#x2F;ets 和相对路径 relativePath。</li>
+<li>relativePath是Worker线程文件和”{moduleName}&#x2F;src&#x2F;main&#x2F;ets&#x2F;“目录的相对路径。</li>
+</ul>
+<p><strong>1） 加载Ability中Worker线程文件场景</strong></p>
+<p>加载Ability中的worker线程文件，加载路径规则：{moduleName}&#x2F;ets&#x2F;{relativePath}。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> worker from <span class="string">&#x27;@ohos.worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// worker线程文件所在路径：&quot;entry/src/main/ets/workers/worker.ets&quot;</span></span><br><span class="line">const workerStage1: worker.ThreadWorker = <span class="keyword">new</span> <span class="title class_">worker</span>.ThreadWorker(<span class="string">&#x27;entry/ets/workers/worker.ets&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// worker线程文件所在路径：&quot;phone/src/main/ets/ThreadFile/workers/worker.ets&quot;</span></span><br><span class="line">const workerStage2: worker.ThreadWorker = <span class="keyword">new</span> <span class="title class_">worker</span>.ThreadWorker(<span class="string">&#x27;phone/ets/ThreadFile/workers/worker.ets&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>2） 加载Library-<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/in-app-hsp-0000001774119898">HSP</a>中Worker线程文件场景</p>
+<p>加载HSP中worker线程文件，加载路径规则：{moduleName}&#x2F;ets&#x2F;{relativePath}。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> worker from <span class="string">&#x27;@ohos.worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// worker线程文件所在路径： &quot;hsp/src/main/ets/workers/worker.ets&quot;</span></span><br><span class="line">const workerStage3: worker.ThreadWorker = <span class="keyword">new</span> <span class="title class_">worker</span>.ThreadWorker(<span class="string">&#x27;hsp/ets/workers/worker.ets&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>3） 加载Library-<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/har-package-0000001774279570">HAR</a>中Worker线程文件场景</p>
+<p>加载HAR中worker线程文件存在以下两种情况：</p>
+<ul>
+<li>@标识路径加载形式：所有种类的模块加载本地HAR中的Worker线程文件，加载路径规则：@{moduleName}&#x2F;ets&#x2F;{relativePath}。</li>
+<li>相对路径加载形式：本地HAR加载该包内的Worker线程文件，加载路径规则：创建Worker对象所在文件与Worker线程文件的相对路径。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> worker from <span class="string">&#x27;@ohos.worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// @标识路径加载形式：</span></span><br><span class="line"><span class="comment">// worker线程文件所在路径: &quot;har/src/main/ets/workers/worker.ets&quot;</span></span><br><span class="line">const workerStage4: worker.ThreadWorker = <span class="keyword">new</span> <span class="title class_">worker</span>.ThreadWorker(<span class="string">&#x27;@har/ets/workers/worker.ets&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 相对路径加载形式：</span></span><br><span class="line"><span class="comment">// worker线程文件所在路径: &quot;har/src/main/ets/workers/worker.ets&quot;</span></span><br><span class="line"><span class="comment">// 创建Worker对象的文件所在路径：&quot;har/src/main/ets/components/mainpage/MainPage.ets&quot;</span></span><br><span class="line">const workerStage5: worker.ThreadWorker = <span class="keyword">new</span> <span class="title class_">worker</span>.ThreadWorker(<span class="string">&#x27;../../workers/worker.ets&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="生命周期注意事项"><a href="#生命周期注意事项" class="headerlink" title="生命周期注意事项"></a>生命周期注意事项</h4><ul>
+<li>Worker的创建和销毁耗费性能，建议开发者合理管理已创建的Worker并重复使用。Worker空闲时也会一直运行，因此当不需要Worker时，可以调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__terminate9">terminate()</a>接口或<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__close9">parentPort.close()</a>方法主动销毁Worker。若Worker处于已销毁或正在销毁等非运行状态时，调用其功能接口，会抛出相应的错误。</li>
+<li>Worker存在数量限制，支持最多同时存在8个Worker。当Worker数量超出限制时，会抛出“Worker initialization failure, the number of workers exceeds the maximum.”错误。</li>
+</ul>
+<h4 id="使用示例-1"><a href="#使用示例-1" class="headerlink" title="使用示例"></a>使用示例</h4><h5 id="使用Worker进行文件的写入"><a href="#使用Worker进行文件的写入" class="headerlink" title="使用Worker进行文件的写入"></a>使用Worker进行文件的写入</h5><p>本文通过某地区提供的房价数据训练一个简易的房价预测模型，该模型支持通过输入房屋面积和房间数量去预测该区域的房价，模型需要长时间运行，房价预测需要使用前面的模型运行结果，因此需要使用Worker。</p>
+<ol>
+<li><p>DevEco Studio提供了Worker创建的模板，新建一个Worker线程，例如命名为“MyWorker”</p>
+<img src="/image/hm-thread-pool-03.png">
+
+<img src="/image/hm-thread-pool-04.png">
+
+<img src="/image/hm-thread-pool-05.png"></li>
+</ol>
+<p>可以看到在当前build-profile.json5 中已经帮我生成好了workers的注册信息</p>
+<ol>
+<li>在主线程中通过调用ThreadWorker的<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__constructor9">constructor()</a>方法创建Worker对象，当前线程为宿主线程</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> worker from <span class="string">&#x27;@ohos.worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line">const workerInstance: worker.ThreadWorker = <span class="keyword">new</span> <span class="title class_">worker</span>.ThreadWorker(<span class="string">&#x27;entry/ets/workers/MyWorker.ts&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在宿主线程中通过调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__onmessage9">onmessage()</a>方法接收Worker线程发送过来的消息，并通过调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__postmessage9">postMessage()</a>方法向Worker线程发送消息。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">testWorker() &#123;</span><br><span class="line">  console.log(`testWorker 开始调用,当前为主线程，线程id： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  const workerInstance: worker.ThreadWorker = <span class="keyword">new</span> <span class="title class_">worker</span>.ThreadWorker(<span class="string">&#x27;phone/ets/workers/MyWorker.ets&#x27;</span>);</span><br><span class="line">  <span class="type">let</span> <span class="variable">done</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 接收Worker子线程的结果</span></span><br><span class="line">  workerInstance.onmessage = ((event: MessageEvents) =&gt; &#123;</span><br><span class="line">    console.log(`testWorker onmessage回调，message:$&#123;event.data.value&#125;,线程id： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  workerInstance.onerror = ((err: ErrorEvent) =&gt; &#123;</span><br><span class="line">    console.log(`testWorker 接收Worker子线程的错误信息，err:$&#123;err&#125;,线程id： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Worker线程销毁后，执行onexit回调方法</span></span><br><span class="line">  workerInstance.onexit = (): <span class="keyword">void</span> =&gt; &#123;</span><br><span class="line">    console.log(`testWorker 接收Worker子线程的 onexit 销毁回调，,线程id： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 向Worker子线程发送训练消息</span></span><br><span class="line">  workerInstance.postMessage(&#123; <span class="string">&#x27;type&#x27;</span>: <span class="number">1</span>,<span class="string">&#x27;filesDir&#x27;</span>: YCContextProvider.getContext().filesDir + <span class="string">&quot;/testWorkPool/&quot;</span> &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在MyWorker.ts文件中绑定Worker对象，当前线程为Worker线程。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> worker, &#123; ThreadWorkerGlobalScope, MessageEvents, ErrorEvent &#125; from <span class="string">&#x27;@ohos.worker&#x27;</span>;</span><br><span class="line"></span><br><span class="line">let workerPort: ThreadWorkerGlobalScope = worker.workerPort;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在Worker线程中通过调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__onmessage9-1">onmessage()</a>方法接收宿主线程发送的消息内容，并通过调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__postmessage9-2">postMessage()</a>方法向宿主线程发送消息。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">const workerPort: ThreadWorkerGlobalScope = worker.workerPort;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 定义当工作线程收到主线程发送的消息时要调用的事件处理程序。事件处理程序在工作线程中执行。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> e message data</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">workerPort.onmessage = (e: MessageEvents) =&gt; &#123;</span><br><span class="line">  console.log(`worker子线程收到 onmessage 回调，e:$&#123;e.data&#125;， 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  <span class="keyword">if</span> (e.data.type === <span class="number">1</span>) &#123;</span><br><span class="line">    workerTest(e.data.filesDir)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 定义当工作线程收到无法反序列化的消息时要调用的事件处理程序。事件处理程序在工作线程中执行。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> e message data</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">workerPort.onmessageerror = (e: MessageEvents) =&gt; &#123;</span><br><span class="line">  console.log(`worker子线程收到 onmessageerror 回调，e:$&#123;e.data&#125;， 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 定义在工作线程执行期间发生异常时要调用的事件处理程序。事件处理程序在工作线程中执行。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> e error message</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">workerPort.onerror = (e: ErrorEvent) =&gt; &#123;</span><br><span class="line">  console.log(`worker子线程收到 onerror 回调，e:$&#123;e.message&#125;， 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function <span class="title function_">workerTest</span><span class="params">(filesDir:string)</span> &#123;</span><br><span class="line">  console.log(`worker子线程开始调用workerTest， 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  <span class="comment">//  YCContextProvider.getContext().filesDir 会报错 Cannot read property filesDir of undefined</span></span><br><span class="line">  <span class="comment">// let filesDir = YCContextProvider.getContext().filesDir + &quot;/testTaskPool/&quot;</span></span><br><span class="line">  <span class="keyword">if</span> (!fs.accessSync(filesDir)) &#123;</span><br><span class="line">    fs.mkdirSync(filesDir, <span class="literal">true</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  let filePath1: string = filesDir + <span class="string">&quot;path1.txt&quot;</span>; <span class="comment">// 应用文件路径</span></span><br><span class="line">  let filePath2: string = filesDir + <span class="string">&quot;path2.txt&quot;</span>;</span><br><span class="line">  <span class="type">let</span> <span class="variable">fileList</span> <span class="operator">=</span> [filePath1, filePath2]</span><br><span class="line">  <span class="comment">// 循环写文件操作</span></span><br><span class="line">  <span class="keyword">for</span> (let i: number = <span class="number">0</span>; i &lt; fileList.length * <span class="number">500</span>; i++) &#123;</span><br><span class="line">    write(`Hello World!`, fileList[i % fileList.length]).then(() =&gt; &#123;</span><br><span class="line">      console.info(`worker子线程 写入文件成功， FileList: $&#123;fileList[i% fileList.length]&#125;，当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`);</span><br><span class="line">    &#125;).<span class="keyword">catch</span>((err: BusinessError) =&gt; &#123;</span><br><span class="line">      console.error(`worker子线程 写入文件失败， Code is $&#123;err.code&#125;, message is $&#123;err.message&#125;，当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(`worker写入完成， 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  <span class="comment">// 向主线程发送完成事件</span></span><br><span class="line">  workerPort.postMessage(&#123; type: <span class="string">&#x27;message&#x27;</span>, value: <span class="string">&#x27;write 已完成&#x27;</span> &#125;);</span><br><span class="line">  <span class="comment">// 关闭worker线程</span></span><br><span class="line">  workerPort.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在Worker线程中完成任务之后，执行Worker线程销毁操作。销毁线程的方式主要有两种：根据需要可以在宿主线程中对Worker线程进行销毁；也可以在Worker线程中主动销毁Worker线程。</li>
+</ol>
+<p>在宿主线程中通过调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__onexit9">onexit()</a>方法定义Worker线程销毁后的处理逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Worker线程销毁后，执行onexit回调方法</span></span><br><span class="line">workerInstance.onexit = (): <span class="keyword">void</span> =&gt; &#123;</span><br><span class="line">  console.log(`testWorker 接收Worker子线程的 onexit 销毁回调，,线程id： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>销毁方式一：在宿主线程中通过调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__terminate9">terminate()</a>方法销毁Worker线程，并终止Worker接收消息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 销毁Worker线程</span></span><br><span class="line">workerInstance.terminate();</span><br></pre></td></tr></table></figure>
+
+<p>销毁方式二：在Worker线程中通过调用<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-worker-0000001860176065#ZH-CN_TOPIC_0000001860176065__close9">close()</a>方法主动销毁Worker线程，并终止Worker接收消息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 销毁线程</span></span><br><span class="line">workerPort.close();</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-TaskPool和Worker的对比"><a href="#3-TaskPool和Worker的对比" class="headerlink" title="3. TaskPool和Worker的对比"></a>3. TaskPool和Worker的对比</h3><p>TaskPool（任务池）和Worker的作用是为应用程序提供一个多线程的运行环境，用于处理耗时的计算任务或其他密集型任务。可以有效地避免这些任务阻塞主线程，从而最大化系统的利用率，降低整体资源消耗，并提高系统的整体性能。</p>
+<p> TaskPool和Worker的实现特点对比</p>
+<table>
+<thead>
+<tr>
+<th>实现</th>
+<th>TaskPool</th>
+<th>Worker</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内存模型</td>
+<td>线程间隔离，内存不共享。</td>
+<td>线程间隔离，内存不共享。</td>
+</tr>
+<tr>
+<td>参数传递机制</td>
+<td>采用标准的结构化克隆算法（Structured Clone）进行序列化、反序列化，完成参数传递。支持ArrayBuffer转移和SharedArrayBuffer共享。</td>
+<td>采用标准的结构化克隆算法（Structured Clone）进行序列化、反序列化，完成参数传递。支持ArrayBuffer转移和SharedArrayBuffer共享。</td>
+</tr>
+<tr>
+<td>参数传递</td>
+<td>直接传递，无需封装，默认进行transfer。</td>
+<td>消息对象唯一参数，需要自己封装。</td>
+</tr>
+<tr>
+<td>方法调用</td>
+<td>直接将方法传入调用。</td>
+<td>在Worker线程中进行消息解析并调用对应方法。</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>异步调用后默认返回。</td>
+<td>主动发送消息，需在onmessage解析赋值。</td>
+</tr>
+<tr>
+<td>生命周期</td>
+<td>TaskPool自行管理生命周期，无需关心任务负载高低。</td>
+<td>开发者自行管理Worker的数量及生命周期。</td>
+</tr>
+<tr>
+<td>任务池个数上限</td>
+<td>自动管理，无需配置。</td>
+<td>同个进程下，最多支持同时开启8个Worker线程。</td>
+</tr>
+<tr>
+<td>任务执行时长上限</td>
+<td>3分钟（不包含Promise和async&#x2F;await异步调用的耗时，例如网络下载、文件读写等I&#x2F;O任务的耗时）。</td>
+<td>无限制。</td>
+</tr>
+<tr>
+<td>设置任务的优先级</td>
+<td>支持配置任务优先级。</td>
+<td>不支持。</td>
+</tr>
+<tr>
+<td>执行任务的取消</td>
+<td>支持取消已经发起的任务。</td>
+<td>不支持。</td>
+</tr>
+<tr>
+<td>线程复用</td>
+<td>支持。</td>
+<td>不支持。</td>
+</tr>
+<tr>
+<td>任务延时执行</td>
+<td>支持。</td>
+<td>不支持。</td>
+</tr>
+<tr>
+<td>设置任务依赖关系</td>
+<td>支持。</td>
+<td>不支持。</td>
+</tr>
+<tr>
+<td>串行队列</td>
+<td>支持。</td>
+<td>不支持。</td>
+</tr>
+<tr>
+<td>任务组</td>
+<td>支持。</td>
+<td>不支持。</td>
+</tr>
+</tbody></table>
+<h4 id="适用场景对比"><a href="#适用场景对比" class="headerlink" title="适用场景对比"></a>适用场景对比</h4><p>TaskPool和Worker均支持多线程并发能力。由于TaskPool的工作线程会绑定系统的调度优先级，并且支持负载均衡（自动扩缩容），而Worker需要开发者自行创建，存在创建耗时以及不支持设置调度优先级，故在性能方面使用TaskPool会优于Worker，因此大多数场景推荐使用TaskPool。</p>
+<p>TaskPool偏向独立任务维度，该任务在线程中执行，无需关注线程的生命周期，超长任务（大于3分钟）会被系统自动回收；而Worker偏向线程的维度，支持长时间占据线程执行，需要主动管理线程生命周期。</p>
+<p>常见的一些开发场景及适用具体说明如下：</p>
+<ul>
+<li>运行时间超过3分钟（不包含Promise和async&#x2F;await异步调用的耗时，例如网络下载、文件读写等I&#x2F;O任务的耗时）的任务。例如后台进行1小时的预测算法训练等CPU密集型任务，需要使用Worker。</li>
+<li>有关联的一系列同步任务。例如在一些需要创建、使用句柄的场景中，句柄创建每次都是不同的，该句柄需永久保存，保证使用该句柄进行操作，需要使用Worker。</li>
+<li>需要设置优先级的任务。例如图库直方图绘制场景，后台计算的直方图数据会用于前台界面的显示，影响用户体验，需要高优先级处理，需要使用TaskPool。</li>
+<li>需要频繁取消的任务。例如图库大图浏览场景，为提升体验，会同时缓存当前图片左右侧各2张图片，往一侧滑动跳到下一张图片时，要取消另一侧的一个缓存任务，需要使用TaskPool。</li>
+<li>大量或者调度点较分散的任务。例如大型应用的多个模块包含多个耗时任务，不方便使用8个Worker去做负载管理，推荐采用TaskPool。</li>
+</ul>
+<p>问题3：3分钟的限制到底是什么表现，后台下载超过3分钟会被杀死么</p>
+<p>将上面io的例子改造一下，使用定时器来模拟网络请求耗时，每间隔2s使用一次io，如果3分钟后还在运行，说明只要我们代码的io操作不超过3分钟即可，网络请求已经延时操作并不包含在里面</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Concurrent</span></span><br><span class="line">async function <span class="title function_">concurrentTest</span><span class="params">(fileList: string[])</span>: Promise&lt;<span class="type">boolean</span>&gt; &#123;</span><br><span class="line">  console.log(`taskTool concurrentTest函数执行时 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  <span class="comment">// 循环写文件操作</span></span><br><span class="line">  <span class="keyword">for</span> (let i: number = <span class="number">0</span>; i &lt; fileList.length * <span class="number">500</span>; i++) &#123;</span><br><span class="line">    setTimeout(() =&gt; &#123;</span><br><span class="line">      console.log(`taskTool setTimeout执行时 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">      write(`Hello World!`, fileList[i % fileList.length]).then(() =&gt; &#123;</span><br><span class="line">        console.info(`taskTool 写入文件成功， FileList: $&#123;fileList[i% fileList.length]&#125;，当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`);</span><br><span class="line">      &#125;).<span class="keyword">catch</span>((err: BusinessError) =&gt; &#123;</span><br><span class="line">        console.error(`taskTool 写入文件失败， Code is $&#123;err.code&#125;, message is $&#123;err.message&#125;，当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;, i * <span class="number">2000</span>);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>示例发现，3分钟后的确还在打印数据</p>
+<p>问题4：什么是可共享对象，什么是Sendable对象</p>
+<p>Sendable可以理解成为了向 @Concurrent 异步函数中传递数据方便而构建的一个数据bean，例如我要向 @Concurrent 修饰的函数传递10个参数，然后还要调用方法，@Concurrent  是没有办法传递闭包的，所以我必须放到一个对象中进行传递，下面看一个例子：</p>
+<ol>
+<li>首先构建一个 被 @Sendable 修饰的类，这个类中可以定义属性和函数，但是需要注意的是不能写闭包，因为这个类里面的数据需要被克隆到不同的内存中，所以必须是可以被序列化的</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Sendable</span></span><br><span class="line">export <span class="keyword">class</span> <span class="title class_">TestWorkPoolClass</span> &#123;</span><br><span class="line">  desc: string = <span class="string">&quot;我是 sendable 类的属性 &quot;</span>;</span><br><span class="line">  taskNum: number = <span class="number">5</span>;</span><br><span class="line">  fileDir: string = YCContextProvider.getContext().filesDir + <span class="string">&quot;/sendableTest/&quot;</span></span><br><span class="line"></span><br><span class="line">  printName() &#123;</span><br><span class="line">    console.log(`sendable printName方法调用，desc:$&#123;<span class="built_in">this</span>.desc&#125;，number:$&#123;<span class="built_in">this</span>.taskNum&#125;, 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">    <span class="keyword">if</span> (!fs.accessSync(<span class="built_in">this</span>.fileDir)) &#123;</span><br><span class="line">      fs.mkdirSync(<span class="built_in">this</span>.fileDir, <span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    let filePath: string = <span class="built_in">this</span>.fileDir + <span class="string">&quot;test.txt&quot;</span>;</span><br><span class="line">    write(`Hello World!`, filePath).then(() =&gt; &#123;</span><br><span class="line">      console.info(`sendable workPool 子线程 写入文件成功， filePath: $&#123;filePath&#125;，当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`);</span><br><span class="line">    &#125;).<span class="keyword">catch</span>((err: BusinessError) =&gt; &#123;</span><br><span class="line">      console.error(`sendable workPool 子线程 写入文件失败， Code is $&#123;err.code&#125;, message is $&#123;err.message&#125;，当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  get <span class="title function_">getTaskNum</span><span class="params">()</span>: number &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.taskNum;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>构建 @Concurrent 异步函数，注意点事不能直接将 TestWorkPoolClass 传递，而是要包成一个array传入，官方说这个Sendable要配合<a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-taskpool-0000001860295901#ZH-CN_TOPIC_0000001860295901__setclonelist11">setCloneList</a></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Concurrent</span></span><br><span class="line">  async function <span class="title function_">concurrentTestSendable</span><span class="params">(arr: Array&lt;TestWorkPoolClass&gt;)</span>: Promise&lt;<span class="type">boolean</span>&gt; &#123;</span><br><span class="line">  console.log(`taskTool concurrentTest函数执行时 当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">  <span class="type">let</span> <span class="variable">testWorkPoolClass</span> <span class="operator">=</span> arr[<span class="number">0</span>]</span><br><span class="line">  testWorkPoolClass.printName()</span><br><span class="line">  testWorkPoolClass.taskNum = <span class="number">20</span></span><br><span class="line">  testWorkPoolClass.printName()</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.使用 <a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-taskpool-0000001860295901#ZH-CN_TOPIC_0000001860295901__setclonelist11">setCloneList</a> 封装传递使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">let</span> <span class="variable">sendableInfo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TestWorkPoolClass</span>()</span><br><span class="line"><span class="type">let</span> <span class="variable">array1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Array</span>&lt;TestWorkPoolClass&gt;();</span><br><span class="line">array1.push(sendableInfo);</span><br><span class="line"><span class="type">let</span> <span class="variable">task1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">taskpool</span>.Task(concurrentTestSendable, array1);</span><br><span class="line"><span class="comment">// @Sendable装饰器需搭配 setCloneList 接口</span></span><br><span class="line">task1.setCloneList(array1);</span><br><span class="line">taskpool.execute(task1).then(() =&gt; &#123;</span><br><span class="line">  <span class="comment">// 调度结果处理</span></span><br><span class="line">  console.log(`concurrentTestSendable 调度结果处理,当前线程： $&#123;process.tid&#125;,当前进程：$&#123;process.pid&#125;`)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<img src="/image/hm-thread-pool-06.png">
+
+<p>如果我没有传递的是没有被 @Sendable 修饰的类就会报错：</p>
+<img src="/image/hm-thread-pool-07.png">
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-npl-ocr-demo/" title="iOS 端基于 NLP/CoreML + Vision 实现「图像文字识别&amp;提取」">iOS 端基于 NLP/CoreML + Vision 实现「图像文字识别&amp;提取」</a></h2>
+                <p class="excerpt">
+                
+                
+
+前言
+阅读本文内容前，你可能需要了解的基础知识「端智能」基于自然语言处理 (NLP) 的光学字符识别 (OCR)
+
+在最近的技术分享中，我们已经知道了实现「图像文字识别&amp;amp;提取」这个功能所需的基本技术方案和原理 ，这解决了我们实现这一功能当中 Why 和 What 的问题。但光知道 Why
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-03-02T13:29:45.000Z" class="post-list__meta--date date">2024-03-02</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/AI/" rel="tag">AI</a>, <a class="-none-link" href="/tags/NLP/" rel="tag">NLP</a>, <a class="-none-link" href="/tags/OCR/" rel="tag">OCR</a>, <a class="-none-link" href="/tags/Vision/" rel="tag">Vision</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AB%AF%E6%99%BA%E8%83%BD/" rel="tag">端智能</a>
+</span><a class="btn-border-small" href="/ios-npl-ocr-demo/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/harmonyos-dev-intro/" title="鸿蒙开发指南">鸿蒙开发指南</a></h2>
+                <p class="excerpt">
+                
+                
+
+1. 概述1.1 简介鸿蒙（即 HarmonyOS ，开发代号 Ark，正式名称为华为终端鸿蒙智能设备操作系统软件）是华为公司自 2012 年以来开发的一款可支持鸿蒙原生应用和兼容 AOSP 应用的分布式操作系统。该系统利用“分布式”技术将手机、电脑、平板、电视、汽车和智能穿戴等多款设备融合成一
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2024-01-23T04:21:17.000Z" class="post-list__meta--date date">2024-01-23</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/HarmonyOS/" rel="tag">HarmonyOS</a>, <a class="-none-link" href="/tags/%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" rel="tag">入门指南</a>, <a class="-none-link" href="/tags/%E9%B8%BF%E8%92%99/" rel="tag">鸿蒙</a>
+</span><a class="btn-border-small" href="/harmonyos-dev-intro/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/hm-thread-pool/';
+  var disqus_title = '鸿蒙线程池及异步任务';
+  var disqus_url = 'http://shevakuilin.com/hm-thread-pool/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
