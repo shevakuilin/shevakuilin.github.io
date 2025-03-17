@@ -152,100 +152,32 @@
   
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/rust-mob-client/" title="link to post.title">Rust - 移动端跨平台开发实践</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/autolayout-multiplier/" title="link to post.title">AutoLayout控件等比间距的百分比布局</a></h2>
       <p class="excerpt">
     
-      
+      多控件水平、垂直分布要求相同间距时，使用multiplier来进行布局，即百分比布局是最佳选择。
+在看本文前可以了解一下iOS NSLayoutConstraint 其中就提到过multiplier, 本文中的百分比布局都是基于 multiplier 实现的，下面来一一查看其实现。
 
-1. 整体方案
-Rust的移动端跨平台开发方案，具体如下
-
-最底层SDK的业务逻辑由Rust实现
-使用ffi工具，编写binding code
-Android、iOS：中间层使用uniffi编写binding代码。使用uniffi-bindgen将binding代码生成kotlin、Swift代码，方便Android、iOS调用。
-鸿蒙：使用ohos-rs编写binding代码，使用ohos工
+我们需要实现的功能很简单，以一个居中的按钮为基准，达成五个按钮等比间距水平分布在屏幕上的效果为例，首先约束居中按钮
     &hellip;
       </p>
-      <div class="post-list__meta"><time datetime="2024-07-15T06:40:56.000Z" class="post-list__meta--date date">2024-07-15</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" rel="tag">跨平台</a>
-</span><a class="btn-border-small" href="/rust-mob-client/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/rust-ffi-sdk-go/" title="link to post.title">Rust - 基于 FFI 的移动端跨平台 SDK 的探索和实践</a></h2>
-      <p class="excerpt">
-    
-      
-
-为什么要跨平台
-减少人力成本，减少开发时间。
-抹平多端在逻辑细节的实现差异，提高代码一致性，保证工程质量。
-多个平台共享一套代码，后期产品维护简单。
-
-
-目前常见的跨平台方案C++很多公司的跨平台移动基础库基本都有 C++ 的影子，如微信，腾讯会议，还有早期的 Dropbox，知名的开源库如微信的 Mars 等。好处是一套代码多端适配，但是需要大公司对 C++ 有强大的工具链支持，还需要花重金
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2024-03-22T06:09:45.000Z" class="post-list__meta--date date">2024-03-22</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/FFI/" rel="tag">FFI</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0/" rel="tag">跨平台</a>
-</span><a class="btn-border-small" href="/rust-ffi-sdk-go/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/rust-sturct-know/" title="link to post.title">Rust 工程结构初探</a></h2>
-      <p class="excerpt">
-    
-      
-Rust 项目的依赖管理机制
-
-Rust 的依赖管理是基于项目的根 Cargo.toml 文件，而不是子目录中的 Cargo.toml 文件。如果再子目录的 Cargo.toml 文件中描述，即使同样在子目录中的.rs文件，也会出现识别不到的问题。
-我们需要明确 Rust 项目的依赖管理机制。在 Rust 中，依赖管理是基于项目的根 Cargo.toml 文件进行的，而不是子目录中的 Cargo
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2023-07-23T07:00:39.000Z" class="post-list__meta--date date">2023-07-23</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Cargo/" rel="tag">Cargo</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84/" rel="tag">工程结构</a>
-</span><a class="btn-border-small" href="/rust-sturct-know/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/rust-value-rule/" title="link to post.title">Rust - 值的所有权</a></h2>
-      <p class="excerpt">
-    
-      值的生杀大权究竟在谁手上？进入内存管理以后，我们就会一起研究 Rust 学习过程中最难啃的硬骨头：所有权和生命周期。为什么要从这个知识点开始呢？因为，所有权和生命周期是 Rust 和其它编程语言的主要区别，也是 Rust 其它知识点的基础。
-其实，所有权和生命周期之所以这么难学明白，除了其与众不同的解决内存安全问题的角度外，另一个很大的原因是，目前的资料对初学者都不友好，上来就讲 Copy &amp;#x
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2023-03-17T14:06:24.000Z" class="post-list__meta--date date">2023-03-17</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>, <a class="-none-link" href="/tags/%E6%89%80%E6%9C%89%E6%9D%83/" rel="tag">所有权</a>
-</span><a class="btn-border-small" href="/rust-value-rule/">开始阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/rust-learn-01/" title="link to post.title">从零开始的 Rust 修炼生活</a></h2>
-      <p class="excerpt">
-    
-      
-前言在当今这个快速发展的软件开发领域，掌握一门高效且安全的编程语言显得尤为重要。Rust，作为一门集性能与安全性于一身的现代系统编程语言，自2010年首次公开以来，便以其独特的所有权系统和零成本抽象理念吸引了大量开发者的关注。本系列文章旨在为初学者提供一条系统学习Rust的道路，从基础语法到高级特性，再到运行机制的深入理解，帮助读者逐步提升，最终达到能够熟练运用Rust解决实际问题的能力。
-Ru
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2023-02-05T07:03:53.000Z" class="post-list__meta--date date">2023-02-05</time> &#8226; <span class="post-list__meta--tags tags">于 
-  <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="tag">基础语法</a>
-</span><a class="btn-border-small" href="/rust-learn-01/">开始阅读</a></div>
+      <div class="post-list__meta"><time datetime="2016-08-22T06:08:36.000Z" class="post-list__meta--date date">2016-08-22</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/NSLayoutConstraint/" rel="tag">NSLayoutConstraint</a>, <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%AD%89%E6%AF%94%E9%97%B4%E8%B7%9D%E5%B8%83%E5%B1%80/" rel="tag">等比间距布局</a>
+</span><a class="btn-border-small" href="/autolayout-multiplier/">开始阅读</a></div>
       <hr class="post-list__divider" />
     </li>
   
     
   </ol>
 
+
+  <nav class="pagination" role="navigation">
+    
+      <a class="older-posts pagination__newer btn btn-small btn-tertiary" href="/archives/page/7/">&larr; 最近</a>
+    
+    <span class="pagination__page-number" >  8 / 8 </span>
+    
+  </nav>
 
  <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },

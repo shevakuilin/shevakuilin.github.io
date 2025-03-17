@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>Rust - 值的所有权 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Rust - 值的所有权 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Rust - 值的所有权 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/rust-value-rule/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2023-03-17T14:06:24.000Z" class="post-list__meta--date date">2023-03-17</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="tag">内存管理</a>, <a class="-none-link" href="/tags/%E6%89%80%E6%9C%89%E6%9D%83/" rel="tag">所有权</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">Rust - 值的所有权</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="值的生杀大权究竟在谁手上？"><a href="#值的生杀大权究竟在谁手上？" class="headerlink" title="值的生杀大权究竟在谁手上？"></a>值的生杀大权究竟在谁手上？</h2><p>进入内存管理以后，我们就会一起研究 Rust 学习过程中最难啃的硬骨头：<strong>所有权</strong>和<strong>生命周期</strong>。为什么要从这个知识点开始呢？因为，<strong>所有权和生命周期是 Rust 和其它编程语言的主要区别，也是 Rust 其它知识点的基础</strong>。</p>
+<p>其实，所有权和生命周期之所以这么难学明白，除了其与众不同的解决内存安全问题的角度外，另一个很大的原因是，目前的资料对初学者都不友好，上来就讲 Copy &#x2F; Move 语义怎么用，而没有讲明白为什么要这样用。</p>
+<p>所以，我们换个思路，从一个变量使用堆栈的行为开始，探究 Rust 设计所有权和生命周期的用意，让大家从根本上理解这个问题。</p>
+<h3 id="变量在函数调用时发生了什么？"><a href="#变量在函数调用时发生了什么？" class="headerlink" title="变量在函数调用时发生了什么？"></a>变量在函数调用时发生了什么？</h3><p>首先，我们来看一看，在我们熟悉的大多数编程语言中，变量在函数调用时究竟会发生什么、存在什么问题。</p>
+<p>看下面这段代码，main() 函数中定义了一个动态数组 data 和一个值 v，然后将其传递给函数 find_pos，在 data 中查找 v 是否存在，存在则返回 v 在 data 中的下标，不存在返回 None</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data</span> = <span class="built_in">vec!</span>[<span class="number">10</span>, <span class="number">42</span>, <span class="number">9</span>, <span class="number">8</span>];</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">v</span> = <span class="number">42</span>;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Some</span>(pos) = <span class="title function_ invoke__">find_pos</span>(data, v) &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;Found &#123;&#125; at &#123;&#125;&quot;</span>, v, pos);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">find_pos</span>(data: <span class="type">Vec</span>&lt;<span class="type">u32</span>&gt;, v: <span class="type">u32</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">usize</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">for</span> (pos, item) <span class="keyword">in</span> data.<span class="title function_ invoke__">iter</span>().<span class="title function_ invoke__">enumerate</span>() &#123;</span><br><span class="line">        <span class="keyword">if</span> *item == v &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_ invoke__">Some</span>(pos);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="literal">None</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码不难理解，需要注意的是：<strong>动态数组因为大小在编译期无法确定，所以放在堆上，并且在栈上有一个包含了长度和容量的胖指针指向堆上的内存</strong>。在调用 find_pos() 时，main() 函数中的局部变量 data 和 v 作为参数传递给了 find_pos()，所以它们会被放在 find_pos() 的参数区。</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=NDhlZTYzYWJiMWQwMTg2MTJlYjE3NTUwODYzZjE1ODVfWEVDWmNzaktOZlJNYllmMG9xbWQ5QzQwSnVwbXZsN1JfVG9rZW46UGxpQWJKcnpvb05Xb214a1JmdWN0YnlIbklnXzE3NDIxOTUyNjc6MTc0MjE5ODg2N19WNA" alt="img"></p>
+<p>按照大多数编程语言的做法，现在堆上的内存就有了两个引用。不光如此，我们每把 data 作为参数传递一次，堆上的内存就会多一次引用。</p>
+<p>但是，这些引用究竟会做什么操作，我们不得而知，也无从限制；而且堆上的内存究竟什么时候能释放，尤其在多个调用栈引用时，很难厘清，取决于最后一个引用什么时候结束。所以，这样一个看似简单的函数调用，给内存管理带来了极大麻烦。</p>
+<p>对于堆内存多次引用的问题，我们先来看大多数语言的方案：</p>
+<ul>
+<li>C&#x2F;C++ 要求开发者手工处理，非常不便。这需要我们在写代码时高度自律，按照前人总结的最佳实践来操作。但人必然会犯错，一个不慎就会导致内存安全问题，要么内存泄露，要么使用已释放内存，导致程序崩溃</li>
+<li>Java 等语言使用追踪式 GC，通过定期扫描堆上数据还有没有人引用，来替开发者管理堆内存，不失为一种解决之道，但 GC 带来的 STW 问题让语言的使用场景受限，性能损耗也不小。</li>
+<li>ObjC&#x2F;Swift 使用自动引用计数（ARC），在编译时自动添加维护引用计数的代码，减轻开发者维护堆内存的负担。但同样地，它也会有不小的运行时性能损耗。</li>
+</ul>
+<p>现存方案都是从<strong>管理引用</strong>的角度思考的，有各自的弊端。我们回顾刚才梳理的函数调用过程，从源头上看，本质问题是堆上内存会被随意引用，那么换个角度，<strong>我们是不是可以限制引用行为本身呢</strong>？</p>
+<h3 id="Rust-的解决思路"><a href="#Rust-的解决思路" class="headerlink" title="Rust 的解决思路"></a>Rust 的解决思路</h3><p>这个想法打开了新的大门，Rust 就是这样另辟蹊径的。</p>
+<p>在 Rust 以前，引用是一种随意的、可以隐式产生的、对权限没有界定的行为，比如 <strong>C 里到处乱飞的指针</strong>、<strong>Java 中随处可见的按引用传参</strong>，<strong>它们可读可写，权限极大</strong>。而 Rust 决定限制开发者随意引用的行为。</p>
+<p>其实作为开发者，我们在工作中常常能体会到：<strong>恰到好处的限制，反而会释放无穷的创意和生产力</strong>。最典型的就是各种开发框架，比如 React、Ruby on Rails 等，他们限制了开发者使用语言的行为，却极大地提升了生产力。</p>
+<p>好，思路我们已经有了，具体怎么实现来限制数据的引用行为呢？</p>
+<p>要回答这个问题，我们需要先来回答：<strong>谁真正拥有数据也就是值的生杀大权，这种权利可以共享还是需要独占****？</strong></p>
+<h3 id="所有权和-Move-语义"><a href="#所有权和-Move-语义" class="headerlink" title="所有权和 Move 语义"></a>所有权和 Move 语义</h3><p>对于值的生杀大权可以共享还是需要独占这一问题，我们大概都会觉得，一个值最好只有一个拥有者，因为所有权共享，势必会带来使用和释放上的不明确，走回 追踪式 GC 或者 ARC 的老路。</p>
+<p>那么如何保证独占呢？具体实现其实是有些困难的，因为太多情况需要考虑。比如说一个变量被赋给另一个变量、作为参数传给另一个函数，或者作为返回值从函数返回，都可能造成这个变量的拥有者不唯一。怎么办？</p>
+<p>对此，Rust 给出了如下规则：</p>
+<ul>
+<li><strong>一个值只能被一个变量所拥有，这个变量被称为所有者（Each value in Rust has a variable that’s called its owner）</strong>。</li>
+<li><strong>一个值同一时刻只能有一个所有者（There can only be one owner at a time）</strong>，也就是说<strong>不能有两个变量拥有相同的值</strong>。所以对应刚才说的变量赋值、参数传递、函数返回等行为，旧的所有者会把值的所有权转移给新的所有者，以便保证单一所有者的约束。</li>
+<li><strong>当所有者离开作用域，其拥有的值被丢弃（When the owner goes out of scope, the value will be dropped），内存得到释放</strong>。</li>
+</ul>
+<p>这三条规则很好理解，核心就是保证<strong>单一所有权</strong>。其中第二条规则讲的所有权转移是 <strong>Move 语义</strong>，Rust 从 C++ 那里学习和借鉴了这个概念。</p>
+<p>第三条规则中的<strong>作用域（scope）</strong>是一个新概念，简单说明一下，它指一个代码块（block），在 Rust 中，一对花括号括起来的代码区就是一个作用域。举个例子，如果一个变量被定义在 if {} 内，那么 if 语句结束，这个变量的作用域就结束了，<strong>其值会被丢弃</strong>；</p>
+<p>同样的，函数里定义的变量，在离开函数时会被丢弃。在这三条所有权规则的约束下，我们看开头的引用问题是如何解决的：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=MzEwMmQ1YmU1MDRlNDBiYjk4NThlYzI4Y2U1Y2EwNzZfSXJRVUFWandyQTR3dkV3VjhoZzNIcHFqM0pJeGtWVGVfVG9rZW46TWxiV2JQNzBobzFyb2h4UVBrdWNtV3hubmp3XzE3NDIxOTUyNjc6MTc0MjE5ODg2N19WNA" alt="img"></p>
+<p>原先 main() 函数中的 data，被移动到 find_pos() 后，就失效了，编译器会保证 main() 函数随后的代码无法访问这个变量，这样，就确保了堆上的内存依旧只有唯一的引用。</p>
+<p>看这个图，你可能会有一个小小的疑问：main() 函数传递给 find_pos() 函数的另一个参数 v，也会被移动吧？为什么图上并没有标灰？咱们暂且将这个疑问放到一边，等本篇文章看完，相信你会有答案的。</p>
+<p>现在，我们来写段代码加深一下对所有权的理解。</p>
+<p>在这段代码里，先创建了一个不可变数据 data，然后将 data 赋值给 data1。按照所有权的规则，赋值之后，data 指向的值被移动给了 data1，它自己便不可访问了。而随后，data1 作为参数被传给函数 sum()，在 main() 函数下，data1 也不可访问了。</p>
+<p>但是后续的代码依旧试图访问 data1 和 data，所以，这段代码应该会有两处错误</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data</span> = <span class="built_in">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = data;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;sum of data1: &#123;&#125;&quot;</span>, <span class="title function_ invoke__">sum</span>(data1));</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;data1: &#123;:?&#125;&quot;</span>, data1); <span class="comment">// error1</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;sum of data: &#123;&#125;&quot;</span>, <span class="title function_ invoke__">sum</span>(data)); <span class="comment">// error2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sum</span>(data: <span class="type">Vec</span>&lt;<span class="type">u32</span>&gt;) <span class="punctuation">-&gt;</span> <span class="type">u32</span> &#123;</span><br><span class="line">    data.<span class="title function_ invoke__">iter</span>().<span class="title function_ invoke__">fold</span>(<span class="number">0</span>, |acc, x| acc + x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时，编译器也确实捕获到了这两个错误，并清楚地告诉我们不能使用已经移动过的变量：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=Y2QzMDUxMzM2OWViZTBhZjQzZWRhZjk1MDU1YTIwMzBfWThVdkxuYWJabFpmOVJSV0Jla2lpbVhBTUFwRHhaeUFfVG9rZW46THZQaGIwT0Jwb1g5T0N4ZDZSTWN2RXUybkxoXzE3NDIxOTUyNjc6MTc0MjE5ODg2N19WNA" alt="img"></p>
+<p>如果我们要在把 data1 传给 sum()，同时，还想让 main() 能够访问 data，该怎么办？</p>
+<p>我们可以调用 data.clone() 把 data 复制一份出来给 data1，这样，在堆上就有 vec![1,2,3,4] 两个互不影响且可以独立释放的副本，如下图所示：</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=NDAwMDNiNmJiMmY5OWEzMWU3YTBiZjQ0OTdmZmVlOThfTE4yV1NyVU5nODMwMFdoYTd4WU4zVFJxSm9UUE9vVk9fVG9rZW46Q1FsYmIydFZLb1dBeEJ4cFpLcWN6TmJ5bk9wXzE3NDIxOTUyNjc6MTc0MjE5ODg2N19WNA" alt="img"></p>
+<p>可以看到，<strong>所有权规则，解决了谁真正拥有数据的生杀大权问题，让堆上数据的多重引用不复存在，这是它最大的优势。</strong></p>
+<p>但是，这也会让代码变复杂，尤其是一些只存储在栈上的简单数据，如果要避免所有权转移之后不能访问的情况，我们就需要手动复制，会非常麻烦，效率也不高。</p>
+<p>Rust 考虑到了这一点，提供了两种方案：</p>
+<ul>
+<li>如果你不希望值的所有权被转移，在 Move 语义外，Rust 提供了 <strong>Copy 语义</strong>。如果一个数据结构实现了 Copy trait，那么它就会使用 Copy 语义。这样，在你赋值或者传参时，值会自动按位拷贝（浅拷贝）。</li>
+<li>如果你不希望值的所有权被转移，又无法使用 Copy 语义，那你可以“<strong>借用</strong>”数据，我们后面的系列会详细讨论“借用”。</li>
+</ul>
+<h3 id="Copy-语义和-Copy-trait"><a href="#Copy-语义和-Copy-trait" class="headerlink" title="Copy 语义和 Copy trait"></a>Copy 语义和 Copy trait</h3><p>符合 Copy 语义的类型，在你赋值或者传参时，值会自动按位拷贝。这句话不难理解，那在 Rust 中是具体怎么实现的呢？</p>
+<p>我们再仔细看看刚才代码编译器给出的错误，你会发现，它抱怨 data 的类型 Vec没有实现 Copy trait，在赋值或者函数调用的时候无法 Copy，于是就按默认使用 Move 语义。而 Move 之后，原先的变量 data 无法访问，所以出错。</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=MmQ2ZjA4YjZmN2M5Nzc1Zjk5ZTFmODljM2Y2NmI5NTdfOVBPRkhLY0hIdnRoRFl2aVpXcFl0dEZya2pxMXR3MjlfVG9rZW46RFgwSWJNTXlPb3k5cGt4UWhQeGN3UFlIbnZmXzE3NDIxOTUyNjc6MTc0MjE5ODg2N19WNA" alt="img"></p>
+<p>换句话说，<strong>当你要移动一个值，如果值的类型实现了 Copy trait，就会自动使用 Copy 语义进行拷贝，否则使用 Move 语义进行移动。</strong></p>
+<p>题外话：在学习 Rust 的时候，你可以根据编译器详细的错误说明来尝试修改代码，使编译通过，在这个过程中，你可以用 Stack Overflow 搜索错误信息，进一步学习自己不了解的知识点。同时，也非常建议你根据上图中的错误代码 E0382 使用 rustc –explain E0382 探索更详细的信息。</p>
+<p>好，回归正文，那在 Rust 中，什么数据结构实现了 Copy trait 呢？ 你可以通过下面的代码快速验证一个数据结构是否实现了 Copy trait</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">is_copy</span>&lt;T: <span class="built_in">Copy</span>&gt;() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">types_impl_copy_trait</span>() &#123;</span><br><span class="line">    is_copy::&lt;<span class="type">bool</span>&gt;();</span><br><span class="line">    is_copy::&lt;<span class="type">char</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// all iXX and uXX, usize/isize, fXX implement Copy trait</span></span><br><span class="line">    is_copy::&lt;<span class="type">i8</span>&gt;();</span><br><span class="line">    is_copy::&lt;<span class="type">u64</span>&gt;();</span><br><span class="line">    is_copy::&lt;<span class="type">i64</span>&gt;();</span><br><span class="line">    is_copy::&lt;<span class="type">usize</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// function (actually a pointer) is Copy</span></span><br><span class="line">    is_copy::&lt;<span class="title function_ invoke__">fn</span>()&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// raw pointer is Copy</span></span><br><span class="line">    is_copy::&lt;*<span class="keyword">const</span> <span class="type">String</span>&gt;();</span><br><span class="line">    is_copy::&lt;*<span class="keyword">mut</span> <span class="type">String</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// immutable reference is Copy</span></span><br><span class="line">    is_copy::&lt;&amp;[<span class="type">Vec</span>&lt;<span class="type">u8</span>&gt;]&gt;();</span><br><span class="line">    is_copy::&lt;&amp;<span class="type">String</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// array/tuple with values which is Copy is Copy</span></span><br><span class="line">    is_copy::&lt;[<span class="type">u8</span>; <span class="number">4</span>]&gt;();</span><br><span class="line">    is_copy::&lt;(&amp;<span class="type">str</span>, &amp;<span class="type">str</span>)&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">types_not_impl_copy_trait</span>() &#123;</span><br><span class="line">    <span class="comment">// unsized or dynamic sized type is not Copy</span></span><br><span class="line">    is_copy::&lt;<span class="type">str</span>&gt;();</span><br><span class="line">    is_copy::&lt;[<span class="type">u8</span>]&gt;();</span><br><span class="line">    is_copy::&lt;<span class="type">Vec</span>&lt;<span class="type">u8</span>&gt;&gt;();</span><br><span class="line">    is_copy::&lt;<span class="type">String</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// mutable reference is not Copy</span></span><br><span class="line">    is_copy::&lt;&amp;<span class="keyword">mut</span> <span class="type">String</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// array / tuple with values that not Copy is not Copy</span></span><br><span class="line">    is_copy::&lt;[<span class="type">Vec</span>&lt;<span class="type">u8</span>&gt;; <span class="number">4</span>]&gt;();</span><br><span class="line">    is_copy::&lt;(<span class="type">String</span>, <span class="type">u32</span>)&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">types_impl_copy_trait</span>();</span><br><span class="line">    <span class="title function_ invoke__">types_not_impl_copy_trait</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>感兴趣的同学推荐手动运行这段代码，并仔细阅读编译器错误来加深印象</p>
+<p>这里为了节省时间，直接做个总结：</p>
+<ul>
+<li>原生类型，包括函数、不可变引用和裸指针实现了 Copy；</li>
+<li>数组和元组，如果其内部的数据结构实现了 Copy，那么它们也实现了 Copy；</li>
+<li>可变引用没有实现 Copy；</li>
+<li>非固定大小的数据结构，没有实现 Copy。</li>
+</ul>
+<p>另外，<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/std/marker/trait.Copy.html">官方文档介绍 Copy trait 的页面</a>包含了 Rust 标准库中实现 Copy trait 的所有数据结构。你也可以在访问某个数据结构的时候，查看其文档的 Trait implementation 部分，看看它是否实现了 Copy trait。</p>
+<p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=Mzc5ZGJlZDg3ZjY0NmRiOWMwZDI2NjIxODM5MGYxMjZfYlljdzhoeUZQRHBJNkNxMGw2QUtleWc0ejlCMjdmaDVfVG9rZW46QlkxTGJPOGNGb0dOOFV4Ylk3T2NyZ3R5blJiXzE3NDIxOTUyNjc6MTc0MjE5ODg2N19WNA" alt="img"></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>今天我们学习了 Rust 的单一所有权模式、Move 语义、Copy 语义</p>
+<ul>
+<li>所有权：一个值只能被一个变量所拥有，且同一时刻只能有一个所有者，当所有者离开作用域，其拥有的值被丢弃，内存得到释放。</li>
+<li>Move 语义：赋值或者传参会导致值 Move，所有权被转移，一旦所有权转移，之前的变量就不能访问。</li>
+<li>Copy 语义：如果值实现了 Copy trait，那么赋值或传参会使用 Copy 语义，相应的值会被按位拷贝（浅拷贝），产生新的值。</li>
+</ul>
+<p>通过单一所有权模式，Rust 解决了堆内存过于灵活、不容易安全高效地释放的问题，不过所有权模型也引入了很多新的概念，比如今天介绍的 Move &#x2F; Copy 语义。</p>
+<p>由于是全新的概念，学习起来有一定的难度，但是你只要抓住了核心点：<strong>Rust 通过单一所有权来限制任意引用的行为</strong>，就不难理解这些新概念背后的设计意义。</p>
+<p>下一篇，我们会继续探索 Rust 的所有权和生命周期：在不希望值的所有权被转移，又无法使用 Copy 语义的情况下，如何“借用”数据。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/rust-sturct-know/" title="Rust 工程结构初探">Rust 工程结构初探</a></h2>
+                <p class="excerpt">
+                
+                
+Rust 项目的依赖管理机制
+
+Rust 的依赖管理是基于项目的根 Cargo.toml 文件，而不是子目录中的 Cargo.toml 文件。如果再子目录的 Cargo.toml 文件中描述，即使同样在子目录中的.rs文件，也会出现识别不到的问题。
+我们需要明确 Rust 项目的依赖管理机制。在 
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-07-23T07:00:39.000Z" class="post-list__meta--date date">2023-07-23</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Cargo/" rel="tag">Cargo</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84/" rel="tag">工程结构</a>
+</span><a class="btn-border-small" href="/rust-sturct-know/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/rust-learn-01/" title="从零开始的 Rust 修炼生活">从零开始的 Rust 修炼生活</a></h2>
+                <p class="excerpt">
+                
+                
+前言在当今这个快速发展的软件开发领域，掌握一门高效且安全的编程语言显得尤为重要。Rust，作为一门集性能与安全性于一身的现代系统编程语言，自2010年首次公开以来，便以其独特的所有权系统和零成本抽象理念吸引了大量开发者的关注。本系列文章旨在为初学者提供一条系统学习Rust的道路，从基础语法到高级特
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-02-05T07:03:53.000Z" class="post-list__meta--date date">2023-02-05</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="tag">基础语法</a>
+</span><a class="btn-border-small" href="/rust-learn-01/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/rust-value-rule/';
+  var disqus_title = 'Rust - 值的所有权';
+  var disqus_url = 'http://shevakuilin.com/rust-value-rule/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
