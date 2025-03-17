@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>从零开始的 Rust 修炼生活 | 跃迁引擎</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="iOS Research &amp; Development">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="从零开始的 Rust 修炼生活 | 跃迁引擎">
+    <meta name="twitter:description" content="iOS Research &amp; Development">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="从零开始的 Rust 修炼生活 | 跃迁引擎">
+    <meta property="og:description" content="iOS Research &amp; Development">
+
+    
+    <meta name="author" content="ShevaKuilin">
+    
+    
+<link rel="stylesheet" href="/css/vno.css">
+
+    
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+    
+    <link rel="icon" href="/images/favicon.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+
+    <link rel="canonical" href="http://shevakuilin.com/rust-learn-01/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+
+    
+<script src="/js/main.js"></script>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 跃迁引擎 的主页"><img src="/images/avatar.jpeg" width="80" alt="跃迁引擎 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for 跃迁引擎">跃迁引擎</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">空気を読んだ雨降らないでよ</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS Research & Development</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">主页</a></li>
+            
+              <li class="navigation__item"><a href="/archives">所有文章</a></li>
+            
+              <li class="navigation__item"><a href="/tags/算法/">算法</a></li>
+            
+              <li class="navigation__item"><a href="/tags/iOS/">iOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/AI/">AI</a></li>
+            
+              <li class="navigation__item"><a href="/tags/HarmonyOS/">HarmonyOS</a></li>
+            
+              <li class="navigation__item"><a href="/tags/Rust/">Rust</a></li>
+            
+              <li class="navigation__item"><a href="/tags/札记/">札记</a></li>
+            
+              <li class="navigation__item"><a href="/tags/随笔/">随笔</a></li>
+            
+              <li class="navigation__item"><a href="/tags/折腾日记/">折腾日记</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/shevakuilin" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-disabled"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2023-02-05T07:03:53.000Z" class="post-list__meta--date date">2023-02-05</time> &#8226; <span class="post-meta__tags tags">于 
+  <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="tag">基础语法</a>
+ </span>
+      <span class="page-pv">
+       阅读 <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">从零开始的 Rust 修炼生活</h1>
+  </header>
+
+  <section class="post">
+    <p><img src="https://tjny2v67lw.feishu.cn/space/api/box/stream/download/asynccode/?code=ZTljNzViNmNkODZmY2M4MGYwYTEwODRiNDk0ZDA4YThfbmd6WmFMcERKcGlLWTM5SGFNTElqQWNXZ1JsRzJaNkRfVG9rZW46WWF0T2JXRFJrb1EwRTN4anRlQmNQeGxxbkJjXzE3NDIxOTUwMjA6MTc0MjE5ODYyMF9WNA" alt="img"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在当今这个快速发展的软件开发领域，掌握一门高效且安全的编程语言显得尤为重要。Rust，作为一门集性能与安全性于一身的现代系统编程语言，自2010年首次公开以来，便以其独特的所有权系统和零成本抽象理念吸引了大量开发者的关注。本系列文章旨在为初学者提供一条系统学习Rust的道路，从基础语法到高级特性，再到运行机制的深入理解，帮助读者逐步提升，最终达到能够熟练运用Rust解决实际问题的能力。</p>
+<p>Rust 学习曲线比较陡峭，理解难度很大，不适合以 Demo 样例为教学，需要像学习 C&#x2F;C++ 一样从最基础的内容学习，并深刻理解其运转原理，所以这期的内容就是掰开了揉碎了从最基础的教学开始。</p>
+<p>本篇作为系列的第七篇文章，我们将继续深入探索Rust的核心概念，通过一系列实例和练习，帮助大家巩固对Rust语法、语言设计以及运行原理的理解。无论你是完全的新手，还是有一定编程经验的开发者，都能从本系列中找到适合自己的学习路径。让我们一起踏上这段从零开始的Rust修炼之旅，共同成长，共同进步。</p>
+<h2 id="第一节-变量与不可变性"><a href="#第一节-变量与不可变性" class="headerlink" title="第一节 变量与不可变性"></a>第一节 变量与不可变性</h2><h3 id="Rust-中的变量基础知识"><a href="#Rust-中的变量基础知识" class="headerlink" title="Rust 中的变量基础知识"></a>Rust 中的变量基础知识</h3><ol>
+<li><p>在 Rust 中，使用 let 关键字来声明变量</p>
+</li>
+<li><p>Rust 支持类型推导，但你也可以显式指定变量的类型：</p>
+<ol>
+<li><pre><code class="Rust">let x: i32 = 5; // 显式指定 x 的类型为 i32
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 变量名蛇形命名法（Snake Case)，而枚举和结构体命名使用帕斯卡命名法（Pascal Case)</span><br><span class="line"></span><br><span class="line">   1. 蛇形命名法（snake_case）是指**每个空格皆以底线（_）取代的书写风格，且每个单字的第一个字母皆为小写**。</span><br><span class="line"></span><br><span class="line">      1. </span><br><span class="line"></span><br><span class="line">      2. ```Rust</span><br><span class="line">         fn creat_markdown_file() &#123;&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>帕斯卡（pascal）<strong>与骆驼命名法类似。只不过骆驼命名法是首字母小写，而帕斯卡命名法是首字母大写</strong>。</p>
+<ol>
+<li><pre><code class="Rust">enum ClickEvent &#123;&#125;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 如果变量没有用到，可以前置下划线，消除警告</span><br><span class="line"></span><br><span class="line">   1. ```Rust</span><br><span class="line">      _ = get_loop_count();</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>强制类型转换 Casting a Value to a Different Type</p>
+<ol>
+<li><pre><code class="Rust">let a = 3.1; 
+let b = a as i32;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. 打印变量（&#123;&#125; 与 &#123;:?&#125; 需要实现特质之后章节会介绍，基础类型默认实现）</span><br><span class="line"></span><br><span class="line">   1. Rust 中 print! 和 println! 是两个常用的宏，用于在控制台输出信息。它们的主要区别在于是否在输出内容后自动添加换行符。</span><br><span class="line"></span><br><span class="line">   2. ```Rust</span><br><span class="line">      println!(&quot;val: &#123;&#125;&quot;, x);</span><br><span class="line">      println!(&quot;val: &#123;x&#125;&quot;);</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="Rust-中的变量是默认不可变的"><a href="#Rust-中的变量是默认不可变的" class="headerlink" title="Rust 中的变量是默认不可变的"></a>Rust 中的变量是默认不可变的</h3><p>不可变性是 Rust 实现其可靠性和安全性目标的关键。</p>
+<p>它迫使程序员更深入地思考程序状态的变化，并明确哪些部分的程序状态可能会发生变化的。</p>
+<p>不可变性有助于防止一类常见的错误，如数据竞争和并发问题。</p>
+<h3 id="使用-mut-关键字进行可变声明"><a href="#使用-mut-关键字进行可变声明" class="headerlink" title="使用 mut 关键字进行可变声明"></a>使用 mut 关键字进行可变声明</h3><p>如果你希望一个变量是可变的，你需要使用 mut 关键字进行明确声明</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">y</span> = <span class="number">10</span>; <span class="comment">// 可变变量</span></span><br><span class="line">y = <span class="number">20</span>;         <span class="comment">// 合法的修改</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Shadowing-Variables-并不是重新赋值"><a href="#Shadowing-Variables-并不是重新赋值" class="headerlink" title="Shadowing Variables 并不是重新赋值"></a>Shadowing Variables 并不是重新赋值</h3><p>Rust 允许你隐藏一个变量，这意味着你可以声明一个与现有变量同名的新变量，从而有效地隐藏前一个变量</p>
+<ul>
+<li>可以改变值</li>
+<li>可以改变类型</li>
+<li>可以改变可变性</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line"><span class="comment">// 改变值</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 大括号相当于创建一个命名空间</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">10</span>;<span class="comment">// 并不是重新赋值，而是影子(shadowing)，只是隐藏了上一个 x</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Inner x: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125; <span class="comment">// 作用域结束时，内部的x被销毁了，而外部的x仍然存在</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;Outer x : &#123;x&#125;&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 改变类型</span></span><br><span class="line"><span class="comment">// &amp; 切片的引用，可以简单理解为一个带有内存地址和长度的胖指针（ 胖指针是指针类型的一种特殊指针：. 指向静态sized类型值的常规指针）</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">x</span>: &amp;<span class="type">str</span> = <span class="string">&quot;hellow&quot;</span> <span class="comment">// 同一作用域下重新声明了x，最终覆盖了之前的x</span></span><br><span class="line"><span class="title function_ invoke__">println</span>(<span class="string">&quot;New x: &#123;x&#125;&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 改变可变性</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">x</span>: &amp;<span class="type">str</span> = <span class="string">&quot;this&quot;</span>;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;x: &#123;x&#125;&quot;</span>);</span><br><span class="line">x = <span class="string">&quot;that&quot;</span>;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;Mut x: &#123;x&#125;&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="不可变性与命名"><a href="#不可变性与命名" class="headerlink" title="不可变性与命名"></a>不可变性与命名</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="comment">// 不可变与命名</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">nice_count</span>: <span class="type">i32</span> = <span class="number">100</span>; <span class="comment">// 自动推导i32</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">nice_number</span>: <span class="type">i64</span> = <span class="number">54</span>;</span><br><span class="line">    nice_count = <span class="number">23</span>; <span class="comment">// cannot mutate immutable variable &#x27;nice_count&#x27;</span></span><br><span class="line">    #define get_count = xxx.xxxx.<span class="title function_ invoke__">xxx</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第二节-常量-const-与静态变量-static"><a href="#第二节-常量-const-与静态变量-static" class="headerlink" title="第二节 常量 const 与静态变量 static"></a>第二节 常量 const 与静态变量 static</h2><h3 id="const-常量"><a href="#const-常量" class="headerlink" title="const 常量"></a>const 常量</h3><ul>
+<li>常量的值必须是在编译时已知的常量表达式，必须指定类型与值</li>
+<li>与 C 语言的宏定义（宏替换）不同，Rust 的 const 常量的值被直接嵌入到生成的底层机器代码中，而不是进行简单的字符替换</li>
+<li>常量名与静态变量命名必须全部大写，单词之间加入下划线</li>
+</ul>
+<h3 id="static-静态变量"><a href="#static-静态变量" class="headerlink" title="static 静态变量"></a>static 静态变量</h3><ul>
+<li>与 const 常量不同，static 变量是在运行时分配内存的</li>
+<li>并不是不可变的，可以使用 unsafe 修改（少看 Rust 死灵书，尽量不要使用 unsafe）</li>
+<li>静态变量的生命周期为整个程序的运行时间</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> MY_STATIC: <span class="type">i32</span> = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">mut</span> MY_MUT_STATIC: <span class="type">i32</span> = <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">const</span> SECOND_HOUR: <span class="type">usize</span> = <span class="number">3600</span>;</span><br><span class="line">    <span class="keyword">const</span> SECOND_DAY: <span class="type">usize</span> = <span class="number">24</span> * SECOND_HOUR; <span class="comment">// 编译的时候就已经确定了类型，确定了值</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 块级作用域</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">const</span> SE: <span class="type">usize</span> = <span class="number">1_000</span>;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;SE&#125;&quot;</span>); <span class="comment">// 可见性只在这里</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;SE&#125;&quot;</span>); <span class="comment">// 不可以在这里打印</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, SECOND_DAY);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;MY_STATIC&#125;&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">unsafe</span> &#123;</span><br><span class="line">        MY_MUT_STATIC = <span class="number">32</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// 这里也不行，因为 unsafe 是独立作用区，外面都是 safe，两者是完全隔缘的</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;MY_MUT_STATIC&#125;&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第三节-Rust-中的基础数据类型"><a href="#第三节-Rust-中的基础数据类型" class="headerlink" title="第三节 Rust 中的基础数据类型"></a>第三节 Rust 中的基础数据类型</h2><ul>
+<li>Integer Types 默认推断为 i32<ul>
+<li>i8、i16、i32、i64、i128</li>
+</ul>
+</li>
+<li>Unsigned Integer Types<ul>
+<li>u8、u16、u32、u64、u128</li>
+</ul>
+</li>
+<li>Platform-Specific Integer Type(由平台决定，平台指的是运行该代码的设备或环境。具体来说，usize 和 isize 的大小会根据运行代码的平台（如 32 位或 64 位系统）而变化。)<ul>
+<li>usize<ul>
+<li>无符号整数类型。</li>
+<li>大小与当前平台的指针大小相同。<ul>
+<li>32位平台都是32位(4字节)，常见于较旧的计算机系统或某些嵌入式设备。</li>
+<li>64位平台都是64位(8字节)，常见于现代计算机系统，包括大多数桌面电脑和服务器</li>
+</ul>
+</li>
+<li>通常用于表示内存地址、数组索引或集合的大小。适用于非负数的场景，例如数组索引、集合大小等。例如，获取数组的长度或访问数组中的元素。</li>
+</ul>
+</li>
+<li>Isize<ul>
+<li>有符号整数类型。</li>
+<li>大小与当前平台的指针大小相同。<ul>
+<li>32位平台都是32位(4字节)，常见于较旧的计算机系统或某些嵌入式设备。</li>
+<li>64位平台都是64位(8字节)，常见于现代计算机系统，包括大多数桌面电脑和服务器</li>
+</ul>
+</li>
+<li>通常用于需要负数的情况，例如数组索引的偏移量。例如，在数组中向前或向后移动指针时。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Float Types<ul>
+<li>f32 与 f64<ul>
+<li>尽量用 f64，除非你清楚边界需要空间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Boolean Values<ul>
+<li>true</li>
+<li>false</li>
+</ul>
+</li>
+<li>Character Types<ul>
+<li>Rust 支持 unicode 字符</li>
+<li>表示 char 类型使用单引号</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="comment">/// 进制的字面量</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a1</span> = -<span class="number">125</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a2</span> = <span class="number">0xFF</span>; <span class="comment">// 十六进制 255</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a3</span> = <span class="number">0o13</span>; <span class="comment">// 八进制   11</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a4</span> = <span class="number">0b10</span>; <span class="comment">// 二进制   2</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;a1&#125; &#123;a2&#125; &#123;a3&#125; &#123;a4&#125;&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 最大值 最小值</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;u32 max: &#123;&#125;&quot;</span>, <span class="type">u32</span>::MAX); <span class="comment">// 只支持这种打印的写法，不支持&#123;u32::MAX&#125;</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;u32 min: &#123;&#125;&quot;</span>, <span class="type">u32</span>::MIN);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;i32 max: &#123;&#125;&quot;</span>, <span class="type">i32</span>::MAX);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;i32 min: &#123;&#125;&quot;</span>, <span class="type">i32</span>::MIN);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;usize max: &#123;&#125;&quot;</span>, <span class="type">usize</span>::MAX);</span><br><span class="line">    <span class="comment">// std 是标准库（Standard Library）的简称</span></span><br><span class="line">    <span class="comment">// 打印占用空间大小，占多数字节，这里的isize实际上是个泛型，后面会讲</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;isize is: &#123;&#125; bytes&quot;</span>, std::mem::size_of::&lt;<span class="type">isize</span>&gt;());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;usize is: &#123;&#125; bytes&quot;</span>, std::mem::size_of::&lt;<span class="type">usize</span>&gt;());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;u64 is: &#123;&#125; bytes&quot;</span>, std::mem::size_of::&lt;<span class="type">u64</span>&gt;());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;i64 is: &#123;&#125; bytes&quot;</span>, std::mem::size_of::&lt;<span class="type">i64</span>&gt;());</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;i32 is: &#123;&#125; bytes&quot;</span>, std::mem::size_of::&lt;<span class="type">i32</span>&gt;());</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 浮点型</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">f1</span>: <span class="type">f32</span> = <span class="number">1.232323</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">f2</span>: <span class="type">f64</span> = <span class="number">7.654345</span>;</span><br><span class="line">    <span class="comment">// 四舍五入，从小数点后第2位开始四舍五入</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Float are &#123;:.2&#125; &#123;:.2&#125;&quot;</span>, f1, f2);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 布尔值</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">is_ok</span> = <span class="literal">true</span>; <span class="comment">// 自动推断为 bool</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">can_ok</span> = <span class="literal">false</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;is ok ? &#123;is_ok&#125; can_ok ? &#123;can_ok&#125;&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;is ok or can ok ? &#123;&#125;, can ok and is ok ? &#123;&#125;&quot;</span>, is_ok||can_ok, is_ok&amp;&amp;can_ok);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// char类型</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">char_c</span> = <span class="string">&#x27;C&#x27;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">emoji_char</span> = <span class="string">&#x27;😈&#x27;</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;You Get &#123;char_c&#125; fell &#123;emoji_char&#125;&quot;</span>);</span><br><span class="line">    <span class="comment">// 颠覆认知</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, emoji_char <span class="keyword">as</span> <span class="type">usize</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, emoji_char <span class="keyword">as</span> <span class="type">i32</span>) </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// emoji_char as usize 和 emoji_char as i32 都将 emoji_char 的 Unicode 码点转换为相应的整数类型。</span></span><br><span class="line">    <span class="comment">// 由于 emoji_char 的 Unicode 码点在 usize 和 i32 的范围内，因此转换后的值是相同的。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 Rust 中，emoji_char 是一个 Unicode 字符（char 类型）。当我们将 emoji_char 转换为 usize 或 i32 时，实际上是将这个字符的 Unicode 码点（code point）转换为相应的整数类型。</p>
+<ol>
+<li>Unicode 码点：</li>
+</ol>
+<ul>
+<li>每个 Unicode 字符都有一个唯一的码点，表示为一个整数值。</li>
+<li>例如，表情符号 😊 的 Unicode 码点是 U+1F60A。</li>
+</ul>
+<ol>
+<li>类型转换：</li>
+</ol>
+<ul>
+<li>emoji_char as usize：将 emoji_char 的 Unicode 码点转换为 usize 类型。</li>
+<li>emoji_char as i32：将 emoji_char 的 Unicode 码点转换为 i32 类型。</li>
+</ul>
+<ol>
+<li>输出相同的原因：</li>
+</ol>
+<ul>
+<li>在大多数情况下，usize 和 i32 都足够大，可以容纳常见的 Unicode 码点。</li>
+<li>由于 emoji_char 的 Unicode 码点在 usize 和 i32 的范围内，因此转换后的值是相同的。</li>
+</ul>
+<h2 id="第四节-元组与数组"><a href="#第四节-元组与数组" class="headerlink" title="第四节 元组与数组"></a>第四节 元组与数组</h2><h3 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h3><ul>
+<li>元组和数组都是 Compound Types（复合类型），而 Vec 和 Map 都是 Collection Types（集合类型）</li>
+<li>复合类型允许你将多个值组合成一个单一的类型。Rust 中主要有三种复合类型：元组（Tuple）数组（Array）和结构体（Struct）。</li>
+<li>集合类型用于存储多个相同类型的值，并且这些值的数量可以在运行时动态变化。Rust 中主要有三种集合类型：向量&#x2F;动态数组（Vector）、字符串（String）和哈希映射（HashMap）。<ul>
+<li>String 可以简单的理解为 Vector 的一种变形</li>
+</ul>
+</li>
+<li>元组和数组的长度都是固定的</li>
+<li>Tuples（元组）不同类型的数据类型</li>
+<li>Arrays（数组）同一类型的数据类型</li>
+<li>元组和数组均可以设置为可变，但只能改变值的内容，不能改变值的类型</li>
+</ul>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><ul>
+<li><p>数组是固定长度的同构集合</p>
+</li>
+<li><p>创建方式</p>
+<ul>
+<li><p>[a, b, c]</p>
+</li>
+<li><p>[value; size]</p>
+</li>
+<li><pre><code class="Rust">/// 第一种创建方法，把所有元素一次性列出来
+[a, b, c]
+/// 第二种创建方法
+/// 以你第一个设置的值为初始值，创建一个数组，数组的长度由size定义
+[value; size]
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 获取元素</span><br><span class="line"></span><br><span class="line">  - ```Rust</span><br><span class="line">    arr[index]</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>获取长度</p>
+<ul>
+<li><pre><code class="Rust">arr.len()
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 元组</span><br><span class="line"></span><br><span class="line">- 元组是固定长度的异构集合</span><br><span class="line"></span><br><span class="line">- 空元组</span><br><span class="line"></span><br><span class="line">  - ```Rust</span><br><span class="line">    /// 空元组不占任何内存，一般用作默认返回值，比如无返回值时返回一个空元组，实际上等于返回空</span><br><span class="line">    Empty Tuple()</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>元组获取元素</p>
+<ul>
+<li><pre><code class="Rust">tup.index
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 元组无法获取长度，没有len()</span><br><span class="line"></span><br><span class="line">### 让我们关注一下 Ownership 所有权机制</span><br><span class="line"></span><br><span class="line">#### 类型基础类型与数组、元组他们和 String 数据类型的不同</span><br><span class="line"></span><br><span class="line">```Rust</span><br><span class="line">fn main() &#123;</span><br><span class="line">    // 元组</span><br><span class="line">    let tup = (0, &quot;hi&quot;, 3.4);</span><br><span class="line">    println!(&quot;tup elements &#123;&#125; &#123;&#125; &#123;&#125;&quot;, tup.0, tup.1, tup.2);</span><br><span class="line">    // 设置元组可变性</span><br><span class="line">    let mut tup2 = (0, &quot;hi&quot;, 3.4);</span><br><span class="line">    println!(&quot;tup2 elements &#123;&#125; &#123;&#125; &#123;&#125;&quot;, tup2.0, tup2.1, tup2.2);</span><br><span class="line">    tup2.1 = &quot;f&quot;; // 注意，可以改变值的内容，但不能改变值的类型</span><br><span class="line">    println!(&quot;tup2 elements &#123;&#125; &#123;&#125; &#123;&#125;&quot;, tup2.0, tup2.1, tup2.2);</span><br><span class="line">    // 空元组</span><br><span class="line">    let tup3 = ();</span><br><span class="line">    /// 打印一下 tup3 的结构</span><br><span class="line">    println!(&quot;tup3 &#123;:?&#125;&quot;, tup3);</span><br><span class="line">    // println!(&quot;tup3 &#123;&#125;&quot;, tup3); // 不能这样，因为没有实现</span><br><span class="line">    </span><br><span class="line">    // 数组</span><br><span class="line">    let mut arr = [11, 12, 13];</span><br><span class="line">    arr[0] = 999;</span><br><span class="line">    println!(&quot;arr len &#123;&#125; first elements is &#123;&#125;&quot;, arr.len(), arr[0]);</span><br><span class="line">    // 遍历数组的几种写法</span><br><span class="line">    // 写法1</span><br><span class="line">    for element in arr &#123;</span><br><span class="line">        println!(&quot;&#123;&#125;&quot;, element);</span><br><span class="line">    &#125;</span><br><span class="line">    // 写法2</span><br><span class="line">    for (index, &amp;element) in arr.iter().enumerate() &#123;</span><br><span class="line">        println!(&quot;index = &#123;&#125;, element = &#123;&#125;&quot;, index, element);</span><br><span class="line">    &#125;</span><br><span class="line">    // 写法3，0..arr.len() 表示 [0, arr.len() - 1]</span><br><span class="line">    for i in 0..arr.len() &#123;</span><br><span class="line">        println!(&quot;index = &#123;&#125;, element = &#123;&#125;&quot;, i, arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    // 写法4，0..=arr.len() 表示 [0, arr.len()]</span><br><span class="line">    for i in 0..=arr.len() &#123;</span><br><span class="line">        println!(&quot;index = &#123;&#125;&quot;, i);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    let ar = [2; 3];</span><br><span class="line">    for i in ar &#123;</span><br><span class="line">        println!(&quot;&#123;&#125;&quot;, i);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // ownership 所有权</span><br><span class="line">    let arr_item = [1, 2, 3];</span><br><span class="line">    let tup_item = (2, &quot;ff&quot;);</span><br><span class="line">    // 这个打印主要是为了验证是否存在，能否被打印</span><br><span class="line">    println!(&quot;arr: &#123;:?&#125;&quot;, arr_item);</span><br><span class="line">    println!(&quot;tup: &#123;:?&#125;&quot;, tup_item);</span><br><span class="line">    </span><br><span class="line">    let arr_ownership = arr_item;</span><br><span class="line">    let tup_ownership = tup_item;</span><br><span class="line">    println!(&quot;arr: &#123;:?&#125;&quot;, arr_item);</span><br><span class="line">    println!(&quot;tup: &#123;:?&#125;&quot;, tup_item);</span><br><span class="line">    </span><br><span class="line">    // 基础数据类型都是可以被打印的</span><br><span class="line">    let a = 3;</span><br><span class="line">    let b = a;</span><br><span class="line">    println!(&quot;&#123;a&#125;&quot;);</span><br><span class="line">    </span><br><span class="line">    // copy 操作</span><br><span class="line">    // 我们前面讲的所有数据类型，它在赋值时执行的都是 copy 操作</span><br><span class="line">    // 当上面 a 赋值给 b 的时候，a 还是存在的</span><br><span class="line">    // 如果你从其他语言转到 Rust，你可能会比较理解 copy 这个动作，但如果你有 c++ 基础，</span><br><span class="line">    // 你可能还会知道 c++ 有一个转移，以及左值右值的概念，左移右移</span><br><span class="line">    // Rust 也同样有转移的概念，就是我们下面要说的</span><br><span class="line">    </span><br><span class="line">    // move 操作</span><br><span class="line">    // 在 move 的方式下，它的值的所有权，也就是 ownership 会发生改变，但是以上的基础数据类型，</span><br><span class="line">    // 默认执行的是 copy，而不执行 move，那什么样的类型会执行 move 呢</span><br><span class="line">    // struct、string以及大部分复杂的数据类型，他们都会执行move操作</span><br><span class="line">    // 为什么呢？因为复杂的结构将你的所有权交出去，会节省很大的空间，而且还会提高性能，以及防止你在</span><br><span class="line">    // 异步、并发时犯一些错误，这是非常有必要的</span><br><span class="line">    </span><br><span class="line">    let string_item = String::from(&quot;aa&quot;);</span><br><span class="line">    // String 类型就把 ownership进行move操作， 这里就将 string_item 的所有权接管了</span><br><span class="line">    // 当所有权转移的那一刻，string_item 就不复存在了</span><br><span class="line">    let string_item_tt = string_item; </span><br><span class="line">    // 如果这时你试图打印，就会出现一个经典错误</span><br><span class="line">    println!(&quot;&#123;string_item&#125;&quot;); // vorrow of moved value: &#x27;string_item&#x27; value borrowed here after move</span><br><span class="line">    // 因为前面的数据类型都实现了 copy 的特质，默认的实现了 copy 操作</span><br><span class="line">    // 而 string 没有实现 copy 的特质，所以只能进行所有权的转移，这个就是 ownership</span><br><span class="line">    // 当然 ownership 不止如此，这里仅仅是一个概念引入</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="第五节-Rust-的内存管理模型"><a href="#第五节-Rust-的内存管理模型" class="headerlink" title="第五节 Rust 的内存管理模型"></a>第五节 Rust 的内存管理模型</h2><h3 id="内存管理模型"><a href="#内存管理模型" class="headerlink" title="内存管理模型"></a>内存管理模型</h3><h4 id="第一类-C-x2F-C"><a href="#第一类-C-x2F-C" class="headerlink" title="第一类 C&#x2F;C++"></a>第一类 C&#x2F;C++</h4><ul>
+<li>它们的内存管理模型会把内存的分配和释放下放给程序员，必须手动编写代码来实现内存的分配与释放<ul>
+<li>内存管理是纯粹手动的，写错了是你自己菜</li>
+<li>对程序员的压力是最大的</li>
+<li>代价就是性能是最好的（Rust在性能方面和这种类似，但是做了一定的取舍）<ul>
+<li>特别接近底层，最直接的操纵你的底层（再直接的就是汇编了），所以往往性能比较好</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>New + delete | reference counting</li>
+</ul>
+<h4 id="第二类-Python、C-、Java-等等"><a href="#第二类-Python、C-、Java-等等" class="headerlink" title="第二类 Python、C#、Java 等等"></a>第二类 Python、C#、Java 等等</h4><ul>
+<li>现代编程语言的主流内存管理模型，将内存管理交给GC<ul>
+<li>交给GC了，龟派弟子突出一个猥琐</li>
+</ul>
+</li>
+<li>安全，但 stop the world 对性能的伤害巨大<ul>
+<li>程序员对GC爱憎分明，内存的分配和释放都相对比较安全一些，但是它有一个概念叫做 stop the world，这个东西对性能的伤害是非常非常巨大的，尤其是你对实时性要求非常高的时候，用这种内存管理模型，它们的性能是非常非常糟糕的，所以像游戏开发，就不适合用 Python、C#、Java 这类语言进行开发<ul>
+<li>可能有些人觉得 C# 在游戏领域非常受欢迎，但你仔细阅读一下 C# 你会发现，它做了专门一些改进，另外，很多游戏底层仍然是使用的 C++</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="第三类-Rust"><a href="#第三类-Rust" class="headerlink" title="第三类 Rust"></a>第三类 Rust</h4><ul>
+<li>The Rust Compiler 最特殊的那一个<ul>
+<li>Rust 的编译器是所有编程语言中最特殊的那一个，它会在编译器编译的这个时期来做一系列的检查，它在编译的时候，如果发现你的内存有一些问题的话，它直接不会让你通过。而且它通过所有权机制来限制你的这样的错误产生<ul>
+<li>好处显而易见，比如说并发时，通过一些规则来避免发生 data race（数据竞争），可以做到直接把错误扼杀在摇篮之中</li>
+</ul>
+</li>
+<li>Rust 是如何做到这些的呢，整体的机制叫做 ownership (所有权机制），而 ownership 主要又分为以下几种<ul>
+<li>Ownership rules &amp; semantics（所有权规则&amp;语义）</li>
+<li>Borrow Checker（借用检查） 在 Rust中，将「引用」称作 Borrow，所以引用在 Rust 中就叫「借用」</li>
+<li>Lifetime（借用的生命周期）你也可以叫引用的生命周期</li>
+<li>还有一些其他规则像 RC、智能指针的一些限制</li>
+</ul>
+</li>
+<li>通过这些规则来管理内存，使 Rust 既达到了 C 和 C++ 的性能，又达到了 Python、C#、Java、Go 等语言的安全，需要着重强调 Rust 的安全性远远超出这些语言，因为它还有不变性、一些函数式的特性，所以它更安全，但是，Rust 的性能不一定比 C 和 C++ 更好，它只能是接近，因为很多底层（这里指的是计算机）的东西还是 C 和 C++， Rust 没办法和 C++ 比和 C 的交互，所以这些历史问题决定了 Rust 在性能上会比 C 和 C++ 稍微低一点。<ul>
+<li>理论基础上 Rust 和 C、C++ 的性能是一个水平上的，如果你非要比个高低的话，C &gt; Rust &gt; C++，因为 C++ 有虚表（如果C++不使用虚表，那它和 Rust、C 是完完全全一样的）</li>
+<li>但是现实中，C &gt; C++ &gt; Rust，因为在现实使用中，Rust 还有一个和 C 交互的成本</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Stop-the-world"><a href="#Stop-the-world" class="headerlink" title="Stop the world"></a>Stop the world</h4><p>“Stop the world” 是与垃圾回收（Garbage Collection）相关的术语，它是指在进行垃圾回收时，系统暂停程序的运行。</p>
+<p>这个属于主要用于描述一种全局性的暂停，即所有应用线程都被停止，以便垃圾回收器能够安全的进行工作。这种全局性的停止会导致一些潜在的问题，特别是对于需要低延迟和高性能的应用程序。</p>
+<p>需要注意的是，并非所有的垃圾回收算法都需要”Stop the world”，有一些现代的垃圾回收器采用了一些技术来减小全局停顿的影响，比如并发垃圾回收和增量垃圾回收。</p>
+<h4 id="C-x2F-C-内存错误大全"><a href="#C-x2F-C-内存错误大全" class="headerlink" title="C&#x2F;C++ 内存错误大全"></a>C&#x2F;C++ 内存错误大全</h4><ul>
+<li><p>内存泄漏（Memory Leaks）</p>
+<ul>
+<li><pre><code class="C">int *ptr = new int;
+// 忘记释放内存
+// delete ptr;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 悬空/野指针（Dangling Pointers）</span><br><span class="line"></span><br><span class="line">  - ```C</span><br><span class="line">    int *ptr = new int;</span><br><span class="line">    delete ptr;</span><br><span class="line">    // ptr 现在是悬空指针</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>重复释放（Double Free）</p>
+<ul>
+<li><pre><code class="C">int *ptr = new int;
+delete ptr;
+delete ptr;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 数组越界（Array Out of Bounds）</span><br><span class="line"></span><br><span class="line">  - ```C</span><br><span class="line">    int arr[5];</span><br><span class="line">    arr[5] = 10;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>使用已经释放的内存（Use After Free）</p>
+<ul>
+<li><pre><code class="C">int *ptr = new int;
+delete ptr;
+*ptr = 10; // 使用已经释放的内存
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 堆栈溢出（Stack Overflow）</span><br><span class="line"></span><br><span class="line">  - 递归堆栈溢出</span><br><span class="line"></span><br><span class="line">- 不匹配的 new/delete 或 malloc/free</span><br><span class="line"></span><br><span class="line">#### Rust 的内存管理模型</span><br><span class="line"></span><br><span class="line">- 所有权系统（Ownership System）</span><br><span class="line">- 借用（Borrowing）</span><br><span class="line">  - 不可变引用（不可变借用）</span><br><span class="line">  - 可变引用（可变借用）</span><br><span class="line">- 生命周期（Lifetimes）</span><br><span class="line">- 引用计数（Reference Counting）</span><br><span class="line"></span><br><span class="line">```Rust</span><br><span class="line">fn main() &#123;</span><br><span class="line">    // 所有权 copy &amp; move</span><br><span class="line">    // copy</span><br><span class="line">    let c1 = 1;</span><br><span class="line">    let c2 = c1;</span><br><span class="line">    println!(&quot;&#123;&#125;&quot;, c1);</span><br><span class="line">    // c1 在赋值给 c2 的时候，c1 是还存在的，大多数编程语言不会直接给你释放掉</span><br><span class="line">    // 但是 rust 不一样，c1 如果是个基础类型，那么在 c1 赋值时会进行一个 copy 操作，所以它还在</span><br><span class="line">    </span><br><span class="line">    // 但是有些数据类型，比方说字符串就不会执行 copy，而是执行 move，在 s1 给 s2 赋值时，</span><br><span class="line">    // 会将自己的所有权转移给 s2 ，当没有所有权时，就会被销毁</span><br><span class="line">    let s1 = String::from(&quot;value&quot;);</span><br><span class="line">    let s2 = s1;</span><br><span class="line">    println!(&quot;&#123;s1&#125;&quot;);</span><br><span class="line">    </span><br><span class="line">    // 所有权根据类型不同，有不同的表现</span><br><span class="line">    // 如果我想用 s1 怎么办呢，执行一下 clone，相当于深拷贝</span><br><span class="line">    let s3 = s1.clone()</span><br><span class="line">    </span><br><span class="line">    // 很多人对下面这个操作就非常不理解</span><br><span class="line">    // 这里可以用</span><br><span class="line">    get_length(s1);</span><br><span class="line">    // 这里又不可以用了</span><br><span class="line">    println!(&quot;&#123;s1&#125;&quot;);</span><br><span class="line">    // 想想为什么？</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    // 所有权 -&gt; fn</span><br><span class="line">    // fn 结束后，s1 销毁了</span><br><span class="line">    // 性能非常棒</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn get_length(s: String) &#123;</span><br><span class="line">    println!(&quot;String: &#123;&#125;&quot;, s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn get_length(s: String) -&gt; usize &#123;</span><br><span class="line">    println!(&quot;String: &#123;&#125;&quot;, s);</span><br><span class="line">    // 和 swift 一样，函数的最后一个语句可以不加 return，用这个当返回值返回给你</span><br><span class="line">    s.len()</span><br><span class="line">    // 其他语言可以将s传回去，但 rust 不会，当然其他语言也可以做到 rust 这个效果，比如</span><br><span class="line">    // c++ 的左值和右值，以及 c 的指针</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/rust-sturct-know/" title="Rust 工程结构初探">Rust 工程结构初探</a></h2>
+                <p class="excerpt">
+                
+                
+Rust 项目的依赖管理机制
+
+Rust 的依赖管理是基于项目的根 Cargo.toml 文件，而不是子目录中的 Cargo.toml 文件。如果再子目录的 Cargo.toml 文件中描述，即使同样在子目录中的.rs文件，也会出现识别不到的问题。
+我们需要明确 Rust 项目的依赖管理机制。在 
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2023-07-23T07:00:39.000Z" class="post-list__meta--date date">2023-07-23</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/Cargo/" rel="tag">Cargo</a>, <a class="-none-link" href="/tags/Rust/" rel="tag">Rust</a>, <a class="-none-link" href="/tags/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84/" rel="tag">工程结构</a>
+</span><a class="btn-border-small" href="/rust-sturct-know/">开始阅读</a></div>
+                           
+            </div>
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h2 class="post-list__post-title post-title"><a href="/ios-moudle-02/" title="洋葱学园 iOS 端组件化重构之路[二]-实施方案">洋葱学园 iOS 端组件化重构之路[二]-实施方案</a></h2>
+                <p class="excerpt">
+                
+                
+
+背景基于洋葱学园 iOS 端组件化重构之路[一]-现状梳理 得出的结论与方案，需要验证方案的可行性及实施成本，设计完整架构图和演示工程，包括后续持续集成的改造思路等。
+实施目标
+中间件的方案，产出完整调度能力的中间件Demo，包含下沉依赖关系演示
+列出现有功能的基于中间件改造成本
+如何梳理职能范
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2022-11-01T02:41:50.000Z" class="post-list__meta--date date">2022-11-01</time> &#8226; <span class="post-list__meta--tags tags">于 
+  <a class="-none-link" href="/tags/iOS/" rel="tag">iOS</a>, <a class="-none-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag">组件化</a>, <a class="-none-link" href="/tags/%E9%87%8D%E6%9E%84/" rel="tag">重构</a>
+</span><a class="btn-border-small" href="/ios-moudle-02/">开始阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+<section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'warpdrive'; 
+      
+  var disqus_identifier = '/rust-learn-01/';
+  var disqus_title = '从零开始的 Rust 修炼生活';
+  var disqus_url = 'http://shevakuilin.com/rust-learn-01/';
+  
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          //dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+          dsq.src = 'https://a.disquscdn.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a target="_blank" rel="noopener" href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2025 ShevaKuilin - 跃迁引擎 <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"> 渝ICP备 19012091</a>, 本站点采用 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a> 搭建，使用 <a target="_blank" rel="noopener" href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a target="_blank" rel="noopener" href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+    
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
